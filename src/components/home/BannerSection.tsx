@@ -1,36 +1,35 @@
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious
-} from '@/components/ui/carousel'
-import banner from '/src/assets/banner-test.jpg'
-import Image from 'next/image'
+import { MutableRefObject } from 'react'
+import { Button } from '../ui/button'
+import Link from 'next/link'
 
-export default function BannerSection() {
+export default function BannerSection({
+  servicesRef
+}: {
+  servicesRef: MutableRefObject<HTMLDivElement | null>
+}) {
   return (
-    <div className="flex justify-center items-center h-screen">
-      <Carousel className="w-full max-w-[75vw]">
-        <CarouselContent>
-          {Array.from({ length: 3 }).map((_, index) => (
-            <CarouselItem
-              key={index}
-              className="flex items-center justify-center h-full"
-            >
-              <Image
-                src={banner}
-                alt="Banner Image"
-                width={1920}
-                height={775}
-                className="rounded-md w-full shadow-md"
-              />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
+    <div className="flex flex-col justify-around items-center h-[85vh] bg-teal-500 my-2 mx-6 rounded-lg">
+      <div>
+        <div className="text-4xl h-[300px] flex items-center justify-center">
+          Banner
+        </div>
+      </div>
+      <div>
+        <span className="flex items-center justify-center ml-6 font-bold text-5xl">
+          Nombre Empresa
+        </span>
+      </div>
+      <div>
+        <Button
+          onClick={() => {
+            servicesRef.current?.scrollIntoView({
+              behavior: 'smooth'
+            })
+          }}
+        >
+          Que ofrecemos
+        </Button>
+      </div>
     </div>
   )
 }
