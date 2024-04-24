@@ -5,10 +5,10 @@ import React, { ReactNode } from 'react'
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex flex-col min-w-full bg-background">
-      <nav className="flex justify-between items-center border-b border-border h-[100px] px-4 mb-[-5vh]">
+    <div className="flex flex-col min-w-full">
+      <nav className="flex justify-between items-center py-4 mx-4">
         <Logo />
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center py-4 mx-4">
           <ThemeSwitcher />
           <Button className="bg-btnPrimary hover:bg-btnPrimaryHover">
             Iniciar Sesión
