@@ -2,6 +2,7 @@ import { IdCardIcon } from '@radix-ui/react-icons'
 import Image from 'next/image'
 
 import servicesImg from '../../assets/services-test.png'
+import { MutableRefObject, RefObject } from 'react'
 
 const services = [
   {
@@ -41,9 +42,16 @@ const services = [
   }
 ]
 
-export default function ServicesSection() {
+export default function ServicesSection({
+  servicesRef
+}: {
+  servicesRef: MutableRefObject<HTMLDivElement | null>
+}) {
   return (
-    <div className="grid lg:grid-cols-2 md:grid-cols-1 gap-5 items-center h-screen">
+    <div
+      className="grid lg:grid-cols-2 md:grid-cols-1 gap-5 items-center h-screen pt-12 mt-6"
+      ref={servicesRef}
+    >
       {services.map((s) => (
         <div
           key={s.id}
@@ -73,7 +81,7 @@ export default function ServicesSection() {
                 width={200}
                 height={200}
                 alt="Service photo"
-                className=" bg-gray-500 my-4 rounded-xl"
+                className="bg-gray-300 dark:bg-gray-200 my-4 rounded-xl "
               />
             </div>
           </div>
