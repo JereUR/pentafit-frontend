@@ -3,10 +3,7 @@ import React from 'react'
 
 export default function Logo() {
   return (
-    <Link
-      href={'/'}
-      className="font-bold text-3xl bg-gradient-to-r from-purple-800 to-green-700 text-transparent bg-clip-text hover:cursor-pointer"
-    >
+    <Link href={'/'} className="font-bold text-3xl hover:cursor-pointer">
       LogoGymApp
     </Link>
   )
