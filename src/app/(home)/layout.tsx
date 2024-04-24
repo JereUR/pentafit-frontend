@@ -5,8 +5,8 @@ import React, { ReactNode } from 'react'
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex flex-col min-h-screen min-w-full bg-background max-h-screen">
-      <nav className="flex justify-between items-center border-b border-border h-[80px] px-4 py-2">
+    <div className="flex flex-col min-w-full bg-background">
+      <nav className="flex justify-between items-center border-b border-border h-[100px] px-4 mb-[-5vh]">
         <Logo />
         <div className="flex gap-4 items-center">
           <ThemeSwitcher />
