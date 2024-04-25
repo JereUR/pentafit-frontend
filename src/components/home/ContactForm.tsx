@@ -6,19 +6,21 @@ interface FormData {
   lastname: string
   email: string
   message: string
+  [key: string]: string // Index signature for any string property
 }
 
 interface FormErrors {
-  name?: string
-  lastname?: string
-  email?: string
-  message?: string
+  name: string
+  lastname: string
+  email: string
+  message: string
+  [key: string]: string
 }
 
 const inputFields = [
   { name: 'name', label: 'Nombre' },
   { name: 'lastname', label: 'Apellido' },
-  { name: 'email', label: 'Email', type: 'email' },
+  { name: 'email', label: 'Email' },
   { name: 'message', label: 'Mensaje', type: 'textarea' }
 ]
 
@@ -30,7 +32,12 @@ function ContactForm() {
     message: ''
   })
 
-  const [errors, setErrors] = useState<FormErrors>({})
+  const [errors, setErrors] = useState<FormErrors>({
+    name: '',
+    lastname: '',
+    email: '',
+    message: ''
+  })
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -44,7 +51,12 @@ function ContactForm() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault() // Prevent default form submission
 
-    const validationErrors: FormErrors = {} // Object to store validation errors
+    const validationErrors: FormErrors = {
+      name: '',
+      lastname: '',
+      email: '',
+      message: ''
+    }
 
     if (!formData.name) {
       validationErrors.name = 'Nombre es requerido'
@@ -64,7 +76,12 @@ function ContactForm() {
 
     setErrors(validationErrors)
 
-    if (Object.keys(validationErrors).length === 0) {
+    if (
+      validationErrors.email === '' &&
+      validationErrors.lastname === '' &&
+      validationErrors.name === '' &&
+      validationErrors.message === ''
+    ) {
       console.log('Formulario enviado:', formData)
       setFormData({ name: '', lastname: '', email: '', message: '' })
     }
@@ -75,7 +92,7 @@ function ContactForm() {
       <form onSubmit={handleSubmit}>
         {inputFields.map((field) => (
           <div className="flex flex-col gap-5" key={field.name}>
-            <label htmlFor={field.name} className="text-2xl font-bold">
+            <label htmlFor={field.name} className="text-2xl font-bold mt-4">
               {field.label}
             </label>
             {field.type === 'textarea' ? (
@@ -83,19 +100,19 @@ function ContactForm() {
                 name={field.name}
                 value={formData[field.name]}
                 onChange={handleChange}
-                className="bg-background border-none rounded-md text-xl mb-4 ml-1 p-2 h-40 focus:outline-none"
+                className="bg-background border-none rounded-md text-xl ml-1 p-2 h-40 focus:outline-none"
               />
             ) : (
               <input
-                type={field.type || 'text'} // Default to 'text' if type not specified
+                type="text" // Default to 'text' if type not specified
                 name={field.name}
                 value={formData[field.name]}
                 onChange={handleChange}
-                className="bg-background border-none rounded-md text-xl mb-4 ml-1 p-2 focus:outline-none"
+                className="bg-background border-none rounded-md text-xl ml-1 p-2 focus:outline-none"
               />
             )}
             {errors[field.name] && (
-              <span className="text-red-500">{errors[field.name]}</span>
+              <span className="text-red-600 ml-1">{errors[field.name]}</span>
             )}
           </div>
         ))}
