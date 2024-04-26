@@ -8,7 +8,7 @@ export default function DashboardPage() {
   const router = useRouter()
 
   if (!token) {
-    router.push('/')
+    router.replace('/')
   }
 
   return <div>DashboardPage</div>
