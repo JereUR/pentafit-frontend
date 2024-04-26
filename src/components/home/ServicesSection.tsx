@@ -48,45 +48,45 @@ export default function ServicesSection({
   servicesRef: MutableRefObject<HTMLDivElement | null>
 }) {
   return (
-    <div
-      className="grid lg:grid-cols-2 md:grid-cols-1 gap-5 items-center h-screen pt-12 mt-6"
-      ref={servicesRef}
-    >
-      {services.map((s) => (
-        <div
-          key={s.id}
-          className={`w-full ${
-            s.id === 5 ? 'lg:col-span-2 lg:w-[40%]' : 'md:w-[80%]'
-          } min-h-[100px] p-8 mx-auto`}
-        >
-          <div className="my-6">
-            <div>
-              <p className="flex gap-3">
-                {s.icon}{' '}
-                <span className="text-2xl border-b border-white">
-                  {s.title}
-                </span>
-              </p>
+    <>
+      <div className="h-[100px]" ref={servicesRef}></div>
+      <div className="grid lg:grid-cols-2 md:grid-cols-1 gap-5 items-center h-screen pt-12 mt-6">
+        {services.map((s) => (
+          <div
+            key={s.id}
+            className={`w-full ${
+              s.id === 5 ? 'lg:col-span-2 lg:w-[40%]' : 'md:w-[80%]'
+            } min-h-[100px] p-8 mx-auto`}
+          >
+            <div className="my-6">
+              <div>
+                <p className="flex gap-3">
+                  {s.icon}{' '}
+                  <span className="text-2xl border-b border-white">
+                    {s.title}
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <div className="ml-10 text-xl italic">{s.description}</div>
+              <div
+                className={`${
+                  s.id === 5 ? 'h-[35vh] w-[35vw] ml-10' : 'h-[30vh] w-[30vw]'
+                }`}
+              >
+                <Image
+                  src={servicesImg}
+                  width={200}
+                  height={200}
+                  alt="Service photo"
+                  className="bg-gray-300 dark:bg-gray-200 my-4 rounded-xl "
+                />
+              </div>
             </div>
           </div>
-          <div className="flex gap-2">
-            <div className="ml-10 text-xl italic">{s.description}</div>
-            <div
-              className={`${
-                s.id === 5 ? 'h-[35vh] w-[35vw] ml-10' : 'h-[30vh] w-[30vw]'
-              }`}
-            >
-              <Image
-                src={servicesImg}
-                width={200}
-                height={200}
-                alt="Service photo"
-                className="bg-gray-300 dark:bg-gray-200 my-4 rounded-xl "
-              />
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </>
   )
 }
