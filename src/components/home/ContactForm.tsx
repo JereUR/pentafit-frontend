@@ -89,6 +89,10 @@ function ContactForm() {
 
   return (
     <div className="bg-gray-300 dark:bg-gray-600 p-10 m-10 mr-20 w-[70vw] rounded-md shadow-md">
+      <div className="flex flex-col gap-5 mb-5">
+        <h1 className="text-xl font-bold">BUENAS!</h1>
+        <p className="text-3xl italic">Dejanos tu consulta</p>
+      </div>
       <form onSubmit={handleSubmit}>
         {inputFields.map((field) => (
           <div className="flex flex-col gap-5" key={field.name}>
