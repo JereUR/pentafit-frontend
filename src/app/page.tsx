@@ -1,11 +1,16 @@
 'use client'
 
+import BannerSection from '@/components/home/BannerSection'
+import ContactForm from '@/components/home/ContactForm'
+import ServicesSection from '@/components/home/ServicesSection'
 import Logo from '@/components/Logo'
 import ThemeSwitcher from '@/components/ThemeSwitcher'
 import { Button } from '@/components/ui/button'
-import React, { ReactNode, useState, useEffect } from 'react'
+import Link from 'next/link'
+import { useEffect, useRef, useState } from 'react'
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function HomePage() {
+  const servicesRef = useRef<HTMLDivElement | null>(null)
   const [isSticky, setIsSticky] = useState(false)
 
   useEffect(() => {
@@ -33,7 +38,15 @@ export default function Layout({ children }: { children: ReactNode }) {
           </Button>
         </div>
       </nav>
-      <main className="flex w-full justify-center pt-20">{children}</main>
+      <main className="flex w-full justify-center pt-20">
+        <div>
+          <BannerSection servicesRef={servicesRef} />
+          <ServicesSection servicesRef={servicesRef} />
+          <div className="flex justify-end">
+            <ContactForm />
+          </div>
+        </div>
+      </main>
     </div>
   )
 }
