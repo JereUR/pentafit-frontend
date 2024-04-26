@@ -34,7 +34,7 @@ export default function HomePage() {
         <div className="flex gap-4 items-center py-4 mx-4">
           <ThemeSwitcher />
           <Button className="bg-btnPrimary hover:bg-btnPrimaryHover">
-            Iniciar Sesión
+            <Link href={'/iniciar-sesion'}>Iniciar Sesión</Link>
           </Button>
         </div>
       </nav>
