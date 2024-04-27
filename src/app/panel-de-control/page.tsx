@@ -4,10 +4,11 @@ import useUser from '@/components/hooks/useUser'
 import { useRouter } from 'next/navigation'
 
 export default function DashboardPage() {
-  const { user, token } = useUser()
+  const { token } = useUser()
   const router = useRouter()
+  console.log(token===null)
 
-  if (!token) {
+  if (token===null) {
     router.replace('/')
   }
 
