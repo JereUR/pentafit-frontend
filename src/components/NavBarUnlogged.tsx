@@ -30,7 +30,7 @@ export default function NavBarUnlogged() {
       <div
         className={`flex gap-4 items-center rounded-md p-4 mx-4 bg-background ${
           !isSticky && 'shadow-md'
-        }`}
+        } ${pathname != '/' && 'bg-foreground dark:bg-white'}`}
       >
         <ThemeSwitcher />
         <Button
