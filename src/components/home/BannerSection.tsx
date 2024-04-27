@@ -1,6 +1,7 @@
 import { MutableRefObject } from 'react'
 import { Button } from '../ui/button'
 import Link from 'next/link'
+import { Card } from '../ui/card'
 
 export default function BannerSection({
   servicesRef
@@ -8,26 +9,43 @@ export default function BannerSection({
   servicesRef: MutableRefObject<HTMLDivElement | null>
 }) {
   return (
-    <div className="flex flex-col justify-around items-center h-[85vh] bg-teal-500 my-2 mx-6 rounded-lg">
+    <div className="flex flex-col justify-around items-center h-[85vh]">
       <div>
-        <div className="text-4xl h-[300px] flex items-center justify-center">
+        <div className="h-[300px] w-[90vw] flex items-center justify-center text-gradient-to-r from-primary-orange-400 to-primary-orange-600 text-7xl border">
           Banner
         </div>
       </div>
       <div>
-        <span className="flex items-center justify-center ml-6 font-bold text-5xl">
-          Nombre Empresa
+        <span className="flex items-center justify-center font-bold text-7xl dark:text-muted">
+          PENTA
         </span>
       </div>
-      <div>
+      <div className="flex flex-col gap-6">
+        <span className="text-xl font-bold italic dark:text-muted">
+          Que ofrecemos
+        </span>
         <Button
+          className="cursor-pointer bg-background px-2 py-2 rounded-md text-foreground tracking-wider shadow-xl animate-bounce hover:animate-none hover:text-white dark:hover:text-muted mb-[-40px]"
           onClick={() => {
             servicesRef.current?.scrollIntoView({
               behavior: 'smooth'
             })
           }}
         >
-          Que ofrecemos
+          <svg
+            className="w-5 h-5"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+            ></path>
+          </svg>
         </Button>
       </div>
     </div>
