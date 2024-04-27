@@ -123,7 +123,7 @@ function ContactForm() {
         <div className="grid place-items-center">
           <Button
             type="submit"
-            className="bg-btnPrimary text-xl font-bold p-6 mt-8 w-[60vw] hover:bg-btnPrimaryHover"
+            className="bg-primary-orange-600 hover:bg-primary-orange-700 text-xl font-bold p-6 mt-8 w-[60vw]"
           >
             Enviar
           </Button>
