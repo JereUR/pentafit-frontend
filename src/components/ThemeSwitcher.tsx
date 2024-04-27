@@ -16,16 +16,28 @@ export default function ThemeSwitcher() {
   if (!mounted) return null //avoid rehydration errors
 
   return (
-    <Tabs defaultValue={theme}>
-      <TabsList className="border">
+    <Tabs defaultValue={theme} className="bg-transparent">
+      <TabsList className="bg-transparent">
         <TabsTrigger value="light" onClick={() => setTheme('light')}>
-          <SunIcon className="h-[1.2rem] w-[1.2rem]" />
+          <SunIcon className="h-[1.2rem] w-[1.2rem] text-primary-orange-500 dark:text-white" />
         </TabsTrigger>
-        <TabsTrigger value="dark" onClick={() => setTheme('dark')}>
-          <MoonIcon className="h-[1.2rem] w-[1.2rem] rotate-90 transition-all dark:rotate-0" />
+        <TabsTrigger
+          value="dark"
+          onClick={() => setTheme('dark')}
+          className="bg-transparent"
+        >
+          <MoonIcon
+            className={`h-[1.2rem] w-[1.2rem] rotate-90 transition-all dark:rotate-0 ${
+              theme === 'dark' ? 'text-primary-orange-500' : 'text-foreground'
+            } ${theme === 'system' && 'text-white'}`}
+          />
         </TabsTrigger>
         <TabsTrigger value="system" onClick={() => setTheme('system')}>
-          <DesktopIcon className="h-[1.2rem] w-[1.2rem]" />
+          <DesktopIcon
+            className={`h-[1.2rem] w-[1.2rem] text-white ${
+              theme === 'light' && 'text-foreground'
+            } ${theme === 'system' && 'text-primary-orange-500'}`}
+          />
         </TabsTrigger>
       </TabsList>
     </Tabs>
