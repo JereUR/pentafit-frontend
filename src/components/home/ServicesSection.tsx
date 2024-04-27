@@ -1,7 +1,7 @@
 import { IdCardIcon } from '@radix-ui/react-icons'
 import Image from 'next/image'
 
-import servicesImg from '../../assets/services-test.png'
+import servicesImg from '../../../public/assets/services-test.png'
 import { MutableRefObject, RefObject } from 'react'
 
 const services = [

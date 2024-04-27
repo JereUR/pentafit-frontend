@@ -1,5 +1,5 @@
 import LoginForm from '@/components/LoginForm'
-import photo from '../../assets/banner-login.png'
+import photo from '../../../public/assets/banner-login.png'
 import Image from 'next/image'
 
 export default function LoginPage() {
