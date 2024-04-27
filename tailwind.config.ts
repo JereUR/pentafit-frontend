@@ -19,8 +19,19 @@ const config = {
     },
     extend: {
       colors: {
-        btnPrimary: 'var(--btn-primary)',
-        btnPrimaryHover: 'var(--btn-primary-hover)',
+        'primary-orange': {
+          '50': '#fff8ed',
+          '100': '#fff0d4',
+          '200': '#ffdca9',
+          '300': '#ffc272',
+          '400': '#fe9e39',
+          '500': '#fc8013',
+          '600': '#ec6409',
+          '700': '#c44b0a',
+          '800': '#9c3b10',
+          '900': '#7d3211',
+          '950': '#441806'
+        },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
