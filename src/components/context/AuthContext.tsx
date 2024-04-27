@@ -6,7 +6,7 @@ import { User } from '../types/User'
 type AuthContextType = {
   user: User | null
   token: string | null
-  login: (email: string, password: string) => void
+  login: (formData: FormData) => void
   logout: (email: string) => void
 }
 
@@ -20,7 +20,10 @@ export default function AuthContextProvider({
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
 
-  const login = (email: string, password: string) => {}
+  function login(formData: FormData) {
+    const { email, password } = Object.fromEntries(formData)
+    console.log(email, password)
+  }
 
   const logout = (email: string) => {}
 
