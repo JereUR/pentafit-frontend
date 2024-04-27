@@ -32,13 +32,13 @@ export default function ThemeSwitcher() {
             } ${theme === 'system' && 'text-white'}`}
           />
         </TabsTrigger>
-        <TabsTrigger value="system" onClick={() => setTheme('system')}>
+        {/* <TabsTrigger value="system" onClick={() => setTheme('system')}>
           <DesktopIcon
             className={`h-[1.2rem] w-[1.2rem] text-white ${
               theme === 'light' && 'text-foreground'
             } ${theme === 'system' && 'text-primary-orange-500'}`}
           />
-        </TabsTrigger>
+        </TabsTrigger> */}
       </TabsList>
     </Tabs>
   )
