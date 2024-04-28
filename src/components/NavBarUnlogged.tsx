@@ -6,10 +6,12 @@ import ThemeSwitcher from './ThemeSwitcher'
 import { Button } from './ui/button'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import useUser from './hooks/useUser'
 
 export default function NavBarUnlogged() {
   const [isSticky, setIsSticky] = useState(false)
   const pathname = usePathname()
+  const { token } = useUser()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,7 +40,9 @@ export default function NavBarUnlogged() {
             pathname != '/' && 'hidden'
           }`}
         >
-          <Link href={'/iniciar-sesion'}>Iniciar Sesión</Link>
+          <Link href={`${token ? '/panel-de-control' : '/iniciar-sesion'}`}>
+            {token ? 'Panel de Control' : 'Iniciar Sesión'}
+          </Link>
         </Button>
       </div>
     </nav>
