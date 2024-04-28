@@ -2,14 +2,17 @@
 
 import useUser from '@/components/hooks/useUser'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 export default function DashboardPage() {
   const { token } = useUser()
   const router = useRouter()
 
-  if (token === null) {
-    router.replace('/')
-  }
+  useEffect(() => {
+    if (token === null) {
+      router.replace('/')
+    }
+  }, [token, router])
 
   return <div>DashboardPage</div>
 }
