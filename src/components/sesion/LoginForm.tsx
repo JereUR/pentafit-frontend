@@ -2,13 +2,23 @@
 
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons'
 import { useState } from 'react'
-import { Button } from './ui/button'
+import { Button } from '../ui/button'
 import Link from 'next/link'
-import useUser from './hooks/useUser'
+import useUser from '../hooks/useUser'
+import ForgotPasswordModal from './ForgotPasswordModal'
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const { login } = useUser()
+
+  const handleOpenModal = () => {
+    setShowModal(true) // Open the modal on click
+  }
+
+  const handleCloseModal = () => {
+    setShowModal(false) // Close the modal from within or parent
+  }
 
   return (
     <div className="m-8 px-8">
@@ -50,7 +60,7 @@ export default function LoginForm() {
           </div>
         </div>
         <div className="flex justify-end">
-          <span className="font-bold cursor-pointer">
+          <span className="font-bold cursor-pointer" onClick={handleOpenModal}>
             ¿Olvidaste tu contraseña?
           </span>
         </div>
@@ -58,6 +68,9 @@ export default function LoginForm() {
           Enviar
         </Button>
       </form>
+      {showModal && (
+        <ForgotPasswordModal isOpen={showModal} onClose={handleCloseModal} />
+      )}
       <div className="separator flex justify-center items-center w-full">
         <span className="border w-full block h-1 bg-gray-300 ml-4 mr-2"></span>
         <span className="inline-block w-8 h-8 rounded-full text-center font-bold">

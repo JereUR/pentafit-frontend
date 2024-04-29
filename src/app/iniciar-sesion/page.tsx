@@ -1,4 +1,4 @@
-import LoginForm from '@/components/LoginForm'
+import LoginForm from '@/components/sesion/LoginForm'
 import photo from '../../../public/assets/banner-login.png'
 import Image from 'next/image'
 

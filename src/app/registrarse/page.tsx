@@ -1,6 +1,6 @@
 import photo from '../../../public/assets/banner-login.png'
 import Image from 'next/image'
-import RegisterForm from '@/components/RegisterForm'
+import RegisterForm from '@/components/sesion/RegisterForm'
 
 export default function RegisterPage() {
   return (
