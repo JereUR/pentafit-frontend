@@ -66,9 +66,11 @@ export default function LoginForm() {
         <span className="border w-full block h-1 bg-gray-300 mr-4 ml-2"></span>
       </div>
       <div>
-        <Button className="bg-background text-foreground border border-primary-orange-600 w-full my-[5vh] py-6 text-xl hover:bg-primary-orange-100 hover:dark:text-muted">
-          Registrarse
-        </Button>
+        <Link href={'/registrarse'}>
+          <Button className="bg-background text-foreground border border-primary-orange-600 w-full my-[5vh] py-6 text-xl hover:bg-primary-orange-100 hover:dark:text-muted">
+            Registrarse
+          </Button>
+        </Link>
       </div>
     </div>
   )
