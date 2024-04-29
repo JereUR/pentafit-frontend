@@ -4,7 +4,7 @@ import useUser from '@/components/hooks/useUser'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-export default function DashboardPage() {
+function DashboardPage() {
   const { token } = useUser()
   const router = useRouter()
 
@@ -14,5 +14,11 @@ export default function DashboardPage() {
     }
   }, [token, router])
 
+  useEffect(() => {
+    document.title = 'PentaFit - Panel de Control'
+  }, [])
+
   return <div>DashboardPage</div>
 }
+
+export default DashboardPage
