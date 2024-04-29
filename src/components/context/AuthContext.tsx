@@ -9,6 +9,7 @@ type AuthContextType = {
   token: string | null
   login: (formData: FormData) => void
   logout: (email: string) => void
+  register: (formDate: FormData) => void
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -65,13 +66,38 @@ export default function AuthContextProvider({
 
   const logout = (email: string) => {}
 
+  function register(formData: FormData) {
+    const {
+      first_name,
+      last_name,
+      email,
+      gender,
+      date,
+      password,
+      confirm_password
+    } = Object.fromEntries(formData)
+
+    const user = {
+      first_name,
+      last_name,
+      email,
+      gender,
+      date,
+      password,
+      confirm_password
+    }
+
+    console.log(user)
+  }
+
   return (
     <AuthContext.Provider
       value={{
         user,
         token,
         login,
-        logout
+        logout,
+        register
       }}
     >
       {children}
