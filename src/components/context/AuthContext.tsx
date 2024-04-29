@@ -2,13 +2,14 @@
 
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { User } from '../types/User'
+import { redirect } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 
 type AuthContextType = {
   user: User | null
   token: string | null
   login: (formData: FormData) => void
-  logout: (email: string) => void
+  logout: () => void
   register: (formDate: FormData) => void
 }
 
@@ -52,7 +53,6 @@ export default function AuthContextProvider({
         })
         .then((data: any) => {
           console.log(data)
-          router.push('/panel-de-control')
           if (data?.success) {
             console.log('success')
             // setUser(data.user)
@@ -62,9 +62,15 @@ export default function AuthContextProvider({
     } catch (error) {
       console.log(error)
     }
+
+    redirect('/panel-de-control')
   }
 
-  const logout = (email: string) => {}
+  const logout = () => {
+    localStorage.removeItem('token')
+    localStorage.setItem('isLoggedOut', 'true')
+    router.push('/') 
+  }
 
   function register(formData: FormData) {
     const {

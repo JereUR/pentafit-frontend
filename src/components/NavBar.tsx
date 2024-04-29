@@ -11,7 +11,7 @@ import useUser from './hooks/useUser'
 export default function NavBarU() {
   const [isSticky, setIsSticky] = useState(false)
   const pathname = usePathname()
-  const { token } = useUser()
+  const { token, logout } = useUser()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +22,15 @@ export default function NavBarU() {
 
     return () => window.removeEventListener('scroll', handleScroll) // Cleanup
   }, [])
+
+  useEffect(() => {
+    const isLoggedOut = localStorage.getItem('isLoggedOut') === 'true'
+
+    if (isLoggedOut) {
+      window.location.reload()
+      localStorage.removeItem('isLoggedOut')
+    }
+  }, [pathname, token])
 
   if (token) {
     return (
@@ -38,13 +47,29 @@ export default function NavBarU() {
         >
           <ThemeSwitcher />
           {pathname === '/' ? (
-            <Button className="bg-primary-orange-600 hover:bg-primary-orange-700">
-              <Link href="/panel-de-control">Panel de Control</Link>
-            </Button>
+            <div className="flex gap-2">
+              <Button className="bg-primary-orange-600 hover:bg-primary-orange-700">
+                <Link href="/perfil">Mi Perfil</Link>
+              </Button>
+              <Button
+                className="bg-primary-orange-600 hover:bg-primary-orange-700"
+                onClick={logout}
+              >
+                Cerrar Sesión
+              </Button>
+            </div>
           ) : (
-            <Button className="bg-primary-orange-600 hover:bg-primary-orange-700">
-              <Link href="/perfil">Mi Perfil</Link>
-            </Button>
+            <div className="flex gap-2">
+              <Button className="bg-primary-orange-600 hover:bg-primary-orange-700">
+                <Link href="/perfil">Mi Perfil</Link>
+              </Button>
+              <Button
+                className="bg-primary-orange-600 hover:bg-primary-orange-700"
+                onClick={logout}
+              >
+                Cerrar Sesión
+              </Button>
+            </div>
           )}
         </div>
       </nav>
