@@ -2,7 +2,7 @@
 
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { User } from '../types/User'
-import { redirect } from 'next/navigation'
+import { redirect, usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 
 type AuthContextType = {
@@ -23,6 +23,7 @@ export default function AuthContextProvider({
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
     const token = localStorage?.getItem('token')
@@ -68,8 +69,12 @@ export default function AuthContextProvider({
 
   const logout = () => {
     localStorage.removeItem('token')
+    if (pathname === '/') {
+      window.location.reload()
+      return
+    }
     localStorage.setItem('isLoggedOut', 'true')
-    router.push('/') 
+    router.push('/')
   }
 
   function register(formData: FormData) {
