@@ -19,7 +19,7 @@ export default function ThemeSwitcher() {
 
   let classname = ''
 
-  if (theme === 'dark') {
+  if (theme === 'dark' || theme === 'system') {
     classname = 'text-primary-orange-500'
   } else {
     if (pathname != '/') {
