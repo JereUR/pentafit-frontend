@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation'
 
 type AuthContextType = {
   user: User | null
-  token: string | null
+  getSession: () => Promise<any | null>
   recoverState: boolean
   setRecoverState: Dispatch<SetStateAction<boolean>>
   login: (formData: FormData) => Promise<void | Error>
@@ -31,17 +31,28 @@ export default function AuthContextProvider({
   children: ReactNode
 }) {
   const [user, setUser] = useState<User | null>(null)
-  const [token, setToken] = useState<string | null>(null)
+  const [session, setSession] = useState<any | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const router = useRouter()
   const pathname = usePathname()
 
-  useEffect(() => {
-    const token = localStorage?.getItem('token')
-    if (token) {
-      setToken(token)
+  /* useEffect(() => {
+    const storedToken = localStorage.getItem('token')
+    if (storedToken) {
+      setToken(storedToken)
     }
-  }, [])
+  }, []) */
+
+  async function getSession(): Promise<any | null> {
+    let session = null
+    await fetch('https://jsonplaceholder.typicode.com/users/1')
+      .then((response) => response.json())
+      .then((json) => {
+        session = json
+      })
+
+    return { session }
+  }
 
   async function login(formData: FormData): Promise<void | Error> {
     const { email, password } = Object.fromEntries(formData)
@@ -64,7 +75,7 @@ export default function AuthContextProvider({
       /* if (data?.success) { */
       const authToken = data.token || 'Bearer 12345667' // Use token from response or placeholder
       localStorage.setItem('token', authToken) // Store token securely
-      setToken(authToken)
+      setSession(authToken)
 
       /*  // Assuming data.user contains user information
         setUser(data.user) */
@@ -164,7 +175,7 @@ export default function AuthContextProvider({
     <AuthContext.Provider
       value={{
         user,
-        token,
+        getSession,
         recoverState,
         setRecoverState,
         login,

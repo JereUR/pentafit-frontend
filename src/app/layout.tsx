@@ -15,7 +15,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   const pathname = usePathname()
-  const shouldRenderLayout = !['/reestablecer'].includes(pathname)
+  const shouldRenderLayout = !['/reestablecer', '/panel-de-control'].includes(
+    pathname
+  )
 
   return (
     <html lang="en">
