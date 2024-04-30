@@ -4,7 +4,7 @@ import useUser from '@/components/hooks/useUser'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-function DashboardPage() {
+export default function DashboardPage() {
   const { token } = useUser()
   const router = useRouter()
 
@@ -20,5 +20,3 @@ function DashboardPage() {
 
   return <div>DashboardPage</div>
 }
-
-export default DashboardPage
