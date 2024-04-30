@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import useUser from './hooks/useUser'
 
-export default function NavBarU() {
+export default function NavBar() {
   const [isSticky, setIsSticky] = useState(false)
   const pathname = usePathname()
   const { token, logout } = useUser()
