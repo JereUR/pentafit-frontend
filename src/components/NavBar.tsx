@@ -49,7 +49,7 @@ export default function NavBarU() {
           {pathname === '/' ? (
             <div className="flex gap-2">
               <Button className="bg-primary-orange-600 hover:bg-primary-orange-700">
-                <Link href="/perfil">Mi Perfil</Link>
+                <Link href="/panel-de-control">Panel de Control</Link>
               </Button>
               <Button
                 className="bg-primary-orange-600 hover:bg-primary-orange-700"
