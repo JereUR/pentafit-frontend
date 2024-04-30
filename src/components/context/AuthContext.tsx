@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation'
 
 type AuthContextType = {
   user: User | null
+  token: string | null
   getSession: () => Promise<any | null>
   recoverState: boolean
   setRecoverState: Dispatch<SetStateAction<boolean>>
@@ -31,17 +32,18 @@ export default function AuthContextProvider({
   children: ReactNode
 }) {
   const [user, setUser] = useState<User | null>(null)
+  const [token, setToken] = useState<string | null>(null)
   const [session, setSession] = useState<any | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const router = useRouter()
   const pathname = usePathname()
 
-  /* useEffect(() => {
+  useEffect(() => {
     const storedToken = localStorage.getItem('token')
     if (storedToken) {
       setToken(storedToken)
     }
-  }, []) */
+  }, [])
 
   async function getSession(): Promise<any | null> {
     let session = null
@@ -75,7 +77,7 @@ export default function AuthContextProvider({
       /* if (data?.success) { */
       const authToken = data.token || 'Bearer 12345667' // Use token from response or placeholder
       localStorage.setItem('token', authToken) // Store token securely
-      setSession(authToken)
+      setToken(authToken)
 
       /*  // Assuming data.user contains user information
         setUser(data.user) */
@@ -157,16 +159,13 @@ export default function AuthContextProvider({
       .then((data) => {
         if (data?.success) {
           console.log('Recovery email sent successfully!')
-          // Set a temporary state variable to display a message
           setRecoverState('Hemos enviado un mail a tu cuenta...') // Set your desired message
         } else {
           console.error('Recovery failed:', data?.message)
-          // Handle failed recovery (optional)
         }
       })
     } catch (error) {
       console.error('Recovery error:', error)
-        // Handle errors (optional)
       
     } */
   }
@@ -175,6 +174,7 @@ export default function AuthContextProvider({
     <AuthContext.Provider
       value={{
         user,
+        token,
         getSession,
         recoverState,
         setRecoverState,
