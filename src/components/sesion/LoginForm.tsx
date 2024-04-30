@@ -73,7 +73,7 @@ export default function LoginForm() {
       )}
       <div className="separator flex justify-center items-center w-full">
         <span className="border w-full block h-1 bg-gray-300 ml-4 mr-2"></span>
-        <span className="inline-block w-8 h-8 rounded-full text-center font-bold">
+        <span className="inline-block w-8 h-8 rounded-full text-center text-gray-400">
           ó
         </span>
         <span className="border w-full block h-1 bg-gray-300 mr-4 ml-2"></span>
