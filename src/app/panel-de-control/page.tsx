@@ -1,9 +1,8 @@
-'use client'
+import { Metadata } from 'next'
 
-import useUser from '@/components/hooks/useUser'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-
+export const metadata: Metadata = {
+  title: 'PentaFit - Panel de Control'
+}
 export default function DashboardPage() {
   return <div>DashboardPage</div>
 }

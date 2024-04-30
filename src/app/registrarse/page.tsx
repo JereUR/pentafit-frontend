@@ -1,6 +1,11 @@
 import photo from '../../../public/assets/banner-login.png'
 import Image from 'next/image'
 import RegisterForm from '@/components/sesion/RegisterForm'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'PentaFit - Registrarse'
+}
 
 export default function RegisterPage() {
   return (

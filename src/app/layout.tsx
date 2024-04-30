@@ -15,9 +15,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   const pathname = usePathname()
-  const shouldRenderLayout = !['/reestablecer', '/panel-de-control'].includes(
-    pathname
-  )
+  const shouldRenderLayout = ![
+    '/reestablecer',
+    '/panel-de-control',
+    '/panel-de-control/actividades'
+  ].includes(pathname)
 
   return (
     <html lang="en">
@@ -35,7 +37,16 @@ export default function RootLayout({
             </ThemeProvider>
           </AuthContextProvider>
         ) : (
-          <>{children}</>
+          <AuthContextProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </AuthContextProvider>
         )}
       </body>
     </html>

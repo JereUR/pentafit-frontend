@@ -1,6 +1,11 @@
 import LoginForm from '@/components/sesion/LoginForm'
 import photo from '../../../public/assets/banner-login.png'
 import Image from 'next/image'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'PentaFit - Iniciar Sesión'
+}
 
 export default function LoginPage() {
   return (
