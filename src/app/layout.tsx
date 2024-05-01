@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import AuthContextProvider from '@/components/context/AuthContext'
 import NavBar from '@/components/NavBar'
 import { usePathname } from 'next/navigation'
+import SideBar from '@/components/dashboard/sidebar/SideBar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -44,7 +45,12 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              {children}
+              <div className="flex">
+                <div className="w-1/6 bg-black py-5 min-h-screen">
+                  <SideBar />
+                </div>
+                <div className="w-5/6 p-5">{children}</div>
+              </div>
             </ThemeProvider>
           </AuthContextProvider>
         )}
