@@ -99,6 +99,7 @@ export default function AuthContextProvider({
   }
 
   const logout = () => {
+    setSession(null)
     localStorage.removeItem('token')
     if (pathname === '/') {
       window.location.reload()
