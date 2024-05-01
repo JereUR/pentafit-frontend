@@ -10,35 +10,34 @@ import {
 import { BsArrowsAngleContract } from 'react-icons/bs'
 import { IoIosFitness } from 'react-icons/io'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 import useUser from '@/components/hooks/useUser'
-import { Button } from '@/components/ui/button'
-import { usePathname } from 'next/navigation'
-import { useState } from 'react'
 
 const menuItems = [
   {
     title: 'Inicio',
     path: '/panel-de-control',
-    icon: <FaHome />,
-    list: []
+    icon: <FaHome className="h-5 w-5" />,
+    list: null
   },
   {
     title: 'Socios',
     path: '/panel-de-control/socios',
-    icon: <FaUser />,
-    list: []
+    icon: <FaUser className="h-4 w-4" />,
+    list: null
   },
   {
     title: 'Turnos',
     path: '/panel-de-control/turnos',
-    icon: <MdForkLeft />,
-    list: []
+    icon: <MdForkLeft className="h-6 w-6" />,
+    list: null
   },
   {
     title: 'Facturación',
     path: null,
-    icon: <MdForkLeft />,
+    icon: <MdForkLeft className="h-5 w-5" />,
     list: [
       { title: 'Planes', path: '/panel-de-control/facturacion/planes' },
       {
@@ -54,25 +53,25 @@ const menuItems = [
   {
     title: 'Seguimiento',
     path: '/panel-de-control/seguimiento',
-    icon: <BsArrowsAngleContract />,
-    list: []
+    icon: <BsArrowsAngleContract className="h-5 w-5" />,
+    list: null
   },
   {
-    title: 'Configuración Rutinas',
+    title: 'Entrenamiento',
     path: null,
-    icon: <IoIosFitness />,
+    icon: <IoIosFitness className="h-5 w-5" />,
     list: [
       {
         title: 'Planes',
-        path: '/panel-de-control/configuracion-rutinas/planes'
+        path: '/panel-de-control/entrenamiento/planes'
       },
       {
         title: 'Rutinas',
-        path: '/panel-de-control/configuracion-rutinas/rutinas'
+        path: '/panel-de-control/entrenamiento/rutinas'
       },
       {
         title: 'Ejercicios',
-        path: '/panel-de-control/configuracion-rutinas/ejercicios'
+        path: '/panel-de-control/entrenamiento/ejercicios'
       }
     ]
   }
@@ -83,19 +82,31 @@ export default function SideBar() {
   const pathname = usePathname()
   const [expandedItems, setExpandedItems] = useState<string[]>([])
 
+  useEffect(() => {
+    menuItems.forEach((item) => {
+      if (item.list) {
+        item.list.forEach((listItem) => {
+          if (pathname.startsWith(listItem.path)) {
+            const parentTitle = item.title
+            const isParentExpanded = expandedItems.includes(parentTitle)
+
+            setExpandedItems(isParentExpanded ? expandedItems : [parentTitle])
+          }
+        })
+      } else {
+        if (pathname.startsWith(item.path)) setExpandedItems([])
+      }
+    })
+  }, [pathname])
+
   const handleClick = (title: string) => {
-    const newExpandedItems = [...expandedItems] // Create a copy to avoid state mutation
-    const itemIndex = newExpandedItems.indexOf(title)
+    const isItemExpanded = expandedItems.includes(title)
 
-    if (itemIndex !== -1) {
-      // Remove item from expanded list (collapse)
-      newExpandedItems.splice(itemIndex, 1)
-    } else {
-      // Add item to expanded list (expand)
-      newExpandedItems.push(title)
-    }
-
-    setExpandedItems(newExpandedItems)
+    setExpandedItems(
+      isItemExpanded
+        ? expandedItems.filter((item) => item !== title)
+        : [...expandedItems, title]
+    )
   }
 
   return (
@@ -113,7 +124,10 @@ export default function SideBar() {
                   pathname === item.path && 'bg-primary-orange-600'
                 }`}
               >
-                <span className="ml-2">{item.title}</span>
+                <span className="flex gap-2 items-center ml-2">
+                  {item.icon}
+                  {item.title}
+                </span>
               </Link>
             ) : (
               // Handle items with sub-items
@@ -122,22 +136,30 @@ export default function SideBar() {
                 onClick={() => handleClick(item.title)}
               >
                 <div className="flex items-center">
-                  <span className="ml-2">{item.title}</span>
+                  <span className="flex gap-2 items-center ml-2">
+                    {item.icon}
+                    {item.title}
+                  </span>
                   {expandedItems.includes(item.title) ? (
                     <MdExpandLess className="ml-auto" />
                   ) : (
                     <MdExpandMore className="ml-auto" />
                   )}
                 </div>
-                {expandedItems.includes(item.title) && item.list.length > 0 && (
-                  <div className="pl-8">
+                {expandedItems.includes(item.title) && item.list && (
+                  <div className="flex flex-col pl-6 mt-4 gap-2">
                     {item.list.map((subItem) => (
                       <Link
                         key={subItem.title}
                         href={subItem.path}
-                        className="p-2 flex items-center hover:bg-primary-orange-600 text-sm"
+                        className={`p-3 flex items-center rounded-r-full transition duration-300 ease-in-out hover:bg-primary-orange-600 text-sm ${
+                          pathname.startsWith(subItem.path) &&
+                          'bg-primary-orange-600'
+                        }`}
                       >
-                        <span className="ml-2">{subItem.title}</span>
+                        <li className="list-disc">
+                          <span>{subItem.title}</span>
+                        </li>
                       </Link>
                     ))}
                   </div>
