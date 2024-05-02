@@ -110,9 +110,11 @@ export default function SideBar() {
   }
 
   return (
-    <div className="sticky top-10 h-screen">
+    <div className="flex flex-col top-10 text-white">
       <div className="flex justify-center gap-5 mb-10">
-        <p className=" text-4xl font-bold ">Penta</p>
+        <Link href="/" className=" text-4xl font-bold ">
+          Penta
+        </Link>
       </div>
       <div className="list-none">
         {menuItems.map((item) => (
@@ -170,7 +172,7 @@ export default function SideBar() {
         ))}
       </div>
       <button
-        className="absolute bottom-10 p-3 ml-2 flex items-center gap-2 text-primary-orange-600 rounded-r-full transition duration-300 ease-in-out hover:text-primary-orange-600"
+        className="absolute bottom-5 ml-4 flex items-center gap-2 text-primary-orange-600 rounded-r-full transition duration-300 ease-in-out hover:text-primary-orange-600"
         onClick={logout}
       >
         <MdLogout />
