@@ -2,11 +2,12 @@
 
 import { Inter } from 'next/font/google'
 import './globals.css'
-
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import AuthContextProvider from '@/components/context/AuthContext'
 import NavBar from '@/components/NavBar'
+import { usePathname } from 'next/navigation'
 import SideBar from '@/components/dashboard/sidebar/SideBar'
+import TopBar from '@/components/dashboard/sidebar/TopBar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,13 +16,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const isServerSide = typeof window === 'undefined'
-
-  const shouldRenderLayout =
-    !isServerSide &&
-    ![...[...document.location.pathname.split('/')].slice(1)].some((path) =>
-      path.startsWith('panel-de-control')
-    )
+  const pathname = usePathname()
+  const shouldRenderLayout = !pathname.startsWith('/panel-de-control')
 
   return (
     <html lang="en">
@@ -46,11 +42,14 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <div className="flex">
-                <div className="w-1/5 bg-black py-5 min-h-screen">
+              <div className="flex min-h-screen">
+                <div className="w-1/5 bg-black py-5">
                   <SideBar />
                 </div>
-                <div className="w-4/5 p-5">{children}</div>
+                <div className="w-4/5">
+                  <TopBar />
+                  {children}
+                </div>
               </div>
             </ThemeProvider>
           </AuthContextProvider>
