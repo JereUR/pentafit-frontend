@@ -2,7 +2,6 @@
 
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { MdSearch } from 'react-icons/md'
 
 import NotificationsDropdownMenu from './NotificationsDropdownMenu'
 import ProfileDropdownMenu from './ProfileDropdownMenu'
@@ -47,14 +46,6 @@ export default function TopBar() {
     >
       <div className="text-foreground font-bold capitalize">{title}</div>
       <div className="flex items-center gap-5">
-        <div className="flex items-center gap-2 bg-gray-700 p-2 rounded-lg">
-          <MdSearch />
-          <input
-            className="bg-transparent border-none text-white focus:outline-none"
-            type="text"
-            placeholder="Search..."
-          />
-        </div>
         <div className="flex items-center gap-5">
           <ProfileDropdownMenu />
           <NotificationsDropdownMenu />
