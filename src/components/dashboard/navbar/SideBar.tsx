@@ -14,6 +14,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import useUser from '@/components/hooks/useUser'
+import ThemeSwitcher from '@/components/ThemeSwitcher'
 
 const menuItems = [
   {
@@ -171,13 +172,9 @@ export default function SideBar() {
           </div>
         ))}
       </div>
-      <button
-        className="absolute bottom-5 ml-4 flex items-center gap-2 text-primary-orange-600 rounded-r-full transition duration-300 ease-in-out hover:text-primary-orange-600"
-        onClick={logout}
-      >
-        <MdLogout />
-        Cerrar Sesión
-      </button>
+      <div className="absolute bottom-5 ml-[30px] flex justify-center items-center gap-2 bg-black py-2 px-5 rounded-lg shadow-sm shadow-foreground">
+        <ThemeSwitcher />
+      </div>
     </div>
   )
 }
