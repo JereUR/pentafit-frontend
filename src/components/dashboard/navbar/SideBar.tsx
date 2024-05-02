@@ -172,7 +172,7 @@ export default function SideBar() {
           </div>
         ))}
       </div>
-      <div className="absolute bottom-5 ml-[30px] flex justify-center items-center gap-2 bg-black py-2 px-5 rounded-lg shadow-sm shadow-foreground">
+      <div className="absolute bottom-5 w-[300px] border-t text-center flex justify-center items-center bg-black pt-5 px-5">
         <ThemeSwitcher />
       </div>
     </div>
