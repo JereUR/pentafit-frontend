@@ -27,7 +27,7 @@ export default function NotificationsDropdownMenu() {
 
   return (
     <div className="flex items-center justify-end">
-      <DropdownMenu className="border-none">
+      <DropdownMenu>
         <DropdownMenuTrigger className="relative">
           <div className="p-3 border border-muted rounded-lg">
             <div
