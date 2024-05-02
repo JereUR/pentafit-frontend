@@ -3,8 +3,10 @@
 import Image from 'next/image'
 import { CgProfile } from 'react-icons/cg'
 import { IoSettings } from 'react-icons/io5'
+import { MdLogout } from 'react-icons/md'
+import { ReactNode } from 'react'
+import Link from 'next/link'
 
-import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,8 +14,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import noAvatarPhoto from '../../../../public/assets/noavatar.png'
-import { ReactNode } from 'react'
-import Link from 'next/link'
+import useUser from '@/components/hooks/useUser'
 
 interface DropdownProp {
   title: string
@@ -35,6 +36,8 @@ const dropdownMenuItems = [
 ]
 
 export default function ProfileDropdownMenu() {
+  const { logout } = useUser()
+
   return (
     <div className="flex items-center justify-end">
       <DropdownMenu>
@@ -53,7 +56,7 @@ export default function ProfileDropdownMenu() {
           {dropdownMenuItems.map((item: DropdownProp, key: number) => (
             <DropdownMenuItem
               key={key}
-              className="p-1 px-4 cursor-pointer rounded-r-full ml-[-5px]  transition flex items-start gap-2 hover:bg-primary-orange-500"
+              className="p-1 px-4 cursor-pointer rounded-r-full ml-[-10px]  transition flex items-start gap-2 hover:bg-primary-orange-500"
             >
               <Link href={item.path}>
                 <span className="flex items-center gap-2">
@@ -63,6 +66,12 @@ export default function ProfileDropdownMenu() {
               </Link>
             </DropdownMenuItem>
           ))}
+          <DropdownMenuItem className="p-1 px-4 cursor-pointer rounded-r-full ml-[-10px] transition flex items-start gap-2 hover:bg-primary-orange-500">
+            <span className="flex items-center gap-2 " onClick={logout}>
+              <MdLogout />
+              Cerrar Sesión
+            </span>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
