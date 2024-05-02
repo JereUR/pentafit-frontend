@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react'
 
 import useUser from '@/components/hooks/useUser'
 import ThemeSwitcher from '@/components/ThemeSwitcher'
+import { IoFootstepsSharp } from 'react-icons/io5'
 
 const menuItems = [
   {
@@ -54,7 +55,7 @@ const menuItems = [
   {
     title: 'Seguimiento',
     path: '/panel-de-control/seguimiento',
-    icon: <BsArrowsAngleContract className="h-5 w-5" />,
+    icon: <IoFootstepsSharp className="h-5 w-5" />,
     list: null
   },
   {
