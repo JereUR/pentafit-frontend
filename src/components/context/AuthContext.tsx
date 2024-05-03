@@ -20,8 +20,8 @@ type AuthContextType = {
   setRecoverState: Dispatch<SetStateAction<boolean>>
   login: (formData: FormData) => Promise<void | Error>
   logout: () => void
-  register: (formData: FormData) => void | Error
-  recover: (formData: FormData) => Error | void
+  register: (formData: FormData) => Promise<void | Error>
+  recover: (formData: FormData) => Promise<void | Error>
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -68,25 +68,21 @@ export default function AuthContextProvider({
         body: JSON.stringify({ user: { email, password } })
       })
 
-      /* if (!response.ok) {
+      if (!response.ok) {
         throw new Error('Login failed') // Handle non-2xx status codes
-      } */
+      }
 
       const data = await response.json()
 
-      /* if (data?.success) { */
-      const authToken = data.token || 'Bearer 12345667' // Use token from response or placeholder
-      localStorage.setItem('token', authToken) // Store token securely
-      setToken(authToken)
-
-      /*  // Assuming data.user contains user information
-        setUser(data.user) */
-
-      console.log('Login successful!')
-      router.push('/panel-de-control')
-      /* } else {
+      if (data?.success) {
+        const authToken = data.token
+        localStorage.setItem('token', authToken) // Store token securely
+        setToken(authToken)
+        setUser(data.user)
+        router.push('/panel-de-control')
+      } else {
         throw new Error('Login failed: ' + data?.message) // Handle failed login with error message (if provided)
-      } */
+      }
     } catch (error) {
       console.error('Login error:', error)
       if (error instanceof Error) {
@@ -98,18 +94,40 @@ export default function AuthContextProvider({
     }
   }
 
-  const logout = () => {
-    setSession(null)
-    localStorage.removeItem('token')
-    if (pathname === '/') {
-      window.location.reload()
-      return
+  async function logout() {
+    try {
+      const response = await fetch('http://localhost:3000/logout')
+
+      if (!response.ok) {
+        throw new Error('Logout failed') // Handle non-2xx status codes
+      }
+
+      const data = await response.json()
+
+      if (data?.success) {
+        setSession(null)
+        localStorage.removeItem('token')
+        if (pathname === '/') {
+          window.location.reload()
+          return
+        }
+        localStorage.setItem('isLoggedOut', 'true')
+        router.push('/')
+      } else {
+        throw new Error('Logout failed: ' + data?.message) // Handle failed login with error message (if provided)
+      }
+    } catch (error) {
+      console.error('Logout error:', error)
+      if (error instanceof Error) {
+        return error
+      } else {
+        console.error('Unexpected error:', error)
+        throw new Error('An unexpected error occurred during logout.')
+      }
     }
-    localStorage.setItem('isLoggedOut', 'true')
-    router.push('/')
   }
 
-  function register(formData: FormData): void | Error {
+  async function register(formData: FormData): Promise<void | Error> {
     const {
       first_name,
       last_name,
@@ -130,45 +148,67 @@ export default function AuthContextProvider({
       confirm_password
     }
     try {
-      console.log(user)
-      router.push('/panel-de-control')
+      const response = await fetch('http://localhost:3000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user })
+      })
+
+      if (!response.ok) {
+        throw new Error('Register failed') // Handle non-2xx status codes
+      }
+
+      const data = await response.json()
+
+      if (data?.success) {
+        const authToken = data.token
+        localStorage.setItem('token', authToken) // Store token securely
+        setToken(authToken)
+        setUser(data.user)
+        router.push('/panel-de-control')
+      } else {
+        throw new Error('Register failed: ' + data?.message) // Handle failed login with error message (if provided)
+      }
     } catch (error) {
-      console.error('Login error:', error)
+      console.error('Register error:', error)
       if (error instanceof Error) {
         return error
       } else {
         console.error('Unexpected error:', error)
-        throw new Error('An unexpected error occurred during login.')
+        throw new Error('An unexpected error occurred during register.')
       }
     }
   }
 
-  function recover(formData: FormData): void {
+  async function recover(formData: FormData): Promise<void | Error> {
     const { email } = Object.fromEntries(formData)
-    console.log('Recover for:', email)
-    setRecoverState(true)
 
-    /* try {
+    try {
       await fetch('http://localhost:3000/recover', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email })
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data?.success) {
-          console.log('Recovery email sent successfully!')
-          setRecoverState('Hemos enviado un mail a tu cuenta...') // Set your desired message
-        } else {
-          console.error('Recovery failed:', data?.message)
-        }
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
       })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data?.success) {
+            console.log('Recovery email sent successfully!')
+            setRecoverState(true)
+          } else {
+            console.error('Recovery failed:', data?.message)
+            setRecoverState(false)
+            throw new Error('Recover failed: ' + data?.message)
+          }
+        })
     } catch (error) {
       console.error('Recovery error:', error)
-      
-    } */
+      setRecoverState(false)
+      throw new Error('An unexpected error occurred during recover.')
+    }
   }
 
   return (
