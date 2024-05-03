@@ -1,21 +1,14 @@
 import { Metadata } from 'next'
-import Transactions from '@/components/dashboard/navbar/transactions/Transactions'
-import RightBar from '@/components/dashboard/rightbar/RightBar'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription } from '@/components/ui/card'
 import {
   FaArrowDown,
   FaArrowUp,
   FaHandHoldingUsd,
-  FaStore,
   FaUsers
 } from 'react-icons/fa'
 import { IoStorefrontOutline } from 'react-icons/io5'
+import Transactions from '@/components/dashboard/navbar/transactions/Transactions'
+import RightBar from '@/components/dashboard/rightbar/RightBar'
 
 export const metadata: Metadata = {
   title: 'PentaFit - Panel de Control'
