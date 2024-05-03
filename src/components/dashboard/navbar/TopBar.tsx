@@ -44,7 +44,9 @@ export default function TopBar() {
         isSticky ? 'bg-background' : 'bg-transparent'
       }`}
     >
-      <div className="text-foreground font-bold capitalize">{title}</div>
+      <div className="text-foreground font-bold capitalize text-2xl ml-2">
+        {title}
+      </div>
       <div className="flex items-center gap-5">
         <div className="flex items-center gap-5">
           <ProfileDropdownMenu />
