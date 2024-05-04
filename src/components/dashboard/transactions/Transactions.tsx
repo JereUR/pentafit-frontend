@@ -1,21 +1,24 @@
+'use client'
+
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableFooter,
   TableHead,
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import Image from 'next/image'
 
 const invoices = [
   {
     id: 1,
     name: 'John Doe',
     imgSrc: '/assets/noavatar.png',
-    status: 'Pending',
+    status: 'Pendiente',
     date: '14.02.2023',
     amount: '$3100'
   },
@@ -23,7 +26,7 @@ const invoices = [
     id: 2,
     name: 'Jane Smith',
     imgSrc: '/assets/noavatar.png',
-    status: 'Done',
+    status: 'Completado',
     date: '16.05.2023',
     amount: '$1500'
   },
@@ -31,7 +34,7 @@ const invoices = [
     id: 3,
     name: 'John Smith',
     imgSrc: '/assets/noavatar.png',
-    status: 'Cancelled',
+    status: 'Cancelado',
     date: '26.04.2023',
     amount: '$2300'
   },
@@ -39,7 +42,7 @@ const invoices = [
     id: 4,
     name: 'John Smith',
     imgSrc: '/assets/noavatar.png',
-    status: 'Done',
+    status: 'Completado',
     date: '16.05.2023',
     amount: '$1500'
   },
@@ -47,13 +50,14 @@ const invoices = [
     id: 5,
     name: 'Jane Smith',
     imgSrc: '/assets/noavatar.png',
-    status: 'Done',
+    status: 'Completado',
     date: '16.05.2023',
     amount: '$1500'
   }
 ]
 
 export default function Transactions() {
+  const router = useRouter()
   let total = 0
 
   invoices.forEach((invoice) => {
@@ -62,9 +66,9 @@ export default function Transactions() {
 
   return (
     <Table>
-      <TableHeader>
+      <TableHeader className="h-[6vh]">
         <TableRow>
-          <TableHead className="w-[100px]">Usuario</TableHead>
+          <TableHead className="w-[20vw]">Usuario</TableHead>
           <TableHead>Estado</TableHead>
           <TableHead>Fecha</TableHead>
           <TableHead className="text-right">Monto</TableHead>
@@ -72,7 +76,13 @@ export default function Transactions() {
       </TableHeader>
       <TableBody>
         {invoices.map((invoice) => (
-          <TableRow key={invoice.id}>
+          <TableRow
+            key={invoice.id}
+            className="cursor-pointer"
+            onClick={() =>
+              router.push(`/panel-de-control/transacciones/${invoice.id}`)
+            }
+          >
             <TableCell className="font-medium">
               <div className="flex gap-3 items-center">
                 <Image
@@ -85,15 +95,31 @@ export default function Transactions() {
                 {invoice.name}
               </div>
             </TableCell>
-            <TableCell>{invoice.status}</TableCell>
+            <TableCell>
+              <span
+                className={`inline-flex items-center px-2 py-1 rounded-md text-sm text-foreground ${
+                  invoice.status === 'Pendiente' &&
+                  'bg-yellow-400 bg-opacity-45'
+                } ${
+                  invoice.status === 'Completado' &&
+                  'bg-green-200 bg-opacity-55'
+                } ${
+                  invoice.status === 'Cancelado' && 'bg-red-400 bg-opacity-55'
+                }`}
+              >
+                {invoice.status}
+              </span>
+            </TableCell>
             <TableCell>{invoice.date}</TableCell>
             <TableCell className="text-right">{invoice.amount}</TableCell>
           </TableRow>
         ))}
       </TableBody>
-      <TableFooter>
+      <TableFooter className="h-[6vh]">
         <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
+          <TableCell colSpan={3} className="text-lg">
+            Total
+          </TableCell>
           <TableCell className="text-right">${total}</TableCell>
         </TableRow>
       </TableFooter>
