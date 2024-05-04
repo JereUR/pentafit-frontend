@@ -1,21 +1,18 @@
 'use client'
 
 import { FaHome, FaUser } from 'react-icons/fa'
-import {
-  MdLogout,
-  MdForkLeft,
-  MdExpandLess,
-  MdExpandMore
-} from 'react-icons/md'
-import { BsArrowsAngleContract } from 'react-icons/bs'
+import { FaMoneyBillTransfer } from 'react-icons/fa6'
+import { MdForkLeft, MdExpandLess, MdExpandMore } from 'react-icons/md'
+import { TiThListOutline } from 'react-icons/ti'
 import { IoIosFitness } from 'react-icons/io'
+import { IoFootstepsSharp } from 'react-icons/io5'
+import { GrAnnounce } from 'react-icons/gr'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import useUser from '@/components/hooks/useUser'
 import ThemeSwitcher from '@/components/ThemeSwitcher'
-import { IoFootstepsSharp } from 'react-icons/io5'
 
 const menuItems = [
   {
@@ -37,9 +34,15 @@ const menuItems = [
     list: null
   },
   {
+    title: 'Actividades',
+    path: '/panel-de-control/actividades',
+    icon: <TiThListOutline className="h-6 w-6" />,
+    list: null
+  },
+  {
     title: 'Facturación',
     path: null,
-    icon: <MdForkLeft className="h-5 w-5" />,
+    icon: <FaMoneyBillTransfer className="h-5 w-5" />,
     list: [
       { title: 'Planes', path: '/panel-de-control/facturacion/planes' },
       {
@@ -74,6 +77,21 @@ const menuItems = [
       {
         title: 'Ejercicios',
         path: '/panel-de-control/entrenamiento/ejercicios'
+      }
+    ]
+  },
+  {
+    title: 'Comunicación',
+    path: null,
+    icon: <GrAnnounce className="h-5 w-5" />,
+    list: [
+      {
+        title: 'Mensajería',
+        path: '/panel-de-control/comunicacion/mensajeria'
+      },
+      {
+        title: 'Anuncios',
+        path: '/panel-de-control/comunicacion/anuncios'
       }
     ]
   }
@@ -120,7 +138,7 @@ export default function SideBar() {
       </div>
       <div className="list-none">
         {menuItems.map((item) => (
-          <div key={item.title}>
+          <div key={item.title} className="my-4">
             {item.path ? (
               <Link
                 href={item.path}
