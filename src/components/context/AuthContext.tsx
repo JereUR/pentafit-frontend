@@ -31,9 +31,14 @@ export default function AuthContextProvider({
 }: {
   children: ReactNode
 }) {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | null>({
+    id: '1234',
+    name: 'Jeremías',
+    lastname: 'Dominguez Vega',
+    email: 'jeremias.jdv@gmail.com',
+    token: 'Bearer 1234'
+  })
   const [token, setToken] = useState<string | null>(null)
-  const [session, setSession] = useState<any | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const router = useRouter()
   const pathname = usePathname()
@@ -105,7 +110,7 @@ export default function AuthContextProvider({
       const data = await response.json()
 
       if (data?.success) {
-        setSession(null)
+        setUser(null)
         localStorage.removeItem('token')
         if (pathname === '/') {
           window.location.reload()
