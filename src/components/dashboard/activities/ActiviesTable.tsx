@@ -8,6 +8,7 @@ import Search from '../search/Search'
 import Pagination from '../pagination/Pagination'
 import useActivities from '@/components/hooks/useActivities'
 import { Button } from '@/components/ui/button'
+import { useTheme } from 'next-themes'
 
 const availableColumns = [
   { id: 'description', label: 'Descripción' },
@@ -25,6 +26,7 @@ const availableColumns = [
 export default function ActivitiesTable() {
   const [selectedActivities, setSelectedActivities] = useState<string[]>([])
   const [selectAll, setSelectAll] = useState<boolean>(false)
+  const { theme } = useTheme()
 
   const searchParams = useSearchParams()
   const count = 4
@@ -32,6 +34,13 @@ export default function ActivitiesTable() {
   const page = parseInt(searchParams.get('page') || '1')
   const { activities } = useActivities()
   /* const { activitys, count } = await fetchactivitys(q, page)  */
+
+  const styles = {
+    deleteRow: {
+      backgroundColor:
+        theme === 'light' ? 'delete-row-light' : 'delete-row-dark' // Ejemplo de color oscuro
+    }
+  }
 
   const handleSelectAllChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -110,7 +119,8 @@ export default function ActivitiesTable() {
             <tr
               key={activity.id}
               className={`my-4 even:bg-gray-100 odd:bg-gray-300 even:dark:bg-gray-600 odd:dark:bg-gray-800 transition duration-300 ease-in-out hover:bg-primary-orange-400 hover:dark:bg-primary-orange-700 cursor-pointer items-center text-center ${
-                selectedActivities.includes(activity.id) && 'delete-row'
+                selectedActivities.includes(activity.id) &&
+                styles.deleteRow.backgroundColor
               }`}
             >
               <td className=" px-2 py-4">

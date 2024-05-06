@@ -69,8 +69,12 @@
   }
 }
 
-.delete-row {
+.delete-row-dark {
   background-color: rgb(185 28 28) !important;
+}
+
+.delete-row-light {
+  background-color: rgb(187, 62, 62) !important;
 }
 
 @layer base {
