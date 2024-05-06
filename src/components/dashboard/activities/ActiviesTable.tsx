@@ -129,8 +129,8 @@ export default function ActivitiesTable() {
               <td>{activity.quotaGeneration ? 'Sí' : 'No'}</td>
               <td>{activity.sessionMax}</td>
               <td>{activity.mpAvailable ? 'Sí' : 'No'}</td>
-              <td>{activity.dateFrom.toLocaleString()}</td>
-              <td>{activity.dateUntil.toLocaleString()}</td>
+              <td>{activity.dateFrom.toDateString()}</td>
+              <td>{activity.dateUntil.toDateString()}</td>
               <td>{activity.paymentType}</td>
               <td>
                 <div className="flex gap-2">
