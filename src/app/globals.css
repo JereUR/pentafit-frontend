@@ -69,6 +69,10 @@
   }
 }
 
+.delete-row {
+  background-color: rgb(185 28 28) !important;
+}
+
 @layer base {
   * {
     @apply border-border;
