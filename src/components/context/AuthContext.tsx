@@ -34,13 +34,14 @@ export default function AuthContextProvider({
   children: ReactNode
 }) {
   const [user, setUser] = useState<User | null>(
-    null /* {
-    id: '1234',
-    name: 'Jeremías',
-    lastname: 'Dominguez Vega',
-    email: 'jeremias.jdv@gmail.com',
-    token: 'Bearer 1234'
-  } */
+    /* null */ {
+      id: 1,
+      name: 'Jeremías',
+      last_name: 'Dominguez Vega',
+      email: 'jeremias.jdv@gmail.com',
+      photo_url: '/assets/profile-photo.png',
+      token: 'Bearer 1234'
+    }
   )
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
