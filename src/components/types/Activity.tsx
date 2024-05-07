@@ -8,5 +8,5 @@ export type Activity = {
   mpAvailable: boolean
   dateFrom: Date
   dateUntil: Date
-  paymentType: 'Sesion' | 'Diario' | 'Semanal' | 'Mensual'
+  paymentType: 'Por sesion' | 'Por período' | 'Mensual' | 'Mensual con sesiones'
 }
