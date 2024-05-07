@@ -8,14 +8,13 @@ import {
   useEffect,
   useState
 } from 'react'
-import { User } from '../types/User'
-import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import { Activity } from '../types/Activity'
 
 type ActivitiesContextType = {
   activities: Activity[] | []
   getActivities: (q: string, page: string) => Promise<Activity[] | [] | Error>
+  addActivity: (formData: FormData) => Promise<void | Error>
 }
 
 export const ActivitiesContext = createContext<ActivitiesContextType | null>(
@@ -62,7 +61,7 @@ export default function ActivitiesContextProvider({
       mpAvailable: true,
       dateFrom: new Date(2024, 4, 20),
       dateUntil: new Date(2024, 5, 20),
-      paymentType: 'Sesion'
+      paymentType: 'Por período'
     },
     {
       id: '5kma53ae',
@@ -74,7 +73,7 @@ export default function ActivitiesContextProvider({
       mpAvailable: false,
       dateFrom: new Date(2024, 4, 20),
       dateUntil: new Date(2024, 5, 20),
-      paymentType: 'Diario'
+      paymentType: 'Por sesion'
     },
     {
       id: 'bhqecj4p',
@@ -86,7 +85,7 @@ export default function ActivitiesContextProvider({
       mpAvailable: true,
       dateFrom: new Date(2024, 4, 20),
       dateUntil: new Date(2024, 5, 20),
-      paymentType: 'Semanal'
+      paymentType: 'Mensual con sesiones'
     }
   ])
 
@@ -122,11 +121,38 @@ export default function ActivitiesContextProvider({
     }
   }
 
+  async function addActivity(formData: FormData): Promise<void | Error> {
+    const {
+      description,
+      amount,
+      isPublic,
+      quotaGeneration,
+      sessionMax,
+      mpAvailable,
+      dateFrom,
+      dateUntil,
+      paymentType
+    } = Object.fromEntries(formData)
+
+    console.log(
+      description,
+      amount,
+      isPublic,
+      quotaGeneration,
+      sessionMax,
+      mpAvailable,
+      dateFrom,
+      dateUntil,
+      paymentType
+    )
+  }
+
   return (
     <ActivitiesContext.Provider
       value={{
         activities,
-        getActivities
+        getActivities,
+        addActivity
       }}
     >
       {children}
