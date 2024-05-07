@@ -22,7 +22,7 @@ const Search = ({ placeholder }: { placeholder: string }) => {
   }, 300)
 
   return (
-    <div className="flex items-center gap-2 bg-background border border-muted p-2 rounded-lg w-max">
+    <div className="flex items-center gap-2 bg-background border border-foreground dark:border-muted p-2 rounded-lg w-max">
       <MdSearch />
       <input
         type="text"

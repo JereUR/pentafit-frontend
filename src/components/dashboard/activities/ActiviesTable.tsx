@@ -9,6 +9,8 @@ import useActivities from '@/components/hooks/useActivities'
 import { Button } from '@/components/ui/button'
 import { useTheme } from 'next-themes'
 import Link from 'next/link'
+import { FaEdit, FaTrash } from 'react-icons/fa'
+import CustomButton from '@/components/CustomButton'
 
 const availableColumns = [
   { id: 'description', label: 'Descripción' },
@@ -73,9 +75,10 @@ export default function ActivitiesTable() {
         <Search placeholder="Buscar una actividad..." />
         <div className="flex gap-2">
           <Link href="/panel-de-control/actividades/agregar">
-            <Button className="py-2 px-4 rounded-md text-foreground bg-primary-orange-600 transition duration-300 ease-in-out hover:bg-primary-orange-700 border-none cursor-pointer">
+            {/* <Button className="py-2 px-4 rounded-md text-foreground bg-primary-orange-600 transition duration-300 ease-in-out hover:bg-primary-orange-700 border-none cursor-pointer">
               Agregar
-            </Button>
+            </Button> */}
+            <CustomButton text="Agregar" />
           </Link>
           {selectedActivities.length > 0 && (
             <Button
@@ -89,51 +92,53 @@ export default function ActivitiesTable() {
           )}
         </div>
       </div>
-      <table className="transactions-table w-full my-4">
-        <thead className="font-bold text-left bg-background text-sm">
+      <table className="transactions-table w-full mb-4 mt-8">
+        <thead className="font-bold text-center text-muted bg-foreground text-sm">
           <tr>
-            <td className="border-r px-2 py-6">
+            <td className="px-2 py-5">
               <input
                 type="checkbox"
                 checked={selectAll}
                 onChange={handleSelectAllChange}
-                className="cursor-pointer"
+                className="cursor-pointer h-5 w-5"
               />
             </td>
-            <td className="border-r px-2 py-6">Descripción</td>
-            <td className="border-r px-2 py-6">Costo</td>
-            <td className="border-r px-2 py-6">Es pública?</td>
-            <td className="border-r px-2 py-6">Permite generación de cuotas</td>
-            <td className="border-r px-2 py-6">Cantida máxima de sesiones</td>
-            <td className="border-r px-2 py-6">
-              Permite MP a través de la app
-            </td>
-            <td className="border-r px-2 py-6">Fecha desde</td>
-            <td className="border-r px-2 py-6">Fecha hasta</td>
-            <td className="border-r px-2 py-6">Tipo cobro</td>
-            <td className="border-r px-2 py-6">Acción</td>
+            <td className="px-2 py-5">Descripción</td>
+            <td className="px-2 py-5">Costo</td>
+            <td className="px-2 py-5">Es pública?</td>
+            <td className="px-2 py-5">Permite generación de cuotas</td>
+            <td className="px-2 py-5">Cantida máxima de sesiones</td>
+            <td className="px-2 py-5">Permite MP a través de la app</td>
+            <td className="px-2 py-5">Fecha desde</td>
+            <td className="px-2 py-5">Fecha hasta</td>
+            <td className="px-2 py-5">Tipo cobro</td>
+            <td className="px-2 py-5">Acción</td>
           </tr>
         </thead>
         <tbody className="text-foreground text-sm font-light">
           {activities.map((activity) => (
             <tr
               key={activity.id}
-              className={`my-4 even:bg-gray-100 odd:bg-gray-300 even:dark:bg-gray-600 odd:dark:bg-gray-800 transition duration-300 ease-in-out hover:bg-primary-orange-400 hover:dark:bg-primary-orange-700 cursor-pointer items-center text-center ${
+              className={`my-4 transition duration-300 ease-in-out hover:bg-muted cursor-pointer items-center text-center ${
                 selectedActivities.includes(activity.id) &&
                 styles.deleteRow.backgroundColor
               }`}
             >
-              <td className=" px-2 py-4">
+              <td className="border-b border-foreground px-2 py-5">
                 <input
                   type="checkbox"
                   checked={selectedActivities.includes(activity.id)}
                   onChange={(event) => handleCheckboxChange(activity.id, event)}
-                  className="cursor-pointer"
+                  className="cursor-pointer h-5 w-5"
                 />
               </td>
-              <td className="px-2 py-4">{activity.description}</td>
-              <td className="px-2 py-4">${activity.amount}</td>
-              <td className="px-2 py-4">
+              <td className="border-b border-foreground px-2 py-5">
+                {activity.description}
+              </td>
+              <td className="border-b border-foreground px-2 py-5">
+                ${activity.amount}
+              </td>
+              <td className="border-b border-foreground px-2 py-5">
                 <div
                   className={`rounded-xl w-[3vw] ${
                     activity.isPublic ? 'bg-green-400 ' : 'bg-red-400'
@@ -142,7 +147,7 @@ export default function ActivitiesTable() {
                   {activity.isPublic ? 'Sí' : 'No'}
                 </div>
               </td>
-              <td className="px-2 py-4">
+              <td className="border-b border-foreground px-2 py-5">
                 <div
                   className={`rounded-xl w-[3vw] ${
                     activity.quotaGeneration ? 'bg-green-400 ' : 'bg-red-400'
@@ -151,8 +156,10 @@ export default function ActivitiesTable() {
                   {activity.quotaGeneration ? 'Sí' : 'No'}
                 </div>
               </td>
-              <td className="px-2 py-4">{activity.sessionMax}</td>
-              <td className="px-2 py-4">
+              <td className="border-b border-foreground px-2 py-5">
+                {activity.sessionMax}
+              </td>
+              <td className="border-b border-foreground px-2 py-5">
                 <div
                   className={`rounded-xl w-[3vw] ${
                     activity.mpAvailable ? 'bg-green-400 ' : 'bg-red-400'
@@ -161,21 +168,28 @@ export default function ActivitiesTable() {
                   {activity.mpAvailable ? 'Sí' : 'No'}
                 </div>
               </td>
-              <td className="px-2 py-4">
+              <td className="border-b border-foreground px-2 py-5">
                 {activity.dateFrom.toLocaleDateString()}
               </td>
-              <td className="px-2 py-4">
+              <td className="border-b border-foreground px-2 py-5">
                 {activity.dateUntil.toLocaleDateString()}
               </td>
-              <td className="px-2 py-4">{activity.paymentType}</td>
-              <td className="px-2 py-4">
+              <td className="border-b border-foreground px-2 py-5">
+                {activity.paymentType}
+              </td>
+              <td className="border-b border-foreground px-2 py-5">
                 <div className="flex gap-2">
                   <div>
                     <Link href={`/panel-de-control/actividades/${activity.id}`}>
-                      <button className="py-1 px-2 rounded-md text-white bg-teal-600 border-none cursor-pointer">
-                        Editar
+                      <button className="py-1 px-2 rounded-md text-white bg-sky-600 border-none cursor-pointer hover:scale-105 hover:shadow-md">
+                        <FaEdit />
                       </button>
                     </Link>
+                  </div>
+                  <div>
+                    <button className="py-1 px-2 rounded-md text-white bg-red-600 border-none cursor-pointer hover:scale-105 hover:shadow-md">
+                      <FaTrash />
+                    </button>
                   </div>
                 </div>
               </td>

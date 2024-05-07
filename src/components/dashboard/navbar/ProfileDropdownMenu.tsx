@@ -60,6 +60,8 @@ export default function ProfileDropdownMenu() {
             <div className="relative h-32">
               <Image
                 src={user?.photo_url ? user.photo_url : profilePhoto}
+                width={128}
+                height={128}
                 alt="Tu imagen"
                 className="w-full h-full object-cover rounded-sm"
               />
