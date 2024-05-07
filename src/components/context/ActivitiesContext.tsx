@@ -103,7 +103,7 @@ export default function ActivitiesContextProvider({
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ parameters: { regex, index } })
+        body: JSON.stringify({ parameters: { regex, index, ITEM_PER_PAGE } })
       })
 
       if (!response.ok) {

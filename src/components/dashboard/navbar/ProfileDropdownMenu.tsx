@@ -15,7 +15,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import profilePhoto from '../../../../public/assets/profile-photo.png'
+/* import profilePhoto from '../../../../public/assets/profile-photo.png' */
+import profilePhoto from '../../../../public/assets/noavatar.png'
 import useUser from '@/components/hooks/useUser'
 
 interface DropdownProp {
@@ -47,7 +48,7 @@ export default function ProfileDropdownMenu() {
           <div className="cursor-pointer">
             <Image
               className="rounded-full object-cover p-[2px] ring-2 ring-primary-orange-600"
-              src={profilePhoto}
+              src={user?.photo_url ? user.photo_url : profilePhoto}
               alt="Avatar photo"
               width={30}
               height={30}
@@ -58,7 +59,7 @@ export default function ProfileDropdownMenu() {
           <DropdownMenuLabel className="flex flex-col justify-center items-center">
             <div className="relative h-32">
               <Image
-                src={profilePhoto}
+                src={user?.photo_url ? user.photo_url : profilePhoto}
                 alt="Tu imagen"
                 className="w-full h-full object-cover rounded-sm"
               />

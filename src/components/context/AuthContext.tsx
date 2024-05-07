@@ -8,6 +8,8 @@ import {
   useEffect,
   useState
 } from 'react'
+import axios from 'axios'
+
 import { User } from '../types/User'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
@@ -31,13 +33,15 @@ export default function AuthContextProvider({
 }: {
   children: ReactNode
 }) {
-  const [user, setUser] = useState<User | null>({
+  const [user, setUser] = useState<User | null>(
+    null /* {
     id: '1234',
     name: 'Jeremías',
     lastname: 'Dominguez Vega',
     email: 'jeremias.jdv@gmail.com',
     token: 'Bearer 1234'
-  })
+  } */
+  )
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const router = useRouter()
@@ -65,35 +69,41 @@ export default function AuthContextProvider({
     const { email, password } = Object.fromEntries(formData)
 
     try {
-      const response = await fetch('http://localhost:3000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
+      const response = await axios.post(
+        'https://9db6-190-191-171-9.ngrok-free.app/login',
+        {
+          user: {
+            email,
+            password
+          }
         },
-        body: JSON.stringify({ user: { email, password } })
-      })
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
 
-      if (!response.ok) {
-        throw new Error('Login failed') // Handle non-2xx status codes
+      console.log(response)
+
+      if (!response.data.jwt) {
+        throw new Error('Login failed')
       }
 
-      const data = await response.json()
+      const authToken = response.data.jwt
+      localStorage.setItem('token', authToken)
 
-      if (data?.success) {
-        const authToken = data.token
-        localStorage.setItem('token', authToken) // Store token securely
-        setToken(authToken)
-        setUser(data.user)
-        router.push('/panel-de-control')
-      } else {
-        throw new Error('Login failed: ' + data?.message) // Handle failed login with error message (if provided)
-      }
-    } catch (error) {
+      setToken(authToken)
+      setUser(response.data.user)
+      router.push('/panel-de-control')
+    } catch (error: any) {
       console.error('Login error:', error)
-      if (error instanceof Error) {
-        return error
+
+      if (error.response && error.response.status >= 400) {
+        throw new Error(
+          `Login failed: ${error.response.data.message || 'Server error'}`
+        )
       } else {
-        console.error('Unexpected error:', error)
         throw new Error('An unexpected error occurred during login.')
       }
     }
@@ -101,15 +111,16 @@ export default function AuthContextProvider({
 
   async function logout() {
     try {
-      const response = await fetch('http://localhost:3000/logout')
+      const response = await axios.delete(
+        'https://9db6-190-191-171-9.ngrok-free.app/logout',
+        {
+          headers: {
+            Authorization: token
+          }
+        }
+      )
 
-      if (!response.ok) {
-        throw new Error('Logout failed') // Handle non-2xx status codes
-      }
-
-      const data = await response.json()
-
-      if (data?.success) {
+      if (response.status === 200 || response.status === 204) {
         setUser(null)
         localStorage.removeItem('token')
         if (pathname === '/') {
@@ -119,7 +130,7 @@ export default function AuthContextProvider({
         localStorage.setItem('isLoggedOut', 'true')
         router.push('/')
       } else {
-        throw new Error('Logout failed: ' + data?.message) // Handle failed login with error message (if provided)
+        throw new Error('Logout failed:', response.data)
       }
     } catch (error) {
       console.error('Logout error:', error)

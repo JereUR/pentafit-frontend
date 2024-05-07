@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 
@@ -9,6 +8,7 @@ import Pagination from '../pagination/Pagination'
 import useActivities from '@/components/hooks/useActivities'
 import { Button } from '@/components/ui/button'
 import { useTheme } from 'next-themes'
+import Link from 'next/link'
 
 const availableColumns = [
   { id: 'description', label: 'Descripción' },
@@ -132,7 +132,7 @@ export default function ActivitiesTable() {
                 />
               </td>
               <td className="px-2 py-4">{activity.description}</td>
-              <td className="px-2 py-4">{activity.amount}</td>
+              <td className="px-2 py-4">${activity.amount}</td>
               <td className="px-2 py-4">
                 <div
                   className={`rounded-xl w-[3vw] ${
