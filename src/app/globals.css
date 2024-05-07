@@ -70,11 +70,11 @@
 }
 
 .delete-row-dark {
-  background-color: rgb(182, 56, 56) !important;
+  background-color: #ca7821 !important;
 }
 
 .delete-row-light {
-  background-color: rgb(182, 56, 56) !important;
+  background-color: #fe9e39 !important;
 }
 
 @layer base {
