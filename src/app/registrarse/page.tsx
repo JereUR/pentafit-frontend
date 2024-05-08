@@ -1,7 +1,8 @@
-import photo from '../../../public/assets/banner-login.png'
 import Image from 'next/image'
-import RegisterForm from '@/components/sesion/RegisterForm'
 import { Metadata } from 'next'
+
+import photo from '../../../public/assets/banner-login.png'
+import RegisterForm from '@/components/session/RegisterForm'
 
 export const metadata: Metadata = {
   title: 'PentaFit - Registrarse'

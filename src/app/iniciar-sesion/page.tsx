@@ -1,7 +1,8 @@
-import LoginForm from '@/components/sesion/LoginForm'
-import photo from '../../../public/assets/banner-login.png'
 import Image from 'next/image'
 import { Metadata } from 'next'
+
+import photo from '../../../public/assets/banner-login.png'
+import LoginForm from '@/components/session/LoginForm'
 
 export const metadata: Metadata = {
   title: 'PentaFit - Iniciar Sesión'
