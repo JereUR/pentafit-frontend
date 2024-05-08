@@ -1,11 +1,9 @@
 'use server'
 
 import axios from 'axios'
-import { redirect } from 'next/dist/server/api-utils'
 import { cookies } from 'next/headers'
-import useUser from '../hooks/useUser'
 
-export async function loginServer(formData: FormData) {
+export async function signInServer(formData: FormData) {
   const { email, password } = Object.fromEntries(formData)
 
   try {

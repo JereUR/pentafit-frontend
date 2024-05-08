@@ -8,13 +8,13 @@ import {
   useEffect,
   useState
 } from 'react'
-import axios from 'axios'
 
 import { User } from '../types/User'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
-import { loginServer } from './loginServer'
-/* import { loginServer } from '@/lib/loginServer' */
+import { signInServer } from './signInServer'
+import { signOutServer } from './signOutServer'
+import { signUpServer } from './signUpServer'
 
 type AuthContextType = {
   user: User | null
@@ -22,9 +22,9 @@ type AuthContextType = {
   getSession: () => Promise<any | null>
   recoverState: boolean
   setRecoverState: Dispatch<SetStateAction<boolean>>
-  login: (formData: FormData) => Promise<void | Error>
-  logout: () => void
-  register: (formData: FormData) => Promise<void | Error>
+  signIn: (formData: FormData) => Promise<void | Error>
+  signOut: () => void
+  signUp: (formData: FormData) => Promise<void | Error>
   recover: (formData: FormData) => Promise<void | Error>
 }
 
@@ -77,13 +77,13 @@ export default function AuthContextProvider({
     return { session }
   }
 
-  async function login(formData: FormData) {
+  async function signIn(formData: FormData) {
     try {
-      const response = await loginServer(formData)
+      const response = await signInServer(formData)
 
       console.log(response)
       if (response instanceof Error) {
-        throw new Error('Login failed')
+        throw new Error('Sign in failed')
       }
 
       const authToken = response.data.jwt
@@ -94,96 +94,68 @@ export default function AuthContextProvider({
       setUser(response.data.user)
       router.push('/panel-de-control')
     } catch (error: any) {
-      console.error('Login error:', error)
+      console.error('Sign in error:', error)
 
       if (error.response && error.response.status >= 400) {
         throw new Error(
-          `Login failed: ${error.response.data.message || 'Server error'}`
+          `sign in failed: ${error.response.data.message || 'Server error'}`
         )
       } else {
-        throw new Error('An unexpected error occurred during login.')
+        throw new Error('An unexpected error occurred during sign in.')
       }
     }
   }
 
-  async function logout() {
+  async function signOut() {
     try {
-      const response = await axios.delete(
-        'https://7beb-190-191-171-9.ngrok-free.app/users/sign_out',
-        {
-          headers: {
-            Authorization: token
-          }
-        }
-      )
+      const response = await signOutServer()
 
-      if (response.status === 200 || response.status === 204) {
-        setUser(null)
-        localStorage.removeItem('token')
-        if (pathname === '/') {
-          window.location.reload()
-          return
-        }
-        localStorage.setItem('isLoggedOut', 'true')
-        router.push('/')
-      } else {
-        throw new Error('Logout failed:', response.data)
+      if (response instanceof Error) {
+        throw new Error('Sign out failed')
       }
+
+      setUser(null)
+      localStorage.removeItem('token')
+      if (pathname === '/') {
+        window.location.reload()
+        return
+      }
+      localStorage.setItem('isLoggedOut', 'true')
+      router.push('/')
     } catch (error) {
-      console.error('Logout error:', error)
+      console.error('Sign out error:', error)
       if (error instanceof Error) {
         return error
       } else {
         console.error('Unexpected error:', error)
-        throw new Error('An unexpected error occurred during logout.')
+        throw new Error('An unexpected error occurred during sign out.')
       }
     }
   }
 
-  async function register(formData: FormData): Promise<void | Error> {
-    const { first_name, last_name, email, gender, date, password } =
-      Object.fromEntries(formData)
-
-    const user = {
-      first_name,
-      last_name,
-      email,
-      gender,
-      date,
-      password
-    }
-
+  async function signUp(formData: FormData): Promise<void | Error> {
     try {
-      const response = await axios.post(
-        'https://7beb-190-191-171-9.ngrok-free.app/users',
-        {
-          user
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      )
+      const response = await signUpServer(formData)
 
-      if (response.status === 200 || response.status === 204) {
-        const authToken = response.data.token
-        localStorage.setItem('token', authToken)
-        localStorage.setItem('user', JSON.stringify(response.data))
-
-        setToken(authToken)
-        setUser(response.data)
-        router.push('/panel-de-control')
-      } else {
-        throw new Error('Register failed: ' + response.data?.message)
+      console.log(response)
+      if (response instanceof Error) {
+        throw new Error('Sign up failed')
       }
+
+      const authToken = response.data.jwt
+      localStorage.setItem('token', authToken)
+      localStorage.setItem('user', JSON.stringify(response.data.user))
+
+      setToken(authToken)
+      setUser(response.data.user)
+      router.push('/panel-de-control')
     } catch (error) {
-      console.error('Register error:', error)
+      console.error('Sign up error:', error)
       if (error instanceof Error) {
         return error
       } else {
         console.error('Unexpected error:', error)
-        throw new Error('An unexpected error occurred during register.')
+        throw new Error('An unexpected error occurred during sign up.')
       }
     }
   }
@@ -227,9 +199,9 @@ export default function AuthContextProvider({
         getSession,
         recoverState,
         setRecoverState,
-        login,
-        logout,
-        register,
+        signIn,
+        signOut,
+        signUp,
         recover
       }}
     >
