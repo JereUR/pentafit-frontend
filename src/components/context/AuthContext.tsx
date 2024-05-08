@@ -13,6 +13,8 @@ import axios from 'axios'
 import { User } from '../types/User'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
+import { loginServer } from './loginServer'
+/* import { loginServer } from '@/lib/loginServer' */
 
 type AuthContextType = {
   user: User | null
@@ -34,14 +36,14 @@ export default function AuthContextProvider({
   children: ReactNode
 }) {
   const [user, setUser] = useState<User | null>(
-    /* null */ {
+    null /* {
       id: 1,
-      name: 'Jeremías',
+      first_name: 'Jeremías',
       last_name: 'Dominguez Vega',
       email: 'jeremias.jdv@gmail.com',
       photo_url: '/assets/profile-photo.png',
       token: 'Bearer 1234'
-    }
+    } */
   )
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
@@ -50,8 +52,17 @@ export default function AuthContextProvider({
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token')
-    if (storedToken) {
+    let userFromStorage
+
+    try {
+      userFromStorage = JSON.parse(localStorage.getItem('user') || 'null')
+    } catch (error) {
+      console.error('Error parsing user data from localStorage:', error)
+    }
+
+    if (storedToken && userFromStorage) {
       setToken(storedToken)
+      setUser(userFromStorage)
     }
   }, [])
 
@@ -66,33 +77,18 @@ export default function AuthContextProvider({
     return { session }
   }
 
-  async function login(formData: FormData): Promise<void | Error> {
-    const { email, password } = Object.fromEntries(formData)
-
+  async function login(formData: FormData) {
     try {
-      const response = await axios.post(
-        'https://9db6-190-191-171-9.ngrok-free.app/login',
-        {
-          user: {
-            email,
-            password
-          }
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      )
+      const response = await loginServer(formData)
 
       console.log(response)
-
-      if (!response.data.jwt) {
+      if (response instanceof Error) {
         throw new Error('Login failed')
       }
 
       const authToken = response.data.jwt
       localStorage.setItem('token', authToken)
+      localStorage.setItem('user', JSON.stringify(response.data.user))
 
       setToken(authToken)
       setUser(response.data.user)
@@ -113,7 +109,7 @@ export default function AuthContextProvider({
   async function logout() {
     try {
       const response = await axios.delete(
-        'https://9db6-190-191-171-9.ngrok-free.app/logout',
+        'https://7beb-190-191-171-9.ngrok-free.app/users/sign_out',
         {
           headers: {
             Authorization: token
@@ -145,15 +141,8 @@ export default function AuthContextProvider({
   }
 
   async function register(formData: FormData): Promise<void | Error> {
-    const {
-      first_name,
-      last_name,
-      email,
-      gender,
-      date,
-      password,
-      confirm_password
-    } = Object.fromEntries(formData)
+    const { first_name, last_name, email, gender, date, password } =
+      Object.fromEntries(formData)
 
     const user = {
       first_name,
@@ -161,32 +150,32 @@ export default function AuthContextProvider({
       email,
       gender,
       date,
-      password,
-      confirm_password
+      password
     }
+
     try {
-      const response = await fetch('http://localhost:3000/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
+      const response = await axios.post(
+        'https://7beb-190-191-171-9.ngrok-free.app/users',
+        {
+          user
         },
-        body: JSON.stringify({ user })
-      })
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
 
-      if (!response.ok) {
-        throw new Error('Register failed') // Handle non-2xx status codes
-      }
+      if (response.status === 200 || response.status === 204) {
+        const authToken = response.data.token
+        localStorage.setItem('token', authToken)
+        localStorage.setItem('user', JSON.stringify(response.data))
 
-      const data = await response.json()
-
-      if (data?.success) {
-        const authToken = data.token
-        localStorage.setItem('token', authToken) // Store token securely
         setToken(authToken)
-        setUser(data.user)
+        setUser(response.data)
         router.push('/panel-de-control')
       } else {
-        throw new Error('Register failed: ' + data?.message) // Handle failed login with error message (if provided)
+        throw new Error('Register failed: ' + response.data?.message)
       }
     } catch (error) {
       console.error('Register error:', error)
@@ -227,6 +216,8 @@ export default function AuthContextProvider({
       throw new Error('An unexpected error occurred during recover.')
     }
   }
+
+  console.log(user)
 
   return (
     <AuthContext.Provider
