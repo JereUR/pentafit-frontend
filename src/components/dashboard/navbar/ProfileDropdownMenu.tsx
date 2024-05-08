@@ -67,7 +67,7 @@ export default function ProfileDropdownMenu() {
               />
               <div className="absolute inset-0 bg-black opacity-40 z-10"></div>
               <div className="absolute bottom-0 text-center p-1 w-full bg-background opacity-60 text-foreground text-xs z-20">
-                {user?.name}
+                {user?.first_name}
               </div>
             </div>
           </DropdownMenuLabel>

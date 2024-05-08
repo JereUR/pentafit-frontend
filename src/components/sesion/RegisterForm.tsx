@@ -69,8 +69,8 @@ export default function RegisterForm() {
                 type="radio"
                 id="gender-masculino"
                 name="gender"
-                value="Masculino"
-                checked={gender === 'Masculino'}
+                value="Male"
+                checked={gender === 'Male'}
                 onChange={(e) => setGender(e.target.value)}
               />
               <label htmlFor="gender-masculino">Masculino</label>
@@ -78,8 +78,8 @@ export default function RegisterForm() {
                 type="radio"
                 id="gender-femenino"
                 name="gender"
-                value="Femenino"
-                checked={gender === 'Femenino'}
+                value="Female"
+                checked={gender === 'Female'}
                 onChange={(e) => setGender(e.target.value)}
               />
               <label htmlFor="gender-femenino">Femenino</label>
@@ -87,8 +87,8 @@ export default function RegisterForm() {
                 type="radio"
                 id="gender-otros"
                 name="gender"
-                value="Otros"
-                checked={gender === 'Otros'}
+                value="Other"
+                checked={gender === 'Other'}
                 onChange={(e) => setGender(e.target.value)}
               />
               <label htmlFor="gender-otros">Otros</label>
