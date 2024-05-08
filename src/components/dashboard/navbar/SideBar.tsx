@@ -11,7 +11,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import useUser from '@/components/hooks/useUser'
 import ThemeSwitcher from '@/components/ThemeSwitcher'
 
 const menuItems = [
@@ -98,7 +97,6 @@ const menuItems = [
 ]
 
 export default function SideBar() {
-  const { logout } = useUser()
   const pathname = usePathname()
   const [expandedItems, setExpandedItems] = useState<string[]>([])
 
