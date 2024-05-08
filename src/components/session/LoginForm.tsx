@@ -10,7 +10,7 @@ import ForgotPasswordModal from './ForgotPasswordModal'
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const { login } = useUser()
+  const { signIn } = useUser()
 
   const handleOpenModal = () => {
     setShowModal(true) // Open the modal on click
@@ -22,7 +22,7 @@ export default function LoginForm() {
 
   return (
     <div className="m-8 px-8">
-      <form action={login}>
+      <form action={signIn}>
         <div className="flex flex-col gap-4 mb-[8vh]">
           <p className="text-3xl font-bold">Iniciar Sesión</p>
           <span>Disfruta de las funcionalidades que ofrecemos</span>
