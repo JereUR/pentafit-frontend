@@ -16,7 +16,7 @@ import { cookies } from 'next/headers'
 export default async function getSession(
   req: NextRequest
 ): Promise<User | null> {
-  const sessionToken = cookies().get('session')
+  const sessionToken = cookies().get('session')?.value
   console.log(sessionToken)
 
   if (!sessionToken) {
