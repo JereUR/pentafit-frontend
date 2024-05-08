@@ -39,7 +39,7 @@ const dropdownMenuItems = [
 ]
 
 export default function ProfileDropdownMenu() {
-  const { logout, user } = useUser()
+  const { signOut, user } = useUser()
 
   return (
     <div className="flex items-center justify-end">
@@ -86,7 +86,7 @@ export default function ProfileDropdownMenu() {
             </DropdownMenuItem>
           ))}
           <DropdownMenuItem className="p-1 px-4 my-1 cursor-pointer rounded-r-full ml-[-10px] transition flex items-start gap-2 hover:bg-primary-orange-500">
-            <span className="flex items-center gap-2 " onClick={logout}>
+            <span className="flex items-center gap-2 " onClick={signOut}>
               <MdLogout />
               Cerrar Sesión
             </span>

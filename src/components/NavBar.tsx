@@ -11,7 +11,7 @@ import useUser from './hooks/useUser'
 export default function NavBar() {
   const [isSticky, setIsSticky] = useState(false)
   const pathname = usePathname()
-  const { token, logout } = useUser()
+  const { user, signOut } = useUser()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,9 +30,9 @@ export default function NavBar() {
       window.location.reload()
       localStorage.removeItem('isLoggedOut')
     }
-  }, [pathname, token])
+  }, [pathname, user])
 
-  if (token) {
+  if (user) {
     return (
       <nav
         className={`flex justify-between items-center py-4 fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${
@@ -53,7 +53,7 @@ export default function NavBar() {
               </Button>
               <Button
                 className="bg-primary-orange-600 hover:bg-primary-orange-700"
-                onClick={logout}
+                onClick={signOut}
               >
                 Cerrar Sesión
               </Button>
@@ -65,7 +65,7 @@ export default function NavBar() {
               </Button>
               <Button
                 className="bg-primary-orange-600 hover:bg-primary-orange-700"
-                onClick={logout}
+                onClick={signOut}
               >
                 Cerrar Sesión
               </Button>
