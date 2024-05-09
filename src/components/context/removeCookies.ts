@@ -1,8 +1,7 @@
 'use server'
 
-import axios from 'axios'
 import { cookies } from 'next/headers'
 
-export async function signOutServer() {
+export async function removeCookies() {
   cookies().delete('session')
 }

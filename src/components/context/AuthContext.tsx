@@ -12,8 +12,8 @@ import {
 import { User } from '../types/User'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
-import { signInServer } from './signInServer'
-import { signOutServer } from './signOutServer'
+import { setCookies } from './setCookies'
+import { removeCookies } from './removeCookies'
 import axios from 'axios'
 
 type AuthContextType = {
@@ -96,7 +96,7 @@ export default function AuthContextProvider({
       )
 
       if (response.status === 200 || response.status === 204) {
-        signInServer(response.data.jwt)
+        setCookies(response.data.jwt)
         const authToken = response.data.jwt
         localStorage.setItem('token', authToken)
         localStorage.setItem('user', JSON.stringify(response.data.user))
@@ -132,7 +132,7 @@ export default function AuthContextProvider({
       )
 
       if (response.status === 200 || response.status === 204) {
-        signOutServer()
+        removeCookies()
         setUser(null)
         localStorage.removeItem('token')
         localStorage.removeItem('user')
@@ -183,7 +183,7 @@ export default function AuthContextProvider({
 
       if (response.status === 200 || response.status === 204) {
         const authToken = response.data.token
-        signInServer(authToken)
+        setCookies(authToken)
         localStorage.setItem('token', authToken)
         localStorage.setItem('user', JSON.stringify(response.data))
 
