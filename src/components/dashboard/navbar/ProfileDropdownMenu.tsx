@@ -48,7 +48,7 @@ export default function ProfileDropdownMenu() {
           <div className="cursor-pointer">
             <Image
               className="rounded-full object-cover p-[2px] ring-2 ring-primary-orange-600"
-              src={user?.photo_url ? user.photo_url : profilePhoto}
+              src={user?.photo ? user.photo : profilePhoto}
               alt="Avatar photo"
               width={30}
               height={30}
@@ -59,7 +59,7 @@ export default function ProfileDropdownMenu() {
           <DropdownMenuLabel className="flex flex-col justify-center items-center">
             <div className="relative h-32">
               <Image
-                src={user?.photo_url ? user.photo_url : profilePhoto}
+                src={user?.photo ? user.photo : profilePhoto}
                 width={128}
                 height={128}
                 alt="Tu imagen"
