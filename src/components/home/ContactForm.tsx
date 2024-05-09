@@ -102,9 +102,12 @@ function ContactForm() {
             <h1 className="text-xl font-bold">BUENAS!</h1>
             <p className="text-3xl italic">Dejanos tu consulta</p>
           </div>
-          <form onSubmit={handleSubmit} className="w-[50vw] flex flex-col">
+          <form
+            onSubmit={handleSubmit}
+            className="w-[50vw] flex flex-col gap-1"
+          >
             {inputFields.map((field) => (
-              <div className="flex flex-col gap-2" key={field.name}>
+              <div className="flex flex-col" key={field.name}>
                 <label htmlFor={field.name} className="font-bold mt-2">
                   {field.label}
                 </label>
@@ -113,19 +116,19 @@ function ContactForm() {
                     name={field.name}
                     value={formData[field.name]}
                     onChange={handleChange}
-                    className="bg-background border-none rounded-md ml-1 h-32 focus:outline-none"
+                    className="bg-background border-none rounded-md ml-1 h-32 p-2 focus:outline-none"
                   />
                 ) : (
                   <input
-                    type="text" // Default to 'text' if type not specified
+                    type="text"
                     name={field.name}
                     value={formData[field.name]}
                     onChange={handleChange}
-                    className="bg-background border-none rounded-md ml-1 p-2  focus:outline-none"
+                    className="bg-background border-none rounded-md ml-1 p-2 focus:outline-none"
                   />
                 )}
                 {errors[field.name] && (
-                  <span className="text-red-600 ml-1">
+                  <span className="text-red-600 ml-1 mt-[2px] text-xs">
                     {errors[field.name]}
                   </span>
                 )}
@@ -134,7 +137,7 @@ function ContactForm() {
             <div className="">
               <Button
                 type="submit"
-                className="absolute bg-primary-orange-600 hover:bg-primary-orange-700 text-xl font-bold p-6 mt-8 right-20 w-[10vw]"
+                className="absolute bg-primary-orange-600 hover:bg-primary-orange-700 text-xl font-bold p-6 mt-4 right-20 w-[10vw]"
               >
                 Enviar
               </Button>
