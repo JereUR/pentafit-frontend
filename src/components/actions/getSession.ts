@@ -13,15 +13,13 @@ import { cookies } from 'next/headers'
   return { session }
 } */
 
-export default async function getSession(
-  req: NextRequest
-): Promise<User | null> {
+export default async function getSession(req: NextRequest) {
   const sessionToken = cookies().get('session')?.value
-  console.log(sessionToken)
+  let session: any = null
 
   if (!sessionToken) {
     return null
-  }
+  } /* 
 
   return {
     id: 2,
@@ -30,22 +28,40 @@ export default async function getSession(
     email: 'jeremias.jdv@gmail.com',
     photo_url: null,
     token: sessionToken.toString()
+  } */
+
+  const headers = {
+    Origin: 'http://localhost:3001/',
+    'X-Requested-With': 'XMLHttpRequest',
+    Authorization: `Bearer ${sessionToken}`
   }
 
   try {
-    const response = await axios.post<User>(
-      '/api/validate-session',
-      { sessionToken },
+    await fetch(
+      'https://c8ad-190-191-171-9.ngrok-free.app/api/v1/currentuser',
       {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        credentials: 'include',
+        headers: headers
       }
     )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
 
-    return response.data
+        if (data.status === 200 || data.status === 204) {
+          session = data
+        }
+      })
+      .catch((error) => {
+        return new Error(error)
+      })
+      .finally(() => {
+        return session
+      })
   } catch (error) {
     console.error('Error validating session:', error)
     return null
   }
+
+  return session
 }

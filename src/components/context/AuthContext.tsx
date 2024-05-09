@@ -14,7 +14,7 @@ import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import { signInServer } from './signInServer'
 import { signOutServer } from './signOutServer'
-import { signUpServer } from './signUpServer'
+import axios from 'axios'
 
 type AuthContextType = {
   user: User | null
@@ -78,21 +78,35 @@ export default function AuthContextProvider({
   }
 
   async function signIn(formData: FormData) {
+    const { email, password } = Object.fromEntries(formData)
     try {
-      const response = await signInServer(formData)
+      const response = await axios.post(
+        'https://c8ad-190-191-171-9.ngrok-free.app/users/sign_in',
+        {
+          user: {
+            email,
+            password
+          }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
 
-      console.log(response)
-      if (response instanceof Error) {
+      if (response.status === 200 || response.status === 204) {
+        signInServer(response.data.jwt)
+        const authToken = response.data.jwt
+        localStorage.setItem('token', authToken)
+        localStorage.setItem('user', JSON.stringify(response.data.user))
+
+        setToken(authToken)
+        setUser(response.data.user)
+        router.push('/panel-de-control')
+      } else {
         throw new Error('Sign in failed')
       }
-
-      const authToken = response.data.jwt
-      localStorage.setItem('token', authToken)
-      localStorage.setItem('user', JSON.stringify(response.data.user))
-
-      setToken(authToken)
-      setUser(response.data.user)
-      router.push('/panel-de-control')
     } catch (error: any) {
       console.error('Sign in error:', error)
 
@@ -108,20 +122,29 @@ export default function AuthContextProvider({
 
   async function signOut() {
     try {
-      const response = await signOutServer()
+      const response = await axios.delete(
+        'https://c8ad-190-191-171-9.ngrok-free.app/users/sign_out',
+        {
+          headers: {
+            Authorization: token
+          }
+        }
+      )
 
-      if (response instanceof Error) {
+      if (response.status === 200 || response.status === 204) {
+        signOutServer()
+        setUser(null)
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        if (pathname === '/') {
+          window.location.reload()
+          return
+        }
+        localStorage.setItem('isLoggedOut', 'true')
+        router.push('/')
+      } else {
         throw new Error('Sign out failed')
       }
-
-      setUser(null)
-      localStorage.removeItem('token')
-      if (pathname === '/') {
-        window.location.reload()
-        return
-      }
-      localStorage.setItem('isLoggedOut', 'true')
-      router.push('/')
     } catch (error) {
       console.error('Sign out error:', error)
       if (error instanceof Error) {
@@ -134,21 +157,42 @@ export default function AuthContextProvider({
   }
 
   async function signUp(formData: FormData): Promise<void | Error> {
-    try {
-      const response = await signUpServer(formData)
+    const { first_name, last_name, email, gender, date, password } =
+      Object.fromEntries(formData)
 
-      console.log(response)
-      if (response instanceof Error) {
+    const user = {
+      first_name,
+      last_name,
+      email,
+      gender,
+      date,
+      password
+    }
+    try {
+      const response = await axios.post(
+        'https://c8ad-190-191-171-9.ngrok-free.app/users',
+        {
+          user
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+
+      if (response.status === 200 || response.status === 204) {
+        const authToken = response.data.token
+        signInServer(authToken)
+        localStorage.setItem('token', authToken)
+        localStorage.setItem('user', JSON.stringify(response.data))
+
+        setToken(authToken)
+        setUser(response.data)
+        router.push('/panel-de-control')
+      } else {
         throw new Error('Sign up failed')
       }
-
-      const authToken = response.data.jwt
-      localStorage.setItem('token', authToken)
-      localStorage.setItem('user', JSON.stringify(response.data.user))
-
-      setToken(authToken)
-      setUser(response.data.user)
-      router.push('/panel-de-control')
     } catch (error) {
       console.error('Sign up error:', error)
       if (error instanceof Error) {
@@ -188,8 +232,6 @@ export default function AuthContextProvider({
       throw new Error('An unexpected error occurred during recover.')
     }
   }
-
-  console.log(user)
 
   return (
     <AuthContext.Provider

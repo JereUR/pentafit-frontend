@@ -13,11 +13,11 @@ import useUser from '../hooks/useUser'
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [gender, setGender] = useState('')
-  const { signOut } = useUser()
+  const { signUp } = useUser()
 
   return (
     <div className="m-8 px-8">
-      <form action={signOut}>
+      <form action={signUp}>
         <div className="flex flex-col gap-4 mb-[2vh]">
           <div className="flex gap-4">
             <Link href={'/iniciar-sesion'}>
