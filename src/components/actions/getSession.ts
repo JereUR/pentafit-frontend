@@ -37,24 +37,20 @@ export default async function getSession(req: NextRequest) {
   const headers = {
     Origin: 'http://localhost:3001/',
     'X-Requested-With': 'XMLHttpRequest',
-    Authorization: `Bearer ${sessionToken}`
+    Authorization: sessionToken
   }
 
   try {
     await fetch(
-      'https://c8ad-190-191-171-9.ngrok-free.app/api/v1/currentuser',
+      'https://6448-190-191-171-9.ngrok-free.app/api/v1/currentuser',
       {
-        credentials: 'include',
-        headers: headers
+        credentials: 'include'
+        /* headers: headers */
       }
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
-
-        if (data.status === 200 || data.status === 204) {
-          session = data
-        }
+        session = data
       })
       .catch((error) => {
         return new Error(error)

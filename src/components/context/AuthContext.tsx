@@ -81,7 +81,7 @@ export default function AuthContextProvider({
     const { email, password } = Object.fromEntries(formData)
     try {
       const response = await axios.post(
-        'https://c8ad-190-191-171-9.ngrok-free.app/users/sign_in',
+        'https://6448-190-191-171-9.ngrok-free.app/login',
         {
           user: {
             email,
@@ -96,14 +96,16 @@ export default function AuthContextProvider({
       )
 
       if (response.status === 200 || response.status === 204) {
-        setCookies(response.data.jwt)
-        const authToken = response.data.jwt
+        const authToken = response.headers.authorization
+        setCookies(authToken)
         localStorage.setItem('token', authToken)
         localStorage.setItem('user', JSON.stringify(response.data.user))
 
         setToken(authToken)
         setUser(response.data.user)
-        router.push('/panel-de-control')
+        setTimeout(() => {
+          router.push('/panel-de-control')
+        }, 100)
       } else {
         throw new Error('Sign in failed')
       }
@@ -123,7 +125,7 @@ export default function AuthContextProvider({
   async function signOut() {
     try {
       const response = await axios.delete(
-        'https://c8ad-190-191-171-9.ngrok-free.app/users/sign_out',
+        'https://6448-190-191-171-9.ngrok-free.app/logout',
         {
           headers: {
             Authorization: token
@@ -170,7 +172,7 @@ export default function AuthContextProvider({
     }
     try {
       const response = await axios.post(
-        'https://c8ad-190-191-171-9.ngrok-free.app/users',
+        'https://6448-190-191-171-9.ngrok-free.app/signup',
         {
           user
         },
@@ -182,14 +184,16 @@ export default function AuthContextProvider({
       )
 
       if (response.status === 200 || response.status === 204) {
-        const authToken = response.data.token
+        const authToken = response.headers.authorization
         setCookies(authToken)
         localStorage.setItem('token', authToken)
         localStorage.setItem('user', JSON.stringify(response.data))
 
         setToken(authToken)
         setUser(response.data)
-        router.push('/panel-de-control')
+        setTimeout(() => {
+          router.push('/panel-de-control')
+        }, 100)
       } else {
         throw new Error('Sign up failed')
       }

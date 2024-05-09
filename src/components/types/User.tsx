@@ -1,8 +1,11 @@
 export type User = {
-  id: number
-  first_name: string
-  last_name: string
+  birthdate: string
+  created_at: string
   email: string
-  photo_url: string | null
-  token: string | null
+  first_name: string
+  gender: string
+  id: number
+  last_name: string
+  photo: string | null
+  role: string | null
 }
