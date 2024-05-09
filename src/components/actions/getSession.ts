@@ -17,18 +17,22 @@ export default async function getSession(req: NextRequest) {
   const sessionToken = cookies().get('session')?.value
   let session: any = null
 
-  if (!sessionToken) {
+  /* if (!sessionToken) {
     return null
-  } /* 
+  } */
 
-  return {
+  session = {
     id: 2,
     first_name: 'Jeremias',
     last_name: 'DV',
     email: 'jeremias.jdv@gmail.com',
     photo_url: null,
-    token: sessionToken.toString()
-  } */
+    token: sessionToken
+  }
+
+  return {
+    session
+  }
 
   const headers = {
     Origin: 'http://localhost:3001/',

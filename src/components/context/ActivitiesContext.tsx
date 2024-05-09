@@ -123,24 +123,26 @@ export default function ActivitiesContextProvider({
 
   async function addActivity(formData: FormData): Promise<void | Error> {
     const {
-      description,
-      amount,
+      activity,
+      cost,
       isPublic,
       quotaGeneration,
       sessionMax,
       mpAvailable,
+      publicName,
       dateFrom,
       dateUntil,
       paymentType
     } = Object.fromEntries(formData)
 
     console.log(
-      description,
-      amount,
+      activity,
+      cost,
       isPublic,
       quotaGeneration,
       sessionMax,
       mpAvailable,
+      publicName,
       dateFrom,
       dateUntil,
       paymentType
