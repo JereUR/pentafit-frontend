@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function AddActivityPage() {
   return (
-    <div className="m-8">
+    <div className="m-10">
       <ActivityForm />
     </div>
   )
