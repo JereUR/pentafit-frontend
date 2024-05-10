@@ -9,6 +9,7 @@ import { usePathname } from 'next/navigation'
 import SideBar from '@/components/dashboard/navbar/SideBar'
 import TopBar from '@/components/dashboard/navbar/TopBar'
 import ActivitiesContextProvider from '@/components/context/ActivitiesContext'
+import Logo from '@/components/Logo'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,6 +20,26 @@ export default function RootLayout({
 }>) {
   const pathname = usePathname()
   const shouldRenderLayout = !pathname.startsWith('/panel-de-control')
+  const recoverPage = pathname.startsWith('/reestablecer')
+
+  if (recoverPage) {
+    return (
+      <html lang="en">
+        <body className={inter.className}>
+          <AuthContextProvider>
+            <ThemeProvider>
+              <div>
+                <div className="py-4">
+                  <Logo isSticky={false} />
+                </div>
+                {children}
+              </div>
+            </ThemeProvider>
+          </AuthContextProvider>
+        </body>
+      </html>
+    )
+  }
 
   return (
     <html lang="en">
