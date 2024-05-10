@@ -19,13 +19,13 @@ import axios from 'axios'
 type AuthContextType = {
   user: User | null
   token: string | null
-  getSession: () => Promise<any | null>
   recoverState: boolean
   setRecoverState: Dispatch<SetStateAction<boolean>>
   signIn: (formData: FormData) => Promise<void | Error>
   signOut: () => void
   signUp: (formData: FormData) => Promise<void | Error>
   recover: (formData: FormData) => Promise<void | Error>
+  updatePassword: (formData: FormData) => Promise<void | Error>
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -65,17 +65,6 @@ export default function AuthContextProvider({
       setUser(userFromStorage)
     }
   }, [])
-
-  async function getSession(): Promise<any | null> {
-    let session = null
-    await fetch('https://jsonplaceholder.typicode.com/users/1')
-      .then((response) => response.json())
-      .then((json) => {
-        session = json
-      })
-
-    return { session }
-  }
 
   async function signIn(formData: FormData) {
     const { email, password } = Object.fromEntries(formData)
@@ -237,18 +226,22 @@ export default function AuthContextProvider({
     }
   }
 
+  async function updatePassword(formData: FormData): Promise<void | Error> {
+    const { password, confirm_password } = Object.fromEntries(formData)
+  }
+
   return (
     <AuthContext.Provider
       value={{
         user,
         token,
-        getSession,
         recoverState,
         setRecoverState,
         signIn,
         signOut,
         signUp,
-        recover
+        recover,
+        updatePassword
       }}
     >
       {children}
