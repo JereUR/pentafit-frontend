@@ -17,7 +17,7 @@ export default function RecoverForm() {
       <form action={updatePassword} className="py-6">
         <div className="flex flex-col gap-4 mb-[2vh]">
           <label htmlFor="password" className="text-lg font-extralight">
-            Contraseña
+            Nueva Contraseña
           </label>
           <div className="relative">
             <input
