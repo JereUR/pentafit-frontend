@@ -135,18 +135,52 @@ export default function ActivitiesContextProvider({
       paymentType
     } = Object.fromEntries(formData)
 
-    console.log(
+    let isPublicValue, quotaGenerationValue, mpAvailableValue
+
+    if (isPublic === undefined) {
+      isPublicValue = false
+    } else {
+      if (isPublic === 'true') {
+        isPublicValue = true
+      } else {
+        isPublicValue = false
+      }
+    }
+
+    if (quotaGeneration === undefined) {
+      quotaGenerationValue = false
+    } else {
+      if (quotaGeneration === 'true') {
+        quotaGenerationValue = true
+      } else {
+        quotaGenerationValue = false
+      }
+    }
+
+    if (mpAvailable === undefined) {
+      mpAvailableValue = false
+    } else {
+      if (mpAvailable === 'true') {
+        mpAvailableValue = true
+      } else {
+        mpAvailableValue = false
+      }
+    }
+
+    const newActivity = {
       activity,
       cost,
-      isPublic,
-      quotaGeneration,
+      isPublic: isPublicValue,
+      quotaGeneration: quotaGenerationValue,
       sessionMax,
-      mpAvailable,
+      mpAvailable: mpAvailableValue,
       publicName,
       dateFrom,
       dateUntil,
       paymentType
-    )
+    }
+
+    console.log(newActivity)
   }
 
   return (
