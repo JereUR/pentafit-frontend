@@ -9,15 +9,130 @@ import { useState } from 'react'
 import { Button } from '../ui/button'
 import Link from 'next/link'
 import useUser from '../hooks/useUser'
+import { PropsRegister } from '../types/User'
+
+interface FormErrors {
+  first_name?: string
+  last_name?: string
+  email?: string
+  gender?: string
+  date?: string
+  password?: string
+  confirm_password?: string
+  [key: string]: string | undefined
+}
 
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [gender, setGender] = useState('')
+  const [registerErrors, setRegisterErrors] = useState<FormErrors>({
+    first_name: '',
+    last_name: '',
+    email: '',
+    gender: '',
+    date: '',
+    password: '',
+    confirm_password: ''
+  })
   const { signUp } = useUser()
+
+  const validations = ({ user }: { user: PropsRegister }) => {
+    const errorsForm: FormErrors = {}
+
+    const regexName = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/
+    const regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/
+
+    if (!user.first_name.trim()) {
+      errorsForm.first_name = `Este campo no debe ser vacío.`
+    } else if (!regexName.test(user.first_name)) {
+      errorsForm.first_name = 'Este campo solo acepta letras y espacios.'
+    }
+
+    if (!user.last_name.trim()) {
+      errorsForm.last_name = `Este campo no debe ser vacío.`
+    } else if (!regexName.test(user.last_name)) {
+      errorsForm.last_name = 'Este campo solo acepta letras y espacios.'
+    }
+
+    if (!user.email.trim()) {
+      errorsForm.email = `Este campo no debe ser vacío.`
+    } else if (!regexEmail.test(user.email)) {
+      errorsForm.email = 'Correo no válido.'
+    }
+
+    if (user.gender === undefined) {
+      errorsForm.gender = `Este campo no debe ser vacío.`
+    }
+
+    if (!user.date) {
+      errorsForm.date = `Este campo no debe ser vacío.`
+    } else {
+      let today = new Date()
+      let birthDate = new Date(user.date)
+
+      if (birthDate > today) {
+        errorsForm.date =
+          'La fecha de nacimiento no puede ser mayor que la fecha actual.'
+      } else {
+        let age = today.getFullYear() - birthDate.getFullYear()
+        let monthDiff = today.getMonth() - birthDate.getMonth()
+
+        if (
+          monthDiff < 0 ||
+          (monthDiff === 0 && today.getDate() < birthDate.getDate())
+        ) {
+          age--
+        }
+
+        if (age < 18) {
+          errorsForm.date = 'Debes tener al menos 18 años para registrarte.'
+        }
+      }
+    }
+
+    if (user.password.length < 8) {
+      errorsForm.password = `La contraseña debe tener más de 8 caracteres.`
+    }
+
+    if (user.password !== user.confirm_password) {
+      errorsForm.password = `La contraseña y su confirmación no coinciden.`
+      errorsForm.confirm_password = `La contraseña y su confirmación no coinciden.`
+    }
+
+    return errorsForm
+  }
+
+  const handleAction = (formData: FormData) => {
+    const {
+      first_name,
+      last_name,
+      email,
+      gender,
+      date,
+      password,
+      confirm_password
+    } = Object.fromEntries(formData)
+
+    const user = {
+      first_name: first_name.toString(),
+      last_name: last_name.toString(),
+      email: email.toString(),
+      gender: gender?.toString(),
+      date: date?.toString(),
+      password: password.toString(),
+      confirm_password: confirm_password.toString()
+    }
+
+    const err = validations({ user })
+    setRegisterErrors(err)
+
+    if (Object.keys(err).length === 0) {
+    }
+  }
 
   return (
     <div className="m-8 px-8">
-      <form action={signUp}>
+      <form action={handleAction}>
         <div className="flex flex-col gap-4 mb-[2vh]">
           <div className="flex gap-4">
             <Link href={'/iniciar-sesion'}>
@@ -38,6 +153,11 @@ export default function RegisterForm() {
             name="first_name"
             className="bg-transparent border rounded-md text-lg p-1 focus:outline-none"
           />
+          {registerErrors.first_name && (
+            <span className="text-xs text-red-600">
+              {registerErrors.first_name}
+            </span>
+          )}
         </div>
         <div className="flex flex-col gap-2 mb-2">
           <label htmlFor="last_name" className="text-lg font-extralight">
@@ -48,6 +168,11 @@ export default function RegisterForm() {
             name="last_name"
             className="bg-transparent border rounded-md text-lg p-1 focus:outline-none"
           />
+          {registerErrors.last_name && (
+            <span className="text-xs text-red-600">
+              {registerErrors.last_name}
+            </span>
+          )}
         </div>
         <div className="flex flex-col gap-4 mb-[2vh]">
           <label htmlFor="email" className="text-lg font-extralight">
@@ -58,6 +183,9 @@ export default function RegisterForm() {
             name="email"
             className="bg-transparent border rounded-md text-lg p-1 focus:outline-none"
           />
+          {registerErrors.email && (
+            <span className="text-xs text-red-600">{registerErrors.email}</span>
+          )}
         </div>
         <div className="flex gap-4">
           <div className="flex flex-col gap-4 mb-[2vh] w-1/2">
@@ -93,6 +221,11 @@ export default function RegisterForm() {
               />
               <label htmlFor="gender-otros">Otros</label>
             </div>
+            {registerErrors.gender && (
+                <span className="text-xs text-red-600">
+                  {registerErrors.gender}
+                </span>
+              )}
           </div>
           <div className="flex flex-col gap-4 mb-[2vh] w-1/2">
             <label htmlFor="date" className="text-lg font-extralight">
@@ -103,6 +236,11 @@ export default function RegisterForm() {
               name="date"
               className="bg-transparent border rounded-md text-lg p-3 pr-[2vh] focus:outline-none"
             />
+            {registerErrors.date && (
+              <span className="text-xs text-red-600">
+                {registerErrors.date}
+              </span>
+            )}
           </div>
         </div>
         <div className="flex flex-col gap-4 mb-[2vh]">
@@ -126,6 +264,11 @@ export default function RegisterForm() {
               )}
             </div>
           </div>
+          {registerErrors.password && (
+            <span className="text-xs text-red-600">
+              {registerErrors.password}
+            </span>
+          )}
         </div>
         <div className="flex flex-col gap-4 mb-[2vh]">
           <label htmlFor="confirm_password" className="text-lg font-extralight">
@@ -148,6 +291,11 @@ export default function RegisterForm() {
               )}
             </div>
           </div>
+          {registerErrors.confirm_password && (
+            <span className="text-xs text-red-600">
+              {registerErrors.confirm_password}
+            </span>
+          )}
         </div>
         <Button className="bg-primary-orange-600 w-full my-[2vh] py-6 text-xl hover:bg-primary-orange-700">
           Enviar
