@@ -1,8 +1,12 @@
+'use client'
+
 import React, { useState } from 'react'
 import Image from 'next/image'
 
 import photo from '../../../public/assets/banner-login.png'
 import { Button } from '../ui/button'
+import axios from 'axios'
+import Loading from './../../app/loading'
 
 interface FormData {
   name: string
@@ -27,7 +31,7 @@ const inputFields = [
   { name: 'message', label: 'Mensaje', type: 'textarea' }
 ]
 
-function ContactForm() {
+export default function ContactForm() {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     lastname: '',
@@ -41,6 +45,7 @@ function ContactForm() {
     email: '',
     message: ''
   })
+  const [loading, setLoading] = useState(false)
 
   const validations = () => {
     const validationErrors: FormErrors = {}
@@ -73,16 +78,54 @@ function ContactForm() {
     })
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault() // Prevent default form submission
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
 
     const validationErrors = validations()
 
     setErrors(validationErrors)
 
     if (Object.keys(validationErrors).length === 0) {
-      console.log('Formulario enviado:', formData)
-      setFormData({ name: '', lastname: '', email: '', message: '' })
+      setLoading(true)
+      const data = {
+        first_name: formData.name,
+        last_name: formData.lastname,
+        email: formData.email,
+        message: formData.message
+      }
+
+      try {
+        const response = await axios.post(
+          'https://ca9b-190-191-171-9.ngrok-free.app/api/v1/contact_us',
+          {
+            data
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        )
+
+        if (response.status === 200 || response.status === 204) {
+          setFormData({ name: '', lastname: '', email: '', message: '' })
+          setLoading(false)
+        } else {
+          throw new Error('Send message failed')
+        }
+      } catch (error: any) {
+        console.error('Send message error:', error)
+
+        if (error.response && error.response.status >= 400) {
+          throw new Error(
+            `Send message failed: ${
+              error.response.data.message || 'Server error'
+            }`
+          )
+        } else {
+          throw new Error('An unexpected error occurred during send message.')
+        }
+      }
     }
   }
 
@@ -142,11 +185,10 @@ function ContactForm() {
                 Enviar
               </Button>
             </div>
+            {loading && 'Procesando...'}
           </form>
         </div>
       </div>
     </div>
   )
 }
-
-export default ContactForm
