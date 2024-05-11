@@ -10,7 +10,7 @@ import {
 } from 'react'
 
 import { User } from '../types/User'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import { setCookies } from './setCookies'
 import { removeCookies } from './removeCookies'
@@ -26,7 +26,6 @@ type AuthContextType = {
   signOut: () => void
   signUp: (formData: FormData) => Promise<void | Error>
   recover: (formData: FormData) => Promise<void | Error>
-  updatePassword: (formData: FormData) => Promise<void | Error>
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -51,7 +50,6 @@ export default function AuthContextProvider({
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token')
@@ -241,43 +239,6 @@ export default function AuthContextProvider({
     }
   }
 
-  async function updatePassword(formData: FormData): Promise<void | Error> {
-    const token = searchParams.get('reset_password_token')
-    setLoading(true)
-    const { password, confirm_password } = Object.fromEntries(formData)
-
-    const user = {
-      user: {
-        password,
-        password_confirmation: confirm_password,
-        reset_password_token: token
-      }
-    }
-
-    try {
-      const response = await axios.post(
-        `https://ca9b-190-191-171-9.ngrok-free.app/recover`,
-        user,
-        {
-          headers: {
-            'Content-Type': 'application/json' // Include Bearer prefix for authorization
-          }
-        }
-      )
-      if (response.status === 200 || response.status === 204) {
-        console.log('Password update response:', response.data)
-        router.push('/iniciar-sesion')
-      } else {
-        throw new Error('Update password failed: ' + response.data?.message)
-      }
-    } catch (error) {
-      console.error('Password update error:', error)
-      throw new Error('An unexpected error occurred during update password.')
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
     <AuthContext.Provider
       value={{
@@ -289,8 +250,7 @@ export default function AuthContextProvider({
         signIn,
         signOut,
         signUp,
-        recover,
-        updatePassword
+        recover
       }}
     >
       {children}
