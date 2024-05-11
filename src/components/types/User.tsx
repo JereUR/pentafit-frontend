@@ -9,3 +9,13 @@ export type User = {
   photo: string | null
   role: string | null
 }
+
+export interface PropsRegister {
+  first_name: string
+  last_name: string
+  email: string
+  gender: string | undefined
+  date: string | undefined
+  password: string
+  confirm_password: string
+}
