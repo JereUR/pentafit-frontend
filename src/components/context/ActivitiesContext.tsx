@@ -10,6 +10,7 @@ import {
 } from 'react'
 import { useRouter } from 'next/navigation'
 import { Activity } from '../types/Activity'
+import axios from 'axios'
 
 type ActivitiesContextType = {
   activities: Activity[] | []
@@ -95,26 +96,24 @@ export default function ActivitiesContextProvider({
   ): Promise<Activity[] | [] | Error> {
     const regex = new RegExp(q, 'i')
     const ITEM_PER_PAGE = 4
-    const index = ITEM_PER_PAGE * (parseInt(page) - 1)
+    /* const index = ITEM_PER_PAGE * (parseInt(page) - 1) */
+    const params = new URLSearchParams()
+    params.append('regex', regex.toString())
+    params.append('page', page)
+    params.append('ITEMS_PER_PAGE', ITEM_PER_PAGE.toString())
+
+    const url = `${
+      process.env.BASE_BACKEND_URL
+    }get-activities?${params.toString()}`
+
     try {
-      const response = await fetch('http://localhost:3000/activities', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ parameters: { regex, index, ITEM_PER_PAGE } })
-      })
+      const response = await axios.get(url)
 
-      if (!response.ok) {
-        throw new Error('Login failed') // Handle non-2xx status codes
-      }
-
-      const data = await response.json()
-
-      if (data?.success) {
-        return data.activities
+      if (response.status === 200 || response.status === 204) {
+        setActivities(response.data?.activities)
+        return response.data?.activities
       } else {
-        throw new Error('Login failed: ' + data?.message) // Handle failed login with error message (if provided)
+        throw new Error('Get activities failed')
       }
     } catch (error) {
       throw new Error('Failed to fecth users!')

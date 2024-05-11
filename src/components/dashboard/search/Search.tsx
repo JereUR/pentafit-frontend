@@ -27,7 +27,7 @@ const Search = ({ placeholder }: { placeholder: string }) => {
       <input
         type="text"
         placeholder={placeholder}
-        className="bg-transparent border-none text-white focus:outline-none"
+        className="bg-transparent border-none text-foreground focus:outline-none"
         onChange={handleSearch}
       />
     </div>
