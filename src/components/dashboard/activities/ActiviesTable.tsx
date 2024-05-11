@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 import Search from '../search/Search'
@@ -11,7 +11,6 @@ import { useTheme } from 'next-themes'
 import Link from 'next/link'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import CustomButton from '@/components/CustomButton'
-import { useRouter } from 'next/navigation'
 
 const availableColumns = [
   { id: 'description', label: 'Descripción' },
@@ -34,8 +33,6 @@ export default function ActivitiesTable() {
   const searchParams = useSearchParams()
   const count = 4
   const q = searchParams.get('q') || ''
-  const page = searchParams.get('page') || '1'
-  const router = useRouter()
   const { activities, getActivities } = useActivities()
   /* const { activitys, count } = await fetchactivitys(q, page)  */
 
@@ -46,16 +43,11 @@ export default function ActivitiesTable() {
     }
   }
 
-  /* const handleSearch = (event) => {
-    const newSearchParams = new URLSearchParams(searchParams)
-    newSearchParams.set('q', event.target.value)
-    newSearchParams.set('page', '1') // Reset page to 1 on search
-    router.push({
-      pathname: '/actividades',
-      query: newSearchParams.toString()
-    })
-    getActivities(event.target.value, '1') // Update activities state and page number
-  } */
+  useEffect(() => {
+    const q = searchParams.get('q') || ''
+    const page = searchParams.get('page') || '1'
+    getActivities(q, page)
+  }, [searchParams])
 
   const handleSelectAllChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -85,10 +77,7 @@ export default function ActivitiesTable() {
   return (
     <div className="container bg-background p-1 rounded-lg mt-5">
       <div className="flex items-center justify-between my-4">
-        <Search
-          placeholder="Buscar una actividad..."
-          /* onChange={handleSearch} */
-        />
+        <Search placeholder="Buscar una actividad..." />
         <div className="flex gap-2">
           <Link href="/panel-de-control/actividades/agregar">
             {/* <Button className="py-2 px-4 rounded-md text-foreground bg-primary-orange-600 transition duration-300 ease-in-out hover:bg-primary-orange-700 border-none cursor-pointer">
