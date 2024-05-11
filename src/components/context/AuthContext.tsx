@@ -10,7 +10,7 @@ import {
 } from 'react'
 
 import { User } from '../types/User'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import { setCookies } from './setCookies'
 import { removeCookies } from './removeCookies'
@@ -20,6 +20,7 @@ type AuthContextType = {
   user: User | null
   token: string | null
   recoverState: boolean
+  loading: boolean
   setRecoverState: Dispatch<SetStateAction<boolean>>
   signIn: (formData: FormData) => Promise<void | Error>
   signOut: () => void
@@ -45,10 +46,12 @@ export default function AuthContextProvider({
       token: 'Bearer 1234'
     } */
   )
+  const [loading, setLoading] = useState(false)
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const router = useRouter()
   const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token')
@@ -67,10 +70,11 @@ export default function AuthContextProvider({
   }, [])
 
   async function signIn(formData: FormData) {
+    setLoading(true)
     const { email, password } = Object.fromEntries(formData)
     try {
       const response = await axios.post(
-        'https://6448-190-191-171-9.ngrok-free.app/login',
+        `https://ca9b-190-191-171-9.ngrok-free.app/login`,
         {
           user: {
             email,
@@ -108,13 +112,16 @@ export default function AuthContextProvider({
       } else {
         throw new Error('An unexpected error occurred during sign in.')
       }
+    } finally {
+      setLoading(false)
     }
   }
 
   async function signOut() {
+    setLoading(true)
     try {
       const response = await axios.delete(
-        'https://6448-190-191-171-9.ngrok-free.app/logout',
+        `https://ca9b-190-191-171-9.ngrok-free.app/logout`,
         {
           headers: {
             Authorization: token
@@ -144,10 +151,13 @@ export default function AuthContextProvider({
         console.error('Unexpected error:', error)
         throw new Error('An unexpected error occurred during sign out.')
       }
+    } finally {
+      setLoading(false)
     }
   }
 
   async function signUp(formData: FormData): Promise<void | Error> {
+    setLoading(true)
     const { first_name, last_name, email, gender, date, password } =
       Object.fromEntries(formData)
 
@@ -161,7 +171,7 @@ export default function AuthContextProvider({
     }
     try {
       const response = await axios.post(
-        'https://6448-190-191-171-9.ngrok-free.app/signup',
+        `https://ca9b-190-191-171-9.ngrok-free.app/signup`,
         {
           user
         },
@@ -194,40 +204,78 @@ export default function AuthContextProvider({
         console.error('Unexpected error:', error)
         throw new Error('An unexpected error occurred during sign up.')
       }
+    } finally {
+      setLoading(false)
     }
   }
 
   async function recover(formData: FormData): Promise<void | Error> {
+    setLoading(true)
     const { email } = Object.fromEntries(formData)
 
     try {
-      await fetch('http://localhost:3000/recover', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
+      const response = await axios.post(
+        `https://ca9b-190-191-171-9.ngrok-free.app/recover`,
+        {
+          user: { email }
         },
-        body: JSON.stringify({ email })
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data?.success) {
-            console.log('Recovery email sent successfully!')
-            setRecoverState(true)
-          } else {
-            console.error('Recovery failed:', data?.message)
-            setRecoverState(false)
-            throw new Error('Recover failed: ' + data?.message)
+        {
+          headers: {
+            'Content-Type': 'application/json'
           }
-        })
+        }
+      )
+
+      if (response.status === 200 || response.status === 204) {
+        setRecoverState(true)
+      } else {
+        setRecoverState(false)
+        throw new Error('Recover failed: ' + response.data?.message)
+      }
     } catch (error) {
       console.error('Recovery error:', error)
       setRecoverState(false)
       throw new Error('An unexpected error occurred during recover.')
+    } finally {
+      setLoading(false)
     }
   }
 
   async function updatePassword(formData: FormData): Promise<void | Error> {
+    const token = searchParams.get('reset_password_token')
+    setLoading(true)
     const { password, confirm_password } = Object.fromEntries(formData)
+
+    const user = {
+      user: {
+        password,
+        password_confirmation: confirm_password,
+        reset_password_token: token
+      }
+    }
+
+    try {
+      const response = await axios.post(
+        `https://ca9b-190-191-171-9.ngrok-free.app/recover`,
+        user,
+        {
+          headers: {
+            'Content-Type': 'application/json' // Include Bearer prefix for authorization
+          }
+        }
+      )
+      if (response.status === 200 || response.status === 204) {
+        console.log('Password update response:', response.data)
+        router.push('/iniciar-sesion')
+      } else {
+        throw new Error('Update password failed: ' + response.data?.message)
+      }
+    } catch (error) {
+      console.error('Password update error:', error)
+      throw new Error('An unexpected error occurred during update password.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -236,6 +284,7 @@ export default function AuthContextProvider({
         user,
         token,
         recoverState,
+        loading,
         setRecoverState,
         signIn,
         signOut,

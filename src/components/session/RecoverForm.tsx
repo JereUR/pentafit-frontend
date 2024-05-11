@@ -6,11 +6,11 @@ import { useState } from 'react'
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons'
 
 export default function RecoverForm() {
-  const { updatePassword } = useUser()
+  const { updatePassword, loading } = useUser()
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <div className="w-[60vw] shadow-lg p-8 flex flex-col gap-4">
+    <div className="w-[60vw] shadow-sm p-8 flex flex-col gap-4">
       <h2 className="text-4xl font-bold text-center m-4 text-foreground">
         Reestablecer Contraseña
       </h2>
@@ -60,10 +60,11 @@ export default function RecoverForm() {
           </div>
         </div>
         <div className="flex justify-center">
-          <Button className="bg-primary-orange-600 h-[5vh] w-[40vw] text-xl m-4 text-foreground rounded-md transition duration-300 ease-in-out first-line:hover:bg-primary-orange-700 cursor-pointer">
+          <Button className="bg-primary-orange-600 h-[5vh] w-[40vw] text-xl m-4 text-foreground rounded-md transition duration-300 ease-in-out hover:bg-primary-orange-700 cursor-pointer">
             Enviar
           </Button>
         </div>
+        {loading && 'Procesando...'}
       </form>
     </div>
   )

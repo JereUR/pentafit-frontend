@@ -20,26 +20,6 @@ export default function RootLayout({
 }>) {
   const pathname = usePathname()
   const shouldRenderLayout = !pathname.startsWith('/panel-de-control')
-  const recoverPage = pathname.startsWith('/reestablecer')
-
-  if (recoverPage) {
-    return (
-      <html lang="en">
-        <body className={inter.className}>
-          <AuthContextProvider>
-            <ThemeProvider>
-              <div>
-                <div className="py-4">
-                  <Logo isSticky={false} />
-                </div>
-                {children}
-              </div>
-            </ThemeProvider>
-          </AuthContextProvider>
-        </body>
-      </html>
-    )
-  }
 
   return (
     <html lang="en">

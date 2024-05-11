@@ -41,13 +41,10 @@ export default async function getSession(req: NextRequest) {
   }
 
   try {
-    await fetch(
-      'https://6448-190-191-171-9.ngrok-free.app/api/v1/currentuser',
-      {
-        credentials: 'include'
-        /* headers: headers */
-      }
-    )
+    await fetch(`${process.env.BASE_BACKEND_URL}currentuser`, {
+      credentials: 'include'
+      /* headers: headers */
+    })
       .then((res) => res.json())
       .then((data) => {
         session = data

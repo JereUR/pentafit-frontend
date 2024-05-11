@@ -16,7 +16,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
   onClose
 }) => {
   const [showModal, setShowModal] = useState(isOpen)
-  const { recover, recoverState, setRecoverState } = useUser()
+  const { recover, recoverState, setRecoverState, loading } = useUser()
 
   const handleClose = () => {
     setShowModal(false)
@@ -66,6 +66,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
               <Button className="bg-primary-orange-600 h-[5vh] text-xl m-4 text-foreground rounded-md hover:bg-primary-orange-700">
                 Enviar
               </Button>
+              {loading && 'Procesando...'}
             </form>
           </div>
         )}

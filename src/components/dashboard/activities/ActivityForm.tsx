@@ -194,14 +194,14 @@ export default function ActivityForm() {
         <div className="absolute right-8 mt-12">
           <Button
             type="button"
-            className="gap-2 mr-2 font-bold text-background bg-red-600 transition duration-300 ease-in-out hover:bg-red-700 border-none"
+            className="gap-2 mr-2 font-bold text-background bg-red-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-red-600 border-none"
             onClick={() => router.replace('/panel-de-control/actividades')}
           >
             <ImCross /> Cerrar
           </Button>
           <Button
             type="submit"
-            className="gap-2 font-bold text-background bg-green-600 transition duration-300 ease-in-out hover:bg-green-700 border-none"
+            className="gap-2 font-bold text-background bg-green-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-green-600 border-none"
           >
             <FaCheck /> Guardar
           </Button>
