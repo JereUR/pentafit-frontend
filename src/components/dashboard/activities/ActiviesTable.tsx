@@ -108,7 +108,7 @@ export default function ActivitiesTable() {
                 className="cursor-pointer h-5 w-5"
               />
             </td>
-            <td className="px-2 py-5">Descripción</td>
+            <td className="px-2 py-5">Actividad</td>
             <td className="px-2 py-5">Costo</td>
             <td className="px-2 py-5">Es pública?</td>
             <td className="px-2 py-5">Permite generación de cuotas</td>
@@ -138,10 +138,10 @@ export default function ActivitiesTable() {
                 />
               </td>
               <td className="border-b border-foreground px-2 py-5">
-                {activity.description}
+                {activity.activity}
               </td>
               <td className="border-b border-foreground px-2 py-5">
-                ${activity.amount}
+                ${activity.cost}
               </td>
               <td className="border-b border-foreground px-2 py-5">
                 <div
