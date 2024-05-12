@@ -30,8 +30,8 @@ export default function ActivitiesContextProvider({
   const [activities, setActivities] = useState<Activity[] | []>([
     {
       id: 'm5gr84i9',
-      description: 'Actividad 1',
-      amount: 200,
+      activity: 'Actividad 1',
+      cost: 200,
       isPublic: false,
       quotaGeneration: true,
       sessionMax: 5,
@@ -42,8 +42,8 @@ export default function ActivitiesContextProvider({
     },
     {
       id: '3u1reuv4',
-      description: 'Actividad 2',
-      amount: 300,
+      activity: 'Actividad 2',
+      cost: 300,
       isPublic: true,
       quotaGeneration: true,
       sessionMax: 15,
@@ -54,8 +54,8 @@ export default function ActivitiesContextProvider({
     },
     {
       id: 'derv1ws0',
-      description: 'Actividad 3',
-      amount: 400,
+      activity: 'Actividad 3',
+      cost: 400,
       isPublic: true,
       quotaGeneration: true,
       sessionMax: 10,
@@ -66,8 +66,8 @@ export default function ActivitiesContextProvider({
     },
     {
       id: '5kma53ae',
-      description: 'Actividad 4',
-      amount: 200,
+      activity: 'Actividad 4',
+      cost: 200,
       isPublic: false,
       quotaGeneration: true,
       sessionMax: 30,
@@ -78,8 +78,8 @@ export default function ActivitiesContextProvider({
     },
     {
       id: 'bhqecj4p',
-      description: 'Actividad 5',
-      amount: 500,
+      activity: 'Actividad 5',
+      cost: 500,
       isPublic: true,
       quotaGeneration: true,
       sessionMax: 7,
