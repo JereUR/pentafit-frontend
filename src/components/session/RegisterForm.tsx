@@ -36,39 +36,39 @@ export default function RegisterForm() {
   })
   const { signUp } = useUser()
 
-  const validations = ({ user }: { user: PropsRegister }) => {
+  const validations = ({ data }: { data: PropsRegister }) => {
     const errorsForm: FormErrors = {}
 
     const regexName = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/
     const regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/
 
-    if (!user.first_name.trim()) {
+    if (!data.first_name.trim()) {
       errorsForm.first_name = `Este campo no debe ser vacío.`
-    } else if (!regexName.test(user.first_name)) {
+    } else if (!regexName.test(data.first_name)) {
       errorsForm.first_name = 'Este campo solo acepta letras y espacios.'
     }
 
-    if (!user.last_name.trim()) {
+    if (!data.last_name.trim()) {
       errorsForm.last_name = `Este campo no debe ser vacío.`
-    } else if (!regexName.test(user.last_name)) {
+    } else if (!regexName.test(data.last_name)) {
       errorsForm.last_name = 'Este campo solo acepta letras y espacios.'
     }
 
-    if (!user.email.trim()) {
+    if (!data.email.trim()) {
       errorsForm.email = `Este campo no debe ser vacío.`
-    } else if (!regexEmail.test(user.email)) {
+    } else if (!regexEmail.test(data.email)) {
       errorsForm.email = 'Correo no válido.'
     }
 
-    if (user.gender === undefined) {
+    if (data.gender === undefined) {
       errorsForm.gender = `Este campo no debe ser vacío.`
     }
 
-    if (!user.date) {
+    if (!data.date) {
       errorsForm.date = `Este campo no debe ser vacío.`
     } else {
       let today = new Date()
-      let birthDate = new Date(user.date)
+      let birthDate = new Date(data.date)
 
       if (birthDate > today) {
         errorsForm.date =
@@ -90,11 +90,11 @@ export default function RegisterForm() {
       }
     }
 
-    if (user.password.length < 8) {
+    if (data.password.length < 8) {
       errorsForm.password = `La contraseña debe tener más de 8 caracteres.`
     }
 
-    if (user.password !== user.confirm_password) {
+    if (data.password !== data.confirm_password) {
       errorsForm.password = `La contraseña y su confirmación no coinciden.`
       errorsForm.confirm_password = `La contraseña y su confirmación no coinciden.`
     }
@@ -102,7 +102,7 @@ export default function RegisterForm() {
     return errorsForm
   }
 
-  const handleAction = (formData: FormData) => {
+  async function handleAction(formData: FormData) {
     const {
       first_name,
       last_name,
@@ -113,7 +113,7 @@ export default function RegisterForm() {
       confirm_password
     } = Object.fromEntries(formData)
 
-    const user = {
+    const data = {
       first_name: first_name.toString(),
       last_name: last_name.toString(),
       email: email.toString(),
@@ -123,10 +123,20 @@ export default function RegisterForm() {
       confirm_password: confirm_password.toString()
     }
 
-    const err = validations({ user })
+    const err = validations({ data })
     setRegisterErrors(err)
 
     if (Object.keys(err).length === 0) {
+      await signUp(formData)
+      setRegisterErrors({
+        first_name: '',
+        last_name: '',
+        email: '',
+        gender: '',
+        date: '',
+        password: '',
+        confirm_password: ''
+      })
     }
   }
 
@@ -145,53 +155,68 @@ export default function RegisterForm() {
           <span>Disfruta de las funcionalidades que ofrecemos</span>
         </div>
         <div className="flex flex-col gap-2 mb-2">
-          <label htmlFor="first_name" className="text-lg font-extralight">
-            Nombre/s
-          </label>
+          <div className="flex gap-4 items-center">
+            <label htmlFor="first_name" className="text-lg font-extralight">
+              Nombre/s
+            </label>
+            {registerErrors.first_name && (
+              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                {registerErrors.first_name}
+              </span>
+            )}
+          </div>
           <input
             type="text"
             name="first_name"
             className="bg-transparent border rounded-md text-lg p-1 focus:outline-none"
           />
-          {registerErrors.first_name && (
-            <span className="text-xs text-red-600">
-              {registerErrors.first_name}
-            </span>
-          )}
         </div>
         <div className="flex flex-col gap-2 mb-2">
-          <label htmlFor="last_name" className="text-lg font-extralight">
-            Apellido/s
-          </label>
+          <div className="flex gap-4 items-center">
+            <label htmlFor="last_name" className="text-lg font-extralight">
+              Apellido/s
+            </label>
+            {registerErrors.last_name && (
+              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                {registerErrors.last_name}
+              </span>
+            )}
+          </div>
           <input
             type="text"
             name="last_name"
             className="bg-transparent border rounded-md text-lg p-1 focus:outline-none"
           />
-          {registerErrors.last_name && (
-            <span className="text-xs text-red-600">
-              {registerErrors.last_name}
-            </span>
-          )}
         </div>
         <div className="flex flex-col gap-4 mb-[2vh]">
-          <label htmlFor="email" className="text-lg font-extralight">
-            Email
-          </label>
+          <div className="flex gap-4 items-center">
+            <label htmlFor="email" className="text-lg font-extralight">
+              Email
+            </label>
+            {registerErrors.email && (
+              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                {registerErrors.email}
+              </span>
+            )}
+          </div>
           <input
             type="email"
             name="email"
             className="bg-transparent border rounded-md text-lg p-1 focus:outline-none"
           />
-          {registerErrors.email && (
-            <span className="text-xs text-red-600">{registerErrors.email}</span>
-          )}
         </div>
         <div className="flex gap-4">
           <div className="flex flex-col gap-4 mb-[2vh] w-1/2">
-            <label htmlFor="gender" className="text-lg font-extralight">
-              Sexo/Género
-            </label>
+            <div className="flex gap-4 items-center">
+              <label htmlFor="gender" className="text-lg font-extralight">
+                Sexo/Género
+              </label>
+              {registerErrors.gender && (
+                <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                  {registerErrors.gender}
+                </span>
+              )}
+            </div>
             <div className="flex items-center gap-2 p-4 border rounded-md">
               <input
                 type="radio"
@@ -221,32 +246,36 @@ export default function RegisterForm() {
               />
               <label htmlFor="gender-otros">Otros</label>
             </div>
-            {registerErrors.gender && (
-                <span className="text-xs text-red-600">
-                  {registerErrors.gender}
-                </span>
-              )}
           </div>
           <div className="flex flex-col gap-4 mb-[2vh] w-1/2">
-            <label htmlFor="date" className="text-lg font-extralight">
-              Fecha de Nacimiento
-            </label>
+            <div className="flex gap-4 items-center">
+              <label htmlFor="date" className="text-lg font-extralight">
+                Fecha de Nacimiento
+              </label>
+              {registerErrors.date && (
+                <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                  {registerErrors.date}
+                </span>
+              )}
+            </div>
             <input
               type="date"
               name="date"
               className="bg-transparent border rounded-md text-lg p-3 pr-[2vh] focus:outline-none"
             />
-            {registerErrors.date && (
-              <span className="text-xs text-red-600">
-                {registerErrors.date}
-              </span>
-            )}
           </div>
         </div>
         <div className="flex flex-col gap-4 mb-[2vh]">
-          <label htmlFor="password" className="text-lg font-extralight">
-            Contraseña
-          </label>
+          <div className="flex gap-4 items-center">
+            <label htmlFor="password" className="text-lg font-extralight">
+              Contraseña
+            </label>
+            {registerErrors.password && (
+              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                {registerErrors.password}
+              </span>
+            )}
+          </div>
           <div className="relative">
             <input
               type={`${showPassword ? 'text' : 'password'}`}
@@ -264,16 +293,21 @@ export default function RegisterForm() {
               )}
             </div>
           </div>
-          {registerErrors.password && (
-            <span className="text-xs text-red-600">
-              {registerErrors.password}
-            </span>
-          )}
         </div>
         <div className="flex flex-col gap-4 mb-[2vh]">
-          <label htmlFor="confirm_password" className="text-lg font-extralight">
-            Confirmar Contraseña
-          </label>
+          <div className="flex gap-4 items-center">
+            <label
+              htmlFor="confirm_password"
+              className="text-lg font-extralight"
+            >
+              Confirmar Contraseña
+            </label>
+            {registerErrors.confirm_password && (
+              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                {registerErrors.confirm_password}
+              </span>
+            )}
+          </div>
           <div className="relative">
             <input
               type={`${showPassword ? 'text' : 'password'}`}
@@ -291,11 +325,6 @@ export default function RegisterForm() {
               )}
             </div>
           </div>
-          {registerErrors.confirm_password && (
-            <span className="text-xs text-red-600">
-              {registerErrors.confirm_password}
-            </span>
-          )}
         </div>
         <Button className="bg-primary-orange-600 w-full my-[2vh] py-6 text-xl hover:bg-primary-orange-700">
           Enviar

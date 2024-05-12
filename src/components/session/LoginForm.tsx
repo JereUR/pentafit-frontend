@@ -2,14 +2,26 @@
 
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons'
 import { useState } from 'react'
-import { Button } from '../ui/button'
 import Link from 'next/link'
+
+import { Button } from '../ui/button'
 import useUser from '../hooks/useUser'
 import ForgotPasswordModal from './ForgotPasswordModal'
+import { PropsLogin } from '../types/User'
+
+interface FormErrors {
+  email?: string
+  password?: string
+  [key: string]: string | undefined
+}
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [loginErrors, setLoginErrors] = useState<FormErrors>({
+    email: '',
+    password: ''
+  })
   const { signIn } = useUser()
 
   const handleOpenModal = () => {
@@ -20,17 +32,62 @@ export default function LoginForm() {
     setShowModal(false) // Close the modal from within or parent
   }
 
+  const validations = ({ data }: { data: PropsLogin }) => {
+    const errorsForm: FormErrors = {}
+
+    const regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/
+
+    if (!data.email.trim()) {
+      errorsForm.email = `Este campo no debe ser vacío.`
+    } else if (!regexEmail.test(data.email)) {
+      errorsForm.email = 'Correo no válido.'
+    }
+
+    if (!data.password.trim()) {
+      errorsForm.password = `Ingrese su contraseña.`
+    }
+
+    return errorsForm
+  }
+
+  async function handleAction(formData: FormData) {
+    const { email, password } = Object.fromEntries(formData)
+
+    const data = {
+      email: email.toString(),
+      password: password.toString()
+    }
+
+    const err = validations({ data })
+    setLoginErrors(err)
+
+    if (Object.keys(err).length === 0) {
+      await signIn(formData)
+      setLoginErrors({
+        email: '',
+        password: ''
+      })
+    }
+  }
+
   return (
     <div className="m-8 px-8">
-      <form action={signIn}>
+      <form action={handleAction}>
         <div className="flex flex-col gap-4 mb-[8vh]">
           <p className="text-3xl font-bold">Iniciar Sesión</p>
           <span>Disfruta de las funcionalidades que ofrecemos</span>
         </div>
         <div className="flex flex-col gap-4 mb-[5vh]">
-          <label htmlFor="email" className="text-xl font-extralight">
-            Email
-          </label>
+          <div className="flex gap-4 items-center">
+            <label htmlFor="email" className="text-xl font-extralight">
+              Email
+            </label>
+            {loginErrors.email && (
+              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                {loginErrors.email}
+              </span>
+            )}
+          </div>
           <input
             type="email"
             name="email"
@@ -38,9 +95,16 @@ export default function LoginForm() {
           />
         </div>
         <div className="flex flex-col gap-4 mb-[5vh]">
-          <label htmlFor="password" className="text-xl font-extralight">
-            Contraseña
-          </label>
+          <div className="flex gap-4 items-center">
+            <label htmlFor="password" className="text-xl font-extralight">
+              Contraseña
+            </label>
+            {loginErrors.password && (
+              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                {loginErrors.password}
+              </span>
+            )}
+          </div>
           <div className="relative">
             <input
               type={`${showPassword ? 'text' : 'password'}`}

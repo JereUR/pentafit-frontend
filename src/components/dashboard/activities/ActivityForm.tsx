@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { FaCheck } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { PropsAdd } from '@/components/types/Activity'
 
 const payments = [
   'Por sesion',
@@ -60,22 +61,130 @@ const checkboxItems = [
   }
 ]
 
+interface FormErrors {
+  activity?: string
+  cost?: string
+  isPublic?: string
+  quotaGeneration?: string
+  sessionMax?: string
+  mpAvailable?: string
+  dateFrom?: string
+  dateUntil?: string
+  paymentType?: string
+  publicName?: string
+  [key: string]: string | undefined
+}
+
 export default function ActivityForm() {
   const { addActivity } = useActivities()
   const [isPublic, setIsPublic] = useState(false)
   const [quotaGeneration, setQuotaGeneration] = useState(false)
   const [mpAvailable, setMpAvailable] = useState(false)
+  const [addErrors, setAddErrors] = useState<FormErrors>({
+    activity: '',
+    cost: '',
+    isPublic: '',
+    sessionMax: '',
+    dateFrom: '',
+    dateUntil: '',
+    paymentType: '',
+    publicName: ''
+  })
   const router = useRouter()
+
+  const validations = ({ data }: { data: PropsAdd }) => {
+    const errorsForm: FormErrors = {}
+
+    if (!data.activity.trim()) {
+      errorsForm.activity = `Este campo no debe ser vacío.`
+    }
+
+    if (!data.cost) {
+      errorsForm.cost = `Este campo no debe ser vacío.`
+    } else if (parseInt(data.cost) < 0) {
+      errorsForm.cost = 'Este valor no puede ser negativo.'
+    }
+
+    if (!data.sessionMax) {
+      errorsForm.sessionMax = `Este campo no debe ser vacío.`
+    } else if (parseInt(data.sessionMax) < 0) {
+      errorsForm.sessionMax = 'Este valor no puede ser negativo.'
+    }
+
+    if (!data.dateFrom) {
+      errorsForm.dateFrom = `Este campo no debe ser vacío.`
+    }
+
+    if (!data.dateUntil) {
+      errorsForm.dateUntil = `Este campo no debe ser vacío.`
+    }
+
+    if (data.isPublic==='true') {
+      if (!data.publicName) {
+        errorsForm.publicName = `Este campo no debe ser vacío.`
+      }
+    }
+
+    return errorsForm
+  }
+
+  async function handleAction(formData: FormData) {
+    const {
+      activity,
+      cost,
+      isPublic,
+      sessionMax,
+      dateFrom,
+      dateUntil,
+      paymentType,
+      publicName
+    } = Object.fromEntries(formData)
+
+    const data = {
+      activity: activity.toString(),
+      cost: cost.toString(),
+      isPublic: String(isPublic),
+      sessionMax: sessionMax.toString(),
+      dateFrom: dateFrom?.toString(),
+      dateUntil: dateUntil?.toString(),
+      paymentType: paymentType.toString(),
+      publicName: publicName?.toString()
+    }
+    
+    const err = validations({ data })
+    setAddErrors(err)
+
+    if (Object.keys(err).length === 0) {
+      await addActivity(formData)
+      setAddErrors({
+        activity: '',
+        cost: '',
+        isPublic: '',
+        sessionMax: '',
+        dateFrom: '',
+        dateUntil: '',
+        paymentType: '',
+        publicName: ''
+      })
+    }
+  }
 
   return (
     <div>
-      <form action={addActivity}>
+      <form action={handleAction}>
         <div className="grid grid-cols-3 gap-8 mb-4">
           {inputItems.map((item) => (
             <div key={item.name} className="flex flex-col gap-2">
-              <label htmlFor={item.name} className="font-[600]">
-                {item.label}
-              </label>
+              <div className="flex gap-4 items-center">
+                <label htmlFor={item.name} className="font-[600]">
+                  {item.label}
+                </label>
+                {addErrors[item.name] && (
+                  <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                    {addErrors[item.name]}
+                  </span>
+                )}
+              </div>
               <input
                 type={item.type}
                 name={item.name}
@@ -160,9 +269,16 @@ export default function ActivityForm() {
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <label htmlFor="publicName" className="font-[600]">
-                Nombre Público
-              </label>
+              <div className="flex gap-4 items-center">
+                <label htmlFor="publicName" className="font-[600]">
+                  Nombre Público
+                </label>
+                {addErrors.publicName && (
+                  <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                    {addErrors.publicName}
+                  </span>
+                )}
+              </div>
               <input
                 type="text"
                 name="publicName"

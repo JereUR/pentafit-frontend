@@ -19,3 +19,8 @@ export interface PropsRegister {
   password: string
   confirm_password: string
 }
+
+export interface PropsLogin {
+  email: string
+  password: string
+}

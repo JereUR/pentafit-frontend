@@ -1,17 +1,26 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import useUser from '../hooks/useUser'
 import { useState } from 'react'
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons'
 import { useRouter, useSearchParams } from 'next/navigation'
 import axios from 'axios'
+
+interface FormErrors {
+  password?: string
+  confirm_password?: string
+  [key: string]: string | undefined
+}
 
 export default function RecoverForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [recoverErrors, setRecoverErrors] = useState<FormErrors>({
+    password: '',
+    confirm_password: ''
+  })
   const searchParams = useSearchParams()
   const router = useRouter()
 
@@ -27,8 +36,36 @@ export default function RecoverForm() {
     setConfirmPassword(event.target.value)
   }
 
-  async function updatePassword(event: React.FormEvent<HTMLFormElement>) {
+  const validations = () => {
+    const errorsForm: FormErrors = {}
+
+    if (password.length < 8) {
+      errorsForm.password = `La contraseña debe tener más de 8 caracteres.`
+    }
+
+    if (password !== confirmPassword) {
+      errorsForm.password = `La contraseña y su confirmación no coinciden.`
+      errorsForm.confirm_password = `La contraseña y su confirmación no coinciden.`
+    }
+
+    return errorsForm
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    const err = validations()
+    setRecoverErrors(err)
+
+    if (Object.keys(err).length === 0) {
+      await updatePassword()
+      setRecoverErrors({
+        password: '',
+        confirm_password: ''
+      })
+    }
+  }
+
+  async function updatePassword() {
     const token = searchParams.get('reset_password_token')
     setLoading(true)
 
@@ -69,11 +106,18 @@ export default function RecoverForm() {
       <h2 className="text-4xl font-bold text-center m-4 text-foreground">
         Reestablecer Contraseña
       </h2>
-      <form onSubmit={updatePassword} className="py-6">
+      <form onSubmit={handleSubmit} className="py-6">
         <div className="flex flex-col gap-4 mb-[2vh]">
-          <label htmlFor="password" className="text-lg font-extralight">
-            Nueva Contraseña
-          </label>
+          <div className="flex gap-4 items-center">
+            <label htmlFor="password" className="text-lg font-extralight">
+              Nueva Contraseña
+            </label>
+            {recoverErrors.password && (
+              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                {recoverErrors.password}
+              </span>
+            )}
+          </div>
           <div className="relative">
             <input
               type={`${showPassword ? 'text' : 'password'}`}
@@ -95,9 +139,19 @@ export default function RecoverForm() {
           </div>
         </div>
         <div className="flex flex-col gap-4 mb-[2vh]">
-          <label htmlFor="confirm_password" className="text-lg font-extralight">
-            Confirmar Contraseña
-          </label>
+          <div className="flex gap-4 items-center">
+            <label
+              htmlFor="confirm_password"
+              className="text-lg font-extralight"
+            >
+              Confirmar Contraseña
+            </label>
+            {recoverErrors.confirm_password && (
+              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                {recoverErrors.confirm_password}
+              </span>
+            )}
+          </div>
           <div className="relative">
             <input
               type={`${showPassword ? 'text' : 'password'}`}

@@ -16,12 +16,38 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
   onClose
 }) => {
   const [showModal, setShowModal] = useState(isOpen)
+  const [forgotError, setForgotError] = useState('')
   const { recover, recoverState, setRecoverState, loading } = useUser()
 
   const handleClose = () => {
     setShowModal(false)
     setRecoverState(false)
     onClose() // Call the provided onClose function to notify parent
+  }
+
+  const validation = (email: string) => {
+    let error = ''
+    const regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/
+
+    if (!email.trim()) {
+      error = `Este campo no debe ser vacío.`
+    } else if (!regexEmail.test(email)) {
+      error = 'Correo no válido.'
+    }
+
+    return error
+  }
+
+  async function handleAction(formData: FormData) {
+    const { email } = Object.fromEntries(formData)
+
+    const err = validation(email.toString())
+    setForgotError(err)
+
+    if (Object.keys(err).length === 0) {
+      await recover(formData)
+      setForgotError('')
+    }
   }
 
   return (
@@ -56,13 +82,18 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
               Ingrese si correo electrónico y recibirá un mail con la
               información necesaria para reestablecer su contraseña.
             </span>
-            <form action={recover} className="flex flex-col gap-4">
+            <form action={handleAction} className="flex flex-col gap-4">
               <input
                 type="email"
                 name="email"
                 placeholder="Correo electrónico"
                 className="bg-transparent border rounded-md text-xl p-2 focus:outline-none my-2 mx-4"
               />
+              {forgotError != '' && (
+                <span className="text-xs w-max ml-[2vw] mt-[-2vh] text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                  {forgotError}
+                </span>
+              )}
               <Button className="bg-primary-orange-600 h-[5vh] text-xl m-4 text-foreground rounded-md hover:bg-primary-orange-700">
                 Enviar
               </Button>
