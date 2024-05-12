@@ -20,6 +20,31 @@ export default function RootLayout({
 }>) {
   const pathname = usePathname()
   const shouldRenderLayout = !pathname.startsWith('/panel-de-control')
+  const recoverLayout = pathname.startsWith('/recover')
+
+  if (recoverLayout) {
+    return (
+      <html lang="en">
+        <body className={inter.className}>
+          <AuthContextProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <>
+                <div className="p-4">
+                  <Logo isSticky={false} />
+                </div>
+                {children}
+              </>
+            </ThemeProvider>
+          </AuthContextProvider>
+        </body>
+      </html>
+    )
+  }
 
   return (
     <html lang="en">
