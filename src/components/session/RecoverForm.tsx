@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons'
 import { useRouter, useSearchParams } from 'next/navigation'
 import axios from 'axios'
+import { useToast } from '../ui/use-toast'
 
 interface FormErrors {
   password?: string
@@ -23,6 +24,7 @@ export default function RecoverForm() {
   })
   const searchParams = useSearchParams()
   const router = useRouter()
+  const { toast } = useToast()
 
   const handleChangePassword = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -91,11 +93,25 @@ export default function RecoverForm() {
         console.log('Password update response:', response.data)
         router.push('/iniciar-sesion')
       } else {
-        throw new Error('Update password failed: ' + response.data?.message)
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
       }
-    } catch (error) {
-      console.error('Password update error:', error)
-      throw new Error('An unexpected error occurred during update password.')
+    } catch (error: any) {
+      if (error.response && error.response.status >= 400) {
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error.response.data.message
+        })
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error.message
+        })
+      }
     } finally {
       setLoading(false)
     }

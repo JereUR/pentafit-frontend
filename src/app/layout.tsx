@@ -10,6 +10,7 @@ import SideBar from '@/components/dashboard/navbar/SideBar'
 import TopBar from '@/components/dashboard/navbar/TopBar'
 import ActivitiesContextProvider from '@/components/context/ActivitiesContext'
 import Logo from '@/components/Logo'
+import { Toaster } from '@/components/ui/toaster'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -38,6 +39,7 @@ export default function RootLayout({
                   <Logo isSticky={false} />
                 </div>
                 {children}
+                <Toaster />
               </>
             </ThemeProvider>
           </AuthContextProvider>
@@ -61,6 +63,7 @@ export default function RootLayout({
                 <>
                   <NavBar />
                   {children}
+                  <Toaster />
                 </>
               ) : (
                 <div className="flex min-h-screen">
@@ -71,6 +74,7 @@ export default function RootLayout({
                     <TopBar />
                     {children}
                   </div>
+                  <Toaster />
                 </div>
               )}
             </ActivitiesContextProvider>

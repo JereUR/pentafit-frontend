@@ -8,13 +8,14 @@ import {
   useEffect,
   useState
 } from 'react'
-import { useRouter } from 'next/navigation'
+
 import { Activity } from '../types/Activity'
 import axios from 'axios'
+import { useToast } from '../ui/use-toast'
 
 type ActivitiesContextType = {
   activities: Activity[] | []
-  getActivities: (q: string, page: string) => Promise<Activity[] | [] | Error>
+  getActivities: (q: string, page: string) => Promise<Activity[] | [] | void>
   addActivity: (formData: FormData) => Promise<void | Error>
 }
 
@@ -93,7 +94,7 @@ export default function ActivitiesContextProvider({
   async function getActivities(
     q: string,
     page: string
-  ): Promise<Activity[] | [] | Error> {
+  ): Promise<Activity[] | [] | void> {
     const regex = new RegExp(q, 'i')
     const ITEM_PER_PAGE = 4
     /* const index = ITEM_PER_PAGE * (parseInt(page) - 1) */
@@ -101,7 +102,7 @@ export default function ActivitiesContextProvider({
     params.append('regex', regex.toString())
     params.append('page', page)
     params.append('ITEMS_PER_PAGE', ITEM_PER_PAGE.toString())
-
+    const { toast } = useToast()
     const url = `${
       process.env.BASE_BACKEND_URL
     }get-activities?${params.toString()}`
@@ -113,10 +114,25 @@ export default function ActivitiesContextProvider({
         setActivities(response.data?.activities)
         return response.data?.activities
       } else {
-        throw new Error('Get activities failed')
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
       }
-    } catch (error) {
-      throw new Error('Failed to fecth users!')
+    } catch (error: any) {
+      if (error.response && error.response.status >= 400) {
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error.response.data.message
+        })
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error.message
+        })
+      }
     }
   }
 

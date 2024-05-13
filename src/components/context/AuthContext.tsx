@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation'
 import { setCookies } from './setCookies'
 import { removeCookies } from './removeCookies'
 import axios from 'axios'
+import { useToast } from '../ui/use-toast'
 
 type AuthContextType = {
   user: User | null
@@ -22,10 +23,10 @@ type AuthContextType = {
   recoverState: boolean
   loading: boolean
   setRecoverState: Dispatch<SetStateAction<boolean>>
-  signIn: (formData: FormData) => Promise<void | Error>
-  signOut: () => void
-  signUp: (formData: FormData) => Promise<void | Error>
-  recover: (formData: FormData) => Promise<void | Error>
+  signIn: (formData: FormData) => Promise<void>
+  signOut: () => Promise<void>
+  signUp: (formData: FormData) => Promise<void>
+  recover: (formData: FormData) => Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -50,6 +51,7 @@ export default function AuthContextProvider({
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const router = useRouter()
   const pathname = usePathname()
+  const { toast } = useToast()
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token')
@@ -98,17 +100,24 @@ export default function AuthContextProvider({
           router.push('/panel-de-control')
         }, 100)
       } else {
-        throw new Error('Sign in failed')
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
       }
     } catch (error: any) {
-      console.error('Sign in error:', error)
-
       if (error.response && error.response.status >= 400) {
-        throw new Error(
-          `sign in failed: ${error.response.data.message || 'Server error'}`
-        )
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error.response.data.message
+        })
       } else {
-        throw new Error('An unexpected error occurred during sign in.')
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error.message
+        })
       }
     } finally {
       setLoading(false)
@@ -139,22 +148,31 @@ export default function AuthContextProvider({
         localStorage.setItem('isLoggedOut', 'true')
         router.push('/')
       } else {
-        throw new Error('Sign out failed')
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
       }
-    } catch (error) {
-      console.error('Sign out error:', error)
-      if (error instanceof Error) {
-        return error
+    } catch (error: any) {
+      if (error.response && error.response.status >= 400) {
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error.response.data.message
+        })
       } else {
-        console.error('Unexpected error:', error)
-        throw new Error('An unexpected error occurred during sign out.')
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error.message
+        })
       }
     } finally {
       setLoading(false)
     }
   }
 
-  async function signUp(formData: FormData): Promise<void | Error> {
+  async function signUp(formData: FormData): Promise<void> {
     setLoading(true)
     const { first_name, last_name, email, gender, date, password } =
       Object.fromEntries(formData)
@@ -192,22 +210,31 @@ export default function AuthContextProvider({
           router.push('/panel-de-control')
         }, 100)
       } else {
-        throw new Error('Sign up failed')
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
       }
-    } catch (error) {
-      console.error('Sign up error:', error)
-      if (error instanceof Error) {
-        return error
+    } catch (error: any) {
+      if (error.response && error.response.status >= 400) {
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error.response.data.message
+        })
       } else {
-        console.error('Unexpected error:', error)
-        throw new Error('An unexpected error occurred during sign up.')
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error.message
+        })
       }
     } finally {
       setLoading(false)
     }
   }
 
-  async function recover(formData: FormData): Promise<void | Error> {
+  async function recover(formData: FormData): Promise<void> {
     setLoading(true)
     const { email } = Object.fromEntries(formData)
 
@@ -228,12 +255,26 @@ export default function AuthContextProvider({
         setRecoverState(true)
       } else {
         setRecoverState(false)
-        throw new Error('Recover failed: ' + response.data?.message)
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
       }
-    } catch (error) {
-      console.error('Recovery error:', error)
+    } catch (error: any) {
       setRecoverState(false)
-      throw new Error('An unexpected error occurred during recover.')
+      if (error.response && error.response.status >= 400) {
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error.response.data.message
+        })
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error.message
+        })
+      }
     } finally {
       setLoading(false)
     }

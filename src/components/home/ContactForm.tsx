@@ -7,6 +7,7 @@ import photo from '../../../public/assets/banner-login.png'
 import { Button } from '../ui/button'
 import axios from 'axios'
 import Loading from './../../app/loading'
+import { useToast } from '../ui/use-toast'
 
 interface FormData {
   name: string
@@ -46,6 +47,7 @@ export default function ContactForm() {
     message: ''
   })
   const [loading, setLoading] = useState(false)
+  const { toast } = useToast()
 
   const validations = () => {
     const validationErrors: FormErrors = {}
@@ -111,19 +113,24 @@ export default function ContactForm() {
           setFormData({ name: '', lastname: '', email: '', message: '' })
           setLoading(false)
         } else {
-          throw new Error('Send message failed')
+          toast({
+            title: 'Oh no! Algo salió mal.',
+            description: response.statusText
+          })
         }
       } catch (error: any) {
-        console.error('Send message error:', error)
-
         if (error.response && error.response.status >= 400) {
-          throw new Error(
-            `Send message failed: ${
-              error.response.data.message || 'Server error'
-            }`
-          )
+          toast({
+            variant: 'destructive',
+            title: 'Oh no! Algo salió mal.',
+            description: error.response.data.message
+          })
         } else {
-          throw new Error('An unexpected error occurred during send message.')
+          toast({
+            variant: 'destructive',
+            title: 'Oh no! Algo salió mal.',
+            description: error.message
+          })
         }
       }
     }
