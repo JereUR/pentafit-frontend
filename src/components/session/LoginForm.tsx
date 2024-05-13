@@ -8,6 +8,7 @@ import { Button } from '../ui/button'
 import useUser from '../hooks/useUser'
 import ForgotPasswordModal from './ForgotPasswordModal'
 import { PropsLogin } from '../types/User'
+import Loader from '../Loader'
 
 interface FormErrors {
   email?: string
@@ -18,6 +19,7 @@ interface FormErrors {
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [loginErrors, setLoginErrors] = useState<FormErrors>({
     email: '',
     password: ''
@@ -52,7 +54,6 @@ export default function LoginForm() {
 
   async function handleAction(formData: FormData) {
     const { email, password } = Object.fromEntries(formData)
-
     const data = {
       email: email.toString(),
       password: password.toString()
@@ -62,12 +63,15 @@ export default function LoginForm() {
     setLoginErrors(err)
 
     if (Object.keys(err).length === 0) {
+      setLoading(true)
       await signIn(formData)
       setLoginErrors({
         email: '',
         password: ''
       })
     }
+
+    setLoading(false)
   }
 
   return (
@@ -129,7 +133,7 @@ export default function LoginForm() {
           </span>
         </div>
         <Button className="bg-primary-orange-600 w-full my-[5vh] py-6 text-xl hover:bg-primary-orange-700">
-          Enviar
+          {!loading ? 'Enviar' : <Loader className="mt-[2vh]" />}
         </Button>
       </form>
       {showModal && (

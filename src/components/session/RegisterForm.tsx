@@ -10,6 +10,7 @@ import { Button } from '../ui/button'
 import Link from 'next/link'
 import useUser from '../hooks/useUser'
 import { PropsRegister } from '../types/User'
+import Loader from '../Loader'
 
 interface FormErrors {
   first_name?: string
@@ -25,6 +26,7 @@ interface FormErrors {
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [gender, setGender] = useState('')
+  const [loading, setLoading] = useState(false)
   const [registerErrors, setRegisterErrors] = useState<FormErrors>({
     first_name: '',
     last_name: '',
@@ -127,6 +129,7 @@ export default function RegisterForm() {
     setRegisterErrors(err)
 
     if (Object.keys(err).length === 0) {
+      setLoading(true)
       await signUp(formData)
       setRegisterErrors({
         first_name: '',
@@ -138,6 +141,8 @@ export default function RegisterForm() {
         confirm_password: ''
       })
     }
+
+    setLoading(false)
   }
 
   return (
@@ -327,7 +332,7 @@ export default function RegisterForm() {
           </div>
         </div>
         <Button className="bg-primary-orange-600 w-full my-[2vh] py-6 text-xl hover:bg-primary-orange-700">
-          Enviar
+          {!loading ? 'Enviar' : <Loader className="mt-[2vh]" />}
         </Button>
       </form>
     </div>

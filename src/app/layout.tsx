@@ -11,6 +11,7 @@ import TopBar from '@/components/dashboard/navbar/TopBar'
 import ActivitiesContextProvider from '@/components/context/ActivitiesContext'
 import Logo from '@/components/Logo'
 import { Toaster } from '@/components/ui/toaster'
+import ThemeSwitcher from '@/components/ThemeSwitcher'
 
 const inter = Inter({ subsets: ['latin'] })
 

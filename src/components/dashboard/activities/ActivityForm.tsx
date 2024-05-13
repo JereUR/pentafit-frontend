@@ -10,6 +10,7 @@ import { FaCheck } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { PropsAdd } from '@/components/types/Activity'
+import Loader from '@/components/Loader'
 
 const payments = [
   'Por sesion',
@@ -80,6 +81,7 @@ export default function ActivityForm() {
   const [isPublic, setIsPublic] = useState(false)
   const [quotaGeneration, setQuotaGeneration] = useState(false)
   const [mpAvailable, setMpAvailable] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [addErrors, setAddErrors] = useState<FormErrors>({
     activity: '',
     cost: '',
@@ -119,7 +121,7 @@ export default function ActivityForm() {
       errorsForm.dateUntil = `Este campo no debe ser vacío.`
     }
 
-    if (data.isPublic==='true') {
+    if (data.isPublic === 'true') {
       if (!data.publicName) {
         errorsForm.publicName = `Este campo no debe ser vacío.`
       }
@@ -150,11 +152,12 @@ export default function ActivityForm() {
       paymentType: paymentType.toString(),
       publicName: publicName?.toString()
     }
-    
+
     const err = validations({ data })
     setAddErrors(err)
 
     if (Object.keys(err).length === 0) {
+      setLoading(true)
       await addActivity(formData)
       setAddErrors({
         activity: '',
@@ -167,6 +170,10 @@ export default function ActivityForm() {
         publicName: ''
       })
     }
+
+    setTimeout(() => {
+      setLoading(false)
+    }, 1000)
   }
 
   return (
@@ -307,7 +314,7 @@ export default function ActivityForm() {
             deve pagar de a una.
           </p>
         </div>
-        <div className="absolute right-8 mt-12">
+        <div className="flex absolute right-8 mt-12">
           <Button
             type="button"
             className="gap-2 mr-2 font-bold text-background bg-red-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-red-600 border-none"
@@ -319,7 +326,13 @@ export default function ActivityForm() {
             type="submit"
             className="gap-2 font-bold text-background bg-green-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-green-600 border-none"
           >
-            <FaCheck /> Guardar
+            {!loading ? (
+              <div className='flex gap-2 items-center'>
+                <FaCheck /> Guardar
+              </div>
+            ) : (
+              <Loader className="mt-[1.1vh] ml-[1vw]" />
+            )}
           </Button>
         </div>
       </form>

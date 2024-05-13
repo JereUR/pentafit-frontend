@@ -21,7 +21,6 @@ type AuthContextType = {
   user: User | null
   token: string | null
   recoverState: boolean
-  loading: boolean
   setRecoverState: Dispatch<SetStateAction<boolean>>
   signIn: (formData: FormData) => Promise<void>
   signOut: () => Promise<void>
@@ -46,7 +45,6 @@ export default function AuthContextProvider({
       token: 'Bearer 1234'
     } */
   )
-  const [loading, setLoading] = useState(false)
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const router = useRouter()
@@ -70,7 +68,6 @@ export default function AuthContextProvider({
   }, [])
 
   async function signIn(formData: FormData) {
-    setLoading(true)
     const { email, password } = Object.fromEntries(formData)
     try {
       const response = await axios.post(
@@ -120,12 +117,10 @@ export default function AuthContextProvider({
         })
       }
     } finally {
-      setLoading(false)
     }
   }
 
   async function signOut() {
-    setLoading(true)
     try {
       const response = await axios.delete(
         `https://ca9b-190-191-171-9.ngrok-free.app/logout`,
@@ -168,12 +163,10 @@ export default function AuthContextProvider({
         })
       }
     } finally {
-      setLoading(false)
     }
   }
 
   async function signUp(formData: FormData): Promise<void> {
-    setLoading(true)
     const { first_name, last_name, email, gender, date, password } =
       Object.fromEntries(formData)
 
@@ -230,12 +223,10 @@ export default function AuthContextProvider({
         })
       }
     } finally {
-      setLoading(false)
     }
   }
 
   async function recover(formData: FormData): Promise<void> {
-    setLoading(true)
     const { email } = Object.fromEntries(formData)
 
     try {
@@ -276,7 +267,6 @@ export default function AuthContextProvider({
         })
       }
     } finally {
-      setLoading(false)
     }
   }
 
@@ -286,7 +276,6 @@ export default function AuthContextProvider({
         user,
         token,
         recoverState,
-        loading,
         setRecoverState,
         signIn,
         signOut,

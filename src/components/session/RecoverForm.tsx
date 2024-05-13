@@ -6,6 +6,7 @@ import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons'
 import { useRouter, useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import { useToast } from '../ui/use-toast'
+import Loader from '../Loader'
 
 interface FormErrors {
   password?: string
@@ -112,9 +113,10 @@ export default function RecoverForm() {
           description: error.message
         })
       }
-    } finally {
-      setLoading(false)
     }
+    setTimeout(() => {
+      setLoading(false)
+    }, 1000)
   }
 
   return (
@@ -190,10 +192,9 @@ export default function RecoverForm() {
         </div>
         <div className="flex justify-center">
           <Button className="bg-primary-orange-600 h-[5vh] w-[40vw] text-xl m-4 text-foreground rounded-md transition duration-300 ease-in-out hover:bg-primary-orange-700 cursor-pointer">
-            Enviar
+            {!loading ? 'Enviar' : <Loader className="mt-[2vh]" />}
           </Button>
         </div>
-        {loading && 'Procesando...'}
       </form>
     </div>
   )

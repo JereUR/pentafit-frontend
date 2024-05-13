@@ -5,6 +5,7 @@ import { Button } from '../ui/button'
 import useUser from '../hooks/useUser'
 import mailPhoto from '../../../public/assets/recover-mail.png'
 import Image from 'next/image'
+import Loader from '../Loader'
 
 interface ForgotPasswordModalProps {
   isOpen: boolean
@@ -17,7 +18,8 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
 }) => {
   const [showModal, setShowModal] = useState(isOpen)
   const [forgotError, setForgotError] = useState('')
-  const { recover, recoverState, setRecoverState, loading } = useUser()
+  const [loading, setLoading] = useState(false)
+  const { recover, recoverState, setRecoverState } = useUser()
 
   const handleClose = () => {
     setShowModal(false)
@@ -45,9 +47,12 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
     setForgotError(err)
 
     if (Object.keys(err).length === 0) {
+      setLoading(true)
       await recover(formData)
       setForgotError('')
     }
+
+    setLoading(false)
   }
 
   return (
@@ -95,9 +100,8 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
                 </span>
               )}
               <Button className="bg-primary-orange-600 h-[5vh] text-xl m-4 text-foreground rounded-md hover:bg-primary-orange-700">
-                Enviar
+                {!loading ? 'Enviar' : <Loader className="mt-[2vh]" />}
               </Button>
-              {loading && 'Procesando...'}
             </form>
           </div>
         )}
