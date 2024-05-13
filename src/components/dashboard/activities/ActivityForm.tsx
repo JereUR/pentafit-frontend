@@ -171,9 +171,7 @@ export default function ActivityForm() {
       })
     }
 
-    setTimeout(() => {
-      setLoading(false)
-    }, 1000)
+    setLoading(false)
   }
 
   return (
@@ -327,7 +325,7 @@ export default function ActivityForm() {
             className="gap-2 font-bold text-background bg-green-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-green-600 border-none"
           >
             {!loading ? (
-              <div className='flex gap-2 items-center'>
+              <div className="flex gap-2 items-center">
                 <FaCheck /> Guardar
               </div>
             ) : (
