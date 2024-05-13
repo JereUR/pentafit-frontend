@@ -90,6 +90,7 @@ export default function ActivitiesContextProvider({
       paymentType: 'Mensual con sesiones'
     }
   ])
+  const { toast } = useToast()
 
   async function getActivities(
     q: string,
@@ -102,7 +103,6 @@ export default function ActivitiesContextProvider({
     params.append('regex', regex.toString())
     params.append('page', page)
     params.append('ITEMS_PER_PAGE', ITEM_PER_PAGE.toString())
-    const { toast } = useToast()
     const url = `${
       process.env.BASE_BACKEND_URL
     }get-activities?${params.toString()}`
