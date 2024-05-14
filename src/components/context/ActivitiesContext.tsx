@@ -16,7 +16,11 @@ type ActivitiesContextType = {
   }: {
     dataActivity: PropsAdd
   }) => Promise<void | Error>
-  updateActivity: (formData: FormData) => Promise<void | Error>
+  updateActivity: ({
+    dataActivity
+  }: {
+    dataActivity: PropsAdd
+  }) => Promise<void | Error>
 }
 
 export const ActivitiesContext = createContext<ActivitiesContextType | null>(
@@ -153,13 +157,14 @@ export default function ActivitiesContextProvider({
       id: 'm5gr84i9',
       activity: 'Actividad 1',
       cost: 200,
-      isPublic: false,
+      isPublic: true,
       quotaGeneration: true,
       sessionMax: 5,
       mpAvailable: false,
       dateFrom: new Date(2024, 4, 20),
       dateUntil: new Date(2024, 5, 20),
-      paymentType: 'Mensual'
+      paymentType: 'Mensual',
+      publicName: 'Test'
     }
   }
 
@@ -237,46 +242,37 @@ export default function ActivitiesContextProvider({
     setLoading(false)
   }
 
-  async function updateActivity(formData: FormData): Promise<void | Error> {
-    const {
-      activity,
-      cost,
-      isPublic,
-      quotaGeneration,
-      sessionMax,
-      mpAvailable,
-      publicName,
-      dateFrom,
-      dateUntil,
-      paymentType
-    } = Object.fromEntries(formData)
-
+  async function updateActivity({
+    dataActivity
+  }: {
+    dataActivity: PropsAdd
+  }): Promise<void | Error> {
     let isPublicValue, quotaGenerationValue, mpAvailableValue
 
-    if (isPublic === undefined) {
+    if (dataActivity.isPublic === undefined) {
       isPublicValue = false
     } else {
-      if (isPublic === 'true') {
+      if (dataActivity.isPublic === 'true') {
         isPublicValue = true
       } else {
         isPublicValue = false
       }
     }
 
-    if (quotaGeneration === undefined) {
+    if (dataActivity.quotaGeneration === undefined) {
       quotaGenerationValue = false
     } else {
-      if (quotaGeneration === 'true') {
+      if (dataActivity.quotaGeneration === 'true') {
         quotaGenerationValue = true
       } else {
         quotaGenerationValue = false
       }
     }
 
-    if (mpAvailable === undefined) {
+    if (dataActivity.mpAvailable === undefined) {
       mpAvailableValue = false
     } else {
-      if (mpAvailable === 'true') {
+      if (dataActivity.mpAvailable === 'true') {
         mpAvailableValue = true
       } else {
         mpAvailableValue = false
@@ -284,17 +280,31 @@ export default function ActivitiesContextProvider({
     }
 
     const newActivity = {
-      activity,
-      cost,
+      activity: dataActivity.activity,
+      cost: dataActivity.cost,
       isPublic: isPublicValue,
       quotaGeneration: quotaGenerationValue,
-      sessionMax,
+      sessionMax: dataActivity.sessionMax,
       mpAvailable: mpAvailableValue,
-      publicName,
-      dateFrom,
-      dateUntil,
-      paymentType
+      publicName: dataActivity.publicName,
+      dateFrom: dataActivity.dateFrom,
+      dateUntil: dataActivity.dateUntil,
+      paymentType: dataActivity.paymentType
     }
+
+    /*
+    id: 'm5gr84i9',
+      activity: 'Actividad 1',
+      cost: 200,
+      isPublic: true,
+      quotaGeneration: true,
+      sessionMax: 5,
+      mpAvailable: false,
+      dateFrom: new Date(2024, 4, 20),
+      dateUntil: new Date(2024, 5, 20),
+      paymentType: 'Mensual',
+      publicName: 'Test'
+      */ 
 
     console.log(newActivity)
   }
