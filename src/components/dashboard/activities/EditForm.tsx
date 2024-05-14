@@ -1,14 +1,16 @@
 'use client'
 
-import useActivities from '@/components/hooks/useActivities'
-import Loader from '@/components/Loader'
-import { Activity, PropsAdd } from '@/components/types/Activity'
-import { Button } from '@/components/ui/button'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FaCheck } from 'react-icons/fa'
 import { ImCross } from 'react-icons/im'
 import { IoSettings } from 'react-icons/io5'
+
+import ErrorText from '@/components/ErrorText'
+import useActivities from '@/components/hooks/useActivities'
+import Loader from '@/components/Loader'
+import { Activity, PropsAdd } from '@/components/types/Activity'
+import { Button } from '@/components/ui/button'
 
 const payments = [
   'Por sesion',
@@ -180,9 +182,7 @@ export default function EditForm() {
                   Actividad
                 </label>
                 {updateErrors.activity && (
-                  <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
-                    {updateErrors.activity}
-                  </span>
+                  <ErrorText text={updateErrors.activity} />
                 )}
               </div>
               <input
@@ -197,11 +197,7 @@ export default function EditForm() {
                 <label htmlFor="cost" className="font-[600]">
                   Costo
                 </label>
-                {updateErrors.cost && (
-                  <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
-                    {updateErrors.cost}
-                  </span>
-                )}
+                {updateErrors.cost && <ErrorText text={updateErrors.cost} />}
               </div>
               <input
                 type="number"
@@ -216,7 +212,7 @@ export default function EditForm() {
                   Sesiones Máximas
                 </label>
                 {updateErrors.sessionMax && (
-                  <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                  <span className="text-xs text-red-600 py-[2px] px-1 rounded-md animate-pulse">
                     {updateErrors.sessionMax}
                   </span>
                 )}
@@ -234,9 +230,7 @@ export default function EditForm() {
                   Fecha Desde
                 </label>
                 {updateErrors.dateFrom && (
-                  <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
-                    {updateErrors.dateFrom}
-                  </span>
+                  <ErrorText text={updateErrors.dateFrom} />
                 )}
               </div>
               <input
@@ -251,9 +245,7 @@ export default function EditForm() {
                   Fecha Hasta
                 </label>
                 {updateErrors.dateUntil && (
-                  <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
-                    {updateErrors.dateUntil}
-                  </span>
+                  <ErrorText text={updateErrors.dateUntil} />
                 )}
               </div>
               <input
@@ -345,9 +337,7 @@ export default function EditForm() {
                     Nombre Público
                   </label>
                   {updateErrors.publicName && (
-                    <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
-                      {updateErrors.publicName}
-                    </span>
+                    <ErrorText text={updateErrors.publicName} />
                   )}
                 </div>
                 <input

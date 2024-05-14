@@ -11,6 +11,7 @@ import Link from 'next/link'
 import useUser from '../hooks/useUser'
 import { PropsRegister } from '../types/User'
 import Loader from '../Loader'
+import ErrorText from '../ErrorText'
 
 interface FormErrors {
   first_name?: string
@@ -165,9 +166,7 @@ export default function RegisterForm() {
               Nombre/s
             </label>
             {registerErrors.first_name && (
-              <span className="text-xs text-red-600  py-[2px] px-1 rounded-md animate-pulse">
-                {registerErrors.first_name}
-              </span>
+              <ErrorText text={registerErrors.first_name} />
             )}
           </div>
           <input
@@ -182,9 +181,7 @@ export default function RegisterForm() {
               Apellido/s
             </label>
             {registerErrors.last_name && (
-              <span className="text-xs text-red-600  py-[2px] px-1 rounded-md animate-pulse">
-                {registerErrors.last_name}
-              </span>
+              <ErrorText text={registerErrors.last_name} />
             )}
           </div>
           <input
@@ -198,11 +195,7 @@ export default function RegisterForm() {
             <label htmlFor="email" className="text-lg font-extralight">
               Email
             </label>
-            {registerErrors.email && (
-              <span className="text-xs text-red-600  py-[2px] px-1 rounded-md animate-pulse">
-                {registerErrors.email}
-              </span>
-            )}
+            {registerErrors.email && <ErrorText text={registerErrors.email} />}
           </div>
           <input
             type="email"
@@ -217,9 +210,7 @@ export default function RegisterForm() {
                 Sexo/Género
               </label>
               {registerErrors.gender && (
-                <span className="text-xs text-red-600  py-[2px] px-1 rounded-md animate-pulse">
-                  {registerErrors.gender}
-                </span>
+                <ErrorText text={registerErrors.gender} />
               )}
             </div>
             <div className="flex items-center gap-2 p-4 border rounded-md">
@@ -257,11 +248,7 @@ export default function RegisterForm() {
               <label htmlFor="date" className="text-lg font-extralight">
                 Fecha de Nacimiento
               </label>
-              {registerErrors.date && (
-                <span className="text-xs text-red-600  py-[2px] px-1 rounded-md animate-pulse">
-                  {registerErrors.date}
-                </span>
-              )}
+              {registerErrors.date && <ErrorText text={registerErrors.date} />}
             </div>
             <input
               type="date"
@@ -276,9 +263,7 @@ export default function RegisterForm() {
               Contraseña
             </label>
             {registerErrors.password && (
-              <span className="text-xs text-red-600  py-[2px] px-1 rounded-md animate-pulse">
-                {registerErrors.password}
-              </span>
+              <ErrorText text={registerErrors.password} />
             )}
           </div>
           <div className="relative">
@@ -308,9 +293,7 @@ export default function RegisterForm() {
               Confirmar Contraseña
             </label>
             {registerErrors.confirm_password && (
-              <span className="text-xs text-red-600  py-[2px] px-1 rounded-md animate-pulse">
-                {registerErrors.confirm_password}
-              </span>
+              <ErrorText text={registerErrors.confirm_password} />
             )}
           </div>
           <div className="relative">

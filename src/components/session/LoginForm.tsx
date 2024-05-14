@@ -9,6 +9,7 @@ import useUser from '../hooks/useUser'
 import ForgotPasswordModal from './ForgotPasswordModal'
 import { PropsLogin } from '../types/User'
 import Loader from '../Loader'
+import ErrorText from '../ErrorText'
 
 interface FormErrors {
   email?: string
@@ -86,11 +87,7 @@ export default function LoginForm() {
             <label htmlFor="email" className="text-xl font-extralight">
               Email
             </label>
-            {loginErrors.email && (
-              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
-                {loginErrors.email}
-              </span>
-            )}
+            {loginErrors.email && <ErrorText text={loginErrors.email} />}
           </div>
           <input
             type="email"
@@ -103,11 +100,7 @@ export default function LoginForm() {
             <label htmlFor="password" className="text-xl font-extralight">
               Contraseña
             </label>
-            {loginErrors.password && (
-              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
-                {loginErrors.password}
-              </span>
-            )}
+            {loginErrors.password && <ErrorText text={loginErrors.password} />}
           </div>
           <div className="relative">
             <input

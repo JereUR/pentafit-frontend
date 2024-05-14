@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { PropsAdd } from '@/components/types/Activity'
 import Loader from '@/components/Loader'
+import ErrorText from '@/components/ErrorText'
 
 const payments = [
   'Por sesion',
@@ -185,7 +186,7 @@ export default function ActivityForm() {
                   {item.label}
                 </label>
                 {addErrors[item.name] && (
-                  <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                  <span className="text-xs text-red-600 py-[2px] px-1 rounded-md animate-pulse">
                     {addErrors[item.name]}
                   </span>
                 )}
@@ -279,9 +280,7 @@ export default function ActivityForm() {
                   Nombre Público
                 </label>
                 {addErrors.publicName && (
-                  <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
-                    {addErrors.publicName}
-                  </span>
+                  <ErrorText text={addErrors.publicName} />
                 )}
               </div>
               <input

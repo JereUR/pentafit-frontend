@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import { useToast } from '../ui/use-toast'
 import Loader from '../Loader'
+import ErrorText from '../ErrorText'
 
 interface FormErrors {
   password?: string
@@ -122,9 +123,7 @@ export default function RecoverForm() {
               Nueva Contraseña
             </label>
             {recoverErrors.password && (
-              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
-                {recoverErrors.password}
-              </span>
+              <ErrorText text={recoverErrors.password} />
             )}
           </div>
           <div className="relative">
@@ -156,9 +155,7 @@ export default function RecoverForm() {
               Confirmar Contraseña
             </label>
             {recoverErrors.confirm_password && (
-              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
-                {recoverErrors.confirm_password}
-              </span>
+              <ErrorText text={recoverErrors.confirm_password} />
             )}
           </div>
           <div className="relative">

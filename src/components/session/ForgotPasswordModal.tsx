@@ -95,7 +95,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
                 className="bg-transparent border rounded-md text-xl p-2 focus:outline-none my-2 mx-4"
               />
               {forgotError != '' && (
-                <span className="text-xs w-max ml-[2vw] mt-[-2vh] text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                <span className="text-xs w-max ml-[2vw] mt-[-2vh] text-red-600 py-[2px] px-1 rounded-md animate-pulse">
                   {forgotError}
                 </span>
               )}

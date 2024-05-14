@@ -143,7 +143,7 @@ export default function ActivitiesContextProvider({
       })
     }
 
-    return /* {
+    return {
       id: 'm5gr84i9',
       activity: 'Actividad 1',
       cost: 200,
@@ -154,7 +154,7 @@ export default function ActivitiesContextProvider({
       dateFrom: new Date(2024, 4, 20),
       dateUntil: new Date(2024, 5, 20),
       paymentType: 'Mensual'
-    } */null
+    }
   }
 
   async function addActivity(formData: FormData): Promise<void | Error> {
