@@ -71,7 +71,7 @@ export default function AuthContextProvider({
     const { email, password } = Object.fromEntries(formData)
     try {
       const response = await axios.post(
-        `https://ca9b-190-191-171-9.ngrok-free.app/login`,
+        `https://38ad-190-191-171-9.ngrok-free.app/login`,
         {
           user: {
             email,
@@ -123,7 +123,7 @@ export default function AuthContextProvider({
   async function signOut() {
     try {
       const response = await axios.delete(
-        `https://ca9b-190-191-171-9.ngrok-free.app/logout`,
+        `https://38ad-190-191-171-9.ngrok-free.app/logout`,
         {
           headers: {
             Authorization: token
@@ -180,7 +180,7 @@ export default function AuthContextProvider({
     }
     try {
       const response = await axios.post(
-        `https://ca9b-190-191-171-9.ngrok-free.app/signup`,
+        `https://38ad-190-191-171-9.ngrok-free.app/signup`,
         {
           user
         },
@@ -231,7 +231,7 @@ export default function AuthContextProvider({
 
     try {
       const response = await axios.post(
-        `https://ca9b-190-191-171-9.ngrok-free.app/recover`,
+        `https://38ad-190-191-171-9.ngrok-free.app/recover`,
         {
           user: { email }
         },

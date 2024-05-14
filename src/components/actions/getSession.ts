@@ -1,6 +1,4 @@
-import axios from 'axios'
 import { NextRequest } from 'next/server'
-import { User } from '../types/User'
 import { cookies } from 'next/headers'
 
 /* export default async function getSession() {
@@ -17,11 +15,11 @@ export default async function getSession(req: NextRequest) {
   const sessionToken = cookies().get('session')?.value
   let session: any = null
 
-  /* if (!sessionToken) {
+  if (!sessionToken) {
     return null
-  } */
+  }
 
-  session = {
+  /* session = {
     id: 2,
     first_name: 'Jeremias',
     last_name: 'DV',
@@ -32,25 +30,28 @@ export default async function getSession(req: NextRequest) {
 
   return {
     session
-  }
+  } */
 
   const headers = {
-    Origin: 'http://localhost:3001/',
     'X-Requested-With': 'XMLHttpRequest',
     Authorization: sessionToken
   }
 
   try {
-    await fetch(`${process.env.BASE_BACKEND_URL}currentuser`, {
-      credentials: 'include'
-      /* headers: headers */
-    })
+    await fetch(
+      `https://38ad-190-191-171-9.ngrok-free.app/api/v1/currentuser`,
+      {
+        credentials: 'include',
+        headers: headers
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         session = data
       })
       .catch((error) => {
-        return new Error(error)
+        console.error('Error validating session:', error)
+        return null
       })
       .finally(() => {
         return session
