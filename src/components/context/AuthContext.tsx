@@ -9,7 +9,7 @@ import {
   useState
 } from 'react'
 
-import { User } from '../types/User'
+import { PropsLogin, PropsRegister, User } from '../types/User'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import { setCookies } from './setCookies'
@@ -21,11 +21,12 @@ type AuthContextType = {
   user: User | null
   token: string | null
   recoverState: boolean
+  loading: boolean
   setRecoverState: Dispatch<SetStateAction<boolean>>
-  signIn: (formData: FormData) => Promise<void>
+  signIn: ({ dataLogin }: { dataLogin: PropsLogin }) => Promise<void>
   signOut: () => Promise<void>
-  signUp: (formData: FormData) => Promise<void>
-  recover: (formData: FormData) => Promise<void>
+  signUp: ({ dataRegister }: { dataRegister: PropsRegister }) => Promise<void>
+  recover: ({ email }: { email: string }) => Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -47,6 +48,7 @@ export default function AuthContextProvider({
   )
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   const { toast } = useToast()
@@ -67,15 +69,15 @@ export default function AuthContextProvider({
       setUser(userFromStorage)
     }
   }, [])
-  async function signIn(formData: FormData) {
-    const { email, password } = Object.fromEntries(formData)
+  async function signIn({ dataLogin }: { dataLogin: PropsLogin }) {
+    setLoading(true)
     try {
       const response = await axios.post(
         `${BASE_URL}login`,
         {
           user: {
-            email,
-            password
+            email: dataLogin.email,
+            password: dataLogin.password
           }
         },
         {
@@ -117,10 +119,12 @@ export default function AuthContextProvider({
         })
       }
     } finally {
+      setLoading(false)
     }
   }
 
   async function signOut() {
+    setLoading(true)
     try {
       const response = await axios.delete(`${BASE_URL}logout`, {
         headers: {
@@ -152,20 +156,23 @@ export default function AuthContextProvider({
         description: error.message
       })
     } finally {
+      setLoading(false)
     }
   }
 
-  async function signUp(formData: FormData): Promise<void> {
-    const { first_name, last_name, email, gender, date, password } =
-      Object.fromEntries(formData)
-
+  async function signUp({
+    dataRegister
+  }: {
+    dataRegister: PropsRegister
+  }): Promise<void> {
+    setLoading(true)
     const user = {
-      first_name,
-      last_name,
-      email,
-      gender,
-      date,
-      password
+      first_name: dataRegister.first_name,
+      last_name: dataRegister.last_name,
+      email: dataRegister.email,
+      gender: dataRegister.gender,
+      date: dataRegister.date,
+      password: dataRegister.password
     }
     try {
       const response = await axios.post(
@@ -199,12 +206,12 @@ export default function AuthContextProvider({
         description: error.message
       })
     } finally {
+      setLoading(false)
     }
   }
 
-  async function recover(formData: FormData): Promise<void> {
-    const { email } = Object.fromEntries(formData)
-
+  async function recover({ email }: { email: string }): Promise<void> {
+    setLoading(true)
     try {
       const response = await axios.post(
         `${BASE_URL}recover`,
@@ -234,6 +241,7 @@ export default function AuthContextProvider({
         description: error.message
       })
     } finally {
+      setLoading(false)
     }
   }
 
@@ -243,6 +251,7 @@ export default function AuthContextProvider({
         user,
         token,
         recoverState,
+        loading,
         setRecoverState,
         signIn,
         signOut,

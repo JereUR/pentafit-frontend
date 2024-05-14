@@ -24,10 +24,19 @@ interface FormErrors {
   [key: string]: string | undefined
 }
 
+const initialData = {
+  first_name: '',
+  last_name: '',
+  email: '',
+  gender: '',
+  date: '',
+  password: '',
+  confirm_password: ''
+}
+
 export default function RegisterForm() {
+  const [dataRegister, setDataRegister] = useState<PropsRegister>(initialData)
   const [showPassword, setShowPassword] = useState(false)
-  const [gender, setGender] = useState('')
-  const [loading, setLoading] = useState<boolean>(false)
   const [registerErrors, setRegisterErrors] = useState<FormErrors>({
     first_name: '',
     last_name: '',
@@ -37,41 +46,41 @@ export default function RegisterForm() {
     password: '',
     confirm_password: ''
   })
-  const { signUp } = useUser()
+  const { signUp, loading } = useUser()
 
-  const validations = ({ data }: { data: PropsRegister }) => {
+  const validations = ({ dataRegister }: { dataRegister: PropsRegister }) => {
     const errorsForm: FormErrors = {}
 
     const regexName = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/
     const regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/
 
-    if (!data.first_name.trim()) {
+    if (!dataRegister.first_name.trim()) {
       errorsForm.first_name = `Este campo no debe ser vacío.`
-    } else if (!regexName.test(data.first_name)) {
+    } else if (!regexName.test(dataRegister.first_name)) {
       errorsForm.first_name = 'Este campo solo acepta letras y espacios.'
     }
 
-    if (!data.last_name.trim()) {
+    if (!dataRegister.last_name.trim()) {
       errorsForm.last_name = `Este campo no debe ser vacío.`
-    } else if (!regexName.test(data.last_name)) {
+    } else if (!regexName.test(dataRegister.last_name)) {
       errorsForm.last_name = 'Este campo solo acepta letras y espacios.'
     }
 
-    if (!data.email.trim()) {
+    if (!dataRegister.email.trim()) {
       errorsForm.email = `Este campo no debe ser vacío.`
-    } else if (!regexEmail.test(data.email)) {
+    } else if (!regexEmail.test(dataRegister.email)) {
       errorsForm.email = 'Correo no válido.'
     }
 
-    if (data.gender === undefined) {
+    if (dataRegister.gender === null) {
       errorsForm.gender = `Este campo no debe ser vacío.`
     }
 
-    if (!data.date) {
+    if (!dataRegister.date) {
       errorsForm.date = `Este campo no debe ser vacío.`
     } else {
       let today = new Date()
-      let birthDate = new Date(data.date)
+      let birthDate = new Date(dataRegister.date)
 
       if (birthDate > today) {
         errorsForm.date =
@@ -93,11 +102,11 @@ export default function RegisterForm() {
       }
     }
 
-    if (data.password.length < 8) {
+    if (dataRegister.password.length < 8) {
       errorsForm.password = `La contraseña debe tener más de 8 caracteres.`
     }
 
-    if (data.password !== data.confirm_password) {
+    if (dataRegister.password !== dataRegister.confirm_password) {
       errorsForm.password = `La contraseña y su confirmación no coinciden.`
       errorsForm.confirm_password = `La contraseña y su confirmación no coinciden.`
     }
@@ -105,33 +114,19 @@ export default function RegisterForm() {
     return errorsForm
   }
 
-  async function handleAction(formData: FormData) {
-    setLoading(true)
-    const {
-      first_name,
-      last_name,
-      email,
-      gender,
-      date,
-      password,
-      confirm_password
-    } = Object.fromEntries(formData)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setDataRegister({ ...dataRegister, [name]: value })
+  }
 
-    const data = {
-      first_name: first_name.toString(),
-      last_name: last_name.toString(),
-      email: email.toString(),
-      gender: gender?.toString(),
-      date: date?.toString(),
-      password: password.toString(),
-      confirm_password: confirm_password.toString()
-    }
+  async function handleAction(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
 
-    const err = validations({ data })
+    const err = validations({ dataRegister })
     setRegisterErrors(err)
 
     if (Object.keys(err).length === 0) {
-      await signUp(formData)
+      await signUp({ dataRegister })
       setRegisterErrors({
         first_name: '',
         last_name: '',
@@ -142,13 +137,11 @@ export default function RegisterForm() {
         confirm_password: ''
       })
     }
-
-    setLoading(false)
   }
 
   return (
     <div className="m-8 px-8">
-      <form action={handleAction}>
+      <form onSubmit={handleAction}>
         <div className="flex flex-col gap-4 mb-[2vh]">
           <div className="flex gap-4">
             <Link href={'/iniciar-sesion'}>
@@ -173,6 +166,8 @@ export default function RegisterForm() {
             type="text"
             name="first_name"
             className="bg-transparent border rounded-md text-lg p-1 focus:outline-none"
+            value={dataRegister.first_name}
+            onChange={handleChange}
           />
         </div>
         <div className="flex flex-col gap-2 mb-2">
@@ -188,6 +183,8 @@ export default function RegisterForm() {
             type="text"
             name="last_name"
             className="bg-transparent border rounded-md text-lg p-1 focus:outline-none"
+            value={dataRegister.last_name}
+            onChange={handleChange}
           />
         </div>
         <div className="flex flex-col gap-4 mb-[2vh]">
@@ -201,6 +198,8 @@ export default function RegisterForm() {
             type="email"
             name="email"
             className="bg-transparent border rounded-md text-lg p-1 focus:outline-none"
+            value={dataRegister.email}
+            onChange={handleChange}
           />
         </div>
         <div className="flex gap-4">
@@ -219,8 +218,8 @@ export default function RegisterForm() {
                 id="gender-masculino"
                 name="gender"
                 value="Male"
-                checked={gender === 'Male'}
-                onChange={(e) => setGender(e.target.value)}
+                checked={dataRegister.gender === 'Male'}
+                onChange={handleChange}
               />
               <label htmlFor="gender-masculino">Masculino</label>
               <input
@@ -228,8 +227,8 @@ export default function RegisterForm() {
                 id="gender-femenino"
                 name="gender"
                 value="Female"
-                checked={gender === 'Female'}
-                onChange={(e) => setGender(e.target.value)}
+                checked={dataRegister.gender === 'Female'}
+                onChange={handleChange}
               />
               <label htmlFor="gender-femenino">Femenino</label>
               <input
@@ -237,8 +236,8 @@ export default function RegisterForm() {
                 id="gender-otros"
                 name="gender"
                 value="Other"
-                checked={gender === 'Other'}
-                onChange={(e) => setGender(e.target.value)}
+                checked={dataRegister.gender === 'Other'}
+                onChange={handleChange}
               />
               <label htmlFor="gender-otros">Otros</label>
             </div>
@@ -254,6 +253,8 @@ export default function RegisterForm() {
               type="date"
               name="date"
               className="bg-transparent border rounded-md text-lg p-3 pr-[2vh] focus:outline-none"
+              value={dataRegister.date}
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -271,6 +272,8 @@ export default function RegisterForm() {
               type={`${showPassword ? 'text' : 'password'}`}
               name="password"
               className="bg-transparent border w-full rounded-md text-lg p-1 focus:outline-none"
+              value={dataRegister.password}
+              onChange={handleChange}
             />
             <div
               className="absolute inset-y-0 right-0 flex items-center mr-5 cursor-pointer"
@@ -301,6 +304,8 @@ export default function RegisterForm() {
               type={`${showPassword ? 'text' : 'password'}`}
               name="confirm_password"
               className="bg-transparent border w-full rounded-md text-lg p-1 focus:outline-none"
+              value={dataRegister.confirm_password}
+              onChange={handleChange}
             />
             <div
               className="absolute inset-y-0 right-0 flex items-center mr-5 cursor-pointer"
@@ -314,7 +319,10 @@ export default function RegisterForm() {
             </div>
           </div>
         </div>
-        <Button className="bg-primary-orange-600 w-full my-[2vh] py-6 text-xl hover:bg-primary-orange-700">
+        <Button
+          type="submit"
+          className="bg-primary-orange-600 w-full my-[2vh] py-6 text-xl hover:bg-primary-orange-700"
+        >
           {!loading ? 'Enviar' : <Loader className="mt-[2vh]" />}
         </Button>
       </form>

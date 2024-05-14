@@ -16,10 +16,10 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
   isOpen,
   onClose
 }) => {
+  const [email, setEmail] = useState<string>('')
   const [showModal, setShowModal] = useState(isOpen)
   const [forgotError, setForgotError] = useState('')
-  const [loading, setLoading] = useState(false)
-  const { recover, recoverState, setRecoverState } = useUser()
+  const { recover, recoverState, setRecoverState,loading } = useUser()
 
   const handleClose = () => {
     setShowModal(false)
@@ -40,19 +40,16 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
     return error
   }
 
-  async function handleAction(formData: FormData) {
-    const { email } = Object.fromEntries(formData)
+  async function handleAction(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
 
-    const err = validation(email.toString())
+    const err = validation(email)
     setForgotError(err)
 
     if (Object.keys(err).length === 0) {
-      setLoading(true)
-      await recover(formData)
+      await recover({ email })
       setForgotError('')
     }
-
-    setLoading(false)
   }
 
   return (
@@ -87,19 +84,26 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
               Ingrese si correo electrónico y recibirá un mail con la
               información necesaria para reestablecer su contraseña.
             </span>
-            <form action={handleAction} className="flex flex-col gap-4">
+            <form onSubmit={handleAction} className="flex flex-col gap-4">
               <input
                 type="email"
                 name="email"
                 placeholder="Correo electrónico"
                 className="bg-transparent border rounded-md text-xl p-2 focus:outline-none my-2 mx-4"
+                value={email}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setEmail(e.target.value)
+                }
               />
               {forgotError != '' && (
                 <span className="text-xs w-max ml-[2vw] mt-[-2vh] text-red-600 py-[2px] px-1 rounded-md animate-pulse">
                   {forgotError}
                 </span>
               )}
-              <Button className="bg-primary-orange-600 h-[5vh] text-xl m-4 text-foreground rounded-md hover:bg-primary-orange-700">
+              <Button
+                type="submit"
+                className="bg-primary-orange-600 h-[5vh] text-xl m-4 text-foreground rounded-md hover:bg-primary-orange-700"
+              >
                 {!loading ? 'Enviar' : <Loader className="mt-[2vh]" />}
               </Button>
             </form>

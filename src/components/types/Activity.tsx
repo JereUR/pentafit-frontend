@@ -16,6 +16,8 @@ export interface PropsAdd {
   activity: string
   cost: string
   isPublic: string
+  quotaGeneration: string
+  mpAvailable: string
   publicName: string
   sessionMax: string
   dateFrom: string | undefined

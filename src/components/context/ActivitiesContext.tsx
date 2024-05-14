@@ -2,15 +2,20 @@
 
 import { createContext, ReactNode, useState } from 'react'
 
-import { Activity } from '../types/Activity'
+import { Activity, PropsAdd } from '../types/Activity'
 import axios from 'axios'
 import { useToast } from '../ui/use-toast'
 
 type ActivitiesContextType = {
   activities: Activity[] | []
+  loading: boolean
   getActivities: (q: string, page: string) => Promise<Activity[] | [] | void>
   getActivityById: (id: string) => Promise<Activity | null>
-  addActivity: (formData: FormData) => Promise<void | Error>
+  addActivity: ({
+    dataActivity
+  }: {
+    dataActivity: PropsAdd
+  }) => Promise<void | Error>
   updateActivity: (formData: FormData) => Promise<void | Error>
 }
 
@@ -85,6 +90,7 @@ export default function ActivitiesContextProvider({
       paymentType: 'Mensual con sesiones'
     }
   ])
+  const [loading, setLoading] = useState<boolean>(false)
   const { toast } = useToast()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
@@ -157,46 +163,38 @@ export default function ActivitiesContextProvider({
     }
   }
 
-  async function addActivity(formData: FormData): Promise<void | Error> {
-    const {
-      activity,
-      cost,
-      isPublic,
-      quotaGeneration,
-      sessionMax,
-      mpAvailable,
-      publicName,
-      dateFrom,
-      dateUntil,
-      paymentType
-    } = Object.fromEntries(formData)
-
+  async function addActivity({
+    dataActivity
+  }: {
+    dataActivity: PropsAdd
+  }): Promise<void | Error> {
+    setLoading(true)
     let isPublicValue, quotaGenerationValue, mpAvailableValue
 
-    if (isPublic === undefined) {
+    if (dataActivity.isPublic === undefined) {
       isPublicValue = false
     } else {
-      if (isPublic === 'true') {
+      if (dataActivity.isPublic === 'true') {
         isPublicValue = true
       } else {
         isPublicValue = false
       }
     }
 
-    if (quotaGeneration === undefined) {
+    if (dataActivity.quotaGeneration === undefined) {
       quotaGenerationValue = false
     } else {
-      if (quotaGeneration === 'true') {
+      if (dataActivity.quotaGeneration === 'true') {
         quotaGenerationValue = true
       } else {
         quotaGenerationValue = false
       }
     }
 
-    if (mpAvailable === undefined) {
+    if (dataActivity.mpAvailable === undefined) {
       mpAvailableValue = false
     } else {
-      if (mpAvailable === 'true') {
+      if (dataActivity.mpAvailable === 'true') {
         mpAvailableValue = true
       } else {
         mpAvailableValue = false
@@ -204,19 +202,39 @@ export default function ActivitiesContextProvider({
     }
 
     const newActivity = {
-      activity,
-      cost,
+      activity: dataActivity.activity,
+      cost: dataActivity.cost,
       isPublic: isPublicValue,
       quotaGeneration: quotaGenerationValue,
-      sessionMax,
+      sessionMax: dataActivity.sessionMax,
       mpAvailable: mpAvailableValue,
-      publicName,
-      dateFrom,
-      dateUntil,
-      paymentType
+      publicName: dataActivity.publicName,
+      dateFrom: dataActivity.dateFrom,
+      dateUntil: dataActivity.dateUntil,
+      paymentType: dataActivity.paymentType
     }
 
-    console.log(newActivity)
+    const url = `${BASE_URL}add-activity`
+    try {
+      const response = await axios.get(url)
+
+      if (response.status === 200 || response.status === 204) {
+        return response.data?.activity
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+    }
+
+    setLoading(false)
   }
 
   async function updateActivity(formData: FormData): Promise<void | Error> {
@@ -285,6 +303,7 @@ export default function ActivitiesContextProvider({
     <ActivitiesContext.Provider
       value={{
         activities,
+        loading,
         getActivities,
         getActivityById,
         addActivity,

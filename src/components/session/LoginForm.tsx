@@ -17,15 +17,20 @@ interface FormErrors {
   [key: string]: string | undefined
 }
 
+const initialData = {
+  email: '',
+  password: ''
+}
+
 export default function LoginForm() {
+  const [dataLogin, setDataLogin] = useState<PropsLogin>(initialData)
   const [showPassword, setShowPassword] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [loginErrors, setLoginErrors] = useState<FormErrors>({
     email: '',
     password: ''
   })
-  const { signIn } = useUser()
+  const { signIn, loading } = useUser()
 
   const handleOpenModal = () => {
     setShowModal(true) // Open the modal on click
@@ -35,49 +40,48 @@ export default function LoginForm() {
     setShowModal(false) // Close the modal from within or parent
   }
 
-  const validations = ({ data }: { data: PropsLogin }) => {
+  const validations = ({ dataLogin }: { dataLogin: PropsLogin }) => {
     const errorsForm: FormErrors = {}
 
     const regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/
 
-    if (!data.email.trim()) {
+    if (!dataLogin.email.trim()) {
       errorsForm.email = `Este campo no debe ser vacío.`
-    } else if (!regexEmail.test(data.email)) {
+    } else if (!regexEmail.test(dataLogin.email)) {
       errorsForm.email = 'Correo no válido.'
     }
 
-    if (!data.password.trim()) {
+    if (!dataLogin.password.trim()) {
       errorsForm.password = `Ingrese su contraseña.`
     }
 
     return errorsForm
   }
 
-  async function handleAction(formData: FormData) {
-    const { email, password } = Object.fromEntries(formData)
-    const data = {
-      email: email.toString(),
-      password: password.toString()
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setDataLogin({ ...dataLogin, [name]: value })
+  }
 
-    const err = validations({ data })
+  async function handleAction(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const err = validations({ dataLogin })
     setLoginErrors(err)
 
+    console.log(dataLogin)
+
     if (Object.keys(err).length === 0) {
-      setLoading(true)
-      await signIn(formData)
+      await signIn({ dataLogin })
       setLoginErrors({
         email: '',
         password: ''
       })
     }
-
-    setLoading(false)
   }
 
   return (
     <div className="m-8 px-8">
-      <form action={handleAction}>
+      <form onSubmit={handleAction}>
         <div className="flex flex-col gap-4 mb-[8vh]">
           <p className="text-3xl font-bold">Iniciar Sesión</p>
           <span>Disfruta de las funcionalidades que ofrecemos</span>
@@ -93,6 +97,8 @@ export default function LoginForm() {
             type="email"
             name="email"
             className="bg-transparent border rounded-md text-xl p-2 focus:outline-none"
+            value={dataLogin.email}
+            onChange={handleChange}
           />
         </div>
         <div className="flex flex-col gap-4 mb-[5vh]">
@@ -107,6 +113,8 @@ export default function LoginForm() {
               type={`${showPassword ? 'text' : 'password'}`}
               name="password"
               className="bg-transparent border rounded-md text-xl focus:outline-none w-full p-2"
+              value={dataLogin.password}
+              onChange={handleChange}
             />
             <div
               className="absolute inset-y-0 right-0 flex items-center mr-5 cursor-pointer"
@@ -125,7 +133,10 @@ export default function LoginForm() {
             ¿Olvidaste tu contraseña?
           </span>
         </div>
-        <Button className="bg-primary-orange-600 w-full my-[5vh] py-6 text-xl hover:bg-primary-orange-700">
+        <Button
+          type="submit"
+          className="bg-primary-orange-600 w-full my-[5vh] py-6 text-xl hover:bg-primary-orange-700"
+        >
           {!loading ? 'Enviar' : <Loader className="mt-[2vh]" />}
         </Button>
       </form>

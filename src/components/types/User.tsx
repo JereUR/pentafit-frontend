@@ -14,8 +14,8 @@ export interface PropsRegister {
   first_name: string
   last_name: string
   email: string
-  gender: string | undefined
-  date: string | undefined
+  gender: string
+  date: string 
   password: string
   confirm_password: string
 }

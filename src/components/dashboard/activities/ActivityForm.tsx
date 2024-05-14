@@ -1,6 +1,5 @@
 'use client'
 
-import { CheckIcon } from '@radix-ui/react-icons'
 import { ImCross } from 'react-icons/im'
 import { IoSettings } from 'react-icons/io5'
 
@@ -77,11 +76,22 @@ interface FormErrors {
   [key: string]: string | undefined
 }
 
+const initialData = {
+  activity: '',
+  cost: '',
+  isPublic: 'false',
+  quotaGeneration: 'false',
+  mpAvailable: 'false',
+  publicName: '',
+  sessionMax: '',
+  dateFrom: '',
+  dateUntil: '',
+  paymentType: ''
+}
+
 export default function ActivityForm() {
+  const [dataActivity, setDataActivity] = useState<PropsAdd>(initialData)
   const { addActivity } = useActivities()
-  const [isPublic, setIsPublic] = useState(false)
-  const [quotaGeneration, setQuotaGeneration] = useState(false)
-  const [mpAvailable, setMpAvailable] = useState(false)
   const [loading, setLoading] = useState(false)
   const [addErrors, setAddErrors] = useState<FormErrors>({
     activity: '',
@@ -95,35 +105,35 @@ export default function ActivityForm() {
   })
   const router = useRouter()
 
-  const validations = ({ data }: { data: PropsAdd }) => {
+  const validations = ({ dataActivity }: { dataActivity: PropsAdd }) => {
     const errorsForm: FormErrors = {}
 
-    if (!data.activity.trim()) {
+    if (!dataActivity.activity.trim()) {
       errorsForm.activity = `Este campo no debe ser vacío.`
     }
 
-    if (!data.cost) {
+    if (!dataActivity.cost) {
       errorsForm.cost = `Este campo no debe ser vacío.`
-    } else if (parseInt(data.cost) < 0) {
+    } else if (parseInt(dataActivity.cost) < 0) {
       errorsForm.cost = 'Este valor no puede ser negativo.'
     }
 
-    if (!data.sessionMax) {
+    if (!dataActivity.sessionMax) {
       errorsForm.sessionMax = `Este campo no debe ser vacío.`
-    } else if (parseInt(data.sessionMax) < 0) {
+    } else if (parseInt(dataActivity.sessionMax) < 0) {
       errorsForm.sessionMax = 'Este valor no puede ser negativo.'
     }
 
-    if (!data.dateFrom) {
+    if (!dataActivity.dateFrom) {
       errorsForm.dateFrom = `Este campo no debe ser vacío.`
     }
 
-    if (!data.dateUntil) {
+    if (!dataActivity.dateUntil) {
       errorsForm.dateUntil = `Este campo no debe ser vacío.`
     }
 
-    if (data.isPublic === 'true') {
-      if (!data.publicName) {
+    if (dataActivity.isPublic === 'true') {
+      if (!dataActivity.publicName) {
         errorsForm.publicName = `Este campo no debe ser vacío.`
       }
     }
@@ -131,35 +141,27 @@ export default function ActivityForm() {
     return errorsForm
   }
 
-  async function handleAction(formData: FormData) {
-    const {
-      activity,
-      cost,
-      isPublic,
-      sessionMax,
-      dateFrom,
-      dateUntil,
-      paymentType,
-      publicName
-    } = Object.fromEntries(formData)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setDataActivity({ ...dataActivity, [name]: value })
+  }
 
-    const data = {
-      activity: activity.toString(),
-      cost: cost.toString(),
-      isPublic: String(isPublic),
-      sessionMax: sessionMax.toString(),
-      dateFrom: dateFrom?.toString(),
-      dateUntil: dateUntil?.toString(),
-      paymentType: paymentType.toString(),
-      publicName: publicName?.toString()
-    }
+  const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target
+    setDataActivity({ ...dataActivity, [name]: value })
+  }
 
-    const err = validations({ data })
+  async function handleAction(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    const err = validations({ dataActivity })
     setAddErrors(err)
+
+    console.log(dataActivity)
 
     if (Object.keys(err).length === 0) {
       setLoading(true)
-      await addActivity(formData)
+      await addActivity({ dataActivity })
       setAddErrors({
         activity: '',
         cost: '',
@@ -177,28 +179,87 @@ export default function ActivityForm() {
 
   return (
     <div>
-      <form action={handleAction}>
+      <form onSubmit={handleAction}>
         <div className="grid grid-cols-3 gap-8 mb-4">
-          {inputItems.map((item) => (
-            <div key={item.name} className="flex flex-col gap-2">
-              <div className="flex gap-4 items-center">
-                <label htmlFor={item.name} className="font-[600]">
-                  {item.label}
-                </label>
-                {addErrors[item.name] && (
-                  <span className="text-xs text-red-600 py-[2px] px-1 rounded-md animate-pulse">
-                    {addErrors[item.name]}
-                  </span>
-                )}
-              </div>
-              <input
-                type={item.type}
-                name={item.name}
-                placeholder={item.label}
-                className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
-              />
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-4 items-center">
+              <label htmlFor="activity" className="font-[600]">
+                Actividad
+              </label>
+              {addErrors.activity && <ErrorText text={addErrors.activity} />}
             </div>
-          ))}
+            <input
+              type="text"
+              name="activity"
+              className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              value={dataActivity.activity}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-4 items-center">
+              <label htmlFor="cost" className="font-[600]">
+                Costo
+              </label>
+              {addErrors.cost && <ErrorText text={addErrors.cost} />}
+            </div>
+            <input
+              type="number"
+              name="cost"
+              className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              value={dataActivity.cost}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-4 items-center">
+              <label htmlFor="sessionMax" className="font-[600]">
+                Sesiones Máximas
+              </label>
+              {addErrors.sessionMax && (
+                <span className="text-xs text-red-600 py-[2px] px-1 rounded-md animate-pulse">
+                  {addErrors.sessionMax}
+                </span>
+              )}
+            </div>
+            <input
+              type="number"
+              name="sessionMax"
+              className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              value={dataActivity.sessionMax}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-4 items-center">
+              <label htmlFor="dateFrom" className="font-[600]">
+                Fecha Desde
+              </label>
+              {addErrors.dateFrom && <ErrorText text={addErrors.dateFrom} />}
+            </div>
+            <input
+              type="date"
+              name="dateFrom"
+              className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              value={dataActivity.dateFrom}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-4 items-center">
+              <label htmlFor="dateUntil" className="font-[600]">
+                Fecha Hasta
+              </label>
+              {addErrors.dateUntil && <ErrorText text={addErrors.dateUntil} />}
+            </div>
+            <input
+              type="date"
+              name="dateUntil"
+              className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              value={dataActivity.dateUntil}
+              onChange={handleChange}
+            />
+          </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="paymentType" className="font-[600]">
               Control de Pago
@@ -206,6 +267,7 @@ export default function ActivityForm() {
             <select
               name="paymentType"
               className="border border-gray-300 dark:border-gray-700 p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              onChange={handleChangeSelect}
             >
               {payments.map((item) => (
                 <option key={item} value={item}>
@@ -232,9 +294,9 @@ export default function ActivityForm() {
                   <input
                     type="checkbox"
                     name="isPublic"
-                    defaultValue={isPublic ? 'true' : 'false'}
                     className="sr-only peer"
-                    onChange={() => setIsPublic(!isPublic)}
+                    value={dataActivity.isPublic ? 'true' : 'false'}
+                    onChange={handleChange}
                   />
                   <div className="group peer ring-0  bg-gradient-to-bl from-neutral-800 via-neutral-700 to-neutral-600 dark:from-gray-400 dark:via-gray-300 dark:to-gray-200  rounded-full outline-none duration-1000 after:duration-300 w-12 h-6  shadow-md  peer-focus:outline-none  after:content-[''] after:rounded-full after:absolute peer-checked:after:rotate-180 after:[background:conic-gradient(from_135deg,_#b2a9a9,_#b2a8a8,_#ffffff,_#d7dbd9_,_#ffffff,_#b2a8a8)]  after:outline-none after:h-4 after:w-4 after:top-1 after:left-1 peer-checked:after:translate-x-6 peer-hover:after:scale-95 peer-checked:bg-gradient-to-r peer-checked:from-emerald-500 peer-checked:to-emerald-900"></div>
                 </label>
@@ -249,9 +311,9 @@ export default function ActivityForm() {
                   <input
                     type="checkbox"
                     name="quotaGeneration"
-                    defaultValue={quotaGeneration ? 'true' : 'false'}
                     className="sr-only peer"
-                    onChange={() => setQuotaGeneration(!quotaGeneration)}
+                    value={dataActivity.quotaGeneration ? 'true' : 'false'}
+                    onChange={handleChange}
                   />
                   <div className="group peer ring-0  bg-gradient-to-bl from-neutral-800 via-neutral-700 to-neutral-600 dark:from-gray-400 dark:via-gray-300 dark:to-gray-200  rounded-full outline-none duration-1000 after:duration-300 w-12 h-6  shadow-md  peer-focus:outline-none  after:content-[''] after:rounded-full after:absolute peer-checked:after:rotate-180 after:[background:conic-gradient(from_135deg,_#b2a9a9,_#b2a8a8,_#ffffff,_#d7dbd9_,_#ffffff,_#b2a8a8)]  after:outline-none after:h-4 after:w-4 after:top-1 after:left-1 peer-checked:after:translate-x-6 peer-hover:after:scale-95 peer-checked:bg-gradient-to-r peer-checked:from-emerald-500 peer-checked:to-emerald-900"></div>
                 </label>
@@ -266,9 +328,9 @@ export default function ActivityForm() {
                   <input
                     type="checkbox"
                     name="mpAvailable"
-                    defaultValue={mpAvailable ? 'true' : 'false'}
                     className="sr-only peer"
-                    onChange={() => setMpAvailable(!mpAvailable)}
+                    value={dataActivity.mpAvailable ? 'true' : 'false'}
+                    onChange={handleChange}
                   />
                   <div className="group peer ring-0  bg-gradient-to-bl from-neutral-800 via-neutral-700 to-neutral-600 dark:from-gray-400 dark:via-gray-300 dark:to-gray-200  rounded-full outline-none duration-1000 after:duration-300 w-12 h-6  shadow-md  peer-focus:outline-none  after:content-[''] after:rounded-full after:absolute peer-checked:after:rotate-180 after:[background:conic-gradient(from_135deg,_#b2a9a9,_#b2a8a8,_#ffffff,_#d7dbd9_,_#ffffff,_#b2a8a8)]  after:outline-none after:h-4 after:w-4 after:top-1 after:left-1 peer-checked:after:translate-x-6 peer-hover:after:scale-95 peer-checked:bg-gradient-to-r peer-checked:from-emerald-500 peer-checked:to-emerald-900"></div>
                 </label>
@@ -288,6 +350,8 @@ export default function ActivityForm() {
                 name="publicName"
                 placeholder="Nombre para mostrar"
                 className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+                value={dataActivity.publicName}
+                onChange={handleChange}
               />
             </div>
           </div>
