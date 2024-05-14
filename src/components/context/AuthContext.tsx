@@ -97,17 +97,17 @@ export default function AuthContextProvider({
           router.push('/panel-de-control')
         }, 100)
       } else {
+        console.log(response)
         toast({
           title: 'Oh no! Algo salió mal.',
           description: response.statusText
         })
       }
     } catch (error: any) {
-      if (error.response && error.response.status >= 400) {
+      if (error.response && error.response.status === 401) {
         toast({
-          variant: 'destructive',
           title: 'Oh no! Algo salió mal.',
-          description: error.response.data.message
+          description: 'Credenciales incorrectas.'
         })
       } else {
         toast({
@@ -149,19 +149,11 @@ export default function AuthContextProvider({
         })
       }
     } catch (error: any) {
-      if (error.response && error.response.status >= 400) {
-        toast({
-          variant: 'destructive',
-          title: 'Oh no! Algo salió mal.',
-          description: error.response.data.message
-        })
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Oh no! Algo salió mal.',
-          description: error.message
-        })
-      }
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
     } finally {
     }
   }
@@ -192,16 +184,11 @@ export default function AuthContextProvider({
       )
 
       if (response.status === 200 || response.status === 204) {
-        const authToken = response.headers.authorization
-        setCookies(authToken)
-        localStorage.setItem('token', authToken)
-        localStorage.setItem('user', JSON.stringify(response.data))
-
-        setToken(authToken)
-        setUser(response.data)
-        setTimeout(() => {
-          router.push('/panel-de-control')
-        }, 100)
+        toast({
+          title: 'Usuario creado con éxito.',
+          description:
+            'Se te ha enviado un mail a tu correo electrónico para verificar tu cuenta.'
+        })
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
@@ -209,19 +196,11 @@ export default function AuthContextProvider({
         })
       }
     } catch (error: any) {
-      if (error.response && error.response.status >= 400) {
-        toast({
-          variant: 'destructive',
-          title: 'Oh no! Algo salió mal.',
-          description: error.response.data.message
-        })
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Oh no! Algo salió mal.',
-          description: error.message
-        })
-      }
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
     } finally {
     }
   }
@@ -252,20 +231,11 @@ export default function AuthContextProvider({
         })
       }
     } catch (error: any) {
-      setRecoverState(false)
-      if (error.response && error.response.status >= 400) {
-        toast({
-          variant: 'destructive',
-          title: 'Oh no! Algo salió mal.',
-          description: error.response.data.message
-        })
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Oh no! Algo salió mal.',
-          description: error.message
-        })
-      }
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
     } finally {
     }
   }

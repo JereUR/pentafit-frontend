@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   const pathname = usePathname()
   const shouldRenderLayout = !pathname.startsWith('/panel-de-control')
-  const recoverLayout = pathname.startsWith('/recover')
+  const recoverLayout = pathname.startsWith('/recover') || pathname.startsWith('/confirmation')
 
   if (recoverLayout) {
     return (

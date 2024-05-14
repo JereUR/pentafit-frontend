@@ -26,7 +26,7 @@ interface FormErrors {
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [gender, setGender] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [registerErrors, setRegisterErrors] = useState<FormErrors>({
     first_name: '',
     last_name: '',
@@ -105,6 +105,7 @@ export default function RegisterForm() {
   }
 
   async function handleAction(formData: FormData) {
+    setLoading(true)
     const {
       first_name,
       last_name,
@@ -129,7 +130,6 @@ export default function RegisterForm() {
     setRegisterErrors(err)
 
     if (Object.keys(err).length === 0) {
-      setLoading(true)
       await signUp(formData)
       setRegisterErrors({
         first_name: '',
@@ -165,7 +165,7 @@ export default function RegisterForm() {
               Nombre/s
             </label>
             {registerErrors.first_name && (
-              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+              <span className="text-xs text-red-600  py-[2px] px-1 rounded-md animate-pulse">
                 {registerErrors.first_name}
               </span>
             )}
@@ -182,7 +182,7 @@ export default function RegisterForm() {
               Apellido/s
             </label>
             {registerErrors.last_name && (
-              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+              <span className="text-xs text-red-600  py-[2px] px-1 rounded-md animate-pulse">
                 {registerErrors.last_name}
               </span>
             )}
@@ -199,7 +199,7 @@ export default function RegisterForm() {
               Email
             </label>
             {registerErrors.email && (
-              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+              <span className="text-xs text-red-600  py-[2px] px-1 rounded-md animate-pulse">
                 {registerErrors.email}
               </span>
             )}
@@ -217,7 +217,7 @@ export default function RegisterForm() {
                 Sexo/Género
               </label>
               {registerErrors.gender && (
-                <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                <span className="text-xs text-red-600  py-[2px] px-1 rounded-md animate-pulse">
                   {registerErrors.gender}
                 </span>
               )}
@@ -258,7 +258,7 @@ export default function RegisterForm() {
                 Fecha de Nacimiento
               </label>
               {registerErrors.date && (
-                <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+                <span className="text-xs text-red-600  py-[2px] px-1 rounded-md animate-pulse">
                   {registerErrors.date}
                 </span>
               )}
@@ -276,7 +276,7 @@ export default function RegisterForm() {
               Contraseña
             </label>
             {registerErrors.password && (
-              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+              <span className="text-xs text-red-600  py-[2px] px-1 rounded-md animate-pulse">
                 {registerErrors.password}
               </span>
             )}
@@ -308,7 +308,7 @@ export default function RegisterForm() {
               Confirmar Contraseña
             </label>
             {registerErrors.confirm_password && (
-              <span className="text-xs text-red-600 ring-1 ring-red-500 py-[2px] px-1 shadow-md rounded-md animate-pulse">
+              <span className="text-xs text-red-600  py-[2px] px-1 rounded-md animate-pulse">
                 {registerErrors.confirm_password}
               </span>
             )}

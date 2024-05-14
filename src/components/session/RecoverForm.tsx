@@ -100,23 +100,14 @@ export default function RecoverForm() {
         })
       }
     } catch (error: any) {
-      if (error.response && error.response.status >= 400) {
-        toast({
-          variant: 'destructive',
-          title: 'Oh no! Algo salió mal.',
-          description: error.response.data.message
-        })
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Oh no! Algo salió mal.',
-          description: error.message
-        })
-      }
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
     }
-    setTimeout(() => {
-      setLoading(false)
-    }, 1000)
+
+    setLoading(false)
   }
 
   return (
