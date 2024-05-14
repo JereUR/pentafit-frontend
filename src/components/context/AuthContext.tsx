@@ -50,6 +50,7 @@ export default function AuthContextProvider({
   const router = useRouter()
   const pathname = usePathname()
   const { toast } = useToast()
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token')
@@ -66,12 +67,11 @@ export default function AuthContextProvider({
       setUser(userFromStorage)
     }
   }, [])
-
   async function signIn(formData: FormData) {
     const { email, password } = Object.fromEntries(formData)
     try {
       const response = await axios.post(
-        `https://d494-190-191-171-9.ngrok-free.app/login`,
+        `${BASE_URL}login`,
         {
           user: {
             email,
@@ -122,14 +122,11 @@ export default function AuthContextProvider({
 
   async function signOut() {
     try {
-      const response = await axios.delete(
-        `https://d494-190-191-171-9.ngrok-free.app/logout`,
-        {
-          headers: {
-            Authorization: token
-          }
+      const response = await axios.delete(`${BASE_URL}logout`, {
+        headers: {
+          Authorization: token
         }
-      )
+      })
 
       if (response.status === 200 || response.status === 204) {
         removeCookies()
@@ -172,7 +169,7 @@ export default function AuthContextProvider({
     }
     try {
       const response = await axios.post(
-        `https://d494-190-191-171-9.ngrok-free.app/signup`,
+        `${BASE_URL}signup`,
         {
           user
         },
@@ -210,7 +207,7 @@ export default function AuthContextProvider({
 
     try {
       const response = await axios.post(
-        `https://d494-190-191-171-9.ngrok-free.app/recover`,
+        `${BASE_URL}recover`,
         {
           user: { email }
         },
