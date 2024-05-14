@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import Search from '../search/Search'
 import Pagination from '../pagination/Pagination'
@@ -29,6 +29,7 @@ export default function ActivitiesTable() {
   const [selectedActivities, setSelectedActivities] = useState<string[]>([])
   const [selectAll, setSelectAll] = useState<boolean>(false)
   const { theme } = useTheme()
+  const router = useRouter()
 
   const searchParams = useSearchParams()
   const count = 4
@@ -129,7 +130,12 @@ export default function ActivitiesTable() {
                 styles.deleteRow.backgroundColor
               }`}
             >
-              <td className="border-b border-foreground px-2 py-5">
+              <td
+                className="border-b border-foreground px-2 py-5"
+                onClick={() =>
+                  router.push(`/panel-de-control/actividades/${activity.id}`)
+                }
+              >
                 <input
                   type="checkbox"
                   checked={selectedActivities.includes(activity.id)}
@@ -137,13 +143,28 @@ export default function ActivitiesTable() {
                   className="cursor-pointer h-5 w-5"
                 />
               </td>
-              <td className="border-b border-foreground px-2 py-5">
+              <td
+                className="border-b border-foreground px-2 py-5"
+                onClick={() =>
+                  router.push(`/panel-de-control/actividades/${activity.id}`)
+                }
+              >
                 {activity.activity}
               </td>
-              <td className="border-b border-foreground px-2 py-5">
+              <td
+                className="border-b border-foreground px-2 py-5"
+                onClick={() =>
+                  router.push(`/panel-de-control/actividades/${activity.id}`)
+                }
+              >
                 ${activity.cost}
               </td>
-              <td className="border-b border-foreground px-2 py-5">
+              <td
+                className="border-b border-foreground px-2 py-5"
+                onClick={() =>
+                  router.push(`/panel-de-control/actividades/${activity.id}`)
+                }
+              >
                 <div
                   className={`rounded-xl w-[3vw] ${
                     activity.isPublic ? 'bg-green-400 ' : 'bg-red-400'
@@ -152,7 +173,12 @@ export default function ActivitiesTable() {
                   {activity.isPublic ? 'Sí' : 'No'}
                 </div>
               </td>
-              <td className="border-b border-foreground px-2 py-5">
+              <td
+                className="border-b border-foreground px-2 py-5"
+                onClick={() =>
+                  router.push(`/panel-de-control/actividades/${activity.id}`)
+                }
+              >
                 <div
                   className={`rounded-xl w-[3vw] ${
                     activity.quotaGeneration ? 'bg-green-400 ' : 'bg-red-400'
@@ -161,10 +187,20 @@ export default function ActivitiesTable() {
                   {activity.quotaGeneration ? 'Sí' : 'No'}
                 </div>
               </td>
-              <td className="border-b border-foreground px-2 py-5">
+              <td
+                className="border-b border-foreground px-2 py-5"
+                onClick={() =>
+                  router.push(`/panel-de-control/actividades/${activity.id}`)
+                }
+              >
                 {activity.sessionMax}
               </td>
-              <td className="border-b border-foreground px-2 py-5">
+              <td
+                className="border-b border-foreground px-2 py-5"
+                onClick={() =>
+                  router.push(`/panel-de-control/actividades/${activity.id}`)
+                }
+              >
                 <div
                   className={`rounded-xl w-[3vw] ${
                     activity.mpAvailable ? 'bg-green-400 ' : 'bg-red-400'
@@ -173,19 +209,36 @@ export default function ActivitiesTable() {
                   {activity.mpAvailable ? 'Sí' : 'No'}
                 </div>
               </td>
-              <td className="border-b border-foreground px-2 py-5">
+              <td
+                className="border-b border-foreground px-2 py-5"
+                onClick={() =>
+                  router.push(`/panel-de-control/actividades/${activity.id}`)
+                }
+              >
                 {activity.dateFrom.toLocaleDateString()}
               </td>
-              <td className="border-b border-foreground px-2 py-5">
+              <td
+                className="border-b border-foreground px-2 py-5"
+                onClick={() =>
+                  router.push(`/panel-de-control/actividades/${activity.id}`)
+                }
+              >
                 {activity.dateUntil.toLocaleDateString()}
               </td>
-              <td className="border-b border-foreground px-2 py-5">
+              <td
+                className="border-b border-foreground px-2 py-5"
+                onClick={() =>
+                  router.push(`/panel-de-control/actividades/${activity.id}`)
+                }
+              >
                 {activity.paymentType}
               </td>
               <td className="border-b border-foreground px-2 py-5">
                 <div className="flex gap-2">
                   <div>
-                    <Link href={`/panel-de-control/actividades/${activity.id}`}>
+                    <Link
+                      href={`/panel-de-control/actividades/editar/${activity.id}`}
+                    >
                       <button className="p-2 rounded-md text-white bg-sky-600 border-none cursor-pointer transitiopn duration-300 ease-in-out hover:scale-105 hover:shadow-md">
                         <FaEdit />
                       </button>
