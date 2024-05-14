@@ -1,4 +1,5 @@
 import ActivityForm from '@/components/dashboard/activities/ActivityForm'
+import { initialData } from '@/components/types/Activity'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
 export default function AddActivityPage() {
   return (
     <div className="m-10">
-      <ActivityForm />
+      <ActivityForm type="add" activity={initialData} />
     </div>
   )
 }

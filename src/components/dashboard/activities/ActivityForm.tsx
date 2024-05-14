@@ -7,10 +7,11 @@ import useActivities from '@/components/hooks/useActivities'
 import { Button } from '@/components/ui/button'
 import { FaCheck } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PropsAdd } from '@/components/types/Activity'
 import Loader from '@/components/Loader'
 import ErrorText from '@/components/ErrorText'
+import TextForm from './TextForm'
 
 const payments = [
   'Por sesion',
@@ -76,24 +77,17 @@ interface FormErrors {
   [key: string]: string | undefined
 }
 
-const initialData = {
-  activity: '',
-  cost: '',
-  isPublic: 'false',
-  quotaGeneration: 'false',
-  mpAvailable: 'false',
-  publicName: '',
-  sessionMax: '',
-  dateFrom: '',
-  dateUntil: '',
-  paymentType: ''
-}
-
-export default function ActivityForm() {
-  const [dataActivity, setDataActivity] = useState<PropsAdd>(initialData)
-  const { addActivity } = useActivities()
+export default function ActivityForm({
+  type,
+  activity
+}: {
+  type: string
+  activity: PropsAdd
+}) {
+  const [dataActivity, setDataActivity] = useState<PropsAdd>(activity)
+  const { addActivity, updateActivity } = useActivities()
   const [loading, setLoading] = useState(false)
-  const [addErrors, setAddErrors] = useState<FormErrors>({
+  const [formErrors, setFormErrors] = useState<FormErrors>({
     activity: '',
     cost: '',
     isPublic: '',
@@ -104,6 +98,10 @@ export default function ActivityForm() {
     publicName: ''
   })
   const router = useRouter()
+
+  useEffect(() => {
+    setDataActivity(activity)
+  }, [activity])
 
   const validations = ({ dataActivity }: { dataActivity: PropsAdd }) => {
     const errorsForm: FormErrors = {}
@@ -146,6 +144,39 @@ export default function ActivityForm() {
     setDataActivity({ ...dataActivity, [name]: value })
   }
 
+  const handleChangeIsPublic = () => {
+    let value
+    if (dataActivity.isPublic === 'true') {
+      value = 'false'
+    } else {
+      value = 'true'
+    }
+
+    setDataActivity({ ...dataActivity, isPublic: value })
+  }
+
+  const handleChangeQuotaGeneration = () => {
+    let value
+    if (dataActivity.quotaGeneration === 'true') {
+      value = 'false'
+    } else {
+      value = 'true'
+    }
+
+    setDataActivity({ ...dataActivity, quotaGeneration: value })
+  }
+
+  const handleChangeMpAvailable = () => {
+    let value
+    if (dataActivity.mpAvailable === 'true') {
+      value = 'false'
+    } else {
+      value = 'true'
+    }
+
+    setDataActivity({ ...dataActivity, mpAvailable: value })
+  }
+
   const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target
     setDataActivity({ ...dataActivity, [name]: value })
@@ -155,14 +186,20 @@ export default function ActivityForm() {
     event.preventDefault()
 
     const err = validations({ dataActivity })
-    setAddErrors(err)
+    setFormErrors(err)
 
     console.log(dataActivity)
 
     if (Object.keys(err).length === 0) {
       setLoading(true)
-      await addActivity({ dataActivity })
-      setAddErrors({
+
+      if (type === 'add') {
+        await addActivity({ dataActivity })
+      } else {
+        await updateActivity({ dataActivity })
+      }
+
+      setFormErrors({
         activity: '',
         cost: '',
         isPublic: '',
@@ -186,7 +223,7 @@ export default function ActivityForm() {
               <label htmlFor="activity" className="font-[600]">
                 Actividad
               </label>
-              {addErrors.activity && <ErrorText text={addErrors.activity} />}
+              {formErrors.activity && <ErrorText text={formErrors.activity} />}
             </div>
             <input
               type="text"
@@ -201,7 +238,7 @@ export default function ActivityForm() {
               <label htmlFor="cost" className="font-[600]">
                 Costo
               </label>
-              {addErrors.cost && <ErrorText text={addErrors.cost} />}
+              {formErrors.cost && <ErrorText text={formErrors.cost} />}
             </div>
             <input
               type="number"
@@ -216,9 +253,9 @@ export default function ActivityForm() {
               <label htmlFor="sessionMax" className="font-[600]">
                 Sesiones Máximas
               </label>
-              {addErrors.sessionMax && (
+              {formErrors.sessionMax && (
                 <span className="text-xs text-red-600 py-[2px] px-1 rounded-md animate-pulse">
-                  {addErrors.sessionMax}
+                  {formErrors.sessionMax}
                 </span>
               )}
             </div>
@@ -235,7 +272,7 @@ export default function ActivityForm() {
               <label htmlFor="dateFrom" className="font-[600]">
                 Fecha Desde
               </label>
-              {addErrors.dateFrom && <ErrorText text={addErrors.dateFrom} />}
+              {formErrors.dateFrom && <ErrorText text={formErrors.dateFrom} />}
             </div>
             <input
               type="date"
@@ -250,7 +287,9 @@ export default function ActivityForm() {
               <label htmlFor="dateUntil" className="font-[600]">
                 Fecha Hasta
               </label>
-              {addErrors.dateUntil && <ErrorText text={addErrors.dateUntil} />}
+              {formErrors.dateUntil && (
+                <ErrorText text={formErrors.dateUntil} />
+              )}
             </div>
             <input
               type="date"
@@ -268,9 +307,14 @@ export default function ActivityForm() {
               name="paymentType"
               className="border border-gray-300 dark:border-gray-700 p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               onChange={handleChangeSelect}
+              defaultValue={dataActivity.paymentType}
             >
               {payments.map((item) => (
-                <option key={item} value={item}>
+                <option
+                  key={item}
+                  value={item}
+                  selected={dataActivity.paymentType === item}
+                >
                   {item}
                 </option>
               ))}
@@ -295,8 +339,9 @@ export default function ActivityForm() {
                     type="checkbox"
                     name="isPublic"
                     className="sr-only peer"
-                    value={dataActivity.isPublic ? 'true' : 'false'}
-                    onChange={handleChange}
+                    value={dataActivity.isPublic}
+                    checked={dataActivity.isPublic === 'true' ? true : false}
+                    onChange={handleChangeIsPublic}
                   />
                   <div className="group peer ring-0  bg-gradient-to-bl from-neutral-800 via-neutral-700 to-neutral-600 dark:from-gray-400 dark:via-gray-300 dark:to-gray-200  rounded-full outline-none duration-1000 after:duration-300 w-12 h-6  shadow-md  peer-focus:outline-none  after:content-[''] after:rounded-full after:absolute peer-checked:after:rotate-180 after:[background:conic-gradient(from_135deg,_#b2a9a9,_#b2a8a8,_#ffffff,_#d7dbd9_,_#ffffff,_#b2a8a8)]  after:outline-none after:h-4 after:w-4 after:top-1 after:left-1 peer-checked:after:translate-x-6 peer-hover:after:scale-95 peer-checked:bg-gradient-to-r peer-checked:from-emerald-500 peer-checked:to-emerald-900"></div>
                 </label>
@@ -312,8 +357,11 @@ export default function ActivityForm() {
                     type="checkbox"
                     name="quotaGeneration"
                     className="sr-only peer"
-                    value={dataActivity.quotaGeneration ? 'true' : 'false'}
-                    onChange={handleChange}
+                    value={dataActivity.quotaGeneration}
+                    checked={
+                      dataActivity.quotaGeneration === 'true' ? true : false
+                    }
+                    onChange={handleChangeQuotaGeneration}
                   />
                   <div className="group peer ring-0  bg-gradient-to-bl from-neutral-800 via-neutral-700 to-neutral-600 dark:from-gray-400 dark:via-gray-300 dark:to-gray-200  rounded-full outline-none duration-1000 after:duration-300 w-12 h-6  shadow-md  peer-focus:outline-none  after:content-[''] after:rounded-full after:absolute peer-checked:after:rotate-180 after:[background:conic-gradient(from_135deg,_#b2a9a9,_#b2a8a8,_#ffffff,_#d7dbd9_,_#ffffff,_#b2a8a8)]  after:outline-none after:h-4 after:w-4 after:top-1 after:left-1 peer-checked:after:translate-x-6 peer-hover:after:scale-95 peer-checked:bg-gradient-to-r peer-checked:from-emerald-500 peer-checked:to-emerald-900"></div>
                 </label>
@@ -329,8 +377,9 @@ export default function ActivityForm() {
                     type="checkbox"
                     name="mpAvailable"
                     className="sr-only peer"
-                    value={dataActivity.mpAvailable ? 'true' : 'false'}
-                    onChange={handleChange}
+                    value={dataActivity.mpAvailable}
+                    checked={dataActivity.mpAvailable === 'true' ? true : false}
+                    onChange={handleChangeMpAvailable}
                   />
                   <div className="group peer ring-0  bg-gradient-to-bl from-neutral-800 via-neutral-700 to-neutral-600 dark:from-gray-400 dark:via-gray-300 dark:to-gray-200  rounded-full outline-none duration-1000 after:duration-300 w-12 h-6  shadow-md  peer-focus:outline-none  after:content-[''] after:rounded-full after:absolute peer-checked:after:rotate-180 after:[background:conic-gradient(from_135deg,_#b2a9a9,_#b2a8a8,_#ffffff,_#d7dbd9_,_#ffffff,_#b2a8a8)]  after:outline-none after:h-4 after:w-4 after:top-1 after:left-1 peer-checked:after:translate-x-6 peer-hover:after:scale-95 peer-checked:bg-gradient-to-r peer-checked:from-emerald-500 peer-checked:to-emerald-900"></div>
                 </label>
@@ -341,8 +390,8 @@ export default function ActivityForm() {
                 <label htmlFor="publicName" className="font-[600]">
                   Nombre Público
                 </label>
-                {addErrors.publicName && (
-                  <ErrorText text={addErrors.publicName} />
+                {formErrors.publicName && (
+                  <ErrorText text={formErrors.publicName} />
                 )}
               </div>
               <input
@@ -356,25 +405,7 @@ export default function ActivityForm() {
             </div>
           </div>
         </div>
-        <div className="border border-blue-300 bg-blue-100 text-blue-500 text-sm p-4">
-          <p>Control de pago:</p>
-          <p>
-            1° MENSUAL: No contempla sesiones, y la persona puede reservar
-            turnos solo teniendo la cuota disponible.
-          </p>
-          <p>
-            2° MENSUAL CON SESIONES: Contenpla las sesiones y solo permite
-            reservar turno si este tiene sesiones disponibles para el período
-          </p>
-          <p>
-            3° POR PERIODO: Contenpla sesiones y al generar la cuota se indica
-            el período y la cantidad de sesiones de la misma
-          </p>
-          <p>
-            4° POR SESION (pago individual): Se crea una sola sesión, la cual se
-            deve pagar de a una.
-          </p>
-        </div>
+        <TextForm />
         <div className="flex absolute right-8 mt-12">
           <Button
             type="button"
