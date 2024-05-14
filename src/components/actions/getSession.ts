@@ -39,7 +39,7 @@ export default async function getSession(req: NextRequest) {
 
   try {
     await fetch(
-      `https://38ad-190-191-171-9.ngrok-free.app/api/v1/currentuser`,
+      `https://d494-190-191-171-9.ngrok-free.app/api/v1/currentuser`,
       {
         credentials: 'include',
         headers: headers
