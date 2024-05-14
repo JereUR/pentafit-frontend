@@ -174,37 +174,12 @@ export default function ActivitiesContextProvider({
     dataActivity: PropsAdd
   }): Promise<void | Error> {
     setLoading(true)
-    let isPublicValue, quotaGenerationValue, mpAvailableValue
+    const isPublicValue = dataActivity.isPublic === 'true' ? true : false
 
-    if (dataActivity.isPublic === undefined) {
-      isPublicValue = false
-    } else {
-      if (dataActivity.isPublic === 'true') {
-        isPublicValue = true
-      } else {
-        isPublicValue = false
-      }
-    }
+    const quotaGenerationValue =
+      dataActivity.quotaGeneration === 'true' ? true : false
 
-    if (dataActivity.quotaGeneration === undefined) {
-      quotaGenerationValue = false
-    } else {
-      if (dataActivity.quotaGeneration === 'true') {
-        quotaGenerationValue = true
-      } else {
-        quotaGenerationValue = false
-      }
-    }
-
-    if (dataActivity.mpAvailable === undefined) {
-      mpAvailableValue = false
-    } else {
-      if (dataActivity.mpAvailable === 'true') {
-        mpAvailableValue = true
-      } else {
-        mpAvailableValue = false
-      }
-    }
+    const mpAvailableValue = dataActivity.mpAvailable === 'true' ? true : false
 
     const newActivity = {
       activity: dataActivity.activity,
@@ -237,9 +212,9 @@ export default function ActivitiesContextProvider({
         title: 'Oh no! Algo salió mal.',
         description: error.message
       })
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
   async function updateActivity({
@@ -247,37 +222,13 @@ export default function ActivitiesContextProvider({
   }: {
     dataActivity: PropsAdd
   }): Promise<void | Error> {
-    let isPublicValue, quotaGenerationValue, mpAvailableValue
+    setLoading(true)
+    const isPublicValue = dataActivity.isPublic === 'true' ? true : false
 
-    if (dataActivity.isPublic === undefined) {
-      isPublicValue = false
-    } else {
-      if (dataActivity.isPublic === 'true') {
-        isPublicValue = true
-      } else {
-        isPublicValue = false
-      }
-    }
+    const quotaGenerationValue =
+      dataActivity.quotaGeneration === 'true' ? true : false
 
-    if (dataActivity.quotaGeneration === undefined) {
-      quotaGenerationValue = false
-    } else {
-      if (dataActivity.quotaGeneration === 'true') {
-        quotaGenerationValue = true
-      } else {
-        quotaGenerationValue = false
-      }
-    }
-
-    if (dataActivity.mpAvailable === undefined) {
-      mpAvailableValue = false
-    } else {
-      if (dataActivity.mpAvailable === 'true') {
-        mpAvailableValue = true
-      } else {
-        mpAvailableValue = false
-      }
-    }
+    const mpAvailableValue = dataActivity.mpAvailable === 'true' ? true : false
 
     const newActivity = {
       activity: dataActivity.activity,
@@ -292,21 +243,29 @@ export default function ActivitiesContextProvider({
       paymentType: dataActivity.paymentType
     }
 
-    /*
-    id: 'm5gr84i9',
-      activity: 'Actividad 1',
-      cost: 200,
-      isPublic: true,
-      quotaGeneration: true,
-      sessionMax: 5,
-      mpAvailable: false,
-      dateFrom: new Date(2024, 4, 20),
-      dateUntil: new Date(2024, 5, 20),
-      paymentType: 'Mensual',
-      publicName: 'Test'
-      */ 
-
     console.log(newActivity)
+
+    const url = `${BASE_URL}update-activity`
+    try {
+      const response = await axios.put(url)
+
+      if (response.status === 200 || response.status === 204) {
+        return response.data?.activity
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
