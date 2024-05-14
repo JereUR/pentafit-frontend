@@ -147,7 +147,9 @@ export default function EditForm() {
       dateFrom: dateFrom?.toString(),
       dateUntil: dateUntil?.toString(),
       paymentType: paymentType.toString(),
-      publicName: publicName?.toString()
+      publicName: publicName?.toString(),
+      quotaGeneration: String(quotaGeneration),
+      mpAvailable: String(mpAvailable)
     }
 
     const err = validations({ data })
