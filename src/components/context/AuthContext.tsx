@@ -36,15 +36,18 @@ export const AuthContext = createContext<AuthContextType | null>(null)
 const initialCompanies = [
   {
     id: 1,
-    name: 'Company 1'
+    name: 'Company 1',
+    logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg'
   },
   {
     id: 2,
-    name: 'Company 2'
+    name: 'Company 2',
+    logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg'
   },
   {
     id: 3,
-    name: 'Company 3'
+    name: 'Company 3',
+    logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg'
   }
 ]
 
