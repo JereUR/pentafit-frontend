@@ -12,6 +12,7 @@ import { PropsAdd } from '@/components/types/Activity'
 import Loader from '@/components/Loader'
 import ErrorText from '@/components/ErrorText'
 import TextForm from './TextForm'
+import useUser from '@/components/hooks/useUser'
 
 const payments = [
   'Por sesion',
@@ -64,6 +65,7 @@ const checkboxItems = [
 ]
 
 interface FormErrors {
+  id_companies?: string
   activity?: string
   cost?: string
   isPublic?: string
@@ -98,6 +100,8 @@ export default function ActivityForm({
     publicName: ''
   })
   const router = useRouter()
+  const { companies } = useUser()
+  console.log(dataActivity)
 
   useEffect(() => {
     setDataActivity(activity)
@@ -105,6 +109,10 @@ export default function ActivityForm({
 
   const validations = ({ dataActivity }: { dataActivity: PropsAdd }) => {
     const errorsForm: FormErrors = {}
+
+    if (dataActivity.id_companies.length === 0) {
+      errorsForm.id_companies = `La actividad debe pertenecer al menos a una compañia.`
+    }
 
     if (!dataActivity.activity.trim()) {
       errorsForm.activity = `Este campo no debe ser vacío.`
@@ -142,6 +150,19 @@ export default function ActivityForm({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setDataActivity({ ...dataActivity, [name]: value })
+  }
+
+  const handleChangeCompany = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    const newId = Number(value)
+    let id_companies = dataActivity.id_companies.map((company) => company)
+    if (id_companies.includes(newId)) {
+      id_companies = id_companies.filter((c) => c !== newId)
+    } else {
+      id_companies.push(newId)
+    }
+
+    setDataActivity({ ...dataActivity, id_companies: id_companies })
   }
 
   const handleChangeIsPublic = () => {
@@ -200,6 +221,7 @@ export default function ActivityForm({
       }
 
       setFormErrors({
+        companies: '',
         activity: '',
         cost: '',
         isPublic: '',
@@ -217,6 +239,32 @@ export default function ActivityForm({
   return (
     <div>
       <form onSubmit={handleAction}>
+        <div className="flex flex-col gap-2 mb-6">
+          <div className="flex gap-4 items-center">
+            <label>Compañia</label>
+            {formErrors.id_companies && (
+              <ErrorText text={formErrors.id_companies} />
+            )}
+          </div>
+          <div className="flex gap-4">
+            {companies.map((company) => {
+              return (
+                <div>
+                  <label htmlFor={company.name} className="font-[600]">
+                    {company.name}
+                  </label>
+                  <input
+                    type="checkbox"
+                    name="id_companies"
+                    checked={dataActivity.id_companies?.includes(company.id)}
+                    value={company.id}
+                    onChange={handleChangeCompany}
+                  />
+                </div>
+              )
+            })}
+          </div>
+        </div>
         <div className="grid grid-cols-3 gap-8 mb-4">
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
