@@ -137,7 +137,7 @@ export default function LoginForm() {
           type="submit"
           className="bg-primary-orange-600 w-full my-[5vh] py-6 text-xl hover:bg-primary-orange-700"
         >
-          {!loading ? 'Enviar' : <Loader className="mt-[2vh]" />}
+          {!loading ? 'Enviar' : <Loader className="mt-[1.8vh]" />}
         </Button>
       </form>
       {showModal && (
