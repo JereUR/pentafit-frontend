@@ -98,163 +98,201 @@ export default function ActivitiesTable() {
           )}
         </div>
       </div>
-      <table className="transactions-table w-full mb-4 mt-8">
-        <thead className="font-bold text-center text-muted bg-foreground text-sm">
-          <tr>
-            <td className="px-2 py-5">
-              <input
-                type="checkbox"
-                checked={selectAll}
-                onChange={handleSelectAllChange}
-                className="cursor-pointer h-5 w-5"
-              />
-            </td>
-            <td className="px-2 py-5">Actividad</td>
-            <td className="px-2 py-5">Costo</td>
-            <td className="px-2 py-5">Es pública?</td>
-            <td className="px-2 py-5">Permite generación de cuotas</td>
-            <td className="px-2 py-5">Cantida máxima de sesiones</td>
-            <td className="px-2 py-5">Permite MP a través de la app</td>
-            <td className="px-2 py-5">Fecha desde</td>
-            <td className="px-2 py-5">Fecha hasta</td>
-            <td className="px-2 py-5">Tipo cobro</td>
-            <td className="px-2 py-5">Acción</td>
-          </tr>
-        </thead>
-        <tbody className="text-foreground text-sm font-light">
-          {activities.map((activity) => (
-            <tr
-              key={activity.id}
-              className={`my-4 transition duration-300 ease-in-out hover:bg-muted cursor-pointer items-center text-center ${
-                selectedActivities.includes(activity.id) &&
-                styles.deleteRow.backgroundColor
-              }`}
-            >
-              <td
-                className="border-b border-foreground px-2 py-5"
-                onClick={() =>
-                  router.push(`/panel-de-control/actividades/${activity.id}`)
-                }
-              >
+      {activities ? (
+        <table className="transactions-table w-full mb-4 mt-8">
+          <thead className="font-bold text-center text-muted bg-foreground text-sm">
+            <tr>
+              <td className="px-2 py-5">
                 <input
                   type="checkbox"
-                  checked={selectedActivities.includes(activity.id)}
-                  onChange={(event) => handleCheckboxChange(activity.id, event)}
+                  checked={selectAll}
+                  onChange={handleSelectAllChange}
                   className="cursor-pointer h-5 w-5"
                 />
               </td>
-              <td
-                className="border-b border-foreground px-2 py-5"
-                onClick={() =>
-                  router.push(`/panel-de-control/actividades/${activity.id}`)
-                }
-              >
-                {activity.activity}
-              </td>
-              <td
-                className="border-b border-foreground px-2 py-5"
-                onClick={() =>
-                  router.push(`/panel-de-control/actividades/${activity.id}`)
-                }
-              >
-                ${activity.cost}
-              </td>
-              <td
-                className="border-b border-foreground px-2 py-5"
-                onClick={() =>
-                  router.push(`/panel-de-control/actividades/${activity.id}`)
-                }
-              >
-                <div
-                  className={`rounded-xl w-[3vw] ${
-                    activity.isPublic ? 'bg-green-400 ' : 'bg-red-400'
-                  } mx-auto`}
-                >
-                  {activity.isPublic ? 'Sí' : 'No'}
-                </div>
-              </td>
-              <td
-                className="border-b border-foreground px-2 py-5"
-                onClick={() =>
-                  router.push(`/panel-de-control/actividades/${activity.id}`)
-                }
-              >
-                <div
-                  className={`rounded-xl w-[3vw] ${
-                    activity.quotaGeneration ? 'bg-green-400 ' : 'bg-red-400'
-                  } mx-auto`}
-                >
-                  {activity.quotaGeneration ? 'Sí' : 'No'}
-                </div>
-              </td>
-              <td
-                className="border-b border-foreground px-2 py-5"
-                onClick={() =>
-                  router.push(`/panel-de-control/actividades/${activity.id}`)
-                }
-              >
-                {activity.sessionMax}
-              </td>
-              <td
-                className="border-b border-foreground px-2 py-5"
-                onClick={() =>
-                  router.push(`/panel-de-control/actividades/${activity.id}`)
-                }
-              >
-                <div
-                  className={`rounded-xl w-[3vw] ${
-                    activity.mpAvailable ? 'bg-green-400 ' : 'bg-red-400'
-                  } mx-auto`}
-                >
-                  {activity.mpAvailable ? 'Sí' : 'No'}
-                </div>
-              </td>
-              <td
-                className="border-b border-foreground px-2 py-5"
-                onClick={() =>
-                  router.push(`/panel-de-control/actividades/${activity.id}`)
-                }
-              >
-                {activity.dateFrom.toLocaleDateString()}
-              </td>
-              <td
-                className="border-b border-foreground px-2 py-5"
-                onClick={() =>
-                  router.push(`/panel-de-control/actividades/${activity.id}`)
-                }
-              >
-                {activity.dateUntil.toLocaleDateString()}
-              </td>
-              <td
-                className="border-b border-foreground px-2 py-5"
-                onClick={() =>
-                  router.push(`/panel-de-control/actividades/${activity.id}`)
-                }
-              >
-                {activity.paymentType}
-              </td>
-              <td className="border-b border-foreground px-2 py-5">
-                <div className="flex gap-2">
-                  <div>
-                    <Link
-                      href={`/panel-de-control/actividades/editar/${activity.id}`}
-                    >
-                      <button className="p-2 rounded-md text-white bg-sky-600 border-none cursor-pointer transitiopn duration-300 ease-in-out hover:scale-105 hover:shadow-md">
-                        <FaEdit />
-                      </button>
-                    </Link>
-                  </div>
-                  <div>
-                    <button className="p-2 rounded-md text-white bg-red-600 border-none cursor-pointer transitiopn duration-300 ease-in-out  hover:scale-105 hover:shadow-md">
-                      <FaTrash />
-                    </button>
-                  </div>
-                </div>
-              </td>
+              <td className="px-2 py-5">Actividad</td>
+              <td className="px-2 py-5">Costo</td>
+              <td className="px-2 py-5">Es pública?</td>
+              <td className="px-2 py-5">Permite generación de cuotas</td>
+              <td className="px-2 py-5">Cantida máxima de sesiones</td>
+              <td className="px-2 py-5">Permite MP a través de la app</td>
+              <td className="px-2 py-5">Fecha desde</td>
+              <td className="px-2 py-5">Fecha hasta</td>
+              <td className="px-2 py-5">Tipo cobro</td>
+              <td className="px-2 py-5">Acción</td>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          {activities.length > 0 ? (
+            <tbody className="text-foreground text-sm font-light">
+              {activities.map((activity) => (
+                <tr
+                  key={activity.id}
+                  className={`my-4 transition duration-300 ease-in-out hover:bg-muted cursor-pointer items-center text-center ${
+                    selectedActivities.includes(activity.id) &&
+                    styles.deleteRow.backgroundColor
+                  }`}
+                >
+                  <td
+                    className="border-b border-foreground px-2 py-5"
+                    onClick={() =>
+                      router.push(
+                        `/panel-de-control/actividades/${activity.id}`
+                      )
+                    }
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedActivities.includes(activity.id)}
+                      onChange={(event) =>
+                        handleCheckboxChange(activity.id, event)
+                      }
+                      className="cursor-pointer h-5 w-5"
+                    />
+                  </td>
+                  <td
+                    className="border-b border-foreground px-2 py-5"
+                    onClick={() =>
+                      router.push(
+                        `/panel-de-control/actividades/${activity.id}`
+                      )
+                    }
+                  >
+                    {activity.activity}
+                  </td>
+                  <td
+                    className="border-b border-foreground px-2 py-5"
+                    onClick={() =>
+                      router.push(
+                        `/panel-de-control/actividades/${activity.id}`
+                      )
+                    }
+                  >
+                    ${activity.cost}
+                  </td>
+                  <td
+                    className="border-b border-foreground px-2 py-5"
+                    onClick={() =>
+                      router.push(
+                        `/panel-de-control/actividades/${activity.id}`
+                      )
+                    }
+                  >
+                    <div
+                      className={`rounded-xl w-[3vw] ${
+                        activity.isPublic ? 'bg-green-400 ' : 'bg-red-400'
+                      } mx-auto`}
+                    >
+                      {activity.isPublic ? 'Sí' : 'No'}
+                    </div>
+                  </td>
+                  <td
+                    className="border-b border-foreground px-2 py-5"
+                    onClick={() =>
+                      router.push(
+                        `/panel-de-control/actividades/${activity.id}`
+                      )
+                    }
+                  >
+                    <div
+                      className={`rounded-xl w-[3vw] ${
+                        activity.quotaGeneration
+                          ? 'bg-green-400 '
+                          : 'bg-red-400'
+                      } mx-auto`}
+                    >
+                      {activity.quotaGeneration ? 'Sí' : 'No'}
+                    </div>
+                  </td>
+                  <td
+                    className="border-b border-foreground px-2 py-5"
+                    onClick={() =>
+                      router.push(
+                        `/panel-de-control/actividades/${activity.id}`
+                      )
+                    }
+                  >
+                    {activity.sessionMax}
+                  </td>
+                  <td
+                    className="border-b border-foreground px-2 py-5"
+                    onClick={() =>
+                      router.push(
+                        `/panel-de-control/actividades/${activity.id}`
+                      )
+                    }
+                  >
+                    <div
+                      className={`rounded-xl w-[3vw] ${
+                        activity.mpAvailable ? 'bg-green-400 ' : 'bg-red-400'
+                      } mx-auto`}
+                    >
+                      {activity.mpAvailable ? 'Sí' : 'No'}
+                    </div>
+                  </td>
+                  <td
+                    className="border-b border-foreground px-2 py-5"
+                    onClick={() =>
+                      router.push(
+                        `/panel-de-control/actividades/${activity.id}`
+                      )
+                    }
+                  >
+                    {activity.dateFrom.toLocaleDateString()}
+                  </td>
+                  <td
+                    className="border-b border-foreground px-2 py-5"
+                    onClick={() =>
+                      router.push(
+                        `/panel-de-control/actividades/${activity.id}`
+                      )
+                    }
+                  >
+                    {activity.dateUntil.toLocaleDateString()}
+                  </td>
+                  <td
+                    className="border-b border-foreground px-2 py-5"
+                    onClick={() =>
+                      router.push(
+                        `/panel-de-control/actividades/${activity.id}`
+                      )
+                    }
+                  >
+                    {activity.paymentType}
+                  </td>
+                  <td className="border-b border-foreground px-2 py-5">
+                    <div className="flex gap-2">
+                      <div>
+                        <Link
+                          href={`/panel-de-control/actividades/editar/${activity.id}`}
+                        >
+                          <button className="p-2 rounded-md text-white bg-sky-600 border-none cursor-pointer transitiopn duration-300 ease-in-out hover:scale-105 hover:shadow-md">
+                            <FaEdit />
+                          </button>
+                        </Link>
+                      </div>
+                      <div>
+                        <button className="p-2 rounded-md text-white bg-red-600 border-none cursor-pointer transitiopn duration-300 ease-in-out  hover:scale-105 hover:shadow-md">
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <tbody>
+              <tr>
+                <td colSpan={11}>Sin Actividades.</td>
+              </tr>
+            </tbody>
+          )}
+        </table>
+      ) : (
+        <div>
+          <h1>No data</h1>
+        </div>
+      )}
       <Pagination count={count} />
     </div>
   )
