@@ -247,22 +247,20 @@ export default function ActivityForm({
             )}
           </div>
           <div className="flex gap-4">
-            {companies.map((company) => {
-              return (
-                <div>
-                  <label htmlFor={company.name} className="font-[600]">
-                    {company.name}
-                  </label>
-                  <input
-                    type="checkbox"
-                    name="id_companies"
-                    checked={dataActivity.id_companies?.includes(company.id)}
-                    value={company.id}
-                    onChange={handleChangeCompany}
-                  />
-                </div>
-              )
-            })}
+            {companies.map((company) => (
+              <div key={company.id}>
+                <label htmlFor={company.name} className="font-[600]">
+                  {company.name}
+                </label>
+                <input
+                  type="checkbox"
+                  name="id_companies"
+                  checked={dataActivity.id_companies?.includes(company.id)}
+                  value={company.id}
+                  onChange={handleChangeCompany}
+                />
+              </div>
+            ))}
           </div>
         </div>
         <div className="grid grid-cols-3 gap-8 mb-4">
