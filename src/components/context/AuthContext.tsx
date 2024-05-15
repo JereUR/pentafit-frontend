@@ -16,9 +16,11 @@ import { setCookies } from './setCookies'
 import { removeCookies } from './removeCookies'
 import axios from 'axios'
 import { useToast } from '../ui/use-toast'
+import { Company } from '../types/Company'
 
 type AuthContextType = {
   user: User | null
+  companies: Company[] | []
   token: string | null
   recoverState: boolean
   loading: boolean
@@ -30,6 +32,21 @@ type AuthContextType = {
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
+
+const initialCompanies = [
+  {
+    id: 1,
+    name: 'Company 1'
+  },
+  {
+    id: 2,
+    name: 'Company 2'
+  },
+  {
+    id: 3,
+    name: 'Company 3'
+  }
+]
 
 export default function AuthContextProvider({
   children
@@ -46,6 +63,7 @@ export default function AuthContextProvider({
       token: 'Bearer 1234'
     } */
   )
+  const [companies, setCompanies] = useState(initialCompanies)
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const [loading, setLoading] = useState(false)
@@ -69,6 +87,7 @@ export default function AuthContextProvider({
       setUser(userFromStorage)
     }
   }, [])
+
   async function signIn({ dataLogin }: { dataLogin: PropsLogin }) {
     setLoading(true)
     try {
@@ -95,6 +114,7 @@ export default function AuthContextProvider({
 
         setToken(authToken)
         setUser(response.data.user)
+        setCompanies(response.data.user.companies)
         setTimeout(() => {
           router.push('/panel-de-control')
         }, 100)
@@ -245,10 +265,45 @@ export default function AuthContextProvider({
     }
   }
 
+  async function getCompanies() {
+    /* setLoading(true)
+    try {
+      const response = await axios.get(
+        `${BASE_URL}get-companies`,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+
+      if (response.status === 200 || response.status === 204) {
+        setRecoverState(true)
+      } else {
+        setRecoverState(false)
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+    } finally {
+      setLoading(false)
+    } 
+
+    return {companies}*/
+  }
+
   return (
     <AuthContext.Provider
       value={{
         user,
+        companies,
         token,
         recoverState,
         loading,

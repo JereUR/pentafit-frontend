@@ -35,6 +35,10 @@ export default function ActivitiesContextProvider({
   const [activities, setActivities] = useState<Activity[] | []>([
     {
       id: 'm5gr84i9',
+      id_companies: [
+        { id: 1, name: 'Company 1' },
+        { id: 3, name: 'Company 3' }
+      ],
       activity: 'Actividad 1',
       cost: 200,
       isPublic: false,
@@ -47,6 +51,10 @@ export default function ActivitiesContextProvider({
     },
     {
       id: '3u1reuv4',
+      id_companies: [
+        { id: 1, name: 'Company 1' },
+        { id: 2, name: 'Company 2' }
+      ],
       activity: 'Actividad 2',
       cost: 300,
       isPublic: true,
@@ -59,6 +67,10 @@ export default function ActivitiesContextProvider({
     },
     {
       id: 'derv1ws0',
+      id_companies: [
+        { id: 1, name: 'Company 1' },
+        { id: 3, name: 'Company 3' }
+      ],
       activity: 'Actividad 3',
       cost: 400,
       isPublic: true,
@@ -71,6 +83,10 @@ export default function ActivitiesContextProvider({
     },
     {
       id: '5kma53ae',
+      id_companies: [
+        { id: 2, name: 'Company 2' },
+        { id: 3, name: 'Company 3' }
+      ],
       activity: 'Actividad 4',
       cost: 200,
       isPublic: false,
@@ -83,6 +99,7 @@ export default function ActivitiesContextProvider({
     },
     {
       id: 'bhqecj4p',
+      id_companies: [{ id: 1, name: 'Company 1' }],
       activity: 'Actividad 5',
       cost: 500,
       isPublic: true,
@@ -104,14 +121,13 @@ export default function ActivitiesContextProvider({
   ): Promise<Activity[] | [] | void> {
     const regex = new RegExp(q, 'i')
     const ITEM_PER_PAGE = 4
-    /* const index = ITEM_PER_PAGE * (parseInt(page) - 1) */
     const params = new URLSearchParams()
     params.append('regex', regex.toString())
     params.append('page', page)
     params.append('ITEMS_PER_PAGE', ITEM_PER_PAGE.toString())
     const url = `${BASE_URL}get-activities?${params.toString()}`
 
-    try {
+    /* try {
       const response = await axios.get(url)
 
       if (response.status === 200 || response.status === 204) {
@@ -129,12 +145,12 @@ export default function ActivitiesContextProvider({
         title: 'Oh no! Algo salió mal.',
         description: error.message
       })
-    }
+    } */
   }
 
   async function getActivityById(id: string) {
     const url = `${BASE_URL}get-activity?id=${id}`
-    try {
+    /* try {
       const response = await axios.get(url)
 
       if (response.status === 200 || response.status === 204) {
@@ -151,10 +167,14 @@ export default function ActivitiesContextProvider({
         title: 'Oh no! Algo salió mal.',
         description: error.message
       })
-    }
+    } */
 
     return {
       id: 'm5gr84i9',
+      id_companies: [
+        { id: 1, name: 'Company 1' },
+        { id: 3, name: 'Company 3' }
+      ],
       activity: 'Actividad 1',
       cost: 200,
       isPublic: true,
