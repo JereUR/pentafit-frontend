@@ -1,25 +1,19 @@
 import { NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 
-/* export default async function getSession() {
-  let session = null
-  await fetch('https://jsonplaceholder.typicode.com/users/1')
-    .then((response) => response.json())
-    .then((json) => {
-      session = json
-    })
-  return { session }
-} */
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
+
+console.log(BASE_URL)
 
 export default async function getSession(req: NextRequest) {
   const sessionToken = cookies().get('session')?.value
   let session: any = null
 
-  if (!sessionToken) {
+  /* if (!sessionToken) {
     return null
-  }
+  } */
 
-  /* session = {
+  session = {
     id: 2,
     first_name: 'Jeremias',
     last_name: 'DV',
@@ -30,21 +24,18 @@ export default async function getSession(req: NextRequest) {
 
   return {
     session
-  } */
+  }
 
-  const headers = {
+  /* const headers = {
     'X-Requested-With': 'XMLHttpRequest',
     Authorization: sessionToken
   }
 
   try {
-    await fetch(
-      `https://d494-190-191-171-9.ngrok-free.app/api/v1/currentuser`,
-      {
-        credentials: 'include',
-        headers: headers
-      }
-    )
+    await fetch(`${BASE_URL}api/v1/currentuser`, {
+      credentials: 'include',
+      headers: headers
+    })
       .then((res) => res.json())
       .then((data) => {
         session = data
@@ -61,5 +52,5 @@ export default async function getSession(req: NextRequest) {
     return null
   }
 
-  return session
+  return session */
 }
