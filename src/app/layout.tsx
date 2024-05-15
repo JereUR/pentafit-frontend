@@ -1,6 +1,7 @@
 'use client'
 
 import { Inter } from 'next/font/google'
+
 import './globals.css'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import AuthContextProvider from '@/components/context/AuthContext'
@@ -11,7 +12,6 @@ import TopBar from '@/components/dashboard/navbar/TopBar'
 import ActivitiesContextProvider from '@/components/context/ActivitiesContext'
 import Logo from '@/components/Logo'
 import { Toaster } from '@/components/ui/toaster'
-import ThemeSwitcher from '@/components/ThemeSwitcher'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,7 +22,8 @@ export default function RootLayout({
 }>) {
   const pathname = usePathname()
   const shouldRenderLayout = !pathname.startsWith('/panel-de-control')
-  const recoverLayout = pathname.startsWith('/recover') || pathname.startsWith('/confirmation')
+  const recoverLayout =
+    pathname.startsWith('/recover') || pathname.startsWith('/confirmation')
 
   if (recoverLayout) {
     return (
