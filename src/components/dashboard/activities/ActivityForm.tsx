@@ -13,6 +13,7 @@ import Loader from '@/components/Loader'
 import ErrorText from '@/components/ErrorText'
 import TextForm from './TextForm'
 import useUser from '@/components/hooks/useUser'
+import Image from 'next/image'
 
 const payments = [
   'Por sesion',
@@ -101,7 +102,6 @@ export default function ActivityForm({
   })
   const router = useRouter()
   const { companies } = useUser()
-  console.log(dataActivity)
 
   useEffect(() => {
     setDataActivity(activity)
@@ -239,26 +239,47 @@ export default function ActivityForm({
   return (
     <div>
       <form onSubmit={handleAction}>
-        <div className="flex flex-col gap-2 mb-6">
+        <div className="flex flex-col gap-6 mb-6 border border-gray-300 dark:border-gray-700 py-4 px-6">
           <div className="flex gap-4 items-center">
             <label>Compañia</label>
             {formErrors.id_companies && (
               <ErrorText text={formErrors.id_companies} />
             )}
           </div>
-          <div className="flex gap-4">
+          <div className="flex justify-center gap-4">
             {companies.map((company) => (
-              <div key={company.id}>
-                <label htmlFor={company.name} className="font-[600]">
+              <div
+                key={company.id}
+                className="flex flex-col py-6 px-8 gap-4 justify-center items-center ring-1 rounded-md ring-gray-300 dark:ring-gray-700"
+              >
+                <label
+                  htmlFor={company.name}
+                  className="flex flex-col gap-4 items-center font-[600]"
+                >
                   {company.name}
+                  {company.logo && (
+                    <Image
+                      src={company.logo}
+                      width={100}
+                      height={100}
+                      alt={`${company.name} logo`}
+                    />
+                  )}
                 </label>
-                <input
-                  type="checkbox"
-                  name="id_companies"
-                  checked={dataActivity.id_companies?.includes(company.id)}
-                  value={company.id}
-                  onChange={handleChangeCompany}
-                />
+                <div className="content">
+                  <label className="checkBox">
+                    <input
+                      className="cursor-pointer"
+                      id="ch1"
+                      type="checkbox"
+                      name="id_companies"
+                      checked={dataActivity.id_companies?.includes(company.id)}
+                      value={company.id}
+                      onChange={handleChangeCompany}
+                    />
+                    <div className="transition"></div>
+                  </label>
+                </div>
               </div>
             ))}
           </div>
