@@ -239,14 +239,14 @@ export default function ActivityForm({
   return (
     <div>
       <form onSubmit={handleAction}>
-        <div className="flex flex-col gap-6 mb-6 border border-gray-300 dark:border-gray-700 py-4 px-6">
+        <div className="flex flex-col gap-6 mb-6 border border-gray-300 dark:border-gray-700 py-4 px-12">
           <div className="flex gap-4 items-center">
             <label>Compañia</label>
             {formErrors.id_companies && (
               <ErrorText text={formErrors.id_companies} />
             )}
           </div>
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-around gap-4">
             {companies.map((company) => (
               <div
                 key={company.id}
