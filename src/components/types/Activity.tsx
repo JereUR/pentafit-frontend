@@ -1,5 +1,8 @@
+import { Company } from './Company'
+
 export type Activity = {
   id: string
+  id_companies: Company[] 
   activity: string
   cost: number
   isPublic: boolean
@@ -9,10 +12,11 @@ export type Activity = {
   mpAvailable: boolean
   dateFrom: Date
   dateUntil: Date
-  paymentType: 'Por sesion' | 'Por período' | 'Mensual' | 'Mensual con sesiones'
+  paymentType: string
 }
 
 export interface PropsAdd {
+  id_companies: number[] 
   activity: string
   cost: string
   isPublic: string
@@ -26,6 +30,7 @@ export interface PropsAdd {
 }
 
 export const initialData = {
+  id_companies: [],
   activity: '',
   cost: '',
   isPublic: 'false',
