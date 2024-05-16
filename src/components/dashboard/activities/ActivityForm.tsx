@@ -66,7 +66,7 @@ const checkboxItems = [
 ]
 
 interface FormErrors {
-  id_companies?: string
+  id_business?: string
   activity?: string
   cost?: string
   isPublic?: string
@@ -101,7 +101,7 @@ export default function ActivityForm({
     publicName: ''
   })
   const router = useRouter()
-  const { companies } = useUser()
+  const { business } = useUser()
 
   useEffect(() => {
     setDataActivity(activity)
@@ -110,8 +110,8 @@ export default function ActivityForm({
   const validations = ({ dataActivity }: { dataActivity: PropsAdd }) => {
     const errorsForm: FormErrors = {}
 
-    if (dataActivity.id_companies.length === 0) {
-      errorsForm.id_companies = `La actividad debe pertenecer al menos a una compañia.`
+    if (dataActivity.id_business.length === 0) {
+      errorsForm.id_business = `La actividad debe pertenecer al menos a una compañia.`
     }
 
     if (!dataActivity.activity.trim()) {
@@ -152,17 +152,17 @@ export default function ActivityForm({
     setDataActivity({ ...dataActivity, [name]: value })
   }
 
-  const handleChangeCompany = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeBusiness = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     const newId = Number(value)
-    let id_companies = dataActivity.id_companies.map((company) => company)
-    if (id_companies.includes(newId)) {
-      id_companies = id_companies.filter((c) => c !== newId)
+    let id_business = dataActivity.id_business.map((Business) => Business)
+    if (id_business.includes(newId)) {
+      id_business = id_business.filter((c) => c !== newId)
     } else {
-      id_companies.push(newId)
+      id_business.push(newId)
     }
 
-    setDataActivity({ ...dataActivity, id_companies: id_companies })
+    setDataActivity({ ...dataActivity, id_business: id_business })
   }
 
   const handleChangeIsPublic = () => {
@@ -221,7 +221,7 @@ export default function ActivityForm({
       }
 
       setFormErrors({
-        companies: '',
+        business: '',
         activity: '',
         cost: '',
         isPublic: '',
@@ -242,27 +242,27 @@ export default function ActivityForm({
         <div className="flex flex-col gap-6 mb-6 border border-gray-300 dark:border-gray-700 py-4 px-12">
           <div className="flex gap-4 items-center">
             <label>Compañia</label>
-            {formErrors.id_companies && (
-              <ErrorText text={formErrors.id_companies} />
+            {formErrors.id_business && (
+              <ErrorText text={formErrors.id_business} />
             )}
           </div>
           <div className="flex justify-around gap-4">
-            {companies.map((company) => (
+            {business.map((item) => (
               <div
-                key={company.id}
+                key={item.id}
                 className="flex flex-col py-6 px-8 gap-4 justify-center items-center ring-1 rounded-md ring-gray-300 dark:ring-gray-700"
               >
                 <label
-                  htmlFor={company.name}
+                  htmlFor={item.name}
                   className="flex flex-col gap-4 items-center font-[600]"
                 >
-                  {company.name}
-                  {company.logo && (
+                  {item.name}
+                  {item.logo && (
                     <Image
-                      src={company.logo}
+                      src={item.logo}
                       width={100}
                       height={100}
-                      alt={`${company.name} logo`}
+                      alt={`${item.name} logo`}
                     />
                   )}
                 </label>
@@ -272,10 +272,10 @@ export default function ActivityForm({
                       className="cursor-pointer"
                       id="ch1"
                       type="checkbox"
-                      name="id_companies"
-                      checked={dataActivity.id_companies?.includes(company.id)}
-                      value={company.id}
-                      onChange={handleChangeCompany}
+                      name="id_business"
+                      checked={dataActivity.id_business?.includes(item.id)}
+                      value={item.id}
+                      onChange={handleChangeBusiness}
                     />
                     <div className="transition"></div>
                   </label>

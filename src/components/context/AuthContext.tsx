@@ -16,11 +16,11 @@ import { setCookies } from './setCookies'
 import { removeCookies } from './removeCookies'
 import axios from 'axios'
 import { useToast } from '../ui/use-toast'
-import { Company } from '../types/Company'
+import { Business } from '../types/Business'
 
 type AuthContextType = {
   user: User | null
-  companies: Company[] | []
+  business: Business[] | []
   token: string | null
   recoverState: boolean
   loading: boolean
@@ -33,21 +33,35 @@ type AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType | null>(null)
 
-const initialCompanies = [
+const initialBusiness = [
   {
     id: 1,
-    name: 'Company 1',
-    logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg'
+    name: 'Gimnasio Chupete',
+    logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg',
+    isActive: true
   },
   {
     id: 2,
-    name: 'Company 2',
-    logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg'
+    name: 'Business 2',
+    isActive: false
   },
   {
     id: 3,
-    name: 'Company 3',
-    logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg'
+    name: 'BOCA BOCA BOCA',
+    logo: 'https://i.pinimg.com/originals/05/ac/17/05ac17fb09440e9071908ef00efef134.png',
+    isActive: true
+  },
+  {
+    id: 4,
+    name: 'Gimnasio Chupete',
+    logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg',
+    isActive: true
+  },
+  {
+    id: 5,
+    name: 'Gimnasio Chupete',
+    logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg',
+    isActive: true
   }
 ]
 
@@ -66,7 +80,7 @@ export default function AuthContextProvider({
       token: 'Bearer 1234'
     } */
   )
-  const [companies, setCompanies] = useState(initialCompanies)
+  const [business, setBusiness] = useState(initialBusiness)
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const [loading, setLoading] = useState(false)
@@ -117,7 +131,7 @@ export default function AuthContextProvider({
 
         setToken(authToken)
         setUser(response.data.user)
-        setCompanies(response.data.user.companies)
+        setBusiness(response.data.user.business)
         setTimeout(() => {
           router.push('/panel-de-control')
         }, 100)
@@ -268,11 +282,11 @@ export default function AuthContextProvider({
     }
   }
 
-  async function getCompanies() {
+  async function getbusiness() {
     /* setLoading(true)
     try {
       const response = await axios.get(
-        `${BASE_URL}get-companies`,
+        `${BASE_URL}get-business`,
         {
           headers: {
             'Content-Type': 'application/json'
@@ -299,14 +313,14 @@ export default function AuthContextProvider({
       setLoading(false)
     } 
 
-    return {companies}*/
+    return {business}*/
   }
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        companies,
+        business,
         token,
         recoverState,
         loading,

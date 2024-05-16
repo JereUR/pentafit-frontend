@@ -17,7 +17,7 @@ export default function EditActivity() {
       const act = await getActivityById(id)
       if (act) {
         setActivity({
-          id_companies: act.id_companies.map((c) => c.id),
+          id_business: act.id_business.map((c) => c.id),
           activity: act.activity,
           cost: act.cost.toString(),
           isPublic: act.isPublic ? 'true' : 'false',

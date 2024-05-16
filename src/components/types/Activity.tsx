@@ -1,8 +1,8 @@
-import { Company } from './Company'
+import { Business } from './Business'
 
 export type Activity = {
   id: string
-  id_companies: Company[] 
+  id_business: Business[]
   activity: string
   cost: number
   isPublic: boolean
@@ -16,7 +16,7 @@ export type Activity = {
 }
 
 export interface PropsAdd {
-  id_companies: number[] 
+  id_business: number[]
   activity: string
   cost: string
   isPublic: string
@@ -30,7 +30,7 @@ export interface PropsAdd {
 }
 
 export const initialData = {
-  id_companies: [],
+  id_business: [],
   activity: '',
   cost: '',
   isPublic: 'false',

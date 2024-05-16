@@ -1,4 +1,4 @@
-import { Company } from './Company'
+import { Business } from './Business'
 
 export type User = {
   birthdate: string
@@ -7,7 +7,7 @@ export type User = {
   first_name: string
   gender: string
   id: number
-  companies: Company[] | []
+  business: Business[] | []
   last_name: string
   photo: string | null
   role: string | null

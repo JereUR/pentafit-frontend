@@ -35,9 +35,9 @@ export default function ActivitiesContextProvider({
   const [activities, setActivities] = useState<Activity[] | []>([
     {
       id: 'm5gr84i9',
-      id_companies: [
-        { id: 1, name: 'Company 1' },
-        { id: 3, name: 'Company 3' }
+      id_business: [
+        { id: 1, name: 'Business 1' },
+        { id: 3, name: 'Business 3' }
       ],
       activity: 'Actividad 1',
       cost: 200,
@@ -51,9 +51,9 @@ export default function ActivitiesContextProvider({
     },
     {
       id: '3u1reuv4',
-      id_companies: [
-        { id: 1, name: 'Company 1' },
-        { id: 2, name: 'Company 2' }
+      id_business: [
+        { id: 1, name: 'Business 1' },
+        { id: 2, name: 'Business 2' }
       ],
       activity: 'Actividad 2',
       cost: 300,
@@ -67,9 +67,9 @@ export default function ActivitiesContextProvider({
     },
     {
       id: 'derv1ws0',
-      id_companies: [
-        { id: 1, name: 'Company 1' },
-        { id: 3, name: 'Company 3' }
+      id_business: [
+        { id: 1, name: 'Business 1' },
+        { id: 3, name: 'Business 3' }
       ],
       activity: 'Actividad 3',
       cost: 400,
@@ -83,9 +83,9 @@ export default function ActivitiesContextProvider({
     },
     {
       id: '5kma53ae',
-      id_companies: [
-        { id: 2, name: 'Company 2' },
-        { id: 3, name: 'Company 3' }
+      id_business: [
+        { id: 2, name: 'Business 2' },
+        { id: 3, name: 'Business 3' }
       ],
       activity: 'Actividad 4',
       cost: 200,
@@ -99,7 +99,7 @@ export default function ActivitiesContextProvider({
     },
     {
       id: 'bhqecj4p',
-      id_companies: [{ id: 1, name: 'Company 1' }],
+      id_business: [{ id: 1, name: 'Business 1' }],
       activity: 'Actividad 5',
       cost: 500,
       isPublic: true,
@@ -171,9 +171,9 @@ export default function ActivitiesContextProvider({
 
     return {
       id: 'm5gr84i9',
-      id_companies: [
-        { id: 1, name: 'Company 1' },
-        { id: 3, name: 'Company 3' }
+      id_business: [
+        { id: 1, name: 'Business 1' },
+        { id: 3, name: 'Business 3' }
       ],
       activity: 'Actividad 1',
       cost: 200,
