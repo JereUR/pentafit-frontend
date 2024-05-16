@@ -9,7 +9,7 @@ export default function BusinessList() {
   return (
     <div>
       {business.map((b) => (
-        <BusinessItem item={b} />
+        <BusinessItem key={b.id} item={b} />
       ))}
     </div>
   )
