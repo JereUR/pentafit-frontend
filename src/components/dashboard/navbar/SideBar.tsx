@@ -4,7 +4,7 @@ import { FaHome, FaUser } from 'react-icons/fa'
 import { FaMoneyBillTransfer } from 'react-icons/fa6'
 import { MdForkLeft, MdExpandLess, MdExpandMore } from 'react-icons/md'
 import { TiThListOutline } from 'react-icons/ti'
-import { IoIosFitness } from 'react-icons/io'
+import { IoIosFitness, IoMdBusiness } from 'react-icons/io'
 import { IoFootstepsSharp } from 'react-icons/io5'
 import { GrAnnounce } from 'react-icons/gr'
 import Link from 'next/link'
@@ -18,6 +18,12 @@ const menuItems = [
     title: 'Inicio',
     path: '/panel-de-control',
     icon: <FaHome className="h-5 w-5" />,
+    list: null
+  },
+  {
+    title: 'Negocios',
+    path: '/panel-de-control/negocios',
+    icon: <IoMdBusiness className="h-5 w-5" />,
     list: null
   },
   {
@@ -129,12 +135,12 @@ export default function SideBar() {
 
   return (
     <div className="flex flex-col top-10 text-white">
-      <div className="flex justify-center gap-5 mb-10">
+      <div className="fixed flex left-10 xl:left-24 justify-center gap-5 mb-10">
         <Link href="/" className=" text-4xl font-bold ">
           Penta
         </Link>
       </div>
-      <div className="list-none">
+      <div className="fixed top-20 left-3 w-1/4 xl:w-1/6 pr-10 list-none">
         {menuItems.map((item) => (
           <div key={item.title} className="my-4">
             {item.path ? (
@@ -189,7 +195,7 @@ export default function SideBar() {
           </div>
         ))}
       </div>
-      <div className="absolute bottom-5 w-1/4 lg:w-1/6 border-t text-center flex justify-center items-center bg-black pt-5 px-5">
+      <div className="fixed bottom-5 w-1/4 lg:w-1/6 border-t text-center flex justify-center items-center bg-black pt-5 px-5">
         <ThemeSwitcher />
       </div>
     </div>
