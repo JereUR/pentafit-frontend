@@ -1,28 +1,29 @@
 import { NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
+import { Session } from '../types/User'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
-export default async function getSession(req: NextRequest) {
+export default async function getSession(
+  req: NextRequest
+): Promise<Session | null> {
   const sessionToken = cookies().get('session')?.value
-  let session: any = null
+  let session: Session | null = null
 
   if (!sessionToken) {
     return null
   }
 
-  /* session = {
+  /*  session = {
     id: 2,
     first_name: 'Jeremias',
     last_name: 'DV',
     email: 'jeremias.jdv@gmail.com',
     photo_url: null,
-    token: sessionToken
+    token: 'sessionToken'
   }
 
-  return {
-    session
-  } */
+  return session */
 
   const headers = {
     'X-Requested-With': 'XMLHttpRequest',
