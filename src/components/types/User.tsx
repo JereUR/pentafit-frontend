@@ -7,10 +7,19 @@ export type User = {
   first_name: string
   gender: string
   id: number
-  business: Business[] | []
+  business?: Business[] | []
   last_name: string
-  photo: string | null
+  photo?: string | null
   role: string | null
+}
+
+export type Session = {
+  id: number
+  first_name: string
+  last_name: string
+  email: string
+  photo_url: string | null
+  token: string
 }
 
 export interface PropsRegister {
