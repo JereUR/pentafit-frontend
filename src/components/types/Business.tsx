@@ -3,6 +3,7 @@ export type Business = {
   name: string
   description?: string
   isActive: boolean
+  isWorking: boolean
   logo?: string
   metadata?: string
 }

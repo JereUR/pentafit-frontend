@@ -20,7 +20,7 @@ import { Business } from '../types/Business'
 
 type AuthContextType = {
   user: User | null
-  business: Business[] | []
+  businesses: Business[] | []
   token: string | null
   recoverState: boolean
   loading: boolean
@@ -29,6 +29,7 @@ type AuthContextType = {
   signOut: () => Promise<void>
   signUp: ({ dataRegister }: { dataRegister: PropsRegister }) => Promise<void>
   recover: ({ email }: { email: string }) => Promise<void>
+  getBusinesses: () => Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -38,30 +39,35 @@ const initialBusiness = [
     id: 1,
     name: 'Gimnasio Chupete',
     logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg',
-    isActive: true
+    isActive: true,
+    isWorking: true
   },
   {
     id: 2,
     name: 'Business 2',
-    isActive: false
+    isActive: false,
+    isWorking: false
   },
   {
     id: 3,
     name: 'BOCA BOCA BOCA',
     logo: 'https://i.pinimg.com/originals/05/ac/17/05ac17fb09440e9071908ef00efef134.png',
-    isActive: true
+    isActive: true,
+    isWorking: false
   },
   {
     id: 4,
     name: 'Gimnasio Chupete',
     logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg',
-    isActive: true
+    isActive: true,
+    isWorking: false
   },
   {
     id: 5,
     name: 'Gimnasio Chupete',
     logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg',
-    isActive: true
+    isActive: true,
+    isWorking: false
   }
 ]
 
@@ -80,7 +86,7 @@ export default function AuthContextProvider({
       token: 'Bearer 1234'
     } */
   )
-  const [business, setBusiness] = useState(initialBusiness)
+  const [businesses, setBusinesses] = useState(initialBusiness)
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const [loading, setLoading] = useState(false)
@@ -131,7 +137,7 @@ export default function AuthContextProvider({
 
         setToken(authToken)
         setUser(response.data.user)
-        setBusiness(response.data.user.business)
+        setBusinesses(response.data.user.business)
         setTimeout(() => {
           router.push('/panel-de-control')
         }, 100)
@@ -282,22 +288,20 @@ export default function AuthContextProvider({
     }
   }
 
-  async function getbusiness() {
-    /* setLoading(true)
+  async function getBusinesses() {
     try {
-      const response = await axios.get(
-        `${BASE_URL}get-business`,
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
+      const response = await axios.get(`${BASE_URL}api/v1/businesses`, {
+        headers: {
+          Authorization: token
         }
-      )
+      })
 
       if (response.status === 200 || response.status === 204) {
-        setRecoverState(true)
+        console.log(response)
+        if (response.data instanceof Array) {
+          response.data
+        }
       } else {
-        setRecoverState(false)
         toast({
           title: 'Oh no! Algo salió mal.',
           description: response.statusText
@@ -311,16 +315,14 @@ export default function AuthContextProvider({
       })
     } finally {
       setLoading(false)
-    } 
-
-    return {business}*/
+    }
   }
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        business,
+        businesses,
         token,
         recoverState,
         loading,
@@ -328,7 +330,8 @@ export default function AuthContextProvider({
         signIn,
         signOut,
         signUp,
-        recover
+        recover,
+        getBusinesses
       }}
     >
       {children}

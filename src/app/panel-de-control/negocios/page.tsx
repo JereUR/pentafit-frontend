@@ -1,5 +1,6 @@
-import { Metadata } from 'next'
 import BusinessList from '@/components/dashboard/business/BusinessList'
+import { Metadata } from 'next'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'PentaFit - Compañias'
@@ -8,7 +9,9 @@ export const metadata: Metadata = {
 export default function BusinessPage() {
   return (
     <div>
-      <BusinessList />
+      <Suspense fallback="Loading...">
+        <BusinessList />
+      </Suspense>
     </div>
   )
 }

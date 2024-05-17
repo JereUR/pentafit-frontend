@@ -8,6 +8,8 @@ import {
   MdArrowUpward,
   MdDelete,
   MdEdit,
+  MdOutlineWork,
+  MdOutlineWorkOff,
   MdRestoreFromTrash
 } from 'react-icons/md'
 
@@ -25,7 +27,7 @@ export default function BusinessItem({ item }: { item: Business }) {
               className="rounded-full ring-2 ring-primary-orange-600 dark:ring-primary-orange-400"
             />
           </div>
-          <div>
+          <div className="w-[40vw]">
             <h2 className="text-2xl font-bold">{item.name}</h2>
             <p className="text-lg">
               {item.description ? item.description : 'Sin descripción.'}
@@ -33,7 +35,29 @@ export default function BusinessItem({ item }: { item: Business }) {
             <p>{item.isActive ? 'Activo' : 'Inactivo'}</p>
           </div>
         </div>
-        <div className="flex flex-col gap-4 py-4 px-8 border-l absolute right-10">
+        <div className="flex flex-col justify-center gap-4 px-8 border-l ml-[10vw]">
+          <Button
+            className={`flex justify-start items-center shadow-md dark:text-foreground gap-2 ${
+              item.isWorking
+                ? 'bg-orange-500 dark:bg-orange-600'
+                : 'bg-green-500 dark:bg-green-600'
+            } transition duration-300 ease-in-out hover:scale-[1.02] ${
+              item.isWorking
+                ? 'hover:bg-orange-600 dark:hover:bg-orange-700'
+                : 'hover:bg-green-600 dark:hover:bg-green-700'
+            }`}
+          >
+            {item.isWorking ? (
+              <MdOutlineWork className="h-5 w-5" />
+            ) : (
+              <MdOutlineWorkOff className="h-5 w-5" />
+            )}
+            {item.isWorking ? (
+              <span className="flex m-auto ">Salir Area de Trabajo</span>
+            ) : (
+              <span className="flex m-auto ">Entrar Area de Trabajo</span>
+            )}
+          </Button>
           <Button
             className={`flex justify-start items-center shadow-md dark:text-foreground gap-2 ${
               item.isActive

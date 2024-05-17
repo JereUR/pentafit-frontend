@@ -3,17 +3,15 @@ import { cookies } from 'next/headers'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
-console.log(BASE_URL)
-
 export default async function getSession(req: NextRequest) {
   const sessionToken = cookies().get('session')?.value
   let session: any = null
 
-  /* if (!sessionToken) {
+  if (!sessionToken) {
     return null
-  } */
+  }
 
-  session = {
+  /* session = {
     id: 2,
     first_name: 'Jeremias',
     last_name: 'DV',
@@ -24,9 +22,9 @@ export default async function getSession(req: NextRequest) {
 
   return {
     session
-  }
+  } */
 
-  /* const headers = {
+  const headers = {
     'X-Requested-With': 'XMLHttpRequest',
     Authorization: sessionToken
   }
@@ -52,5 +50,5 @@ export default async function getSession(req: NextRequest) {
     return null
   }
 
-  return session */
+  return session
 }
