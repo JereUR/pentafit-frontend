@@ -101,7 +101,7 @@ export default function ActivityForm({
     publicName: ''
   })
   const router = useRouter()
-  const { business } = useUser()
+  const { businesses } = useUser()
 
   useEffect(() => {
     setDataActivity(activity)
@@ -247,7 +247,7 @@ export default function ActivityForm({
             )}
           </div>
           <div className="flex justify-around gap-4">
-            {business.map((item) => (
+            {businesses.map((item) => (
               <div
                 key={item.id}
                 className="flex flex-col py-6 px-8 gap-4 justify-center items-center ring-1 rounded-md ring-gray-300 dark:ring-gray-700"
