@@ -16,7 +16,7 @@ import { setCookies } from './setCookies'
 import { removeCookies } from './removeCookies'
 import axios from 'axios'
 import { useToast } from '../ui/use-toast'
-import { Business } from '../types/Business'
+import { Business, PropsAddBusiness } from '../types/Business'
 
 type AuthContextType = {
   user: User | null
@@ -30,6 +30,11 @@ type AuthContextType = {
   signUp: ({ dataRegister }: { dataRegister: PropsRegister }) => Promise<void>
   recover: ({ email }: { email: string }) => Promise<void>
   getBusinesses: () => Promise<void>
+  addBusiness: ({
+    dataBusiness
+  }: {
+    dataBusiness: PropsAddBusiness
+  }) => Promise<void | Error>
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -289,7 +294,7 @@ export default function AuthContextProvider({
   }
 
   async function getBusinesses() {
-    console.log(token)
+    setLoading(true)
     try {
       const response = await axios.get(`${BASE_URL}api/v1/businesses`, {
         headers: {
@@ -302,6 +307,47 @@ export default function AuthContextProvider({
         if (response.data instanceof Array) {
           setBusinesses(response.data)
         }
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function addBusiness({
+    dataBusiness
+  }: {
+    dataBusiness: PropsAddBusiness
+  }): Promise<void | Error> {
+    setLoading(true)
+
+    const url = `${BASE_URL}add-business`
+    try {
+      const response = await axios.get(url)
+
+      if (response.status === 200 || response.status === 204) {
+        const newBusiness = {
+          id: response.data.id,
+          name: dataBusiness.name,
+          description: dataBusiness.description,
+          isActive: false,
+          isWorking: false,
+          logo: response.data.logo,
+          metadata: dataBusiness.metadata
+        }
+        let newBusinesses = businesses
+        newBusinesses.push(newBusiness)
+        setBusinesses(newBusinesses)
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
@@ -332,7 +378,8 @@ export default function AuthContextProvider({
         signOut,
         signUp,
         recover,
-        getBusinesses
+        getBusinesses,
+        addBusiness
       }}
     >
       {children}
