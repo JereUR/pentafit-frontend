@@ -13,7 +13,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 export default function BusinessList() {
   const [getData, setGetData] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { businesses,getBusinesses } = useUser()
+  const { businesses, getBusinesses } = useUser()
 
   useEffect(() => {
     if (!getData) {
@@ -24,7 +24,7 @@ export default function BusinessList() {
 
   return (
     <div>
-      {businesses.length > 0 ? (
+      {businesses?.length > 0 ? (
         <div>
           {businesses.map((b) => (
             <BusinessItem key={b.id} item={b} />

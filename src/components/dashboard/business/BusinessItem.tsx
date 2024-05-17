@@ -40,7 +40,7 @@ export default function BusinessItem({ item }: { item: Business }) {
             className={`flex justify-start items-center shadow-md dark:text-foreground gap-2 ${
               item.isWorking
                 ? 'bg-orange-500 dark:bg-orange-600'
-                : 'bg-green-500 dark:bg-green-600'
+                : 'bg-purple-500 dark:bg-purple-600'
             } transition duration-300 ease-in-out hover:scale-[1.02] ${
               item.isWorking
                 ? 'hover:bg-orange-600 dark:hover:bg-orange-700'

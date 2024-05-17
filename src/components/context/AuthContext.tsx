@@ -289,6 +289,7 @@ export default function AuthContextProvider({
   }
 
   async function getBusinesses() {
+    console.log(token)
     try {
       const response = await axios.get(`${BASE_URL}api/v1/businesses`, {
         headers: {
@@ -299,7 +300,7 @@ export default function AuthContextProvider({
       if (response.status === 200 || response.status === 204) {
         console.log(response)
         if (response.data instanceof Array) {
-          response.data
+          setBusinesses(response.data)
         }
       } else {
         toast({

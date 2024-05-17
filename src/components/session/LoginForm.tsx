@@ -68,8 +68,6 @@ export default function LoginForm() {
     const err = validations({ dataLogin })
     setLoginErrors(err)
 
-    console.log(dataLogin)
-
     if (Object.keys(err).length === 0) {
       await signIn({ dataLogin })
       setLoginErrors({

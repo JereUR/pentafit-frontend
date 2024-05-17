@@ -15,6 +15,8 @@ interface FormErrors {
   [key: string]: string | undefined
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
+
 export default function RecoverForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [password, setPassword] = useState('')
@@ -82,15 +84,11 @@ export default function RecoverForm() {
     }
 
     try {
-      const response = await axios.post(
-        `https://ca9b-190-191-171-9.ngrok-free.app/recover`,
-        user,
-        {
-          headers: {
-            'Content-Type': 'application/json' // Include Bearer prefix for authorization
-          }
+      const response = await axios.post(`${BASE_URL}recover`, user, {
+        headers: {
+          'Content-Type': 'application/json' // Include Bearer prefix for authorization
         }
-      )
+      })
       if (response.status === 200 || response.status === 204) {
         console.log('Password update response:', response.data)
         router.push('/iniciar-sesion')
