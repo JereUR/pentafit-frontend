@@ -5,19 +5,23 @@ export type Business = {
   isActive: boolean
   isWorking: boolean
   logo?: string
-  metadata?: string
+  metadata?: JSON
 }
 
 export interface PropsAddBusiness {
   name: string
   description?: string
   logo?: string
-  metadata?: string
+  title: string
+  primary_color: string
+  secondary_color: string
 }
 
 export const initialData = {
   name: '',
   description: '',
   logo: '',
-  metadata: ''
+  title: '',
+  primary_color: '#FFFFFF',
+  secondary_color: '#FFFFFF'
 }

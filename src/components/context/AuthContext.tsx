@@ -331,6 +331,12 @@ export default function AuthContextProvider({
   }): Promise<void | Error> {
     setLoading(true)
 
+    const metadata = {
+      title: dataBusiness.title,
+      primary_color: dataBusiness.primary_color,
+      secondary_color: dataBusiness.secondary_color
+    }
+
     const url = `${BASE_URL}add-business`
     try {
       const response = await axios.get(url)
@@ -343,7 +349,7 @@ export default function AuthContextProvider({
           isActive: false,
           isWorking: false,
           logo: response.data.logo,
-          metadata: dataBusiness.metadata
+          metadata
         }
         let newBusinesses = businesses
         newBusinesses.push(newBusiness)
