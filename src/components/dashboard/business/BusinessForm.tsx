@@ -55,7 +55,7 @@ export default function BusinessForm({
   console.log(dataBusiness)
 
   return (
-    <div>
+    <div className="m-10">
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-2">
           <div className="flex gap-4 items-center">
