@@ -52,7 +52,9 @@ export default function BusinessForm({
 }) {
   const { loading, addBusiness } = useUser()
   const [dataBusiness, setDataBusiness] = useState<PropsAddBusiness>(business)
-  const [imgLogo, setImgLogo] = useState<string | null>(null)
+  const [imgLogo, setImgLogo] = useState<string | null>(
+    business.logo && business.logo != '' ? business.logo : null
+  )
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
   const { toast } = useToast()
 
