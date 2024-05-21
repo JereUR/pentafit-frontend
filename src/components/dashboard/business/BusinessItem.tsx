@@ -1,17 +1,16 @@
 import Image from 'next/image'
-
-import { Business } from '@/components/types/Business'
-import noImage from '@public/assets/no-image.png'
-import { Button } from '@/components/ui/button'
 import {
   MdArrowDownward,
   MdArrowUpward,
   MdDelete,
   MdEdit,
   MdOutlineWork,
-  MdOutlineWorkOff,
-  MdRestoreFromTrash
+  MdOutlineWorkOff
 } from 'react-icons/md'
+
+import { Business } from '@/components/types/Business'
+import noImage from '@public/assets/no-image.png'
+import { Button } from '@/components/ui/button'
 
 export default function BusinessItem({ item }: { item: Business }) {
   return (
