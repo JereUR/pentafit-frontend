@@ -334,7 +334,9 @@ export default function AuthContextProvider({
     const metadata = {
       title: dataBusiness.title,
       primary_color: dataBusiness.primary_color,
-      secondary_color: dataBusiness.secondary_color
+      secondary_color: dataBusiness.secondary_color,
+      third_color: dataBusiness.third_color,
+      slogan: dataBusiness.slogan
     }
 
     const url = `${BASE_URL}add-business`
@@ -346,9 +348,14 @@ export default function AuthContextProvider({
           id: response.data.id,
           name: dataBusiness.name,
           description: dataBusiness.description,
+          email: dataBusiness.email,
+          address: dataBusiness.address,
+          phone: dataBusiness.phone,
+          instagram: dataBusiness.instagram,
+          facebook: dataBusiness.facebook,
           isActive: false,
           isWorking: false,
-          logo: response.data.logo,
+          logo: dataBusiness.logo,
           metadata
         }
         let newBusinesses = businesses
