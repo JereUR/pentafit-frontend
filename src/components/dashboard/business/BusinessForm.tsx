@@ -1,14 +1,16 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useState } from 'react'
+import Image from 'next/image'
 
 import ErrorText from '@/components/ErrorText'
 import useUser from '@/components/hooks/useUser'
 import { PropsAddBusiness } from '@/components/types/Business'
-import ColorPicker from './ColorPicker'
 import MetadataForm from './MetadataForm'
 import { Button } from '@/components/ui/button'
 import ContactForm from './ContactForm'
+import { useToast } from '@/components/ui/use-toast'
+import noImage from '@public/assets/no-image.png'
 
 export interface FormErrors {
   name?: string
@@ -50,8 +52,9 @@ export default function BusinessForm({
 }) {
   const { loading, addBusiness } = useUser()
   const [dataBusiness, setDataBusiness] = useState<PropsAddBusiness>(business)
+  const [imgLogo, setImgLogo] = useState<string | null>(null)
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
-  const colorInputRef = useRef(null)
+  const { toast } = useToast()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -63,7 +66,23 @@ export default function BusinessForm({
     setDataBusiness({ ...dataBusiness, [name]: value })
   }
 
-  const handleChangeLogo = (e: React.ChangeEvent<HTMLInputElement>) => {}
+  const handleChangeLogo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0]
+
+      if (file && file.type.substring(0, 5) === 'image') {
+        const imageUrl = URL.createObjectURL(file)
+        setDataBusiness({ ...dataBusiness, logo: imageUrl })
+        setImgLogo(imageUrl)
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Archivo no compatible.',
+          description: 'Solo archivos tipo .jpg, .jpeg y .png.'
+        })
+      }
+    }
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -82,13 +101,27 @@ export default function BusinessForm({
               </label>
               {formErrors.activity && <ErrorText text={formErrors.activity} />}
             </div>
-            <input
-              type="file"
-              name="logo"
-              className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
-              value={dataBusiness.logo}
-              onChange={handleChangeLogo}
-            />
+            <div className="logo-uploader">
+              <div className="logo-preview">
+                <Image
+                  src={imgLogo ? imgLogo : noImage}
+                  width={100}
+                  height={100}
+                  alt="Business logo"
+                />
+              </div>
+              <input
+                type="file"
+                id="logo"
+                name="logo"
+                accept="image/*"
+                className="hidden" // Hide the default input
+                onChange={handleChangeLogo}
+              />
+              <label htmlFor="logo" className="cursor-pointer">
+                Subir logo
+              </label>
+            </div>
           </div>
           <div>
             <div className="flex flex-col gap-2">
