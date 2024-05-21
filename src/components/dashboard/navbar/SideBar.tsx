@@ -196,7 +196,7 @@ export default function SideBar() {
           </div>
         ))}
       </div>
-      <div className="fixed bottom-5 w-1/4 lg:w-1/6 border-t text-center flex justify-center items-center bg-black pt-5 px-5">
+      <div className="fixed bottom-5 w-1/4 xl:w-1/6 border-t text-center flex justify-center items-center bg-black pt-5 px-5">
         <ThemeSwitcher />
       </div>
     </div>
