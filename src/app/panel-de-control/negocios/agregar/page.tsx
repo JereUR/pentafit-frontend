@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 }
 
 export default function AddBusinessPage() {
-  return <BusinessForm business={initialData} />
+  return <BusinessForm business={initialData} type="add" />
 }
