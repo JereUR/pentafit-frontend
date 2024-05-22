@@ -103,6 +103,14 @@ export default function ActivityForm({
   const router = useRouter()
   const { businesses } = useUser()
 
+  /* useEffect(() => {
+      if (business.logo) {
+        const imageUrl = URL.createObjectURL(business.logo)
+        setImgLogo(imageUrl)
+      }
+    }
+  }, [businesses]) */
+
   useEffect(() => {
     setDataActivity(activity)
   }, [activity])
@@ -259,7 +267,7 @@ export default function ActivityForm({
                   {item.name}
                   {item.logo && (
                     <Image
-                      src={item.logo}
+                      src={URL.createObjectURL(item.logo)}
                       width={100}
                       height={100}
                       alt={`${item.name} logo`}
