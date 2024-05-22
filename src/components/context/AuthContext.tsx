@@ -359,7 +359,7 @@ export default function AuthContextProvider({
           ...data
         }
 
-        try {
+        /* try {
           const formData = new FormData()
           formData.append('image', dataBusiness.logo)
           console.log(dataBusiness.logo)
@@ -391,7 +391,7 @@ export default function AuthContextProvider({
             description: error.message
           })
           return false
-        }
+        } */
 
         let newBusinesses = businesses
         newBusinesses.push(newBusiness)
