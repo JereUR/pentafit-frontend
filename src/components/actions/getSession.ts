@@ -1,6 +1,9 @@
+'use server'
+
 import { NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 import { Session } from '../types/User'
+import { setCookies } from '../context/setCookies'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
@@ -14,17 +17,20 @@ export default async function getSession(
   const sessionToken = cookies().get('session')?.value
   let session: Session | null = null
 
-  /* if (!sessionToken) {
+ /*  if (!sessionToken) {
     return null
   } */
 
-  session = {
-    id: 2,
-    first_name: 'Jeremias',
-    last_name: 'DV',
-    email: 'jeremias.jdv@gmail.com',
-    photo_url: null,
-    token: 'sessionToken'
+   session = {
+    user:{id: 4,
+  email: 'jeremias.jdv@gmail.com',
+  first_name: 'Jeremias',
+  last_name: 'DV',
+  gender: 'male',
+  birthdate: 'string',
+  role: 'admin',
+  photo: 'string | null',
+  created_at: ''}
   }
 
   return session
@@ -51,6 +57,8 @@ export default async function getSession(
     })
     const data = await response.json()
     const session = data || null
+
+    setCookies(data.token)
 
     // Actualiza el caché con la nueva sesión y el timestamp
     sessionCache[sessionToken] = {
