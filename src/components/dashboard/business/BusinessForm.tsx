@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import ErrorText from '@/components/ErrorText'
@@ -11,6 +11,10 @@ import { Button } from '@/components/ui/button'
 import ContactForm from './ContactForm'
 import { useToast } from '@/components/ui/use-toast'
 import noImage from '@public/assets/no-image.png'
+import { useRouter } from 'next/navigation'
+import { ImCross } from 'react-icons/im'
+import { FaCheck } from 'react-icons/fa'
+import Loader from '@/components/Loader'
 
 export interface FormErrors {
   name?: string
@@ -46,17 +50,20 @@ const initialErrors = {
 }
 
 export default function BusinessForm({
-  business
+  business,
+  type
 }: {
   business: PropsAddBusiness
+  type: string
 }) {
   const { loading, addBusiness } = useUser()
   const [dataBusiness, setDataBusiness] = useState<PropsAddBusiness>(business)
   const [imgLogo, setImgLogo] = useState<string | null>(
-    business.logo && business.logo != '' ? business.logo : null
+    /* business.logo ? URL.createObjectURL(business.logo) :  */ null
   )
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
   const { toast } = useToast()
+  const router = useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -74,7 +81,9 @@ export default function BusinessForm({
 
       if (file && file.type.substring(0, 5) === 'image') {
         const imageUrl = URL.createObjectURL(file)
-        setDataBusiness({ ...dataBusiness, logo: imageUrl })
+        /* const formData = new FormData()
+        formData.append('logo', file) */
+        setDataBusiness({ ...dataBusiness, logo: file })
         setImgLogo(imageUrl)
       } else {
         toast({
@@ -89,7 +98,22 @@ export default function BusinessForm({
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    console.log(dataBusiness)
+    if (type === 'add') {
+      const response = await addBusiness({ dataBusiness })
+      if (response) {
+        toast({
+          title: 'Negocio agregado.',
+          description: 'Redireccionando...',
+          className: 'bg-green-600'
+        })
+
+        setTimeout(() => {
+          router.replace('/panel-de-control/negocios')
+        }, 1000)
+      }
+    } else {
+      /* await updateBusiness({ dataBusiness }) */
+    }
   }
 
   return (
@@ -98,10 +122,10 @@ export default function BusinessForm({
         <div className="flex">
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
-              <label htmlFor="activity" className="font-[600]">
+              <label htmlFor="logo" className="font-[600]">
                 Logo
               </label>
-              {formErrors.activity && <ErrorText text={formErrors.activity} />}
+              {formErrors.logo && <ErrorText text={formErrors.logo} />}
             </div>
             <div className="logo-uploader">
               <div className="logo-preview">
@@ -170,7 +194,27 @@ export default function BusinessForm({
           formErrors={formErrors}
           handleChange={handleChange}
         />
-        <Button type="submit">Agregar</Button>
+        <div className="flex justify-end mt-10">
+          <Button
+            type="button"
+            className="gap-2 mr-2 font-bold text-background bg-red-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-red-600 border-none"
+            onClick={() => router.replace('/panel-de-control/negocios')}
+          >
+            <ImCross /> Cerrar
+          </Button>
+          <Button
+            type="submit"
+            className="gap-2 font-bold text-background bg-green-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-green-600 border-none"
+          >
+            {!loading ? (
+              <div className="flex gap-2 items-center">
+                <FaCheck /> Guardar
+              </div>
+            ) : (
+              <Loader className="mt-[1.1vh] ml-[1vw]" />
+            )}
+          </Button>
+        </div>
       </form>
     </div>
   )

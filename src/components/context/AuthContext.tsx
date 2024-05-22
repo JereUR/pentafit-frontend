@@ -34,7 +34,7 @@ type AuthContextType = {
     dataBusiness
   }: {
     dataBusiness: PropsAddBusiness
-  }) => Promise<void | Error>
+  }) => Promise<boolean>
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -43,7 +43,6 @@ const initialBusiness = [
   {
     id: 1,
     name: 'Gimnasio Chupete',
-    logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg',
     isActive: true,
     isWorking: true
   },
@@ -56,21 +55,6 @@ const initialBusiness = [
   {
     id: 3,
     name: 'BOCA BOCA BOCA',
-    logo: 'https://i.pinimg.com/originals/05/ac/17/05ac17fb09440e9071908ef00efef134.png',
-    isActive: true,
-    isWorking: false
-  },
-  {
-    id: 4,
-    name: 'Gimnasio Chupete',
-    logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg',
-    isActive: true,
-    isWorking: false
-  },
-  {
-    id: 5,
-    name: 'Gimnasio Chupete',
-    logo: 'https://static.vecteezy.com/system/resources/thumbnails/017/504/043/small/bodybuilding-emblem-and-gym-logo-design-template-vector.jpg',
     isActive: true,
     isWorking: false
   }
@@ -328,7 +312,7 @@ export default function AuthContextProvider({
     dataBusiness
   }: {
     dataBusiness: PropsAddBusiness
-  }): Promise<void | Error> {
+  }): Promise<boolean> {
     setLoading(true)
 
     const metadata = {
@@ -339,33 +323,87 @@ export default function AuthContextProvider({
       slogan: dataBusiness.slogan
     }
 
-    const url = `${BASE_URL}add-business`
-    try {
-      const response = await axios.get(url)
+    const data = {
+      name: dataBusiness.name,
+      description: dataBusiness.description,
+      email: dataBusiness.email,
+      address: dataBusiness.address,
+      phone: dataBusiness.phone,
+      instagram: dataBusiness.instagram,
+      facebook: dataBusiness.facebook,
+      isActive: false,
+      isWorking: false,
+      metadata
+    }
 
-      if (response.status === 200 || response.status === 204) {
+    console.log(data)
+
+    let url = `${BASE_URL}api/v1/business`
+    try {
+      const response = await axios.post(
+        url,
+        {
+          data
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token
+          }
+        }
+      )
+
+      if (response.status === 201) {
         const newBusiness = {
           id: response.data.id,
-          name: dataBusiness.name,
-          description: dataBusiness.description,
-          email: dataBusiness.email,
-          address: dataBusiness.address,
-          phone: dataBusiness.phone,
-          instagram: dataBusiness.instagram,
-          facebook: dataBusiness.facebook,
-          isActive: false,
-          isWorking: false,
-          logo: dataBusiness.logo,
-          metadata
+          ...data
         }
+
+        try {
+          const formData = new FormData()
+          formData.append('image', dataBusiness.logo)
+          console.log(dataBusiness.logo)
+          url = `${BASE_URL}api/v1/business_photo`
+          const response = await axios.post(
+            `${url}?id=${newBusiness.id}`,
+
+            {
+              body: formData
+            },
+            {
+              headers: {
+                Authorization: token
+              }
+            }
+          )
+
+          if (response.status !== 201) {
+            toast({
+              title: 'Oh no! Algo salió mal.',
+              description: response.statusText
+            })
+            return false
+          }
+        } catch (error: any) {
+          toast({
+            variant: 'destructive',
+            title: 'Oh no! Algo salió mal.',
+            description: error.message
+          })
+          return false
+        }
+
         let newBusinesses = businesses
         newBusinesses.push(newBusiness)
         setBusinesses(newBusinesses)
+        /* revalidatePath('/panel-de-control/negocios') */
+        return true
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
           description: response.statusText
         })
+        return false
       }
     } catch (error: any) {
       toast({
@@ -373,6 +411,7 @@ export default function AuthContextProvider({
         title: 'Oh no! Algo salió mal.',
         description: error.message
       })
+      return false
     } finally {
       setLoading(false)
     }
