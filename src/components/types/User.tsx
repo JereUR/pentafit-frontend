@@ -13,13 +13,20 @@ export type User = {
   role: string | null
 }
 
-export type Session = {
+type UserSession = {
   id: number
+  email: string
   first_name: string
   last_name: string
-  email: string
-  photo_url: string | null
-  token: string
+  gender: string
+  birthdate: string
+  role: string | null
+  photo: string | null
+  created_at: string
+}
+
+export type Session = {
+  user: UserSession
 }
 
 export interface PropsRegister {
