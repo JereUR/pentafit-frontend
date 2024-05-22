@@ -19,7 +19,7 @@ export default function BusinessItem({ item }: { item: Business }) {
         <div className={`flex ${!item.isActive && 'opacity-40'}`}>
           <div className="px-16">
             <Image
-              src={item.logo ? item.logo : noImage}
+              src={item.logo ? URL.createObjectURL(item.logo) : noImage}
               alt={`${item.name} logo`}
               width={150}
               height={150}
