@@ -75,7 +75,7 @@ export default function AuthContextProvider({
       token: 'Bearer 1234'
     } */
   )
-  const [businesses, setBusinesses] = useState(initialBusiness)
+  const [businesses, setBusinesses] = useState<Business[] | []>([])
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const [loading, setLoading] = useState(false)
@@ -354,10 +354,15 @@ export default function AuthContextProvider({
       )
 
       if (response.status === 201) {
-        const newBusiness = {
+        const newBusiness: Business = {
           id: response.data.id,
           ...data
         }
+
+        const newBusinesses = [...businesses, newBusiness]
+        setBusinesses(newBusinesses)
+        /* revalidatePath('/panel-de-control/negocios') */
+        return true
 
         /* try {
           const formData = new FormData()
@@ -392,12 +397,6 @@ export default function AuthContextProvider({
           })
           return false
         } */
-
-        let newBusinesses = businesses
-        newBusinesses.push(newBusiness)
-        setBusinesses(newBusinesses)
-        /* revalidatePath('/panel-de-control/negocios') */
-        return true
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
