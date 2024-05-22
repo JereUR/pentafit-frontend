@@ -9,6 +9,7 @@ import {
 import { IoStorefrontOutline } from 'react-icons/io5'
 import Transactions from '@/components/dashboard/transactions/Transactions'
 import RightBar from '@/components/dashboard/rightbar/RightBar'
+import { FaArrowTrendDown, FaArrowTrendUp } from 'react-icons/fa6'
 
 export const metadata: Metadata = {
   title: 'PentaFit - Panel de Control'
@@ -61,9 +62,9 @@ export default function DashboardPage() {
                   <span className="text-sm font-light">{card.title}</span>
                   <span className="flex items-center gap-1 font-bold">
                     {card.state ? (
-                      <FaArrowUp className="h-5 w-5 text-green-600" />
+                      <FaArrowTrendUp className="h-5 w-5 text-green-600" />
                     ) : (
-                      <FaArrowDown className="h-5 w-5 text-red-600" />
+                      <FaArrowTrendDown className="h-5 w-5 text-red-600" />
                     )}
                     <span className="text-xl">{card.value}</span>
                   </span>
