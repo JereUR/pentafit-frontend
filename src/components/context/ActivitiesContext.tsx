@@ -218,9 +218,20 @@ export default function ActivitiesContextProvider({
 
     const url = `${BASE_URL}add-activity`
     try {
-      const response = await axios.get(url)
+      const response = await axios.post(
+        url,
+        {
+          /* data */
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+            /* Authorization: token */
+          }
+        }
+      )
 
-      if (response.status === 200 || response.status === 204) {
+      if (response.status === 201) {
         return response.data?.activity
       } else {
         toast({
