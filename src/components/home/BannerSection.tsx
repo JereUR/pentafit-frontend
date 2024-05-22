@@ -1,7 +1,5 @@
 import { MutableRefObject } from 'react'
 import { Button } from '../ui/button'
-import Link from 'next/link'
-import { Card } from '../ui/card'
 
 export default function BannerSection({
   servicesRef
