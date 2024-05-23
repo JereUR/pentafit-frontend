@@ -254,7 +254,7 @@ export default function ActivityForm({
               <ErrorText text={formErrors.id_business} />
             )}
           </div>
-          <div className="flex justify-around gap-4">
+          {/* <div className="flex justify-around gap-4">
             {businesses.map((item) => (
               <div
                 key={item.id}
@@ -290,7 +290,7 @@ export default function ActivityForm({
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
         <div className="grid grid-cols-3 gap-8 mb-4">
           <div className="flex flex-col gap-2">
