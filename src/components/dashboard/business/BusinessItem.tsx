@@ -18,6 +18,10 @@ export default function BusinessItem({ item }: { item: Business }) {
   const router = useRouter()
   const { deleteBusinessById } = useUser()
 
+  async function handleDelete(id: string) {
+    await deleteBusinessById(id)
+  }
+
   return (
     <div className="p-4 m-8 border border-gray-300 dark:border-gray-600 rounded-lg">
       <div className="flex justify-between py-6">
@@ -95,7 +99,7 @@ export default function BusinessItem({ item }: { item: Business }) {
           </Button>
           <Button
             className="flex justify-start items-center shadow-md dark:text-foreground gap-2 bg-red-500 dark:bg-red-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-red-600 dark:hover:bg-red-700"
-            onClick={() => deleteBusinessById}
+            onClick={() => handleDelete(item.id.toString())}
           >
             <MdDelete className="h-5 w-5" />
             <span className="flex m-auto ">Borrar</span>
