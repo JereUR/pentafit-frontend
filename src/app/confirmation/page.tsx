@@ -11,11 +11,12 @@ export default function ConfirmationPage() {
   const searchParams = useSearchParams()
   const { toast } = useToast()
   const confirmation_token = searchParams.get('confirmation_token')
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `https://d494-190-191-171-9.ngrok-free.app/confirmation?confirmation_token=${confirmation_token}`
+        `${BASE_URL}confirmation?confirmation_token=${confirmation_token}`
       )
 
       console.log(response)
