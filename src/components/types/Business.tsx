@@ -17,7 +17,7 @@ export type Business = {
   facebook?: string
   isActive: boolean
   isWorking: boolean
-  logo?: File | null
+  logo?: string | null
   metadata?: Metadata
 }
 
@@ -29,7 +29,7 @@ export interface PropsAddBusiness {
   phone?: string
   instagram?: string
   facebook?: string
-  logo?: File | null
+  logo?: File | string | null
   title: string
   primary_color: string
   secondary_color: string

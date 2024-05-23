@@ -30,6 +30,7 @@ type AuthContextType = {
   signUp: ({ dataRegister }: { dataRegister: PropsRegister }) => Promise<void>
   recover: ({ email }: { email: string }) => Promise<void>
   getBusinesses: () => Promise<void>
+  getBusinessById: (id: string) => Promise<Business | null>
   addBusiness: ({
     dataBusiness
   }: {
@@ -102,7 +103,7 @@ export default function AuthContextProvider({
 
   async function signIn({ dataLogin }: { dataLogin: PropsLogin }) {
     setLoading(true)
-    console.log("test");
+    console.log('test')
     try {
       const response = await axios.post(
         `${BASE_URL}login`,
@@ -309,6 +310,37 @@ export default function AuthContextProvider({
     }
   }
 
+  async function getBusinessById(id: string) {
+    setLoading(true)
+    try {
+      const response = await axios.get(`${BASE_URL}api/v1/business?id=${id}`, {
+        headers: {
+          Authorization: token
+        }
+      })
+
+      if (response.status === 200 || response.status === 204) {
+        console.log(response)
+        return response.data
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return null
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return null
+    } finally {
+      setLoading(false)
+    }
+  }
+
   async function addBusiness({
     dataBusiness
   }: {
@@ -431,6 +463,7 @@ export default function AuthContextProvider({
         signUp,
         recover,
         getBusinesses,
+        getBusinessById,
         addBusiness
       }}
     >

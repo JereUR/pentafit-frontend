@@ -11,15 +11,17 @@ import {
 import { Business } from '@/components/types/Business'
 import noImage from '@public/assets/no-image.png'
 import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
 
 export default function BusinessItem({ item }: { item: Business }) {
+  const router = useRouter()
   return (
     <div className="p-4 m-8 border border-gray-300 dark:border-gray-600 rounded-lg">
       <div className="flex justify-between py-6">
         <div className={`flex ${!item.isActive && 'opacity-40'}`}>
           <div className="px-16">
             <Image
-              src={item.logo ? URL.createObjectURL(item.logo) : noImage}
+              src={item.logo ? item.logo : noImage}
               alt={`${item.name} logo`}
               width={150}
               height={150}
@@ -79,7 +81,12 @@ export default function BusinessItem({ item }: { item: Business }) {
               <span className="flex m-auto ">Dar de Alta</span>
             )}
           </Button>
-          <Button className="flex justify-start items-center shadow-md dark:text-foreground gap-2 bg-sky-500 dark:bg-sky-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-sky-600 dark:hover:bg-sky-600">
+          <Button
+            className="flex justify-start items-center shadow-md dark:text-foreground gap-2 bg-sky-500 dark:bg-sky-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-sky-600 dark:hover:bg-sky-600"
+            onClick={() =>
+              router.push(`/panel-de-control/negocios/editar/${item.id}`)
+            }
+          >
             <MdEdit className="h-5 w-5" />
             <span className="flex m-auto ">Editar</span>
           </Button>
