@@ -19,7 +19,9 @@ export default function BusinessItem({ item }: { item: Business }) {
   const { deleteBusinessById } = useUser()
 
   async function handleDelete(id: string) {
-    await deleteBusinessById(id)
+    const res = await deleteBusinessById(id)
+
+    if (res) router.refresh()
   }
 
   return (

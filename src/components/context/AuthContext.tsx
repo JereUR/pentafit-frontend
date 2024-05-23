@@ -31,7 +31,7 @@ type AuthContextType = {
   recover: ({ email }: { email: string }) => Promise<void>
   getBusinesses: () => Promise<void>
   getBusinessById: (id: string) => Promise<Business | null>
-  deleteBusinessById: (id: string) => Promise<void>
+  deleteBusinessById: (id: string) => Promise<boolean>
   addBusiness: ({
     dataBusiness
   }: {
@@ -358,11 +358,13 @@ export default function AuthContextProvider({
           title: `Negocio con id:'${id}' eliminado.`,
           className: 'bg-green-600'
         })
+        return true
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
           description: response.statusText
         })
+        return false
       }
     } catch (error: any) {
       toast({
@@ -370,6 +372,7 @@ export default function AuthContextProvider({
         title: 'Oh no! Algo salió mal.',
         description: error.message
       })
+      return false
     } finally {
       setLoading(false)
     }
