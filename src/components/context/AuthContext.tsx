@@ -320,7 +320,6 @@ export default function AuthContextProvider({
       })
 
       if (response.status === 200 || response.status === 204) {
-        console.log(response)
         return response.data
       } else {
         toast({

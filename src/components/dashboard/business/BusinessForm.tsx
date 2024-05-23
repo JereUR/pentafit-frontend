@@ -63,6 +63,13 @@ export default function BusinessForm({
   const { toast } = useToast()
   const router = useRouter()
 
+
+  useEffect(() => {
+    if (type === 'edit') {
+      setDataBusiness(business)
+    }
+  }, [business, type])
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setDataBusiness({ ...dataBusiness, [name]: value })

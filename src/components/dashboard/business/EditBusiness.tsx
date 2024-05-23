@@ -15,6 +15,7 @@ export default function EditBusiness() {
   useEffect(() => {
     async function fetchBusiness() {
       const bus = await getBusinessById(id)
+      console.log(bus);
       if (bus) {
         setBusiness({
           name: bus.name,
