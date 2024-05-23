@@ -60,7 +60,7 @@ export default function DashboardPage() {
                 <div className="w-1/3 xl:mr-[-30px]">{card.icon}</div>
                 <div className="flex flex-col w-2/3 gap-2">
                   <span className="text-sm font-light">{card.title}</span>
-                  <span className="flex items-center gap-1 font-bold">
+                  <span className="flex items-center gap-2 font-bold">
                     {card.state ? (
                       <FaArrowTrendUp className="h-5 w-5 text-green-600" />
                     ) : (
