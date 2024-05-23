@@ -31,6 +31,7 @@ type AuthContextType = {
   recover: ({ email }: { email: string }) => Promise<void>
   getBusinesses: () => Promise<void>
   getBusinessById: (id: string) => Promise<Business | null>
+  deleteBusinessById: (id: string) => Promise<void>
   addBusiness: ({
     dataBusiness
   }: {
@@ -340,6 +341,40 @@ export default function AuthContextProvider({
     }
   }
 
+  async function deleteBusinessById(id: string) {
+    setLoading(true)
+    try {
+      const response = await axios.delete(
+        `${BASE_URL}api/v1/business?id=${id}`,
+        {
+          headers: {
+            Authorization: token
+          }
+        }
+      )
+
+      if (response.status === 200 || response.status === 204) {
+        toast({
+          title: `Negocio con id:'${id}' eliminado.`,
+          className: 'bg-green-600'
+        })
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   async function addBusiness({
     dataBusiness
   }: {
@@ -463,6 +498,7 @@ export default function AuthContextProvider({
         recover,
         getBusinesses,
         getBusinessById,
+        deleteBusinessById,
         addBusiness
       }}
     >
