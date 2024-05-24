@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { Suspense } from 'react'
 
 import ActivitiesTable from '@/components/dashboard/activities/ActiviesTable'
 
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 }
 
 export default function ActivitiesPage() {
-  return <ActivitiesTable />
+  return (
+    <Suspense fallback="Loading...">
+      <ActivitiesTable />
+    </Suspense>
+  )
 }
