@@ -37,6 +37,11 @@ type AuthContextType = {
   }: {
     dataBusiness: PropsAddBusiness
   }) => Promise<boolean>
+  updateBusiness: ({
+    dataBusiness
+  }: {
+    dataBusiness: PropsAddBusiness
+  }) => Promise<boolean>
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -77,7 +82,7 @@ export default function AuthContextProvider({
       token: 'Bearer 1234'
     } */
   )
-  const [businesses, setBusinesses] = useState<Business[] | []>([])
+  const [businesses, setBusinesses] = useState<Business[] | []>(initialBusiness)
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const [loading, setLoading] = useState(false)
@@ -282,6 +287,7 @@ export default function AuthContextProvider({
 
   async function getBusinesses() {
     setLoading(true)
+
     try {
       const response = await axios.get(`${BASE_URL}api/v1/businesses`, {
         headers: {
@@ -341,6 +347,229 @@ export default function AuthContextProvider({
     }
   }
 
+  async function addBusiness({
+    dataBusiness
+  }: {
+    dataBusiness: PropsAddBusiness
+  }): Promise<boolean> {
+    setLoading(true)
+
+    const metadata = {
+      title: dataBusiness.title,
+      primary_color: dataBusiness.primary_color,
+      secondary_color: dataBusiness.secondary_color,
+      third_color: dataBusiness.third_color,
+      slogan: dataBusiness.slogan
+    }
+
+    const data = {
+      name: dataBusiness.name,
+      description: dataBusiness.description,
+      email: dataBusiness.email,
+      address: dataBusiness.address,
+      phone: dataBusiness.phone,
+      instagram: dataBusiness.instagram,
+      facebook: dataBusiness.facebook,
+      isActive: false,
+      isWorking: false,
+      metadata
+    }
+
+    let url = `${BASE_URL}api/v1/business`
+
+    try {
+      const response = await axios.post(
+        url,
+        {
+          data
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token
+          }
+        }
+      )
+
+      if (response.status === 201) {
+        const newBusiness: Business = {
+          id: response.data.id,
+          ...data
+        }
+
+        const newBusinesses = [...businesses, newBusiness]
+        setBusinesses(newBusinesses)
+        /* revalidatePath('/panel-de-control/negocios') */
+
+        if (dataBusiness.logo) {
+          console.log('logo change')
+          return true
+          /* try {
+          const formData = new FormData()
+          formData.append('image', dataBusiness.logo)
+          console.log(dataBusiness.logo)
+          url = `${BASE_URL}api/v1/business_photo`
+          const response = await axios.post(
+            `${url}?id=${newBusiness.id}`,
+
+            {
+              body: formData
+            },
+            {
+              headers: {
+                Authorization: token
+              }
+            }
+          )
+
+          if (response.status !== 201) {
+            toast({
+              title: 'Oh no! Algo salió mal.',
+              description: response.statusText
+            })
+            return false
+          }
+        } catch (error: any) {
+          toast({
+            variant: 'destructive',
+            title: 'Oh no! Algo salió mal.',
+            description: error.message
+          })
+          return false
+        } */
+        } else {
+          return true
+        }
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return false
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return false
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function updateBusiness({
+    dataBusiness
+  }: {
+    dataBusiness: PropsAddBusiness
+  }): Promise<boolean> {
+    setLoading(true)
+
+    const metadata = {
+      title: dataBusiness.title,
+      primary_color: dataBusiness.primary_color,
+      secondary_color: dataBusiness.secondary_color,
+      third_color: dataBusiness.third_color,
+      slogan: dataBusiness.slogan
+    }
+
+    const data = {
+      name: dataBusiness.name,
+      description: dataBusiness.description,
+      email: dataBusiness.email,
+      address: dataBusiness.address,
+      phone: dataBusiness.phone,
+      instagram: dataBusiness.instagram,
+      facebook: dataBusiness.facebook,
+      isActive: false,
+      isWorking: false,
+      metadata
+    }
+
+    let url = `${BASE_URL}api/v1/business`
+    try {
+      const response = await axios.put(
+        url,
+        {
+          data
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token
+          }
+        }
+      )
+
+      if (response.status === 201) {
+        const newBusiness: Business = {
+          id: response.data.id,
+          ...data
+        }
+
+        const newBusinesses = [...businesses, newBusiness]
+        setBusinesses(newBusinesses)
+        /* revalidatePath('/panel-de-control/negocios') */
+
+        if (dataBusiness.logo) {
+          console.log('logo change')
+          return true
+          /* try {
+          const formData = new FormData()
+          formData.append('image', dataBusiness.logo)
+          console.log(dataBusiness.logo)
+          url = `${BASE_URL}api/v1/business_photo`
+          const response = await axios.post(
+            `${url}?id=${newBusiness.id}`,
+
+            {
+              body: formData
+            },
+            {
+              headers: {
+                Authorization: token
+              }
+            }
+          )
+
+          if (response.status !== 201) {
+            toast({
+              title: 'Oh no! Algo salió mal.',
+              description: response.statusText
+            })
+            return false
+          }
+        } catch (error: any) {
+          toast({
+            variant: 'destructive',
+            title: 'Oh no! Algo salió mal.',
+            description: error.message
+          })
+          return false
+        } */
+        } else {
+          return true
+        }
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return false
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return false
+    } finally {
+      setLoading(false)
+    }
+  }
+
   async function deleteBusinessById(id: string) {
     setLoading(true)
     try {
@@ -378,114 +607,6 @@ export default function AuthContextProvider({
     }
   }
 
-  async function addBusiness({
-    dataBusiness
-  }: {
-    dataBusiness: PropsAddBusiness
-  }): Promise<boolean> {
-    setLoading(true)
-
-    const metadata = {
-      title: dataBusiness.title,
-      primary_color: dataBusiness.primary_color,
-      secondary_color: dataBusiness.secondary_color,
-      third_color: dataBusiness.third_color,
-      slogan: dataBusiness.slogan
-    }
-
-    const data = {
-      name: dataBusiness.name,
-      description: dataBusiness.description,
-      email: dataBusiness.email,
-      address: dataBusiness.address,
-      phone: dataBusiness.phone,
-      instagram: dataBusiness.instagram,
-      facebook: dataBusiness.facebook,
-      isActive: false,
-      isWorking: false,
-      metadata
-    }
-
-    console.log(data)
-
-    let url = `${BASE_URL}api/v1/business`
-    try {
-      const response = await axios.post(
-        url,
-        {
-          data
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token
-          }
-        }
-      )
-
-      if (response.status === 201) {
-        const newBusiness: Business = {
-          id: response.data.id,
-          ...data
-        }
-
-        const newBusinesses = [...businesses, newBusiness]
-        setBusinesses(newBusinesses)
-        /* revalidatePath('/panel-de-control/negocios') */
-        return true
-
-        /* try {
-          const formData = new FormData()
-          formData.append('image', dataBusiness.logo)
-          console.log(dataBusiness.logo)
-          url = `${BASE_URL}api/v1/business_photo`
-          const response = await axios.post(
-            `${url}?id=${newBusiness.id}`,
-
-            {
-              body: formData
-            },
-            {
-              headers: {
-                Authorization: token
-              }
-            }
-          )
-
-          if (response.status !== 201) {
-            toast({
-              title: 'Oh no! Algo salió mal.',
-              description: response.statusText
-            })
-            return false
-          }
-        } catch (error: any) {
-          toast({
-            variant: 'destructive',
-            title: 'Oh no! Algo salió mal.',
-            description: error.message
-          })
-          return false
-        } */
-      } else {
-        toast({
-          title: 'Oh no! Algo salió mal.',
-          description: response.statusText
-        })
-        return false
-      }
-    } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        title: 'Oh no! Algo salió mal.',
-        description: error.message
-      })
-      return false
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
     <AuthContext.Provider
       value={{
@@ -502,7 +623,8 @@ export default function AuthContextProvider({
         getBusinesses,
         getBusinessById,
         deleteBusinessById,
-        addBusiness
+        addBusiness,
+        updateBusiness
       }}
     >
       {children}
