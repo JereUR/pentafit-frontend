@@ -8,12 +8,13 @@ import { Button } from '@/components/ui/button'
 import { FaCheck } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { PropsAdd } from '@/components/types/Activity'
+import { FormErrors, PropsAddActivity } from '@/components/types/Activity'
 import Loader from '@/components/Loader'
 import ErrorText from '@/components/ErrorText'
 import TextForm from './TextForm'
 import useUser from '@/components/hooks/useUser'
 import Image from 'next/image'
+import { PublicActivityForm } from './PublicActivityForm'
 
 const payments = [
   'Por sesion',
@@ -21,63 +22,16 @@ const payments = [
   'Mensual',
   'Mensual con sesiones'
 ]
-
-const inputItems = [
-  {
-    label: 'Actividad',
-    name: 'activity',
-    type: 'text'
-  },
-  {
-    label: 'Costo',
-    name: 'cost',
-    type: 'number'
-  },
-  {
-    label: 'Sesiones Máximas',
-    name: 'sessionMax',
-    type: 'number'
-  },
-  {
-    label: 'Fecha Desde',
-    name: 'dateFrom',
-    type: 'date'
-  },
-  {
-    label: 'Fecha Hasta',
-    name: 'dateUntil',
-    type: 'date'
-  }
-]
-
-const checkboxItems = [
-  {
-    label: '¿Es una actividad Pública? (Turnos/clase de prueba)',
-    name: 'isPublic'
-  },
-  {
-    label: '¿Permite generación de cuota?',
-    name: 'quotaGeneration'
-  },
-  {
-    label: '¿Permite pago con Mercado Pago?',
-    name: 'mpAvailable'
-  }
-]
-
-interface FormErrors {
-  id_business?: string
-  activity?: string
-  cost?: string
-  isPublic?: string
-  quotaGeneration?: string
-  sessionMax?: string
-  mpAvailable?: string
-  dateFrom?: string
-  dateUntil?: string
-  paymentType?: string
-  publicName?: string
-  [key: string]: string | undefined
+const initialErrors = {
+  business: '',
+  activity: '',
+  cost: '',
+  isPublic: '',
+  sessionMax: '',
+  dateFrom: '',
+  dateUntil: '',
+  paymentType: '',
+  publicName: ''
 }
 
 export default function ActivityForm({
@@ -85,37 +39,23 @@ export default function ActivityForm({
   activity
 }: {
   type: string
-  activity: PropsAdd
+  activity: PropsAddActivity
 }) {
-  const [dataActivity, setDataActivity] = useState<PropsAdd>(activity)
+  const [dataActivity, setDataActivity] = useState<PropsAddActivity>(activity)
   const { addActivity, updateActivity } = useActivities()
-  const [loading, setLoading] = useState(false)
-  const [formErrors, setFormErrors] = useState<FormErrors>({
-    activity: '',
-    cost: '',
-    isPublic: '',
-    sessionMax: '',
-    dateFrom: '',
-    dateUntil: '',
-    paymentType: '',
-    publicName: ''
-  })
+  const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
   const router = useRouter()
-  const { businesses } = useUser()
-
-  /* useEffect(() => {
-      if (business.logo) {
-        const imageUrl = URL.createObjectURL(business.logo)
-        setImgLogo(imageUrl)
-      }
-    }
-  }, [businesses]) */
+  const { businesses, loading } = useUser()
 
   useEffect(() => {
     setDataActivity(activity)
   }, [activity])
 
-  const validations = ({ dataActivity }: { dataActivity: PropsAdd }) => {
+  const validations = ({
+    dataActivity
+  }: {
+    dataActivity: PropsAddActivity
+  }) => {
     const errorsForm: FormErrors = {}
 
     if (dataActivity.id_business.length === 0) {
@@ -173,45 +113,12 @@ export default function ActivityForm({
     setDataActivity({ ...dataActivity, id_business: id_business })
   }
 
-  const handleChangeIsPublic = () => {
-    let value
-    if (dataActivity.isPublic === 'true') {
-      value = 'false'
-    } else {
-      value = 'true'
-    }
-
-    setDataActivity({ ...dataActivity, isPublic: value })
-  }
-
-  const handleChangeQuotaGeneration = () => {
-    let value
-    if (dataActivity.quotaGeneration === 'true') {
-      value = 'false'
-    } else {
-      value = 'true'
-    }
-
-    setDataActivity({ ...dataActivity, quotaGeneration: value })
-  }
-
-  const handleChangeMpAvailable = () => {
-    let value
-    if (dataActivity.mpAvailable === 'true') {
-      value = 'false'
-    } else {
-      value = 'true'
-    }
-
-    setDataActivity({ ...dataActivity, mpAvailable: value })
-  }
-
   const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target
     setDataActivity({ ...dataActivity, [name]: value })
   }
 
-  async function handleAction(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const err = validations({ dataActivity })
@@ -219,34 +126,20 @@ export default function ActivityForm({
 
     console.log(dataActivity)
 
-    if (Object.keys(err).length === 0) {
-      setLoading(true)
-
+    /* if (Object.keys(err).length === 0) {
       if (type === 'add') {
         await addActivity({ dataActivity })
       } else {
         await updateActivity({ dataActivity })
       }
 
-      setFormErrors({
-        business: '',
-        activity: '',
-        cost: '',
-        isPublic: '',
-        sessionMax: '',
-        dateFrom: '',
-        dateUntil: '',
-        paymentType: '',
-        publicName: ''
-      })
-    }
-
-    setLoading(false)
+      setFormErrors(initialErrors)
+    } */
   }
 
   return (
     <div>
-      <form onSubmit={handleAction}>
+      <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-6 mb-6 border border-gray-300 dark:border-gray-700 py-4 px-12">
           <div className="flex gap-4 items-center">
             <label>Compañia</label>
@@ -396,92 +289,14 @@ export default function ActivityForm({
             </select>
           </div>
         </div>
-        <div className="border border-gray-300 dark:border-gray-700 mt-6 mb-8">
-          <div className="border-b border-gray-300 dark:border-gray-700 py-4 px-6 bg-muted">
-            <span className="flex items-center gap-2">
-              <IoSettings /> Completá esta sección si la actividad puede ser
-              reservada por el usuario
-            </span>
-          </div>
-          <div className="grid grid-cols-3 gap-8 my-8 py-4 px-6">
-            <div className="flex flex-col gap-4 ">
-              <label htmlFor="isPublic" className="font-[600]">
-                ¿Es una actividad Pública? (Turnos/clase de prueba)
-              </label>
-              <div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    name="isPublic"
-                    className="sr-only peer"
-                    value={dataActivity.isPublic}
-                    checked={dataActivity.isPublic === 'true' ? true : false}
-                    onChange={handleChangeIsPublic}
-                  />
-                  <div className="group peer ring-0  bg-gradient-to-bl from-neutral-800 via-neutral-700 to-neutral-600 dark:from-gray-400 dark:via-gray-300 dark:to-gray-200  rounded-full outline-none duration-1000 after:duration-300 w-12 h-6  shadow-md  peer-focus:outline-none  after:content-[''] after:rounded-full after:absolute peer-checked:after:rotate-180 after:[background:conic-gradient(from_135deg,_#b2a9a9,_#b2a8a8,_#ffffff,_#d7dbd9_,_#ffffff,_#b2a8a8)]  after:outline-none after:h-4 after:w-4 after:top-1 after:left-1 peer-checked:after:translate-x-6 peer-hover:after:scale-95 peer-checked:bg-gradient-to-r peer-checked:from-emerald-500 peer-checked:to-emerald-900"></div>
-                </label>
-              </div>
-            </div>
-            <div className="flex flex-col gap-4 ">
-              <label htmlFor="isPublic" className="font-[600]">
-                ¿Permite generación de cuota?
-              </label>
-              <div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    name="quotaGeneration"
-                    className="sr-only peer"
-                    value={dataActivity.quotaGeneration}
-                    checked={
-                      dataActivity.quotaGeneration === 'true' ? true : false
-                    }
-                    onChange={handleChangeQuotaGeneration}
-                  />
-                  <div className="group peer ring-0  bg-gradient-to-bl from-neutral-800 via-neutral-700 to-neutral-600 dark:from-gray-400 dark:via-gray-300 dark:to-gray-200  rounded-full outline-none duration-1000 after:duration-300 w-12 h-6  shadow-md  peer-focus:outline-none  after:content-[''] after:rounded-full after:absolute peer-checked:after:rotate-180 after:[background:conic-gradient(from_135deg,_#b2a9a9,_#b2a8a8,_#ffffff,_#d7dbd9_,_#ffffff,_#b2a8a8)]  after:outline-none after:h-4 after:w-4 after:top-1 after:left-1 peer-checked:after:translate-x-6 peer-hover:after:scale-95 peer-checked:bg-gradient-to-r peer-checked:from-emerald-500 peer-checked:to-emerald-900"></div>
-                </label>
-              </div>
-            </div>
-            <div className="flex flex-col gap-4 ">
-              <label htmlFor="isPublic" className="font-[600]">
-                ¿Permite pago con Mercado Pago?
-              </label>
-              <div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    name="mpAvailable"
-                    className="sr-only peer"
-                    value={dataActivity.mpAvailable}
-                    checked={dataActivity.mpAvailable === 'true' ? true : false}
-                    onChange={handleChangeMpAvailable}
-                  />
-                  <div className="group peer ring-0  bg-gradient-to-bl from-neutral-800 via-neutral-700 to-neutral-600 dark:from-gray-400 dark:via-gray-300 dark:to-gray-200  rounded-full outline-none duration-1000 after:duration-300 w-12 h-6  shadow-md  peer-focus:outline-none  after:content-[''] after:rounded-full after:absolute peer-checked:after:rotate-180 after:[background:conic-gradient(from_135deg,_#b2a9a9,_#b2a8a8,_#ffffff,_#d7dbd9_,_#ffffff,_#b2a8a8)]  after:outline-none after:h-4 after:w-4 after:top-1 after:left-1 peer-checked:after:translate-x-6 peer-hover:after:scale-95 peer-checked:bg-gradient-to-r peer-checked:from-emerald-500 peer-checked:to-emerald-900"></div>
-                </label>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-4 items-center">
-                <label htmlFor="publicName" className="font-[600]">
-                  Nombre Público
-                </label>
-                {formErrors.publicName && (
-                  <ErrorText text={formErrors.publicName} />
-                )}
-              </div>
-              <input
-                type="text"
-                name="publicName"
-                placeholder="Nombre para mostrar"
-                className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
-                value={dataActivity.publicName}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-        </div>
+        <PublicActivityForm
+          dataActivity={dataActivity}
+          setDataActivity={setDataActivity}
+          formErrors={formErrors}
+          handleChange={handleChange}
+        />
         <TextForm />
-        <div className="flex absolute right-8 mt-12">
+        <div className="flex justify-end mt-10">
           <Button
             type="button"
             className="gap-2 mr-2 font-bold text-background bg-red-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-red-600 border-none"
@@ -495,10 +310,10 @@ export default function ActivityForm({
           >
             {!loading ? (
               <div className="flex gap-2 items-center">
-                <FaCheck /> Guardar
+                <FaCheck /> {type === 'add' ? 'Agregar' : 'Actualizar'}
               </div>
             ) : (
-              <Loader className="mt-[1.1vh] ml-[1vw]" />
+              <Loader className="mt-[1.8vh] ml-[1vw]" />
             )}
           </Button>
         </div>

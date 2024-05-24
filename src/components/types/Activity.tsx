@@ -15,7 +15,7 @@ export type Activity = {
   paymentType: string
 }
 
-export interface PropsAdd {
+export interface PropsAddActivity {
   id_business: number[]
   activity: string
   cost: string
@@ -27,6 +27,21 @@ export interface PropsAdd {
   dateFrom: string | undefined
   dateUntil: string | undefined
   paymentType: string
+}
+
+export interface FormErrors {
+  id_business?: string
+  activity?: string
+  cost?: string
+  isPublic?: string
+  quotaGeneration?: string
+  sessionMax?: string
+  mpAvailable?: string
+  dateFrom?: string
+  dateUntil?: string
+  paymentType?: string
+  publicName?: string
+  [key: string]: string | undefined
 }
 
 export const initialData = {
