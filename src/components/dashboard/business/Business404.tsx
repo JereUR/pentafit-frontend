@@ -13,8 +13,8 @@ export default function Business404({ id }: { id: string }) {
   return (
     <div className="flex flex-col gap-6 justify-center items-center">
       <Image src={errorImage} width={500} height={500} alt="404 not Found" />
-      <p className='text-lg italic font-light'>
-        No existe un Negocio con 'id: {id}' ó quizás ocurrió un error en la conexión
+      <p className="text-lg italic font-light">
+        {`No existe un Negocio con 'id: ${id}' ó quizás ocurrió un error en la conexión`}
       </p>
       <Button
         className="text-lg text-foreground p-4 font-light bg-primary-orange-600 group hover:bg-primary-orange-700"
