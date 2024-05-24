@@ -107,8 +107,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 70%;
-  width: 70%;
+  height: 60%;
+  width: 60%;
 }
 
 .dot-spinner__dot::before {
