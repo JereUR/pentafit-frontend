@@ -29,7 +29,8 @@ export interface PropsAddBusiness {
   phone?: string
   instagram?: string
   facebook?: string
-  logo?: File | string | null
+  logo?: File | null
+  logoUrl?: string | null
   title: string
   primary_color: string
   secondary_color: string
@@ -45,7 +46,8 @@ export const initialData = {
   phone: '',
   instagram: '',
   facebook: '',
-  logo: null as unknown as File,
+  logoUrl: '',
+  logo: null,
   title: '',
   primary_color: '#ec6409',
   secondary_color: '#FFFFFF',

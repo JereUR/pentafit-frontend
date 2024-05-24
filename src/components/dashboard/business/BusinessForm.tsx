@@ -56,20 +56,21 @@ export default function BusinessForm({
   business: PropsAddBusiness
   type: string
 }) {
-  const { loading, addBusiness } = useUser()
+  const { loading, addBusiness, updateBusiness } = useUser()
   const [dataBusiness, setDataBusiness] = useState<PropsAddBusiness>(business)
-  const [imgLogo, setImgLogo] = useState<string | null>(null)
+  const [imgLogo, setImgLogo] = useState<string | null>(
+    business.logoUrl ? business.logoUrl : null
+  )
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
   const { toast } = useToast()
   const router = useRouter()
-
 
   useEffect(() => {
     if (type === 'edit') {
       setDataBusiness(business)
     }
   }, [business, type])
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setDataBusiness({ ...dataBusiness, [name]: value })
@@ -86,8 +87,6 @@ export default function BusinessForm({
 
       if (file && file.type.substring(0, 5) === 'image') {
         const imageUrl = URL.createObjectURL(file)
-        /* const formData = new FormData()
-        formData.append('logo', file) */
         setDataBusiness({ ...dataBusiness, logo: file })
         setImgLogo(imageUrl)
       } else {
@@ -117,7 +116,18 @@ export default function BusinessForm({
         }, 1000)
       }
     } else {
-      /* await updateBusiness({ dataBusiness }) */
+      const response = await updateBusiness({ dataBusiness })
+      if (response) {
+        toast({
+          title: 'Negocio editado.',
+          description: 'Redireccionando...',
+          className: 'bg-green-600'
+        })
+
+        setTimeout(() => {
+          router.replace('/panel-de-control/negocios')
+        }, 1000)
+      }
     }
   }
 
@@ -213,7 +223,7 @@ export default function BusinessForm({
           >
             {!loading ? (
               <div className="flex gap-2 items-center">
-                <FaCheck /> Guardar
+                <FaCheck /> {type === 'add' ? 'Agregar' : 'Actualizar'}
               </div>
             ) : (
               <Loader className="mt-[1.1vh] ml-[1vw]" />
