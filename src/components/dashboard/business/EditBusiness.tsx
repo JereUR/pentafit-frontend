@@ -1,21 +1,23 @@
 'use client'
 
-import { initialData, PropsAddBusiness } from '@/components/types/Business'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+
+import { PropsAddBusiness } from '@/components/types/Business'
 import BusinessForm from './BusinessForm'
 import useUser from '@/components/hooks/useUser'
+import Business404 from './Business404'
 
 export default function EditBusiness() {
   const pathname = usePathname()
-  const [business, setBusiness] = useState<PropsAddBusiness>(initialData)
+  const [business, setBusiness] = useState<PropsAddBusiness | null>(null)
   const id = pathname.split('/')[4]
   const { getBusinessById } = useUser()
 
   useEffect(() => {
     async function fetchBusiness() {
       const bus = await getBusinessById(id)
-      console.log(bus);
+      console.log(bus)
       if (bus) {
         setBusiness({
           name: bus.name,
@@ -25,6 +27,7 @@ export default function EditBusiness() {
           phone: bus.phone,
           instagram: bus.instagram,
           facebook: bus.facebook,
+          logoUrl: bus.logo ? bus.logo : '',
           logo: null,
           title: bus.metadata?.title ? bus.metadata.title : '',
           primary_color: bus.metadata?.primary_color
@@ -46,7 +49,11 @@ export default function EditBusiness() {
 
   return (
     <div className="m-10">
-      <BusinessForm type="edit" business={business} />
+      {business ? (
+        <BusinessForm type="edit" business={business} />
+      ) : (
+        <Business404 id={id} />
+      )}
     </div>
   )
 }
