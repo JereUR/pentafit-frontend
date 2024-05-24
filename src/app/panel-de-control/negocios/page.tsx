@@ -1,4 +1,5 @@
 import BusinessList from '@/components/dashboard/business/BusinessList'
+import BusinessSkeleton from '@/components/dashboard/business/BusinessSkeleton'
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 export default function BusinessPage() {
   return (
     <div>
-      <Suspense fallback="Loading...">
+      <Suspense fallback={<BusinessSkeleton />}>
         <BusinessList />
       </Suspense>
     </div>
