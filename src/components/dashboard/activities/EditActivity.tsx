@@ -1,14 +1,14 @@
 'use client'
 
 import useActivities from '@/components/hooks/useActivities'
-import { initialData, PropsAdd } from '@/components/types/Activity'
+import { initialData, PropsAddActivity } from '@/components/types/Activity'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ActivityForm from './ActivityForm'
 
 export default function EditActivity() {
   const pathname = usePathname()
-  const [activity, setActivity] = useState<PropsAdd>(initialData)
+  const [activity, setActivity] = useState<PropsAddActivity>(initialData)
   const id = pathname.split('/')[4]
   const { getActivityById } = useActivities()
 
