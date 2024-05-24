@@ -133,9 +133,9 @@ export default function LoginForm() {
         </div>
         <Button
           type="submit"
-          className="bg-primary-orange-600 w-full my-[5vh] py-6 text-xl hover:bg-primary-orange-700"
+          className="bg-primary-orange-600 w-full my-[5vh] py-6 text-xl transition duration-300 ease-in-out hover:bg-primary-orange-700"
         >
-          {!loading ? 'Enviar' : <Loader className="mt-[1.5vh]" />}
+          {!loading ? 'Enviar' : <Loader className="mt-[1.8vh]" />}
         </Button>
       </form>
       {showModal && (
@@ -150,7 +150,7 @@ export default function LoginForm() {
       </div>
       <div>
         <Link href={'/registrarse'}>
-          <Button className="bg-background text-foreground border border-primary-orange-600 w-full my-[5vh] py-6 text-xl hover:bg-primary-orange-100 hover:dark:text-muted">
+          <Button className="bg-background text-foreground border border-sky-600 w-full my-[5vh] py-6 text-xl transition duration-300 ease-in-out hover:bg-sky-600 dark:hover:bg-sky-700 hover:border-foreground">
             Registrarse
           </Button>
         </Link>
