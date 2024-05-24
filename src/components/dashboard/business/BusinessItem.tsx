@@ -37,7 +37,7 @@ export default function BusinessItem({ item }: { item: Business }) {
               className="rounded-full ring-2 ring-primary-orange-600 dark:ring-primary-orange-400"
             />
           </div>
-          <div className="">
+          <div>
             <h2 className="text-2xl font-bold">{item.name}</h2>
             <p className="text-lg">
               {item.description ? item.description : 'Sin descripción.'}
