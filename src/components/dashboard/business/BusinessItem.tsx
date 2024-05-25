@@ -25,6 +25,14 @@ export default function BusinessItem({ item }: { item: Business }) {
     if (res) router.refresh()
   }
 
+  async function handleStatus(id: number) {
+    const res = await updateStatusBusiness(id)
+
+    if (res) {
+      console.log('ok')
+    }
+  }
+
   console.log(item)
   return (
     <div className="p-4 m-8 border border-gray-300 dark:border-gray-600 rounded-lg">
@@ -80,7 +88,7 @@ export default function BusinessItem({ item }: { item: Business }) {
                 ? 'hover:bg-orange-600 dark:hover:bg-orange-700'
                 : 'hover:bg-green-600 dark:hover:bg-green-700'
             }`}
-            onClick={() => updateStatusBusiness(item.id)}
+            onClick={() => handleStatus(item.id)}
           >
             {item.isActive ? (
               <MdArrowDownward className="h-5 w-5" />
