@@ -40,7 +40,7 @@ export default function LoginForm() {
     setShowModal(false) // Close the modal from within or parent
   }
 
-  const validations = ({ dataLogin }: { dataLogin: PropsLogin }) => {
+  const validations = () => {
     const errorsForm: FormErrors = {}
 
     const regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/
@@ -65,7 +65,7 @@ export default function LoginForm() {
 
   async function handleAction(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const err = validations({ dataLogin })
+    const err = validations()
     setLoginErrors(err)
 
     if (Object.keys(err).length === 0) {
