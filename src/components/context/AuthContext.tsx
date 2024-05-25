@@ -84,7 +84,7 @@ export default function AuthContextProvider({
       token: 'Bearer 1234'
     } */
   )
-  const [businesses, setBusinesses] = useState<Business[] | []>(initialBusiness)
+  const [businesses, setBusinesses] = useState<Business[] | []>([])
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const [loading, setLoading] = useState(false)
@@ -405,32 +405,30 @@ export default function AuthContextProvider({
 
         if (dataBusiness.logo) {
           console.log('logo change')
-          return true
-          /* try {
+          try {
           const formData = new FormData()
           formData.append('image', dataBusiness.logo)
-          console.log(dataBusiness.logo)
-          url = `${BASE_URL}api/v1/business_photo`
+          console.log(formData)
+          url = `${BASE_URL}api/v1/attach_business_image`
           const response = await axios.post(
-            `${url}?id=${newBusiness.id}`,
-
-            {
-              body: formData
-            },
+            `${url}?id=${newBusiness.id}`, 
+            formData,
             {
               headers: {
+                'Content-Type': 'multipart/form-data',
                 Authorization: token
               }
             }
           )
 
-          if (response.status !== 201) {
+          if (response.status !== 200) {
             toast({
               title: 'Oh no! Algo salió mal.',
               description: response.statusText
             })
             return false
           }
+          return true
         } catch (error: any) {
           toast({
             variant: 'destructive',
@@ -438,7 +436,7 @@ export default function AuthContextProvider({
             description: error.message
           })
           return false
-        } */
+        }
         } else {
           return true
         }
@@ -477,7 +475,6 @@ export default function AuthContextProvider({
     }
 
     const data = {
-      id: dataBusiness.id,
       name: dataBusiness.name,
       description: dataBusiness.description,
       email: dataBusiness.email,
@@ -490,7 +487,7 @@ export default function AuthContextProvider({
       metadata
     }
 
-    let url = `${BASE_URL}api/v1/business`
+    let url = `${BASE_URL}api/v1/business?id=${dataBusiness.id}` 
     try {
       const response = await axios.put(
         url,
@@ -505,10 +502,15 @@ export default function AuthContextProvider({
         }
       )
 
-      if (response.status === 201) {
-        const filterBusinesses = businesses.filter((b) => b.id === data.id)
-        const newBusinesses = [...filterBusinesses, data]
-        setBusinesses(newBusinesses)
+      if (response.status === 200) {
+        const filterBusinesses = businesses.filter((b) => b.id !== data.id);
+        const index = businesses.findIndex((b) => b.id === data.id);
+        const newBusinesses = [
+          ...filterBusinesses.slice(0, index),
+          data,
+          ...filterBusinesses.slice(index),
+        ];
+        setBusinesses(newBusinesses);
         /* revalidatePath('/panel-de-control/negocios') */
 
         if (dataBusiness.logo) {

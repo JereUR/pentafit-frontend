@@ -13,11 +13,11 @@ export default function EditBusiness() {
   const [business, setBusiness] = useState<PropsAddBusiness | null>(null)
   const id = pathname.split('/')[4]
   const { getBusinessById } = useUser()
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
   useEffect(() => {
     async function fetchBusiness() {
       const bus = await getBusinessById(id)
-      console.log(bus)
       if (bus) {
         setBusiness({
           id: bus.id,
@@ -28,7 +28,7 @@ export default function EditBusiness() {
           phone: bus.phone,
           instagram: bus.instagram,
           facebook: bus.facebook,
-          logoUrl: bus.logo ? bus.logo : '',
+          logoUrl: bus.logo ? `${BASE_URL}${bus.logo}` : '',
           logo: null,
           title: bus.metadata?.title ? bus.metadata.title : '',
           primary_color: bus.metadata?.primary_color

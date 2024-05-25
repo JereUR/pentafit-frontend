@@ -17,6 +17,7 @@ import useUser from '@/components/hooks/useUser'
 export default function BusinessItem({ item }: { item: Business }) {
   const router = useRouter()
   const { deleteBusinessById } = useUser()
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
   async function handleDelete(id: string) {
     const res = await deleteBusinessById(id)
@@ -24,13 +25,14 @@ export default function BusinessItem({ item }: { item: Business }) {
     if (res) router.refresh()
   }
 
+  console.log(item)
   return (
     <div className="p-4 m-8 border border-gray-300 dark:border-gray-600 rounded-lg">
       <div className="flex justify-between py-6">
         <div className={`flex ${!item.isActive && 'opacity-40'}`}>
           <div className="flex px-16">
             <Image
-              src={item.logo ? item.logo : noImage}
+              src={item.logo ? `${BASE_URL}${item.logo}` : noImage}
               alt={`${item.name} logo`}
               width={190}
               height={130}
