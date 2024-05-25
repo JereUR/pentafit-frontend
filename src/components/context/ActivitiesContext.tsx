@@ -36,8 +36,8 @@ export default function ActivitiesContextProvider({
     {
       id: 'm5gr84i9',
       id_business: [
-        { id: 1, name: 'Business 1', isActive: true, isWorking: true },
-        { id: 3, name: 'Business 3', isActive: true, isWorking: true }
+        { id: 1, name: 'Business 1', is_active: true, is_working: true },
+        { id: 3, name: 'Business 3', is_active: true, is_working: true }
       ],
       activity: 'Actividad 1',
       cost: 200,
@@ -52,8 +52,8 @@ export default function ActivitiesContextProvider({
     {
       id: '3u1reuv4',
       id_business: [
-        { id: 1, name: 'Business 1', isActive: true, isWorking: true },
-        { id: 2, name: 'Business 2', isActive: true, isWorking: true }
+        { id: 1, name: 'Business 1', is_active: true, is_working: true },
+        { id: 2, name: 'Business 2', is_active: true, is_working: true }
       ],
       activity: 'Actividad 2',
       cost: 300,
@@ -68,8 +68,8 @@ export default function ActivitiesContextProvider({
     {
       id: 'derv1ws0',
       id_business: [
-        { id: 1, name: 'Business 1', isActive: true, isWorking: true },
-        { id: 3, name: 'Business 3', isActive: true, isWorking: true }
+        { id: 1, name: 'Business 1', is_active: true, is_working: true },
+        { id: 3, name: 'Business 3', is_active: true, is_working: true }
       ],
       activity: 'Actividad 3',
       cost: 400,
@@ -84,8 +84,8 @@ export default function ActivitiesContextProvider({
     {
       id: '5kma53ae',
       id_business: [
-        { id: 2, name: 'Business 2', isActive: true, isWorking: true },
-        { id: 3, name: 'Business 3', isActive: true, isWorking: true }
+        { id: 2, name: 'Business 2', is_active: true, is_working: true },
+        { id: 3, name: 'Business 3', is_active: true, is_working: true }
       ],
       activity: 'Actividad 4',
       cost: 200,
@@ -100,7 +100,7 @@ export default function ActivitiesContextProvider({
     {
       id: 'bhqecj4p',
       id_business: [
-        { id: 1, name: 'Business 1', isActive: true, isWorking: true }
+        { id: 1, name: 'Business 1', is_active: true, is_working: true }
       ],
       activity: 'Actividad 5',
       cost: 500,
@@ -174,8 +174,8 @@ export default function ActivitiesContextProvider({
     return {
       id: 'm5gr84i9',
       id_business: [
-        { id: 1, name: 'Business 1', isActive: true, isWorking: true },
-        { id: 3, name: 'Business 3', isActive: true, isWorking: true }
+        { id: 1, name: 'Business 1', is_active: true, is_working: true },
+        { id: 3, name: 'Business 3', is_active: true, is_working: true }
       ],
       activity: 'Actividad 1',
       cost: 200,

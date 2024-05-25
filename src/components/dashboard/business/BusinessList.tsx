@@ -37,7 +37,7 @@ export default function BusinessList() {
             </Card>
             <Card className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg">
               <CardHeader className="text-5xl py-1 text-primary-orange-500 font-semibold dark:text-primary-orange-700">
-                {businesses.filter((business) => business.isActive).length}
+                {businesses.filter((business) => business.is_active).length}
               </CardHeader>
               <CardContent className="text-lg py-1 font-medium">
                 Negocios Activos
@@ -45,7 +45,7 @@ export default function BusinessList() {
             </Card>
             <Card className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg">
               <CardHeader className="text-5xl py-1 text-primary-orange-500 font-semibold dark:text-primary-orange-700">
-                {businesses.filter((business) => !business.isActive).length}
+                {businesses.filter((business) => !business.is_active).length}
               </CardHeader>
               <CardContent className="text-lg py-1 font-medium">
                 Negocios Inactivos

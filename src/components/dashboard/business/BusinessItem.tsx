@@ -58,21 +58,21 @@ export default function BusinessItem({ item }: { item: Business }) {
         <div className="flex flex-col gap-4 xl:px-8 border-l">
           <Button
             className={`flex justify-start items-center shadow-md dark:text-foreground gap-2 ${
-              item.isWorking
+              item.is_working
                 ? 'bg-gray-500 dark:bg-gray-600'
                 : 'bg-purple-500 dark:bg-purple-600'
             } transition duration-300 ease-in-out hover:scale-[1.02] ${
-              item.isWorking
+              item.is_working
                 ? 'hover:bg-gray-600 dark:hover:bg-gray-700'
                 : 'hover:bg-purple-600 dark:hover:bg-purple-700'
             }`}
           >
-            {item.isWorking ? (
+            {item.is_working ? (
               <MdOutlineWork className="h-5 w-5" />
             ) : (
               <MdOutlineWorkOff className="h-5 w-5" />
             )}
-            {item.isWorking ? (
+            {item.is_working ? (
               <span className="flex m-auto ">Salir Area de Trabajo</span>
             ) : (
               <span className="flex m-auto ">Entrar Area de Trabajo</span>

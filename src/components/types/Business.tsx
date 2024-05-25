@@ -15,8 +15,8 @@ export type Business = {
   phone?: string
   instagram?: string
   facebook?: string
-  isActive: boolean
-  isWorking: boolean
+  is_active: boolean
+  is_working: boolean
   logo?: string | null
   metadata?: Metadata
 }

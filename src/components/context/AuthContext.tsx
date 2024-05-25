@@ -52,21 +52,21 @@ const initialBusiness = [
     id: 1,
     name: 'Lo de Toscano',
     logo: 'https://www.elguardianmdp.com/img/notas/img_t-3717.jpg',
-    isActive: true,
-    isWorking: true
+    is_active: true,
+    is_working: true
   },
   {
     id: 2,
     name: 'Business 2',
-    isActive: false,
-    isWorking: false
+    is_active: false,
+    is_working: false
   },
   {
     id: 3,
     name: 'BOCA BOCA BOCA',
     logo: 'https://a.espncdn.com/i/teamlogos/soccer/500/5.png',
-    isActive: true,
-    isWorking: false
+    is_active: true,
+    is_working: false
   }
 ]
 
@@ -374,8 +374,8 @@ export default function AuthContextProvider({
       phone: dataBusiness.phone,
       instagram: dataBusiness.instagram,
       facebook: dataBusiness.facebook,
-      isActive: false,
-      isWorking: false,
+      is_active: false,
+      is_working: false,
       metadata
     }
 
@@ -485,8 +485,8 @@ export default function AuthContextProvider({
       phone: dataBusiness.phone,
       instagram: dataBusiness.instagram,
       facebook: dataBusiness.facebook,
-      isActive: false,
-      isWorking: false,
+      is_active: false,
+      is_working: false,
       metadata
     }
 
@@ -578,9 +578,7 @@ export default function AuthContextProvider({
     setLoading(true)
     let url = `${BASE_URL}api/v1/change_business_status?id=${id}`
     try {
-      const response = await axios.put(url, 
-        null,
-        {
+      const response = await axios.put(url, null, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: token
