@@ -29,7 +29,7 @@ export default function BusinessItem({ item }: { item: Business }) {
     const res = await updateStatusBusiness(id)
 
     if (res) {
-      console.log('ok')
+      window.location.reload()
     }
   }
 
@@ -37,7 +37,7 @@ export default function BusinessItem({ item }: { item: Business }) {
   return (
     <div className="p-4 m-8 border border-gray-300 dark:border-gray-600 rounded-lg">
       <div className="flex justify-between py-6">
-        <div className={`flex ${!item.isActive && 'opacity-40'}`}>
+        <div className={`flex ${!item.is_active && 'opacity-40'}`}>
           <div className="flex px-16">
             <Image
               src={item.logo ? `${BASE_URL}${item.logo}` : noImage}
@@ -52,7 +52,7 @@ export default function BusinessItem({ item }: { item: Business }) {
             <p className="text-lg">
               {item.description ? item.description : 'Sin descripción.'}
             </p>
-            <p>{item.isActive ? 'Activo' : 'Inactivo'}</p>
+            <p>{item.is_active ? 'Activo' : 'Inactivo'}</p>
           </div>
         </div>
         <div className="flex flex-col gap-4 xl:px-8 border-l">
@@ -80,22 +80,22 @@ export default function BusinessItem({ item }: { item: Business }) {
           </Button>
           <Button
             className={`flex justify-start items-center shadow-md dark:text-foreground gap-2 ${
-              item.isActive
+              item.is_active
                 ? 'bg-orange-500 dark:bg-orange-600'
                 : 'bg-green-500 dark:bg-green-600'
             } transition duration-300 ease-in-out hover:scale-[1.02] ${
-              item.isActive
+              item.is_active
                 ? 'hover:bg-orange-600 dark:hover:bg-orange-700'
                 : 'hover:bg-green-600 dark:hover:bg-green-700'
             }`}
             onClick={() => handleStatus(item.id)}
           >
-            {item.isActive ? (
+            {item.is_active ? (
               <MdArrowDownward className="h-5 w-5" />
             ) : (
               <MdArrowUpward className="h-5 w-5" />
             )}
-            {item.isActive ? (
+            {item.is_active ? (
               <span className="flex m-auto ">Dar de Baja</span>
             ) : (
               <span className="flex m-auto ">Dar de Alta</span>

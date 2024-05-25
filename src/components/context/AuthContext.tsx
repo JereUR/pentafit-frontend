@@ -289,6 +289,7 @@ export default function AuthContextProvider({
   }
 
   async function getBusinesses() {
+    console.log(token)
     setLoading(true)
 
     try {
@@ -577,7 +578,9 @@ export default function AuthContextProvider({
     setLoading(true)
     let url = `${BASE_URL}api/v1/change_business_status?id=${id}`
     try {
-      const response = await axios.put(url, {
+      const response = await axios.put(url, 
+        null,
+        {
         headers: {
           'Content-Type': 'application/json',
           Authorization: token
