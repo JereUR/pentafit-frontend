@@ -575,7 +575,7 @@ export default function AuthContextProvider({
 
   async function updateStatusBusiness(id: number): Promise<boolean> {
     setLoading(true)
-    let url = `${BASE_URL}api/v1/business?id=${id}`
+    let url = `${BASE_URL}api/v1/change_business_status?id=${id}`
     try {
       const response = await axios.put(url, {
         headers: {
