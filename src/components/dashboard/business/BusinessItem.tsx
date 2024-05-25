@@ -16,7 +16,7 @@ import useUser from '@/components/hooks/useUser'
 
 export default function BusinessItem({ item }: { item: Business }) {
   const router = useRouter()
-  const { deleteBusinessById } = useUser()
+  const { deleteBusinessById, updateStatusBusiness } = useUser()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
   async function handleDelete(id: string) {
@@ -80,6 +80,7 @@ export default function BusinessItem({ item }: { item: Business }) {
                 ? 'hover:bg-orange-600 dark:hover:bg-orange-700'
                 : 'hover:bg-green-600 dark:hover:bg-green-700'
             }`}
+            onClick={() => updateStatusBusiness(item.id)}
           >
             {item.isActive ? (
               <MdArrowDownward className="h-5 w-5" />

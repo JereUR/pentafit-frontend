@@ -42,6 +42,7 @@ type AuthContextType = {
   }: {
     dataBusiness: PropsAddBusiness
   }) => Promise<boolean>
+  updateStatusBusiness: (id: number) => Promise<boolean>
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -406,37 +407,37 @@ export default function AuthContextProvider({
         if (dataBusiness.logo) {
           console.log('logo change')
           try {
-          const formData = new FormData()
-          formData.append('image', dataBusiness.logo)
-          console.log(formData)
-          url = `${BASE_URL}api/v1/attach_business_image`
-          const response = await axios.post(
-            `${url}?id=${newBusiness.id}`, 
-            formData,
-            {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-                Authorization: token
+            const formData = new FormData()
+            formData.append('image', dataBusiness.logo)
+            console.log(formData)
+            url = `${BASE_URL}api/v1/attach_business_image`
+            const response = await axios.post(
+              `${url}?id=${newBusiness.id}`,
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                  Authorization: token
+                }
               }
-            }
-          )
+            )
 
-          if (response.status !== 200) {
+            if (response.status !== 200) {
+              toast({
+                title: 'Oh no! Algo salió mal.',
+                description: response.statusText
+              })
+              return false
+            }
+            return true
+          } catch (error: any) {
             toast({
+              variant: 'destructive',
               title: 'Oh no! Algo salió mal.',
-              description: response.statusText
+              description: error.message
             })
             return false
           }
-          return true
-        } catch (error: any) {
-          toast({
-            variant: 'destructive',
-            title: 'Oh no! Algo salió mal.',
-            description: error.message
-          })
-          return false
-        }
         } else {
           return true
         }
@@ -475,6 +476,7 @@ export default function AuthContextProvider({
     }
 
     const data = {
+      id: dataBusiness.id,
       name: dataBusiness.name,
       description: dataBusiness.description,
       email: dataBusiness.email,
@@ -487,7 +489,7 @@ export default function AuthContextProvider({
       metadata
     }
 
-    let url = `${BASE_URL}api/v1/business?id=${dataBusiness.id}` 
+    let url = `${BASE_URL}api/v1/business?id=${dataBusiness.id}`
     try {
       const response = await axios.put(
         url,
@@ -503,14 +505,14 @@ export default function AuthContextProvider({
       )
 
       if (response.status === 200) {
-        const filterBusinesses = businesses.filter((b) => b.id !== data.id);
-        const index = businesses.findIndex((b) => b.id === data.id);
+        const filterBusinesses = businesses.filter((b) => b.id !== data.id)
+        const index = businesses.findIndex((b) => b.id === data.id)
         const newBusinesses = [
           ...filterBusinesses.slice(0, index),
           data,
-          ...filterBusinesses.slice(index),
-        ];
-        setBusinesses(newBusinesses);
+          ...filterBusinesses.slice(index)
+        ]
+        setBusinesses(newBusinesses)
         /* revalidatePath('/panel-de-control/negocios') */
 
         if (dataBusiness.logo) {
@@ -552,6 +554,48 @@ export default function AuthContextProvider({
         } else {
           return true
         }
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return false
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return false
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function updateStatusBusiness(id: number): Promise<boolean> {
+    setLoading(true)
+    let url = `${BASE_URL}api/v1/business?id=${id}`
+    try {
+      const response = await axios.put(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      })
+
+      if (response.status === 200) {
+        console.log(response.data)
+        const filterBusinesses = businesses.filter((b) => b.id !== id)
+        const index = businesses.findIndex((b) => b.id === id)
+        const newBusinesses = [
+          ...filterBusinesses.slice(0, index),
+          response.data,
+          ...filterBusinesses.slice(index)
+        ]
+        setBusinesses(newBusinesses)
+        /* revalidatePath('/panel-de-control/negocios') */
+        return true
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
@@ -625,7 +669,8 @@ export default function AuthContextProvider({
         getBusinessById,
         deleteBusinessById,
         addBusiness,
-        updateBusiness
+        updateBusiness,
+        updateStatusBusiness
       }}
     >
       {children}
