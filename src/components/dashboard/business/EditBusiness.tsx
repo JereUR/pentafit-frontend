@@ -20,6 +20,7 @@ export default function EditBusiness() {
       console.log(bus)
       if (bus) {
         setBusiness({
+          id: bus.id,
           name: bus.name,
           description: bus.description,
           email: bus.email,

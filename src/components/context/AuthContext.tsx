@@ -477,6 +477,7 @@ export default function AuthContextProvider({
     }
 
     const data = {
+      id: dataBusiness.id,
       name: dataBusiness.name,
       description: dataBusiness.description,
       email: dataBusiness.email,
@@ -505,12 +506,8 @@ export default function AuthContextProvider({
       )
 
       if (response.status === 201) {
-        const newBusiness: Business = {
-          id: response.data.id,
-          ...data
-        }
-
-        const newBusinesses = [...businesses, newBusiness]
+        const filterBusinesses = businesses.filter((b) => b.id === data.id)
+        const newBusinesses = [...filterBusinesses, data]
         setBusinesses(newBusinesses)
         /* revalidatePath('/panel-de-control/negocios') */
 
