@@ -58,7 +58,7 @@ const ContactForm: React.FC<ContactProps> = ({
           <input
             type="number"
             name="phone"
-            className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+            className="phone-business border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
             value={dataBusiness.phone}
             onChange={handleChange}
           />
