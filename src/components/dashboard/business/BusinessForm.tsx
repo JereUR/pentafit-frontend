@@ -61,6 +61,9 @@ export default function BusinessForm({
   const [imgLogo, setImgLogo] = useState<string | null>(
     business.logoUrl ? business.logoUrl : null
   )
+  const [charCount, setCharCount] = useState(
+    business.description ? 200 - business.description.length : 200
+  )
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
   const { toast } = useToast()
   const router = useRouter()
@@ -71,6 +74,56 @@ export default function BusinessForm({
     }
   }, [business, type])
 
+  const validations = () => {
+    const errorsForm: FormErrors = {}
+
+    const regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/
+    const regexHexColor = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/
+
+    if (!dataBusiness.name.trim()) {
+      errorsForm.name = `Este campo es obligatorio.`
+    }
+
+    if (dataBusiness.email && dataBusiness?.email !== '') {
+      if (!regexEmail.test(dataBusiness.email)) {
+        errorsForm.email = 'Correo no válido.'
+      }
+    }
+
+    if (
+      dataBusiness.primary_color &&
+      !regexHexColor.test(dataBusiness.primary_color)
+    ) {
+      errorsForm.primary_color = 'Color hexadecimal no válido.'
+    }
+
+    if (
+      dataBusiness.secondary_color &&
+      !regexHexColor.test(dataBusiness.secondary_color)
+    ) {
+      errorsForm.secondary_color = 'Color hexadecimal no válido.'
+    }
+
+    if (
+      dataBusiness.third_color &&
+      !regexHexColor.test(dataBusiness.third_color)
+    ) {
+      errorsForm.third_color = 'Color hexadecimal no válido.'
+    }
+
+    return errorsForm
+  }
+
+  const getCharCountColor = () => {
+    if (charCount <= 20) {
+      return 'text-red-600'
+    } else if (charCount <= 50) {
+      return 'text-orange-600'
+    } else {
+      return 'text-gray-600 dark:text-gray-400'
+    }
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setDataBusiness({ ...dataBusiness, [name]: value })
@@ -78,10 +131,11 @@ export default function BusinessForm({
 
   const handleChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target
+    setCharCount(200 - value.length)
     setDataBusiness({ ...dataBusiness, [name]: value })
   }
 
-  const handleChangeLogo = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeLogo = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const file = e.target.files[0]
 
@@ -102,31 +156,36 @@ export default function BusinessForm({
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    if (type === 'add') {
-      const response = await addBusiness({ dataBusiness })
-      if (response) {
-        toast({
-          title: 'Negocio agregado.',
-          description: 'Redireccionando...',
-          className: 'bg-green-600'
-        })
+    const err = validations()
+    setFormErrors(err)
 
-        setTimeout(() => {
-          router.replace('/panel-de-control/negocios')
-        }, 1000)
-      }
-    } else {
-      const response = await updateBusiness({ dataBusiness })
-      if (response) {
-        toast({
-          title: 'Negocio editado.',
-          description: 'Redireccionando...',
-          className: 'bg-green-600'
-        })
+    if (Object.keys(err).length === 0) {
+      if (type === 'add') {
+        const response = await addBusiness({ dataBusiness })
+        if (response) {
+          toast({
+            title: 'Negocio agregado.',
+            description: 'Redireccionando...',
+            className: 'bg-green-600'
+          })
 
-        setTimeout(() => {
-          router.replace('/panel-de-control/negocios')
-        }, 1000)
+          setTimeout(() => {
+            router.replace('/panel-de-control/negocios')
+          }, 1000)
+        }
+      } else {
+        const response = await updateBusiness({ dataBusiness })
+        if (response) {
+          toast({
+            title: 'Negocio editado.',
+            description: 'Redireccionando...',
+            className: 'bg-green-600'
+          })
+
+          setTimeout(() => {
+            router.replace('/panel-de-control/negocios')
+          }, 1000)
+        }
       }
     }
   }
@@ -134,21 +193,21 @@ export default function BusinessForm({
   return (
     <div className="m-10">
       <form onSubmit={handleSubmit}>
-        <div className="flex">
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-4 items-center">
+        <div className="flex gap-6 my-6 p-4 border border-gray-300 dark:border-gray-700 rounded-md shadow-md">
+          <div className="w-1/3">
+            <div className="flex">
               <label htmlFor="logo" className="font-[600]">
                 Logo
               </label>
-              {formErrors.logo && <ErrorText text={formErrors.logo} />}
             </div>
-            <div className="logo-uploader">
-              <div className="logo-preview">
+            <div className="flex flex-col justify-center items-center p-4">
+              <div className="logo-preview mb-4 w-40 h-40 border border-gray-300 dark:border-gray-700 rounded-md overflow-hidden flex items-center justify-center bg-gray-50 dark:bg-gray-800">
                 <Image
                   src={imgLogo ? imgLogo : noImage}
-                  width={100}
-                  height={100}
+                  width={150}
+                  height={150}
                   alt="Business logo"
+                  className="object-contain m-2"
                 />
               </div>
               <input
@@ -159,16 +218,19 @@ export default function BusinessForm({
                 className="hidden" // Hide the default input
                 onChange={handleChangeLogo}
               />
-              <label htmlFor="logo" className="cursor-pointer">
+              <label
+                htmlFor="logo"
+                className="cursor-pointer bg-primary-orange-500 text-white py-2 px-4 rounded-md hover:bg-primary-orange-600 transition-all duration-300"
+              >
                 Subir logo
               </label>
             </div>
           </div>
-          <div>
-            <div className="flex flex-col gap-2">
+          <div className="w-2/3 pt-6 px-8">
+            <div className="flex flex-col gap-2 my-4">
               <div className="flex gap-4 items-center">
-                <label htmlFor="name" className="font-[600]">
-                  Nombre
+                <label htmlFor="name" className="flex font-[600] gap-2">
+                  Nombre <span className="text-primary-orange-600">*</span>
                 </label>
                 {formErrors.name && <ErrorText text={formErrors.name} />}
               </div>
@@ -180,20 +242,24 @@ export default function BusinessForm({
                 onChange={handleChange}
               />
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 my-4">
               <div className="flex gap-4 items-center">
                 <label htmlFor="description" className="font-[600]">
                   Descripción
                 </label>
-                {formErrors.description && (
-                  <ErrorText text={formErrors.description} />
-                )}
+                <div
+                  className={`text-right italic font-extralight text-xs ${getCharCountColor()}`}
+                >
+                  ({charCount} caracteres restantes)
+                </div>
               </div>
               <textarea
                 name="description"
                 className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
                 value={dataBusiness.description}
                 onChange={handleChangeTextArea}
+                maxLength={200}
+                rows={5}
               />
             </div>
           </div>
@@ -226,7 +292,7 @@ export default function BusinessForm({
                 <FaCheck /> {type === 'add' ? 'Agregar' : 'Actualizar'}
               </div>
             ) : (
-              <Loader className="mt-[1.1vh] ml-[1vw]" />
+              <Loader className="mt-[1.8vh] ml-[1vw]" />
             )}
           </Button>
         </div>
