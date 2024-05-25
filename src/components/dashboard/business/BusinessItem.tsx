@@ -32,9 +32,9 @@ export default function BusinessItem({ item }: { item: Business }) {
             <Image
               src={item.logo ? item.logo : noImage}
               alt={`${item.name} logo`}
-              width={200}
-              height={150}
-              className="ring-2 ring-primary-orange-600 dark:ring-primary-orange-400"
+              width={190}
+              height={130}
+              className="border-2 border-primary-orange-600 rounded-md p-2 dark:ring-primary-orange-400"
             />
           </div>
           <div>
