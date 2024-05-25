@@ -2,7 +2,7 @@
 
 import { createContext, ReactNode, useState } from 'react'
 
-import { Activity, PropsAdd } from '../types/Activity'
+import { Activity, PropsAddActivity } from '../types/Activity'
 import axios from 'axios'
 import { useToast } from '../ui/use-toast'
 
@@ -14,12 +14,12 @@ type ActivitiesContextType = {
   addActivity: ({
     dataActivity
   }: {
-    dataActivity: PropsAdd
+    dataActivity: PropsAddActivity
   }) => Promise<void | Error>
   updateActivity: ({
     dataActivity
   }: {
-    dataActivity: PropsAdd
+    dataActivity: PropsAddActivity
   }) => Promise<void | Error>
 }
 
@@ -193,7 +193,7 @@ export default function ActivitiesContextProvider({
   async function addActivity({
     dataActivity
   }: {
-    dataActivity: PropsAdd
+    dataActivity: PropsAddActivity
   }): Promise<void | Error> {
     setLoading(true)
     const isPublicValue = dataActivity.isPublic === 'true' ? true : false
@@ -253,7 +253,7 @@ export default function ActivitiesContextProvider({
   async function updateActivity({
     dataActivity
   }: {
-    dataActivity: PropsAdd
+    dataActivity: PropsAddActivity
   }): Promise<void | Error> {
     setLoading(true)
     const isPublicValue = dataActivity.isPublic === 'true' ? true : false
