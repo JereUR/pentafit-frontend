@@ -72,9 +72,6 @@ const MetadataForm: React.FC<MetadataProps> = ({
                   <label htmlFor="primary_color" className="font-[600]">
                     Primario
                   </label>
-                  {formErrors.primary_color && (
-                    <ErrorText text={formErrors.primary_color} />
-                  )}
                 </div>
                 <ColorPicker
                   value={dataBusiness.primary_color}
@@ -110,9 +107,6 @@ const MetadataForm: React.FC<MetadataProps> = ({
                   <label htmlFor="secondary_color" className="font-[600]">
                     Secundario
                   </label>
-                  {formErrors.secondary_color && (
-                    <ErrorText text={formErrors.secondary_color} />
-                  )}
                 </div>
                 <ColorPicker
                   value={dataBusiness.secondary_color}
@@ -148,9 +142,6 @@ const MetadataForm: React.FC<MetadataProps> = ({
                   <label htmlFor="third_color" className="font-[600]">
                     Terciario
                   </label>
-                  {formErrors.third_color && (
-                    <ErrorText text={formErrors.third_color} />
-                  )}
                 </div>
                 <ColorPicker
                   value={dataBusiness.third_color}
