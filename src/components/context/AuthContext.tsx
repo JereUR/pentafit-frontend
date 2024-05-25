@@ -49,7 +49,8 @@ export const AuthContext = createContext<AuthContextType | null>(null)
 const initialBusiness = [
   {
     id: 1,
-    name: 'Gimnasio Chupete',
+    name: 'Lo de Toscano',
+    logo: 'https://www.elguardianmdp.com/img/notas/img_t-3717.jpg',
     isActive: true,
     isWorking: true
   },
@@ -62,6 +63,7 @@ const initialBusiness = [
   {
     id: 3,
     name: 'BOCA BOCA BOCA',
+    logo: 'https://a.espncdn.com/i/teamlogos/soccer/500/5.png',
     isActive: true,
     isWorking: false
   }
