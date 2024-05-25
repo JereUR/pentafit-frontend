@@ -28,13 +28,13 @@ export default function BusinessItem({ item }: { item: Business }) {
     <div className="p-4 m-8 border border-gray-300 dark:border-gray-600 rounded-lg">
       <div className="flex justify-between py-6">
         <div className={`flex ${!item.isActive && 'opacity-40'}`}>
-          <div className="px-16">
+          <div className="flex px-16">
             <Image
               src={item.logo ? item.logo : noImage}
               alt={`${item.name} logo`}
-              width={150}
+              width={200}
               height={150}
-              className="rounded-full ring-2 ring-primary-orange-600 dark:ring-primary-orange-400"
+              className="ring-2 ring-primary-orange-600 dark:ring-primary-orange-400"
             />
           </div>
           <div>
