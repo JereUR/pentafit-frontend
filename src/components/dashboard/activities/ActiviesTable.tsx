@@ -11,6 +11,7 @@ import { useTheme } from 'next-themes'
 import Link from 'next/link'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import CustomButton from '@/components/CustomButton'
+import useUser from '@/components/hooks/useUser'
 
 const availableColumns = [
   { id: 'description', label: 'Descripción' },
@@ -34,6 +35,7 @@ export default function ActivitiesTable() {
   const searchParams = useSearchParams()
   const count = 4
   const q = searchParams.get('q') || ''
+  const { token } = useUser()
   const { activities, getActivities } = useActivities()
   /* const { activitys, count } = await fetchactivitys(q, page)  */
 
@@ -45,9 +47,11 @@ export default function ActivitiesTable() {
   }
 
   useEffect(() => {
-    const q = searchParams.get('q') || ''
-    const page = searchParams.get('page') || '1'
-    getActivities(q, page)
+    if (token) {
+      const q = searchParams.get('q') || ''
+      const page = searchParams.get('page') || '1'
+      getActivities(q, page)
+    }
   }, [searchParams])
 
   const handleSelectAllChange = (

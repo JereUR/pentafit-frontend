@@ -88,6 +88,7 @@ export default function AuthContextProvider({
   const [businesses, setBusinesses] = useState<Business[] | []>([])
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
+  const [isTokenLoaded, setIsTokenLoaded] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const pathname = usePathname()

@@ -5,12 +5,14 @@ import { initialData, PropsAddActivity } from '@/components/types/Activity'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ActivityForm from './ActivityForm'
+import useUser from '@/components/hooks/useUser'
 
 export default function EditActivity() {
   const pathname = usePathname()
   const [activity, setActivity] = useState<PropsAddActivity>(initialData)
   const id = pathname.split('/')[4]
   const { getActivityById } = useActivities()
+  const { token } = useUser()
 
   useEffect(() => {
     async function fetchActivity() {
@@ -31,8 +33,9 @@ export default function EditActivity() {
         })
       }
     }
-
-    fetchActivity()
+    if (token) {
+      fetchActivity()
+    }
   }, [id])
 
   return (

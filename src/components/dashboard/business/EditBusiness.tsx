@@ -12,7 +12,7 @@ export default function EditBusiness() {
   const pathname = usePathname()
   const [business, setBusiness] = useState<PropsAddBusiness | null>(null)
   const id = pathname.split('/')[4]
-  const { getBusinessById } = useUser()
+  const { getBusinessById, token } = useUser()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
   useEffect(() => {
@@ -44,8 +44,9 @@ export default function EditBusiness() {
         })
       }
     }
-
-    fetchBusiness()
+    if (token) {
+      fetchBusiness()
+    }
   }, [id])
 
   return (

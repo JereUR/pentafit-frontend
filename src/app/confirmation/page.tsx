@@ -19,21 +19,18 @@ export default function ConfirmationPage() {
         `${BASE_URL}confirmation?confirmation_token=${confirmation_token}`
       )
 
-      console.log(response)
-
       if (!response.ok) {
         toast({
-        variant: 'destructive',
-        title: 'Oh no! Algo salió mal.',
-        description: response.status
-      })
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: response.status
+        })
         console.error('Error en la petición:', response.status)
         return
       }
       const data = await response.json()
       console.log(data)
     }
-    fetchData()
   }, [confirmation_token])
 
   return (

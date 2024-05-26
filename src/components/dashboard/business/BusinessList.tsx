@@ -13,10 +13,10 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 export default function BusinessList() {
   const [getData, setGetData] = useState(false)
   const router = useRouter()
-  const { loading, businesses, getBusinesses } = useUser()
+  const { token, businesses, getBusinesses } = useUser()
 
   useEffect(() => {
-    if (!getData) {
+    if (!getData && token) {
       getBusinesses()
       setGetData(true)
     }
