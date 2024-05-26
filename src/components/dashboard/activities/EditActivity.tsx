@@ -36,7 +36,7 @@ export default function EditActivity() {
     if (token) {
       fetchActivity()
     }
-  }, [id])
+  }, [id, token])
 
   return (
     <div className="m-10">

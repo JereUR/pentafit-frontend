@@ -47,7 +47,7 @@ export default function EditBusiness() {
     if (token) {
       fetchBusiness()
     }
-  }, [id])
+  }, [id, token])
 
   return (
     <div className="m-10">

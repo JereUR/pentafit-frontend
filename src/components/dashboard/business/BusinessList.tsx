@@ -11,16 +11,14 @@ import { MdKeyboardDoubleArrowDown } from 'react-icons/md'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
 export default function BusinessList() {
-  const [getData, setGetData] = useState(false)
   const router = useRouter()
   const { token, businesses, getBusinesses } = useUser()
 
   useEffect(() => {
-    if (!getData && token) {
+    if (token) {
       getBusinesses()
-      setGetData(true)
     }
-  }, [getData])
+  }, [token])
 
   return (
     <div className="mt-8">

@@ -52,7 +52,7 @@ export default function ActivitiesTable() {
       const page = searchParams.get('page') || '1'
       getActivities(q, page)
     }
-  }, [searchParams])
+  }, [searchParams, token])
 
   const handleSelectAllChange = (
     event: React.ChangeEvent<HTMLInputElement>
