@@ -1,26 +1,46 @@
 'use client'
 
 import ErrorText from '@/components/ErrorText'
-import React, { EventHandler, useState } from 'react'
+import React, {
+  Dispatch,
+  EventHandler,
+  SetStateAction,
+  useRef,
+  useState
+} from 'react'
 import ReactCrop, {
   centerCrop,
+  convertToPixelCrop,
   makeAspectCrop,
   PercentCrop,
-  PixelCrop,
-  type Crop
+  PixelCrop
 } from 'react-image-crop'
+import setCanvasPreview from './setCanvasPreview'
+import { PropsAddBusiness } from '@/components/types/Business'
+import { useToast } from '@/components/ui/use-toast'
 
 interface Props {
   text: string
+  setDataBusiness: Dispatch<SetStateAction<PropsAddBusiness>>
+  closeModal: () => void
+  updatePhoto: (imgSrc: string) => void
 }
 
 const ASPECT_RATIO = 1
 const MIN_DIMENSION = 150
 
-const LogoCropper: React.FC<Props> = ({ text }) => {
+const LogoCropper: React.FC<Props> = ({
+  text,
+  setDataBusiness,
+  closeModal,
+  updatePhoto
+}) => {
+  const imgRef = useRef<HTMLImageElement | null>(null)
+  const previewCanvasRef = useRef<HTMLCanvasElement | null>(null)
   const [imgSrc, setImgSrc] = useState('')
   const [crop, setCrop] = useState<PixelCrop | PercentCrop>()
   const [error, setError] = useState('')
+  const { toast } = useToast()
 
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -60,6 +80,40 @@ const LogoCropper: React.FC<Props> = ({ text }) => {
     setCrop(centeredCrop)
   }
 
+  const handleCrop = () => {
+    if (imgRef.current && previewCanvasRef.current && crop) {
+      const pixelCrop = convertToPixelCrop(
+        crop,
+        imgRef.current.width,
+        imgRef.current.height
+      )
+      setCanvasPreview(imgRef.current, previewCanvasRef.current, pixelCrop)
+
+      previewCanvasRef.current.toBlob((blob) => {
+        if (blob) {
+          const file = new File([blob], 'cropped-logo.png', {
+            type: 'image/png'
+          })
+          const imgSrc = URL.createObjectURL(file)
+
+          setDataBusiness((prevDataBusiness) => ({
+            ...prevDataBusiness,
+            logo: file,
+            logoUrl: imgSrc
+          }))
+          updatePhoto(imgSrc)
+          closeModal()
+        } else {
+          toast({
+            variant: 'destructive',
+            title: 'Oh no! Algo salió mal.',
+            description: 'Blob is null.'
+          })
+        }
+      })
+    }
+  }
+
   return (
     <>
       <label className="block mb-3 w-fit">
@@ -84,16 +138,33 @@ const LogoCropper: React.FC<Props> = ({ text }) => {
           >
             {' '}
             <img
+              ref={imgRef}
               src={imgSrc}
               alt="Upload"
               style={{ maxHeight: '70vh' }}
               onLoad={onImageLoad}
             />
           </ReactCrop>
-          <button className="text-white font-mono text-lg py-2 px-4 rounded-2xl mt-4 bg-primary-orange-600 hover:bg-primary-orange-700">
+          <button
+            className="text-white font-mono text-lg py-2 px-4 rounded-2xl mt-4 bg-primary-orange-600 hover:bg-primary-orange-700"
+            onClick={handleCrop}
+          >
             Subir Logo
           </button>
         </div>
+      )}
+      {crop && (
+        <canvas
+          ref={previewCanvasRef}
+          className="mt-4"
+          style={{
+            display: 'none',
+            border: '1px solid black',
+            objectFit: 'contain',
+            width: 150,
+            height: 150
+          }}
+        />
       )}
     </>
   )

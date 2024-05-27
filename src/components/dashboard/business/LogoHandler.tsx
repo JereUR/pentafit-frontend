@@ -10,17 +10,20 @@ import LogoCropper from './LogoCropper'
 import { PropsAddBusiness } from '@/components/types/Business'
 
 interface LogoProps {
-  imageUrl: string|null
-  dataBusiness: PropsAddBusiness
+  imageUrl: string | null
   setDataBusiness: Dispatch<SetStateAction<PropsAddBusiness>>
 }
 
-const LogoHandler:React.FC<LogoProps> = ({ imageUrl,dataBusiness,setDataBusiness }) => {
+const LogoHandler: React.FC<LogoProps> = ({ imageUrl, setDataBusiness }) => {
   const photoUrl = useRef(imageUrl)
   const [modalOpen, setModalOpen] = useState(false)
 
+  const updatePhoto = (imgSrc: string) => {
+    photoUrl.current = imgSrc
+  }
+
   return (
-    <div className="flex flex-col items-center pt-12">
+    <div className="flex flex-col items-center ">
       <div className="relative">
         <Image
           src={photoUrl.current ? photoUrl.current : noImage}
@@ -40,7 +43,12 @@ const LogoHandler:React.FC<LogoProps> = ({ imageUrl,dataBusiness,setDataBusiness
       </div>
       {modalOpen && (
         <Modal closeModal={() => setModalOpen(false)}>
-          <LogoCropper text="Elige Logo de Negocio" />
+          <LogoCropper
+            text="Elige Logo de Negocio"
+            setDataBusiness={setDataBusiness}
+            closeModal={() => setModalOpen(false)}
+            updatePhoto={updatePhoto}
+          />
         </Modal>
       )}
     </div>

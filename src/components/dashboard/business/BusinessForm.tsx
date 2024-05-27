@@ -196,16 +196,19 @@ export default function BusinessForm({
       <form onSubmit={handleSubmit}>
         <div className="flex gap-6 my-6 p-4 border border-gray-300 dark:border-gray-700 rounded-md shadow-md">
           <div className="w-1/3">
-            <div className="flex">
+            <div className="flex m-4">
               <label htmlFor="logo" className="font-[600]">
                 Logo
               </label>
             </div>
-            <LogoHandler
-              imageUrl={imgLogo}
-              dataBusiness={dataBusiness}
-              setDataBusiness={setDataBusiness}
-            />
+            <div className="flex flex-col justify-center items-center mt-8">
+              <div className="flexjustify-center items-center p-6 border border-primary-orange-500 rounded-md overflow-hidden shadow-md bg-gray-200 dark:bg-gray-800">
+                <LogoHandler
+                  imageUrl={imgLogo}
+                  setDataBusiness={setDataBusiness}
+                />
+              </div>
+            </div>
             {/* <div className="flex flex-col justify-center items-center p-4">
               <div className="logo-preview mb-4 w-40 h-40 border border-gray-300 dark:border-gray-700 rounded-md overflow-hidden flex items-center justify-center bg-gray-50 dark:bg-gray-800">
                 <Image
