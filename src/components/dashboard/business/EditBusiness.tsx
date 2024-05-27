@@ -40,7 +40,11 @@ export default function EditBusiness() {
           third_color: bus.metadata?.third_color
             ? bus.metadata.third_color
             : '',
-          slogan: bus.metadata?.slogan ? bus.metadata.slogan : ''
+          slogan: bus.metadata?.slogan ? bus.metadata.slogan : '',
+          logoWebUrl: bus.metadata?.logoWeb
+            ? `${BASE_URL}${bus?.metadata.logoWeb}`
+            : '',
+          logoWeb: null
         })
       }
     }
