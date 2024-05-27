@@ -116,13 +116,13 @@ const LogoCropper: React.FC<Props> = ({
 
   return (
     <>
-      <label className="block mb-3 w-fit">
+      <label className="block w-fit m-6">
         <span className="sr-only">{text}</span>
         <input
           type="file"
           accept="image/*"
           onChange={onSelectFile}
-          className="block w-full text-sm text-slate-500 file:mr-4 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-xs file:bg-gray-700 file:text-primary-orange-600 hover:file:bg-gray-600"
+          className="block w-full text-sm text-slate-500 file:cursor-pointer file:mr-4 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-xs file:bg-gray-700 file:text-primary-orange-600 hover:file:bg-gray-600"
         />
       </label>
       {error && <ErrorText text={error}></ErrorText>}
@@ -131,6 +131,7 @@ const LogoCropper: React.FC<Props> = ({
           <ReactCrop
             crop={crop}
             onChange={(percentCrop) => setCrop(percentCrop)}
+            className="mt-10"
             circularCrop
             keepSelection
             aspect={ASPECT_RATIO}
@@ -150,7 +151,7 @@ const LogoCropper: React.FC<Props> = ({
             className="text-white font-mono text-lg py-2 px-4 rounded-2xl mt-4 bg-primary-orange-600 hover:bg-primary-orange-700"
             onClick={handleCrop}
           >
-            Subir Logo
+            Confirmar
           </button>
         </div>
       )}
