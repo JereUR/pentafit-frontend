@@ -146,6 +146,7 @@ const LogoCropper: React.FC<Props> = ({
             />
           </ReactCrop>
           <button
+            type="button"
             className="text-white font-mono text-lg py-2 px-4 rounded-2xl mt-4 bg-primary-orange-600 hover:bg-primary-orange-700"
             onClick={handleCrop}
           >
