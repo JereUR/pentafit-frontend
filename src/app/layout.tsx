@@ -3,6 +3,7 @@
 import { Inter } from 'next/font/google'
 
 import './globals.css'
+import 'react-image-crop/dist/ReactCrop.css'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import AuthContextProvider from '@/components/context/AuthContext'
 import NavBar from '@/components/NavBar'
