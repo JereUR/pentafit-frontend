@@ -85,7 +85,7 @@ export default function AuthContextProvider({
       token: 'Bearer 1234'
     } */
   )
-  const [businesses, setBusinesses] = useState<Business[] | []>(initialBusiness)
+  const [businesses, setBusinesses] = useState<Business[] | []>([])
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const [loading, setLoading] = useState(false)
@@ -289,7 +289,6 @@ export default function AuthContextProvider({
   }
 
   async function getBusinesses() {
-    console.log(token)
     setLoading(true)
 
     try {
@@ -405,11 +404,16 @@ export default function AuthContextProvider({
         setBusinesses(newBusinesses)
         /* revalidatePath('/panel-de-control/negocios') */
 
-        if (dataBusiness.logo) {
+        if (dataBusiness.logo || dataBusiness.logoWeb) {
           console.log('logo change')
           try {
             const formData = new FormData()
-            formData.append('image', dataBusiness.logo)
+            if (dataBusiness.logo) {
+              formData.append('image', dataBusiness.logo)
+            }
+            if (dataBusiness.logoWeb) {
+              formData.append('logo', dataBusiness.logoWeb)
+            }
             console.log(formData)
             url = `${BASE_URL}api/v1/attach_business_image`
             const response = await axios.post(

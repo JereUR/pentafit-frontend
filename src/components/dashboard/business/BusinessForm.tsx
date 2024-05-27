@@ -10,7 +10,6 @@ import MetadataForm from './MetadataForm'
 import { Button } from '@/components/ui/button'
 import ContactForm from './ContactForm'
 import { useToast } from '@/components/ui/use-toast'
-import noImage from '@public/assets/no-image.png'
 import { useRouter } from 'next/navigation'
 import { ImCross } from 'react-icons/im'
 import { FaCheck } from 'react-icons/fa'
@@ -61,6 +60,9 @@ export default function BusinessForm({
   const [dataBusiness, setDataBusiness] = useState<PropsAddBusiness>(business)
   const [imgLogo, setImgLogo] = useState<string | null>(
     business.logoUrl ? business.logoUrl : null
+  )
+  const [imgLogoWeb, setImgLogoWeb] = useState<string | null>(
+    business.logoWebUrl ? business.logoWebUrl : null
   )
   const [charCount, setCharCount] = useState(
     business.description ? 200 - business.description.length : 200
@@ -136,24 +138,6 @@ export default function BusinessForm({
     setDataBusiness({ ...dataBusiness, [name]: value })
   }
 
-  const handleChangeLogo = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const file = e.target.files[0]
-
-      if (file && file.type.substring(0, 5) === 'image') {
-        const imageUrl = URL.createObjectURL(file)
-        setDataBusiness({ ...dataBusiness, logo: file })
-        setImgLogo(imageUrl)
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Archivo no compatible.',
-          description: 'Solo archivos tipo .jpg, .jpeg y .png.'
-        })
-      }
-    }
-  }
-
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
@@ -198,7 +182,7 @@ export default function BusinessForm({
           <div className="w-1/3">
             <div className="flex m-4">
               <label htmlFor="logo" className="font-[600]">
-                Logo
+                Foto de Negocio
               </label>
             </div>
             <div className="flex flex-col justify-center items-center mt-8">
@@ -209,31 +193,6 @@ export default function BusinessForm({
                 />
               </div>
             </div>
-            {/* <div className="flex flex-col justify-center items-center p-4">
-              <div className="logo-preview mb-4 w-40 h-40 border border-gray-300 dark:border-gray-700 rounded-md overflow-hidden flex items-center justify-center bg-gray-50 dark:bg-gray-800">
-                <Image
-                  src={imgLogo ? imgLogo : noImage}
-                  width={150}
-                  height={150}
-                  alt="Business logo"
-                  className="object-contain m-2"
-                />
-              </div>
-              <input
-                type="file"
-                id="logo"
-                name="logo"
-                accept="image/*"
-                className="hidden" // Hide the default input
-                onChange={handleChangeLogo}
-              />
-              <label
-                htmlFor="logo"
-                className="cursor-pointer bg-primary-orange-500 text-white py-2 px-4 rounded-md hover:bg-primary-orange-600 transition-all duration-300"
-              >
-                Subir logo
-              </label>
-            </div> */}
           </div>
           <div className="w-2/3 pt-6 px-8">
             <div className="flex flex-col gap-2 my-4">
@@ -283,6 +242,8 @@ export default function BusinessForm({
           setDataBusiness={setDataBusiness}
           formErrors={formErrors}
           handleChange={handleChange}
+          imgLogoWeb={imgLogoWeb}
+          setImgLogoWeb={setImgLogoWeb}
         />
         <div className="flex justify-end mt-10">
           <Button

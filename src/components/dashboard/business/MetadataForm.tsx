@@ -1,26 +1,53 @@
-import React, { ChangeEvent, Dispatch, SetStateAction } from 'react'
+import { ChangeEvent, Dispatch, SetStateAction } from 'react'
 import ColorPicker from './ColorPicker'
 import { PropsAddBusiness } from '@/components/types/Business'
 import { FormErrors } from './BusinessForm'
 import ErrorText from '@/components/ErrorText'
+import Image from 'next/image'
+import noImage from '@public/assets/no-image.png'
+import { useToast } from '@/components/ui/use-toast'
 
 interface MetadataProps {
   dataBusiness: PropsAddBusiness
   setDataBusiness: Dispatch<SetStateAction<PropsAddBusiness>>
   formErrors: FormErrors
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  imgLogoWeb: string | null
+  setImgLogoWeb: Dispatch<SetStateAction<string | null>>
 }
 
 const MetadataForm: React.FC<MetadataProps> = ({
   dataBusiness,
   setDataBusiness,
   formErrors,
-  handleChange
+  handleChange,
+  imgLogoWeb,
+  setImgLogoWeb
 }) => {
-  const handleHexChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { toast } = useToast()
+
+  const handleHexChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     if (/^#[0-9A-F]{0,6}$/i.test(value)) {
       setDataBusiness({ ...dataBusiness, [name]: value })
+    }
+  }
+
+  const handleChangeLogo = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0]
+
+      if (file && file.type.substring(0, 5) === 'image') {
+        const imageUrl = URL.createObjectURL(file)
+        setDataBusiness({ ...dataBusiness, logoWeb: file })
+        setImgLogoWeb(imageUrl)
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Archivo no compatible.',
+          description: 'Solo archivos tipo .jpg, .jpeg y .png.'
+        })
+      }
     }
   }
 
@@ -171,6 +198,36 @@ const MetadataForm: React.FC<MetadataProps> = ({
                 />
               </div>
             </div>
+          </div>
+          <div className="flex flex-col justify-center items-center w-fit p-4">
+            <div className="flex gap-4 items-center mb-6 -ml-10">
+              <label htmlFor="logoWeb" className="font-[600]">
+                Logo para App Web
+              </label>
+            </div>
+            <div className="logo-preview mb-4 w-40 h-40 border border-gray-300 dark:border-gray-700 rounded-md overflow-hidden flex items-center justify-center bg-gray-50 dark:bg-gray-800">
+              <Image
+                src={imgLogoWeb ? imgLogoWeb : noImage}
+                width={150}
+                height={150}
+                alt="Business logo"
+                className="object-contain m-2"
+              />
+            </div>
+            <input
+              type="file"
+              id="logo"
+              name="logoWeb"
+              accept="image/*"
+              className="hidden" // Hide the default input
+              onChange={handleChangeLogo}
+            />
+            <label
+              htmlFor="logo"
+              className="cursor-pointer bg-primary-orange-500 text-white py-2 px-4 rounded-md hover:bg-primary-orange-600 transition-all duration-300"
+            >
+              Subir logo
+            </label>
           </div>
         </div>
       </div>

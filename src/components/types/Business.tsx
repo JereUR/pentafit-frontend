@@ -4,6 +4,7 @@ export type Metadata = {
   secondary_color?: string
   third_color?: string
   slogan?: string
+  logoWeb?: string | null
 }
 
 export type Business = {
@@ -37,6 +38,8 @@ export interface PropsAddBusiness {
   secondary_color: string
   third_color: string
   slogan?: string
+  logoWeb?: File | null
+  logoWebUrl?: string | null
 }
 
 export const initialData = {
@@ -54,5 +57,7 @@ export const initialData = {
   primary_color: '#ec6409',
   secondary_color: '#FFFFFF',
   third_color: '#000000',
-  slogan: ''
+  slogan: '',
+  logoWebUrl: '',
+  logoWeb: null
 }
