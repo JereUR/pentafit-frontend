@@ -1,0 +1,102 @@
+'use client'
+
+import ErrorText from '@/components/ErrorText'
+import React, { EventHandler, useState } from 'react'
+import ReactCrop, {
+  centerCrop,
+  makeAspectCrop,
+  PercentCrop,
+  PixelCrop,
+  type Crop
+} from 'react-image-crop'
+
+interface Props {
+  text: string
+}
+
+const ASPECT_RATIO = 1
+const MIN_DIMENSION = 150
+
+const LogoCropper: React.FC<Props> = ({ text }) => {
+  const [imgSrc, setImgSrc] = useState('')
+  const [crop, setCrop] = useState<PixelCrop | PercentCrop>()
+  const [error, setError] = useState('')
+
+  const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.addEventListener('load', () => {
+      const imageElement = new Image()
+      const imageUrl = reader.result?.toString() || ''
+      imageElement.src = imageUrl
+      imageElement.addEventListener('load', (e: Event) => {
+        if (error) setError('')
+        const { naturalHeight, naturalWidth } =
+          e.currentTarget as HTMLImageElement
+        if (naturalWidth < MIN_DIMENSION || naturalHeight < MIN_DIMENSION) {
+          setError('La imagen debe tener al menos 150x150 píxeles.')
+          return setImgSrc('')
+        }
+      })
+
+      setImgSrc(imageUrl)
+    })
+    reader.readAsDataURL(file)
+  }
+
+  const onImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const { width, height } = e.currentTarget
+    const cropWidthInPercent = (MIN_DIMENSION / width) * 100
+
+    const crop = makeAspectCrop(
+      { unit: '%', width: cropWidthInPercent },
+      ASPECT_RATIO,
+      width,
+      height
+    )
+    const centeredCrop = centerCrop(crop, width, height)
+    setCrop(centeredCrop)
+  }
+
+  return (
+    <>
+      <label className="block mb-3 w-fit">
+        <span className="sr-only">{text}</span>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={onSelectFile}
+          className="block w-full text-sm text-slate-500 file:mr-4 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-xs file:bg-gray-700 file:text-primary-orange-600 hover:file:bg-gray-600"
+        />
+      </label>
+      {error && <ErrorText text={error}></ErrorText>}
+      {imgSrc && (
+        <div className="flex flex-col items-center">
+          <ReactCrop
+            crop={crop}
+            onChange={(percentCrop) => setCrop(percentCrop)}
+            circularCrop
+            keepSelection
+            aspect={ASPECT_RATIO}
+            minWidth={MIN_DIMENSION}
+          >
+            {' '}
+            <img
+              src={imgSrc}
+              alt="Upload"
+              style={{ maxHeight: '70vh' }}
+              onLoad={onImageLoad}
+            />
+          </ReactCrop>
+          <button className="text-white font-mono text-lg py-2 px-4 rounded-2xl mt-4 bg-primary-orange-600 hover:bg-primary-orange-700">
+            Subir Logo
+          </button>
+        </div>
+      )}
+    </>
+  )
+}
+
+export default LogoCropper

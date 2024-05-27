@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation'
 import { ImCross } from 'react-icons/im'
 import { FaCheck } from 'react-icons/fa'
 import Loader from '@/components/Loader'
+import LogoHandler from './LogoHandler'
 
 export interface FormErrors {
   name?: string
@@ -200,7 +201,12 @@ export default function BusinessForm({
                 Logo
               </label>
             </div>
-            <div className="flex flex-col justify-center items-center p-4">
+            <LogoHandler
+              imageUrl={imgLogo}
+              dataBusiness={dataBusiness}
+              setDataBusiness={setDataBusiness}
+            />
+            {/* <div className="flex flex-col justify-center items-center p-4">
               <div className="logo-preview mb-4 w-40 h-40 border border-gray-300 dark:border-gray-700 rounded-md overflow-hidden flex items-center justify-center bg-gray-50 dark:bg-gray-800">
                 <Image
                   src={imgLogo ? imgLogo : noImage}
@@ -224,7 +230,7 @@ export default function BusinessForm({
               >
                 Subir logo
               </label>
-            </div>
+            </div> */}
           </div>
           <div className="w-2/3 pt-6 px-8">
             <div className="flex flex-col gap-2 my-4">
