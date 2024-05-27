@@ -33,7 +33,6 @@ export default function BusinessItem({ item }: { item: Business }) {
     }
   }
 
-  console.log(item)
   return (
     <div className="p-4 m-8 border border-gray-300 dark:border-gray-600 rounded-lg">
       <div className="flex justify-between py-6">
@@ -44,7 +43,7 @@ export default function BusinessItem({ item }: { item: Business }) {
               alt={`${item.name} logo`}
               width={190}
               height={130}
-              className="border-2 border-primary-orange-600 rounded-md p-2 dark:ring-primary-orange-400"
+              className="border-2 border-primary-orange-600 rounded-full p-2 dark:ring-primary-orange-400"
             />
           </div>
           <div>
