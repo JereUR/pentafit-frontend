@@ -114,7 +114,6 @@ export default function AuthContextProvider({
 
   async function signIn({ dataLogin }: { dataLogin: PropsLogin }) {
     setLoading(true)
-    console.log('test')
     try {
       const response = await axios.post(
         `${BASE_URL}login`,

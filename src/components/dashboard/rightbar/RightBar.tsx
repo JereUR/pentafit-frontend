@@ -1,9 +1,10 @@
 'use client'
+
+import { useEffect } from 'react'
+import { MdPlayCircleFilled } from 'react-icons/md'
+
 import useUser from '@/components/hooks/useUser'
-import { Business } from '@/components/types/Business'
 import { Card } from '@/components/ui/card'
-import { useEffect, useState } from 'react'
-import { MdPlayCircleFilled, MdReadMore } from 'react-icons/md'
 
 const RightBar = () => {
   const { token, businesses, getBusinesses } = useUser()
