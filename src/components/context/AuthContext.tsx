@@ -53,6 +53,7 @@ const initialBusiness = [
   {
     id: 1,
     name: 'Lo de Toscano',
+    description: '11 puntos pibe, una cosa extraordinaria.',
     logo: 'https://www.elguardianmdp.com/img/notas/img_t-3717.jpg',
     is_active: true,
     is_working: true
@@ -60,7 +61,7 @@ const initialBusiness = [
   {
     id: 2,
     name: 'Business 2',
-    is_active: false,
+    is_active: true,
     is_working: false
   },
   {
@@ -87,7 +88,7 @@ export default function AuthContextProvider({
       token: 'Bearer 1234'
     } */
   )
-  const [businesses, setBusinesses] = useState<Business[] | []>([])
+  const [businesses, setBusinesses] = useState<Business[] | []>(initialBusiness)
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const [loading, setLoading] = useState(false)
@@ -231,7 +232,11 @@ export default function AuthContextProvider({
         }
       )
 
-      if (response.status === 200 || response.status === 204 || response.status === 401)  {
+      if (
+        response.status === 200 ||
+        response.status === 204 ||
+        response.status === 401
+      ) {
         toast({
           title: 'Usuario creado con éxito.',
           description:
