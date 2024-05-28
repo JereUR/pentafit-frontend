@@ -142,7 +142,7 @@ export default function BusinessItem({ item }: { item: Business }) {
             <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-50 flex justify-center items-center">
               <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
                 <p>
-                  ¿Está seguro de que desea eliminar el negocio '{item.name}'?
+                  {`¿Está seguro de que desea eliminar el negocio '${item.name}'?`}
                 </p>
                 <div className="flex justify-end gap-2">
                   <Button variant="secondary" onClick={handleCancelDelete}>
