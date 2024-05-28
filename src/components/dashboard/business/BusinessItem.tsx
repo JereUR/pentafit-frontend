@@ -16,7 +16,8 @@ import useUser from '@/components/hooks/useUser'
 
 export default function BusinessItem({ item }: { item: Business }) {
   const router = useRouter()
-  const { deleteBusinessById, updateStatusBusiness } = useUser()
+  const { deleteBusinessById, updateStatusBusiness, updateWorkingBusiness } =
+    useUser()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
   async function handleDelete(id: string) {
@@ -27,6 +28,14 @@ export default function BusinessItem({ item }: { item: Business }) {
 
   async function handleStatus(id: number) {
     const res = await updateStatusBusiness(id)
+
+    if (res) {
+      window.location.reload()
+    }
+  }
+
+  async function handleWorking(id: number) {
+    const res = await updateWorkingBusiness(id)
 
     if (res) {
       window.location.reload()
@@ -65,6 +74,7 @@ export default function BusinessItem({ item }: { item: Business }) {
                 ? 'hover:bg-gray-600 dark:hover:bg-gray-700'
                 : 'hover:bg-purple-600 dark:hover:bg-purple-700'
             }`}
+            onClick={() => handleWorking(item.id)}
           >
             {item.is_working ? (
               <MdOutlineWork className="h-5 w-5" />

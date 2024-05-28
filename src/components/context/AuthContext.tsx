@@ -43,6 +43,7 @@ type AuthContextType = {
     dataBusiness: PropsAddBusiness
   }) => Promise<boolean>
   updateStatusBusiness: (id: number) => Promise<boolean>
+  updateWorkingBusiness: (id: number) => Promise<boolean>
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -518,7 +519,6 @@ export default function AuthContextProvider({
         ]
         setBusinesses(newBusinesses)
         /* revalidatePath('/panel-de-control/negocios') */
-
         if (dataBusiness.logo || dataBusiness.logoWeb) {
           try {
             const formData = new FormData()
@@ -591,16 +591,38 @@ export default function AuthContextProvider({
       })
 
       if (response.status === 200) {
-        console.log(response.data)
-        const filterBusinesses = businesses.filter((b) => b.id !== id)
-        const index = businesses.findIndex((b) => b.id === id)
-        const newBusinesses = [
-          ...filterBusinesses.slice(0, index),
-          response.data,
-          ...filterBusinesses.slice(index)
-        ]
-        setBusinesses(newBusinesses)
-        /* revalidatePath('/panel-de-control/negocios') */
+        return true
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return false
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return false
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function updateWorkingBusiness(id: number): Promise<boolean> {
+    setLoading(true)
+    let url = `${BASE_URL}api/v1/change_business_working_status?id=${id}`
+    try {
+      const response = await axios.put(url, null, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      })
+
+      if (response.status === 200) {
         return true
       } else {
         toast({
@@ -676,7 +698,8 @@ export default function AuthContextProvider({
         deleteBusinessById,
         addBusiness,
         updateBusiness,
-        updateStatusBusiness
+        updateStatusBusiness,
+        updateWorkingBusiness
       }}
     >
       {children}
