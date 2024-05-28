@@ -1,7 +1,26 @@
+import useUser from '@/components/hooks/useUser'
+import { Business } from '@/components/types/Business'
 import { Card } from '@/components/ui/card'
+import { useEffect, useState } from 'react'
 import { MdPlayCircleFilled, MdReadMore } from 'react-icons/md'
 
 const RightBar = () => {
+  const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
+  const { getWorkingBusiness, token } = useUser()
+
+  useEffect(() => {
+    async function getWorkingBusinessData() {
+      const business = await getWorkingBusiness()
+      setWorkingBusiness(business)
+    }
+
+    if (token) {
+      getWorkingBusinessData()
+    }
+  }, [token])
+
+  console.log(workingBusiness)
+
   return (
     <div className="fixed mr-1">
       <Card className="relative bg-gradient-to-t from-bg-background to-bg-card py-5 px-6 rounded-lg mb-5 border-none shadow-md">

@@ -44,6 +44,7 @@ type AuthContextType = {
   }) => Promise<boolean>
   updateStatusBusiness: (id: number) => Promise<boolean>
   updateWorkingBusiness: (id: number) => Promise<boolean>
+  getWorkingBusiness: () => Promise<Business | null>
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -680,6 +681,36 @@ export default function AuthContextProvider({
     }
   }
 
+  async function getWorkingBusiness() {
+    setLoading(true)
+    try {
+      const response = await axios.get(`${BASE_URL}api/v1/business_working`, {
+        headers: {
+          Authorization: token
+        }
+      })
+
+      if (response.status === 200 || response.status === 204) {
+        return response.data
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return null
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return null
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -699,7 +730,8 @@ export default function AuthContextProvider({
         addBusiness,
         updateBusiness,
         updateStatusBusiness,
-        updateWorkingBusiness
+        updateWorkingBusiness,
+        getWorkingBusiness
       }}
     >
       {children}
