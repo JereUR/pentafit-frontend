@@ -405,7 +405,6 @@ export default function AuthContextProvider({
         /* revalidatePath('/panel-de-control/negocios') */
 
         if (dataBusiness.logo || dataBusiness.logoWeb) {
-          console.log('logo change')
           try {
             const formData = new FormData()
             if (dataBusiness.logo) {
@@ -520,42 +519,44 @@ export default function AuthContextProvider({
         setBusinesses(newBusinesses)
         /* revalidatePath('/panel-de-control/negocios') */
 
-        if (dataBusiness.logo) {
-          console.log('logo change')
-          return true
-          /* try {
-          const formData = new FormData()
-          formData.append('image', dataBusiness.logo)
-          console.log(dataBusiness.logo)
-          url = `${BASE_URL}api/v1/business_photo`
-          const response = await axios.post(
-            `${url}?id=${newBusiness.id}`,
-
-            {
-              body: formData
-            },
-            {
-              headers: {
-                Authorization: token
-              }
+        if (dataBusiness.logo || dataBusiness.logoWeb) {
+          try {
+            const formData = new FormData()
+            if (dataBusiness.logo) {
+              formData.append('image', dataBusiness.logo)
             }
-          )
+            if (dataBusiness.logoWeb) {
+              formData.append('logo', dataBusiness.logoWeb)
+            }
+            console.log(formData)
+            url = `${BASE_URL}api/v1/attach_business_image`
+            const response = await axios.post(
+              `${url}?id=${data.id}`,
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                  Authorization: token
+                }
+              }
+            )
 
-          if (response.status !== 201) {
+            if (response.status !== 200) {
+              toast({
+                title: 'Oh no! Algo salió mal.',
+                description: response.statusText
+              })
+              return false
+            }
+            return true
+          } catch (error: any) {
             toast({
+              variant: 'destructive',
               title: 'Oh no! Algo salió mal.',
-              description: response.statusText
+              description: error.message
             })
             return false
           }
-        } catch (error: any) {
-          toast({
-            variant: 'destructive',
-            title: 'Oh no! Algo salió mal.',
-            description: error.message
-          })
-          return false
-        } */
         } else {
           return true
         }
