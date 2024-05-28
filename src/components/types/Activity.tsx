@@ -2,7 +2,7 @@ import { Business } from './Business'
 
 export type Activity = {
   id: string
-  id_business: Business[]
+  id_business: number
   activity: string
   cost: number
   isPublic: boolean
@@ -16,7 +16,7 @@ export type Activity = {
 }
 
 export interface PropsAddActivity {
-  id_business: number[]
+  business: Business | null
   activity: string
   cost: string
   isPublic: string
@@ -30,7 +30,7 @@ export interface PropsAddActivity {
 }
 
 export interface FormErrors {
-  id_business?: string
+  business?: string
   activity?: string
   cost?: string
   isPublic?: string
@@ -45,7 +45,7 @@ export interface FormErrors {
 }
 
 export const initialData = {
-  id_business: [],
+  business: null,
   activity: '',
   cost: '',
   isPublic: 'false',

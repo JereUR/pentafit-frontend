@@ -15,6 +15,8 @@ import TextForm from './TextForm'
 import useUser from '@/components/hooks/useUser'
 import Image from 'next/image'
 import { PublicActivityForm } from './PublicActivityForm'
+import noImage from '@public/assets/no-image.png'
+import { useToast } from '@/components/ui/use-toast'
 
 const payments = [
   'Por sesion',
@@ -42,14 +44,30 @@ export default function ActivityForm({
   activity: PropsAddActivity
 }) {
   const [dataActivity, setDataActivity] = useState<PropsAddActivity>(activity)
-  const { addActivity, updateActivity } = useActivities()
+  const [workingBusiness, setWorkingBusiness] = useState(activity.business)
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
+  const { toast } = useToast()
   const router = useRouter()
-  const { businesses, loading } = useUser()
+  const { getWorkingBusiness, loading, token } = useUser()
+  const { addActivity, updateActivity } = useActivities()
 
   useEffect(() => {
     setDataActivity(activity)
   }, [activity])
+
+  useEffect(() => {
+    async function updateWorkingBusiness() {
+      const res = await getWorkingBusiness()
+      setDataActivity({ ...dataActivity, business: res })
+      setWorkingBusiness(res)
+    }
+
+    if (type === 'add' && token) {
+      if (!dataActivity.business || !workingBusiness) {
+        updateWorkingBusiness()
+      }
+    }
+  }, [token, workingBusiness])
 
   const validations = ({
     dataActivity
@@ -58,8 +76,8 @@ export default function ActivityForm({
   }) => {
     const errorsForm: FormErrors = {}
 
-    if (dataActivity.id_business.length === 0) {
-      errorsForm.id_business = `La actividad debe pertenecer al menos a una compañia.`
+    if (!dataActivity.business) {
+      errorsForm.id_business = `Debes tener un area de trabajo (negocio) activo.`
     }
 
     if (!dataActivity.activity.trim()) {
@@ -100,7 +118,7 @@ export default function ActivityForm({
     setDataActivity({ ...dataActivity, [name]: value })
   }
 
-  const handleChangeBusiness = (e: React.ChangeEvent<HTMLInputElement>) => {
+  /* const handleChangeBusiness = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     const newId = Number(value)
     let id_business = dataActivity.id_business.map((Business) => Business)
@@ -111,7 +129,7 @@ export default function ActivityForm({
     }
 
     setDataActivity({ ...dataActivity, id_business: id_business })
-  }
+  } */
 
   const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -126,64 +144,74 @@ export default function ActivityForm({
 
     console.log(dataActivity)
 
-    /* if (Object.keys(err).length === 0) {
+    if (Object.keys(err).length === 0) {
       if (type === 'add') {
-        await addActivity({ dataActivity })
+        const response = await addActivity({ dataActivity })
+        if (response) {
+          toast({
+            title: 'Actividad agregada.',
+            description: 'Redireccionando...',
+            className: 'bg-green-600'
+          })
+
+          setTimeout(() => {
+            router.replace('/panel-de-control/negocios')
+          }, 1000)
+        }
       } else {
-        await updateActivity({ dataActivity })
+        const response = await updateActivity({ dataActivity })
+        if (response) {
+          toast({
+            title: 'Actividad editada.',
+            description: 'Redireccionando...',
+            className: 'bg-green-600'
+          })
+
+          setTimeout(() => {
+            router.replace('/panel-de-control/negocios')
+          }, 1000)
+        }
       }
 
       setFormErrors(initialErrors)
-    } */
+    }
   }
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-6 mb-6 border border-gray-300 dark:border-gray-700 py-4 px-12">
+        <div className="flex flex-col gap-6 mb-6 border border-gray-300 dark:border-gray-700 pt-2 pb-6 px-2">
           <div className="flex gap-4 items-center">
-            <label>Compañia</label>
+            <label className="text-xl font-light">Area de Trabajo</label>
             {formErrors.id_business && (
               <ErrorText text={formErrors.id_business} />
             )}
           </div>
-          {/* <div className="flex justify-around gap-4">
-            {businesses.map((item) => (
-              <div
-                key={item.id}
-                className="flex flex-col py-6 px-8 gap-4 justify-center items-center ring-1 rounded-md ring-gray-300 dark:ring-gray-700"
-              >
-                <label
-                  htmlFor={item.name}
-                  className="flex flex-col gap-4 items-center font-[600]"
-                >
-                  {item.name}
-                  {item.logo && (
-                    <Image
-                      src={URL.createObjectURL(item.logo)}
-                      width={100}
-                      height={100}
-                      alt={`${item.name} logo`}
-                    />
-                  )}
-                </label>
-                <div className="content">
-                  <label className="checkBox">
-                    <input
-                      className="cursor-pointer"
-                      id="ch1"
-                      type="checkbox"
-                      name="id_business"
-                      checked={dataActivity.id_business?.includes(item.id)}
-                      value={item.id}
-                      onChange={handleChangeBusiness}
-                    />
-                    <div className="transition"></div>
-                  </label>
-                </div>
+          {workingBusiness ? (
+            <div className="flex items-center">
+              <div className="flex px-6">
+                <Image
+                  src={
+                    workingBusiness.logo ? `${workingBusiness.logo}` : noImage
+                  }
+                  alt={`${workingBusiness.name} logo`}
+                  width={80}
+                  height={80}
+                  className="w-[80px] h-[80px] border-[1px] border-primary-orange-600 rounded-full p-1 dark:ring-primary-orange-400"
+                />
               </div>
-            ))}
-          </div> */}
+              <div>
+                <h2 className="text-lg font-bold">{workingBusiness.name}</h2>
+                <p className="text-sm">
+                  {workingBusiness.description
+                    ? workingBusiness.description
+                    : 'Sin descripción.'}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div>* Sin area de trabajo asignada *</div>
+          )}
         </div>
         <div className="grid grid-cols-3 gap-8 mb-4">
           <div className="flex flex-col gap-2">

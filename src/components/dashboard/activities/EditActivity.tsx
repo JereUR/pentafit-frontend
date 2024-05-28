@@ -10,16 +10,18 @@ import useUser from '@/components/hooks/useUser'
 export default function EditActivity() {
   const pathname = usePathname()
   const [activity, setActivity] = useState<PropsAddActivity>(initialData)
+  const [workingBusiness, setWorkingBusiness] = useState(null)
   const id = pathname.split('/')[4]
   const { getActivityById } = useActivities()
-  const { token } = useUser()
+  const { token, businesses, getBusinesses } = useUser()
 
   useEffect(() => {
     async function fetchActivity() {
       const act = await getActivityById(id)
       if (act) {
         setActivity({
-          id_business: act.id_business.map((c) => c.id),
+          business:
+            businesses.find((bus) => bus.id === act.id_business) || null,
           activity: act.activity,
           cost: act.cost.toString(),
           isPublic: act.isPublic ? 'true' : 'false',
@@ -34,6 +36,7 @@ export default function EditActivity() {
       }
     }
     if (token) {
+      getBusinesses()
       fetchActivity()
     }
   }, [id, token])

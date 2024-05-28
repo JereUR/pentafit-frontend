@@ -686,8 +686,8 @@ export default function AuthContextProvider({
   }
 
   async function getWorkingBusiness() {
-    setLoading(true)
-    try {
+    /*setLoading(true)
+     try {
       const response = await axios.get(`${BASE_URL}api/v1/business_working`, {
         headers: {
           Authorization: token
@@ -712,7 +712,9 @@ export default function AuthContextProvider({
       return null
     } finally {
       setLoading(false)
-    }
+    } */
+
+    return businesses[0]
   }
 
   return (
