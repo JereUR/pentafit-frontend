@@ -102,9 +102,6 @@ export default function ActivitiesTable() {
         <Search placeholder="Buscar una actividad..." />
         <div className="flex gap-2">
           <Link href="/panel-de-control/actividades/agregar">
-            {/* <Button className="py-2 px-4 rounded-md text-foreground bg-primary-orange-600 transition duration-300 ease-in-out hover:bg-primary-orange-700 border-none cursor-pointer">
-              Agregar
-            </Button> */}
             <CustomButton text="Agregar" />
           </Link>
           {selectedActivities.length > 0 && (
@@ -302,7 +299,7 @@ export default function ActivitiesTable() {
                           <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-50 flex justify-center items-center">
                             <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
                               <p>
-                                {`¿Está seguro de que desea eliminar el negocio '
+                                {`¿Está seguro de que desea eliminar la actividad '
                                 ${activity.activity}'?`}
                               </p>
                               <div className="flex justify-end gap-2">
