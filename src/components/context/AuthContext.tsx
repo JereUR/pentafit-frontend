@@ -231,7 +231,7 @@ export default function AuthContextProvider({
         }
       )
 
-      if (response.status === 200 || response.status === 204) {
+      if (response.status === 200 || response.status === 204 || response.status === 401)  {
         toast({
           title: 'Usuario creado con éxito.',
           description:
