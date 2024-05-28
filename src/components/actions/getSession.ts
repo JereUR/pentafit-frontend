@@ -21,7 +21,7 @@ export default async function getSession(
     return null
   }
 
-  /*session = {
+  /* session = {
     user: {
       id: 4,
       email: 'jeremias.jdv@gmail.com',
@@ -35,7 +35,7 @@ export default async function getSession(
     }
   }
 
-  return session*/
+  return session */
 
   const CACHE_EXPIRATION_TIME = 5 * 60 * 1000
   const currentTime = Date.now()
@@ -62,7 +62,6 @@ export default async function getSession(
 
     setCookies(data.token)
 
-    // Actualiza el caché con la nueva sesión y el timestamp
     sessionCache[sessionToken] = {
       session: session,
       timestamp: Date.now()
