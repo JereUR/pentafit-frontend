@@ -13,17 +13,29 @@ import noImage from '@public/assets/no-image.png'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import useUser from '@/components/hooks/useUser'
+import { useState } from 'react'
 
 export default function BusinessItem({ item }: { item: Business }) {
+  const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
   const router = useRouter()
   const { deleteBusinessById, updateStatusBusiness, updateWorkingBusiness } =
     useUser()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
-  async function handleDelete(id: string) {
-    const res = await deleteBusinessById(id)
+  const handleDelete = async (id: string) => {
+    if (showConfirmDelete) {
+      const res = await deleteBusinessById(id)
+      if (res) router.refresh()
+    }
+    setShowConfirmDelete(false)
+  }
 
-    if (res) router.refresh()
+  const handleConfirmDelete = () => {
+    setShowConfirmDelete(true)
+  }
+
+  const handleCancelDelete = () => {
+    setShowConfirmDelete(false)
   }
 
   async function handleStatus(id: number) {
@@ -121,11 +133,28 @@ export default function BusinessItem({ item }: { item: Business }) {
           </Button>
           <Button
             className="flex justify-start items-center shadow-md dark:text-foreground gap-2 bg-red-500 dark:bg-red-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-red-600 dark:hover:bg-red-700"
-            onClick={() => handleDelete(item.id.toString())}
+            onClick={handleConfirmDelete}
           >
             <MdDelete className="h-5 w-5" />
             <span className="flex m-auto ">Borrar</span>
           </Button>
+          {showConfirmDelete && (
+            <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-50 flex justify-center items-center">
+              <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
+                <p>
+                  ¿Está seguro de que desea eliminar el negocio '{item.name}'?
+                </p>
+                <div className="flex justify-end gap-2">
+                  <Button variant="secondary" onClick={handleCancelDelete}>
+                    No
+                  </Button>
+                  <Button onClick={() => handleDelete(item.id.toString())}>
+                    Sí
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

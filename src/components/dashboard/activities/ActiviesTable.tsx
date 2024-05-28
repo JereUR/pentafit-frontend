@@ -29,6 +29,7 @@ const availableColumns = [
 export default function ActivitiesTable() {
   const [selectedActivities, setSelectedActivities] = useState<string[]>([])
   const [selectAll, setSelectAll] = useState<boolean>(false)
+  const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
   const { theme } = useTheme()
   const router = useRouter()
 
@@ -53,6 +54,22 @@ export default function ActivitiesTable() {
       getActivities(q, page)
     }
   }, [searchParams, token])
+
+  const handleDelete = async (id: string) => {
+    /* if (showConfirmDelete) {
+      const res = await deleteActivityById(id)
+      if (res) router.refresh()
+    } */
+    setShowConfirmDelete(false)
+  }
+
+  const handleConfirmDelete = () => {
+    setShowConfirmDelete(true)
+  }
+
+  const handleCancelDelete = () => {
+    setShowConfirmDelete(false)
+  }
 
   const handleSelectAllChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -275,9 +292,37 @@ export default function ActivitiesTable() {
                         </Link>
                       </div>
                       <div>
-                        <button className="p-2 rounded-md text-white bg-red-600 border-none cursor-pointer transitiopn duration-300 ease-in-out  hover:scale-105 hover:shadow-md">
+                        <button
+                          className="p-2 rounded-md text-white bg-red-600 border-none cursor-pointer transitiopn duration-300 ease-in-out  hover:scale-105 hover:shadow-md"
+                          onClick={handleConfirmDelete}
+                        >
                           <FaTrash />
                         </button>
+                        {showConfirmDelete && (
+                          <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-50 flex justify-center items-center">
+                            <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
+                              <p>
+                                ¿Está seguro de que desea eliminar el negocio '
+                                {activity.activity}'?
+                              </p>
+                              <div className="flex justify-end gap-2">
+                                <Button
+                                  variant="secondary"
+                                  onClick={handleCancelDelete}
+                                >
+                                  No
+                                </Button>
+                                <Button
+                                  onClick={() =>
+                                    handleDelete(activity.id.toString())
+                                  }
+                                >
+                                  Sí
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </td>
