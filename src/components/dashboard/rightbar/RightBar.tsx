@@ -1,5 +1,4 @@
 'use client'
-
 import useUser from '@/components/hooks/useUser'
 import { Business } from '@/components/types/Business'
 import { Card } from '@/components/ui/card'
