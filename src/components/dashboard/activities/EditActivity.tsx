@@ -20,18 +20,17 @@ export default function EditActivity() {
       const act = await getActivityById(id)
       if (act) {
         setActivity({
-          business:
-            businesses.find((bus) => bus.id === act.id_business) || null,
-          activity: act.activity,
-          cost: act.cost.toString(),
-          isPublic: act.isPublic ? 'true' : 'false',
-          quotaGeneration: act.quotaGeneration ? 'true' : 'false',
-          mpAvailable: act.mpAvailable ? 'true' : 'false',
-          publicName: act.publicName,
-          sessionMax: act.sessionMax.toString(),
-          dateFrom: act.dateFrom.toLocaleString(),
-          dateUntil: act.dateUntil.toLocaleString(),
-          paymentType: act.paymentType
+          business: businesses.find((bus) => bus.id === act.company_id) || null,
+          name: act.name,
+          price: act.price.toString(),
+          is_public: act.is_public ? 'true' : 'false',
+          generate_invoice: act.generate_invoice ? 'true' : 'false',
+          mp_available: act.mp_available ? 'true' : 'false',
+          public_name: act.public_name,
+          max_sessions: act.max_sessions.toString(),
+          start_date: act.start_date,
+          end_date: act.end_date,
+          payment_type: act.payment_type
         })
       }
     }

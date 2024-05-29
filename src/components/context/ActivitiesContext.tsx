@@ -30,68 +30,68 @@ export const ActivitiesContext = createContext<ActivitiesContextType | null>(
 const initialActivities = [
   {
     id: 1,
-    id_business: 1,
-    activity: 'Actividad 1',
-    cost: 200,
-    isPublic: false,
-    quotaGeneration: true,
-    sessionMax: 5,
-    mpAvailable: false,
-    dateFrom: new Date(2024, 4, 20),
-    dateUntil: new Date(2024, 5, 20),
-    paymentType: 'Mensual'
+    company_id: 1,
+    name: 'Actividad 1',
+    price: 200,
+    is_public: false,
+    generate_invoice: true,
+    max_sessions: 5,
+    mp_available: false,
+    start_date: new Date(2024, 4, 20),
+    end_date: new Date(2024, 5, 20),
+    payment_type: 'Mensual'
   },
   {
     id: 2,
-    id_business: 1,
-    activity: 'Actividad 2',
-    cost: 300,
-    isPublic: true,
-    quotaGeneration: true,
-    sessionMax: 15,
-    mpAvailable: true,
-    dateFrom: new Date(2024, 4, 20),
-    dateUntil: new Date(2024, 5, 20),
-    paymentType: 'Mensual'
+    company_id: 1,
+    name: 'Actividad 2',
+    price: 300,
+    is_public: true,
+    generate_invoice: true,
+    max_sessions: 15,
+    mp_available: true,
+    start_date: new Date(2024, 4, 20),
+    end_date: new Date(2024, 5, 20),
+    payment_type: 'Mensual'
   },
   {
     id: 3,
-    id_business: 1,
-    activity: 'Actividad 3',
-    cost: 400,
-    isPublic: true,
-    quotaGeneration: true,
-    sessionMax: 10,
-    mpAvailable: true,
-    dateFrom: new Date(2024, 4, 20),
-    dateUntil: new Date(2024, 5, 20),
-    paymentType: 'Por período'
+    company_id: 1,
+    name: 'Actividad 3',
+    price: 400,
+    is_public: true,
+    generate_invoice: true,
+    max_sessions: 10,
+    mp_available: true,
+    start_date: new Date(2024, 4, 20),
+    end_date: new Date(2024, 5, 20),
+    payment_type: 'Por período'
   },
   {
     id: 4,
-    id_business: 1,
+    company_id: 1,
     activity: 'Actividad 4',
-    cost: 200,
-    isPublic: false,
-    quotaGeneration: true,
-    sessionMax: 30,
-    mpAvailable: false,
-    dateFrom: new Date(2024, 4, 20),
-    dateUntil: new Date(2024, 5, 20),
-    paymentType: 'Por sesion'
+    price: 200,
+    is_public: false,
+    generate_invoice: true,
+    max_sessions: 30,
+    mp_available: false,
+    start_date: new Date(2024, 4, 20),
+    end_date: new Date(2024, 5, 20),
+    payment_type: 'Por sesion'
   },
   {
     id: 5,
-    id_business: 1,
-    activity: 'Actividad 5',
-    cost: 500,
-    isPublic: true,
-    quotaGeneration: true,
-    sessionMax: 7,
-    mpAvailable: true,
-    dateFrom: new Date(2024, 4, 20),
-    dateUntil: new Date(2024, 5, 20),
-    paymentType: 'Mensual con sesiones'
+    company_id: 1,
+    name: 'Actividad 5',
+    price: 500,
+    is_public: true,
+    generate_invoice: true,
+    max_sessions: 7,
+    mp_available: true,
+    start_date: new Date(2024, 4, 20),
+    end_date: new Date(2024, 5, 20),
+    payment_type: 'Mensual con sesiones'
   }
 ]
 
@@ -100,9 +100,7 @@ export default function ActivitiesContextProvider({
 }: {
   children: ReactNode
 }) {
-  const [activities, setActivities] = useState<Activity[] | []>(
-    []
-  )
+  const [activities, setActivities] = useState<Activity[] | []>([])
   const [loading, setLoading] = useState<boolean>(false)
   const { toast } = useToast()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
@@ -163,17 +161,17 @@ export default function ActivitiesContextProvider({
 
     return {
       id: 1,
-      id_business: 1,
-      activity: 'Actividad 1',
-      cost: 200,
-      isPublic: true,
-      quotaGeneration: true,
-      sessionMax: 5,
-      mpAvailable: false,
-      dateFrom: new Date(2024, 4, 20),
-      dateUntil: new Date(2024, 5, 20),
-      paymentType: 'Mensual',
-      publicName: 'Test'
+      company_id: 1,
+      name: 'Actividad 1',
+      price: 200,
+      is_public: true,
+      generate_invoice: true,
+      max_sessions: 5,
+      mp_available: false,
+      start_date: new Date(2024, 4, 20),
+      end_date: new Date(2024, 5, 20),
+      payment_type: 'Mensual',
+      public_name: 'Test'
     }
   }
 
@@ -183,25 +181,25 @@ export default function ActivitiesContextProvider({
     dataActivity: PropsAddActivity
   }): Promise<boolean> {
     setLoading(true)
-    const isPublicValue = dataActivity.isPublic === 'true' ? true : false
+    const isPublicValue = dataActivity.is_public === 'true' ? true : false
 
-    const quotaGenerationValue =
-      dataActivity.quotaGeneration === 'true' ? true : false
+    const generateInvoiceValue =
+      dataActivity.generate_invoice === 'true' ? true : false
 
-    const mpAvailableValue = dataActivity.mpAvailable === 'true' ? true : false
+    const mpAvailableValue = dataActivity.mp_available === 'true' ? true : false
 
     const newActivity = {
       business_id: dataActivity.business?.id,
-      name: dataActivity.activity,
-      cost: dataActivity.cost,
-      isPublic: isPublicValue,
-      quotaGeneration: quotaGenerationValue,
-      sessionMax: dataActivity.sessionMax,
-      mpAvailable: mpAvailableValue,
-      publicName: dataActivity.publicName,
-      dateFrom: dataActivity.dateFrom,
-      dateUntil: dataActivity.dateUntil,
-      paymentType: dataActivity.paymentType
+      name: dataActivity.name,
+      price: dataActivity.price,
+      is_public: isPublicValue,
+      generate_invoice: generateInvoiceValue,
+      max_sessions: dataActivity.max_sessions,
+      mp_available: mpAvailableValue,
+      public_name: dataActivity.public_name,
+      start_date: dataActivity.start_date,
+      end_date: dataActivity.end_date,
+      payment_type: dataActivity.payment_type
     }
 
     const url = `${BASE_URL}add-activity`
@@ -246,25 +244,25 @@ export default function ActivitiesContextProvider({
     dataActivity: PropsAddActivity
   }): Promise<boolean> {
     setLoading(true)
-    const isPublicValue = dataActivity.isPublic === 'true' ? true : false
+    const isPublicValue = dataActivity.is_public === 'true' ? true : false
 
-    const quotaGenerationValue =
-      dataActivity.quotaGeneration === 'true' ? true : false
+    const generateInvoiceValue =
+      dataActivity.generate_invoice === 'true' ? true : false
 
-    const mpAvailableValue = dataActivity.mpAvailable === 'true' ? true : false
+    const mpAvailableValue = dataActivity.mp_available === 'true' ? true : false
 
     const newActivity = {
-      id_business: dataActivity.business?.id,
-      activity: dataActivity.activity,
-      cost: dataActivity.cost,
-      isPublic: isPublicValue,
-      quotaGeneration: quotaGenerationValue,
-      sessionMax: dataActivity.sessionMax,
-      mpAvailable: mpAvailableValue,
-      publicName: dataActivity.publicName,
-      dateFrom: dataActivity.dateFrom,
-      dateUntil: dataActivity.dateUntil,
-      paymentType: dataActivity.paymentType
+      company_id: dataActivity.business?.id,
+      activity: dataActivity.name,
+      price: dataActivity.price,
+      is_public: isPublicValue,
+      generate_invoice: generateInvoiceValue,
+      max_sessions: dataActivity.max_sessions,
+      mp_available: mpAvailableValue,
+      public_name: dataActivity.public_name,
+      start_date: dataActivity.start_date,
+      end_date: dataActivity.end_date,
+      payment_type: dataActivity.payment_type
     }
 
     console.log(newActivity)

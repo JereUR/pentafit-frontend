@@ -17,37 +17,37 @@ export const PublicActivityForm: React.FC<PublicActivityProps> = ({
   formErrors,
   handleChange
 }) => {
-  const handleChangeIsPublic = () => {
+  const handleChangeis_public = () => {
     let value
-    if (dataActivity.isPublic === 'true') {
+    if (dataActivity.is_public === 'true') {
       value = 'false'
     } else {
       value = 'true'
     }
 
-    setDataActivity({ ...dataActivity, isPublic: value })
+    setDataActivity({ ...dataActivity, is_public: value })
   }
 
-  const handleChangeQuotaGeneration = () => {
+  const handleChangegenerate_invoice = () => {
     let value
-    if (dataActivity.quotaGeneration === 'true') {
+    if (dataActivity.generate_invoice === 'true') {
       value = 'false'
     } else {
       value = 'true'
     }
 
-    setDataActivity({ ...dataActivity, quotaGeneration: value })
+    setDataActivity({ ...dataActivity, generate_invoice: value })
   }
 
-  const handleChangeMpAvailable = () => {
+  const handleChangemp_available = () => {
     let value
-    if (dataActivity.mpAvailable === 'true') {
+    if (dataActivity.mp_available === 'true') {
       value = 'false'
     } else {
       value = 'true'
     }
 
-    setDataActivity({ ...dataActivity, mpAvailable: value })
+    setDataActivity({ ...dataActivity, mp_available: value })
   }
   return (
     <div className="border border-gray-300 dark:border-gray-700 mt-6 mb-8">
@@ -59,54 +59,56 @@ export const PublicActivityForm: React.FC<PublicActivityProps> = ({
       </div>
       <div className="grid grid-cols-3 gap-8 my-8 py-4 px-6">
         <div className="flex flex-col gap-4 ">
-          <label htmlFor="isPublic" className="font-[600]">
+          <label htmlFor="is_public" className="font-[600]">
             ¿Es una actividad Pública? (Turnos/clase de prueba)
           </label>
           <div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                name="isPublic"
+                name="is_public"
                 className="sr-only peer"
-                value={dataActivity.isPublic}
-                checked={dataActivity.isPublic === 'true' ? true : false}
-                onChange={handleChangeIsPublic}
+                value={dataActivity.is_public}
+                checked={dataActivity.is_public === 'true' ? true : false}
+                onChange={handleChangeis_public}
               />
               <div className="group peer ring-0  bg-gradient-to-bl from-neutral-800 via-neutral-700 to-neutral-600 dark:from-gray-400 dark:via-gray-300 dark:to-gray-200  rounded-full outline-none duration-1000 after:duration-300 w-12 h-6  shadow-md  peer-focus:outline-none  after:content-[''] after:rounded-full after:absolute peer-checked:after:rotate-180 after:[background:conic-gradient(from_135deg,_#b2a9a9,_#b2a8a8,_#ffffff,_#d7dbd9_,_#ffffff,_#b2a8a8)]  after:outline-none after:h-4 after:w-4 after:top-1 after:left-1 peer-checked:after:translate-x-6 peer-hover:after:scale-95 peer-checked:bg-gradient-to-r peer-checked:from-emerald-500 peer-checked:to-emerald-900"></div>
             </label>
           </div>
         </div>
         <div className="flex flex-col gap-4 ">
-          <label htmlFor="isPublic" className="font-[600]">
+          <label htmlFor="is_public" className="font-[600]">
             ¿Permite generación de cuota?
           </label>
           <div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                name="quotaGeneration"
+                name="generate_invoice"
                 className="sr-only peer"
-                value={dataActivity.quotaGeneration}
-                checked={dataActivity.quotaGeneration === 'true' ? true : false}
-                onChange={handleChangeQuotaGeneration}
+                value={dataActivity.generate_invoice}
+                checked={
+                  dataActivity.generate_invoice === 'true' ? true : false
+                }
+                onChange={handleChangegenerate_invoice}
               />
               <div className="group peer ring-0  bg-gradient-to-bl from-neutral-800 via-neutral-700 to-neutral-600 dark:from-gray-400 dark:via-gray-300 dark:to-gray-200  rounded-full outline-none duration-1000 after:duration-300 w-12 h-6  shadow-md  peer-focus:outline-none  after:content-[''] after:rounded-full after:absolute peer-checked:after:rotate-180 after:[background:conic-gradient(from_135deg,_#b2a9a9,_#b2a8a8,_#ffffff,_#d7dbd9_,_#ffffff,_#b2a8a8)]  after:outline-none after:h-4 after:w-4 after:top-1 after:left-1 peer-checked:after:translate-x-6 peer-hover:after:scale-95 peer-checked:bg-gradient-to-r peer-checked:from-emerald-500 peer-checked:to-emerald-900"></div>
             </label>
           </div>
         </div>
         <div className="flex flex-col gap-4 ">
-          <label htmlFor="isPublic" className="font-[600]">
+          <label htmlFor="is_public" className="font-[600]">
             ¿Permite pago con Mercado Pago?
           </label>
           <div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                name="mpAvailable"
+                name="mp_available"
                 className="sr-only peer"
-                value={dataActivity.mpAvailable}
-                checked={dataActivity.mpAvailable === 'true' ? true : false}
-                onChange={handleChangeMpAvailable}
+                value={dataActivity.mp_available}
+                checked={dataActivity.mp_available === 'true' ? true : false}
+                onChange={handleChangemp_available}
               />
               <div className="group peer ring-0  bg-gradient-to-bl from-neutral-800 via-neutral-700 to-neutral-600 dark:from-gray-400 dark:via-gray-300 dark:to-gray-200  rounded-full outline-none duration-1000 after:duration-300 w-12 h-6  shadow-md  peer-focus:outline-none  after:content-[''] after:rounded-full after:absolute peer-checked:after:rotate-180 after:[background:conic-gradient(from_135deg,_#b2a9a9,_#b2a8a8,_#ffffff,_#d7dbd9_,_#ffffff,_#b2a8a8)]  after:outline-none after:h-4 after:w-4 after:top-1 after:left-1 peer-checked:after:translate-x-6 peer-hover:after:scale-95 peer-checked:bg-gradient-to-r peer-checked:from-emerald-500 peer-checked:to-emerald-900"></div>
             </label>
@@ -114,19 +116,19 @@ export const PublicActivityForm: React.FC<PublicActivityProps> = ({
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex gap-4 items-center">
-            <label htmlFor="publicName" className="font-[600]">
+            <label htmlFor="public_name" className="font-[600]">
               Nombre Público
             </label>
-            {formErrors.publicName && (
-              <ErrorText text={formErrors.publicName} />
+            {formErrors.public_name && (
+              <ErrorText text={formErrors.public_name} />
             )}
           </div>
           <input
             type="text"
-            name="publicName"
+            name="public_name"
             placeholder="Nombre para mostrar"
             className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
-            value={dataActivity.publicName}
+            value={dataActivity.public_name}
             onChange={handleChange}
           />
         </div>

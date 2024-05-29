@@ -2,58 +2,58 @@ import { Business } from './Business'
 
 export type Activity = {
   id: number
-  id_business: number
-  activity: string
-  cost: number //float
-  isPublic: boolean
-  publicName?: string
-  quotaGeneration: boolean
-  sessionMax: number
-  mpAvailable: boolean
-  dateFrom: Date
-  dateUntil: Date
-  paymentType: string
+  company_id: number
+  name: string
+  price: number
+  is_public: boolean
+  public_name?: string
+  generate_invoice: boolean
+  max_sessions: number
+  mp_available: boolean
+  start_date: Date
+  end_date: Date
+  payment_type: string
 }
 
 export interface PropsAddActivity {
   business: Business | null
-  activity: string
-  cost: string
-  isPublic: string
-  quotaGeneration: string
-  mpAvailable: string
-  publicName: string | undefined
-  sessionMax: string
-  dateFrom: string | undefined
-  dateUntil: string | undefined
-  paymentType: string
+  name: string
+  price: string
+  is_public: string
+  generate_invoice: string
+  mp_available: string
+  public_name: string | undefined
+  max_sessions: string
+  start_date: Date
+  end_date: Date
+  payment_type: string
 }
 
 export interface FormErrors {
   business?: string
-  activity?: string
-  cost?: string
-  isPublic?: string
-  quotaGeneration?: string
-  sessionMax?: string
-  mpAvailable?: string
-  dateFrom?: string
-  dateUntil?: string
-  paymentType?: string
-  publicName?: string
+  name?: string
+  price?: string
+  is_public?: string
+  generate_invoice?: string
+  max_sessions?: string
+  mp_available?: string
+  start_date?: string
+  end_date?: string
+  payment_type?: string
+  public_name?: string
   [key: string]: string | undefined
 }
 
 export const initialData = {
   business: null,
-  activity: '',
-  cost: '',
-  isPublic: 'false',
-  quotaGeneration: 'false',
-  mpAvailable: 'false',
-  publicName: '',
-  sessionMax: '',
-  dateFrom: '',
-  dateUntil: '',
-  paymentType: 'Por sesión'
+  name: '',
+  price: '',
+  is_public: 'false',
+  generate_invoice: 'false',
+  mp_available: 'false',
+  public_name: '',
+  max_sessions: '',
+  start_date: new Date(),
+  end_date: new Date(),
+  payment_type: 'Por sesión'
 }

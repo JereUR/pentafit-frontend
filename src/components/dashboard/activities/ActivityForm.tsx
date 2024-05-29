@@ -27,13 +27,13 @@ const payments = [
 const initialErrors = {
   business: '',
   activity: '',
-  cost: '',
-  isPublic: '',
-  sessionMax: '',
-  dateFrom: '',
-  dateUntil: '',
-  paymentType: '',
-  publicName: ''
+  price: '',
+  is_public: '',
+  max_sessions: '',
+  start_date: '',
+  end_date: '',
+  payment_type: '',
+  public_name: ''
 }
 
 export default function ActivityForm({
@@ -75,36 +75,36 @@ export default function ActivityForm({
     const errorsForm: FormErrors = {}
 
     if (!dataActivity.business) {
-      errorsForm.id_business = `Debes tener un area de trabajo (negocio) activo.`
+      errorsForm.company_id = `Debes tener un area de trabajo (negocio) activo.`
     }
 
-    if (!dataActivity.activity.trim()) {
-      errorsForm.activity = `Este campo no debe ser vacío.`
+    if (!dataActivity.name.trim()) {
+      errorsForm.name = `Este campo no debe ser vacío.`
     }
 
-    if (!dataActivity.cost) {
-      errorsForm.cost = `Este campo no debe ser vacío.`
-    } else if (parseInt(dataActivity.cost) < 0) {
-      errorsForm.cost = 'Este valor no puede ser negativo.'
+    if (!dataActivity.price) {
+      errorsForm.price = `Este campo no debe ser vacío.`
+    } else if (parseInt(dataActivity.price) < 0) {
+      errorsForm.price = 'Este valor no puede ser negativo.'
     }
 
-    if (!dataActivity.sessionMax) {
-      errorsForm.sessionMax = `Este campo no debe ser vacío.`
-    } else if (parseInt(dataActivity.sessionMax) < 0) {
-      errorsForm.sessionMax = 'Este valor no puede ser negativo.'
+    if (!dataActivity.max_sessions) {
+      errorsForm.max_sessions = `Este campo no debe ser vacío.`
+    } else if (parseInt(dataActivity.max_sessions) < 0) {
+      errorsForm.max_sessions = 'Este valor no puede ser negativo.'
     }
 
-    if (!dataActivity.dateFrom) {
-      errorsForm.dateFrom = `Este campo no debe ser vacío.`
+    if (!dataActivity.start_date) {
+      errorsForm.start_date = `Este campo no debe ser vacío.`
     }
 
-    if (!dataActivity.dateUntil) {
-      errorsForm.dateUntil = `Este campo no debe ser vacío.`
+    if (!dataActivity.end_date) {
+      errorsForm.end_date = `Este campo no debe ser vacío.`
     }
 
-    if (dataActivity.isPublic === 'true') {
-      if (!dataActivity.publicName) {
-        errorsForm.publicName = `Este campo no debe ser vacío.`
+    if (dataActivity.is_public === 'true') {
+      if (!dataActivity.public_name) {
+        errorsForm.public_name = `Este campo no debe ser vacío.`
       }
     }
 
@@ -113,20 +113,24 @@ export default function ActivityForm({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setDataActivity({ ...dataActivity, [name]: value })
+    if (name === 'start_date' || name === 'end_date') {
+      setDataActivity({ ...dataActivity, [name]: new Date(value) })
+    } else {
+      setDataActivity({ ...dataActivity, [name]: value })
+    }
   }
 
   /* const handleChangeBusiness = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     const newId = Number(value)
-    let id_business = dataActivity.id_business.map((Business) => Business)
-    if (id_business.includes(newId)) {
-      id_business = id_business.filter((c) => c !== newId)
+    let company_id = dataActivity.company_id.map((Business) => Business)
+    if (company_id.includes(newId)) {
+      company_id = company_id.filter((c) => c !== newId)
     } else {
-      id_business.push(newId)
+      company_id.push(newId)
     }
 
-    setDataActivity({ ...dataActivity, id_business: id_business })
+    setDataActivity({ ...dataActivity, company_id: company_id })
   } */
 
   const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -181,8 +185,8 @@ export default function ActivityForm({
         <div className="flex flex-col gap-6 mb-6 border border-gray-300 dark:border-gray-700 pt-2 pb-6 px-2">
           <div className="flex gap-4 items-center">
             <label className="text-xl font-light">Area de Trabajo</label>
-            {formErrors.id_business && (
-              <ErrorText text={formErrors.id_business} />
+            {formErrors.company_id && (
+              <ErrorText text={formErrors.company_id} />
             )}
           </div>
           {workingBusiness ? (
@@ -190,7 +194,9 @@ export default function ActivityForm({
               <div className="flex px-6">
                 <Image
                   src={
-                    workingBusiness.logo ? `${BASE_URL}${workingBusiness.logo}` : noImage
+                    workingBusiness.logo
+                      ? `${BASE_URL}${workingBusiness.logo}`
+                      : noImage
                   }
                   alt={`${workingBusiness.name} logo`}
                   width={80}
@@ -214,100 +220,100 @@ export default function ActivityForm({
         <div className="grid grid-cols-3 gap-8 mb-4">
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
-              <label htmlFor="activity" className="font-[600]">
+              <label htmlFor="name" className="font-[600]">
                 Actividad
               </label>
-              {formErrors.activity && <ErrorText text={formErrors.activity} />}
+              {formErrors.name && <ErrorText text={formErrors.name} />}
             </div>
             <input
               type="text"
-              name="activity"
+              name="name"
               className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
-              value={dataActivity.activity}
+              value={dataActivity.name}
               onChange={handleChange}
             />
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
-              <label htmlFor="cost" className="font-[600]">
-                Costo
+              <label htmlFor="price" className="font-[600]">
+                Precio
               </label>
-              {formErrors.cost && <ErrorText text={formErrors.cost} />}
+              {formErrors.price && <ErrorText text={formErrors.price} />}
             </div>
             <input
               type="number"
-              name="cost"
+              name="price"
               className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
-              value={dataActivity.cost}
+              value={dataActivity.price}
               onChange={handleChange}
             />
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
-              <label htmlFor="sessionMax" className="font-[600]">
+              <label htmlFor="max_sessions" className="font-[600]">
                 Sesiones Máximas
               </label>
-              {formErrors.sessionMax && (
+              {formErrors.max_sessions && (
                 <span className="text-xs text-red-600 py-[2px] px-1 rounded-md animate-pulse">
-                  {formErrors.sessionMax}
+                  {formErrors.max_sessions}
                 </span>
               )}
             </div>
             <input
               type="number"
-              name="sessionMax"
+              name="max_sessions"
               className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
-              value={dataActivity.sessionMax}
+              value={dataActivity.max_sessions}
               onChange={handleChange}
             />
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
-              <label htmlFor="dateFrom" className="font-[600]">
+              <label htmlFor="start_date" className="font-[600]">
                 Fecha Desde
               </label>
-              {formErrors.dateFrom && <ErrorText text={formErrors.dateFrom} />}
-            </div>
-            <input
-              type="date"
-              name="dateFrom"
-              className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
-              value={dataActivity.dateFrom}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-4 items-center">
-              <label htmlFor="dateUntil" className="font-[600]">
-                Fecha Hasta
-              </label>
-              {formErrors.dateUntil && (
-                <ErrorText text={formErrors.dateUntil} />
+              {formErrors.start_date && (
+                <ErrorText text={formErrors.start_date} />
               )}
             </div>
             <input
               type="date"
-              name="dateUntil"
+              name="start_date"
               className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
-              value={dataActivity.dateUntil}
+              value={dataActivity.start_date.toISOString().split('T')[0]}
               onChange={handleChange}
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="paymentType" className="font-[600]">
+            <div className="flex gap-4 items-center">
+              <label htmlFor="end_date" className="font-[600]">
+                Fecha Hasta
+              </label>
+              {formErrors.end_date && <ErrorText text={formErrors.end_date} />}
+            </div>
+            <input
+              type="date"
+              name="end_date"
+              className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              value={dataActivity.end_date.toISOString().split('T')[0]}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="payment_type" className="font-[600]">
               Control de Pago
             </label>
             <select
-              name="paymentType"
+              name="payment_type"
               className="border border-gray-300 dark:border-gray-700 p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               onChange={handleChangeSelect}
-              defaultValue={dataActivity.paymentType}
+              defaultValue={dataActivity.payment_type}
             >
               {payments.map((item) => (
                 <option
                   key={item}
                   value={item}
-                  selected={dataActivity.paymentType === item}
+                  selected={dataActivity.payment_type === item}
                 >
                   {item}
                 </option>

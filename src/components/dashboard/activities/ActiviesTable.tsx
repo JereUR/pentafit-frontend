@@ -15,19 +15,19 @@ import useUser from '@/components/hooks/useUser'
 
 const availableColumns = [
   { id: 'description', label: 'Descripción' },
-  { id: 'amount', label: 'Costo' },
-  { id: 'isPublic', label: 'Es pública?' },
-  { id: 'quotaGeneration', label: 'Permite generación de cuotas' },
-  { id: 'sessionMax', label: 'Cantida máxima de sesiones' },
-  { id: 'mpAvailable', label: 'Permite MP a través de la app' },
-  { id: 'dateFrom', label: 'Fecha desde' },
-  { id: 'dateUntil', label: 'Fecha hasta' },
-  { id: 'paymentType', label: 'Tipo cobro' }
+  { id: 'amount', label: 'priceo' },
+  { id: 'is_public', label: 'Es pública?' },
+  { id: 'generate_invoice', label: 'Permite generación de cuotas' },
+  { id: 'max_sessions', label: 'Cantida máxima de sesiones' },
+  { id: 'mp_available', label: 'Permite MP a través de la app' },
+  { id: 'start_date', label: 'Fecha desde' },
+  { id: 'end_date', label: 'Fecha hasta' },
+  { id: 'payment_type', label: 'Tipo cobro' }
   // Add more columns here if needed
 ]
 
 export default function ActivitiesTable() {
-  const [selectedActivities, setSelectedActivities] = useState<string[]>([])
+  const [selectedActivities, setSelectedActivities] = useState<number[]>([])
   const [selectAll, setSelectAll] = useState<boolean>(false)
   const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
   const { theme } = useTheme()
@@ -55,7 +55,7 @@ export default function ActivitiesTable() {
     }
   }, [searchParams, token])
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     /* if (showConfirmDelete) {
       const res = await deleteActivityById(id)
       if (res) router.refresh()
@@ -85,7 +85,7 @@ export default function ActivitiesTable() {
   }
 
   const handleCheckboxChange = (
-    activityId: string,
+    activityId: number,
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const checked = event.target.checked
@@ -129,7 +129,7 @@ export default function ActivitiesTable() {
                 />
               </td>
               <td className="px-2 py-5">Actividad</td>
-              <td className="px-2 py-5">Costo</td>
+              <td className="px-2 py-5">priceo</td>
               <td className="px-2 py-5">Es pública?</td>
               <td className="px-2 py-5">Permite generación de cuotas</td>
               <td className="px-2 py-5">Cantida máxima de sesiones</td>
@@ -175,7 +175,7 @@ export default function ActivitiesTable() {
                       )
                     }
                   >
-                    {activity.activity}
+                    {activity.name}
                   </td>
                   <td
                     className="border-b border-foreground px-2 py-5"
@@ -185,7 +185,7 @@ export default function ActivitiesTable() {
                       )
                     }
                   >
-                    ${activity.cost}
+                    ${activity.price}
                   </td>
                   <td
                     className="border-b border-foreground px-2 py-5"
@@ -197,10 +197,10 @@ export default function ActivitiesTable() {
                   >
                     <div
                       className={`rounded-xl w-[3vw] ${
-                        activity.isPublic ? 'bg-green-400 ' : 'bg-red-400'
+                        activity.is_public ? 'bg-green-400 ' : 'bg-red-400'
                       } mx-auto`}
                     >
-                      {activity.isPublic ? 'Sí' : 'No'}
+                      {activity.is_public ? 'Sí' : 'No'}
                     </div>
                   </td>
                   <td
@@ -213,12 +213,12 @@ export default function ActivitiesTable() {
                   >
                     <div
                       className={`rounded-xl w-[3vw] ${
-                        activity.quotaGeneration
+                        activity.generate_invoice
                           ? 'bg-green-400 '
                           : 'bg-red-400'
                       } mx-auto`}
                     >
-                      {activity.quotaGeneration ? 'Sí' : 'No'}
+                      {activity.generate_invoice ? 'Sí' : 'No'}
                     </div>
                   </td>
                   <td
@@ -229,7 +229,7 @@ export default function ActivitiesTable() {
                       )
                     }
                   >
-                    {activity.sessionMax}
+                    {activity.max_sessions}
                   </td>
                   <td
                     className="border-b border-foreground px-2 py-5"
@@ -241,10 +241,10 @@ export default function ActivitiesTable() {
                   >
                     <div
                       className={`rounded-xl w-[3vw] ${
-                        activity.mpAvailable ? 'bg-green-400 ' : 'bg-red-400'
+                        activity.mp_available ? 'bg-green-400 ' : 'bg-red-400'
                       } mx-auto`}
                     >
-                      {activity.mpAvailable ? 'Sí' : 'No'}
+                      {activity.mp_available ? 'Sí' : 'No'}
                     </div>
                   </td>
                   <td
@@ -255,7 +255,7 @@ export default function ActivitiesTable() {
                       )
                     }
                   >
-                    {activity.dateFrom.toLocaleDateString()}
+                    {activity.start_date.toLocaleDateString()}
                   </td>
                   <td
                     className="border-b border-foreground px-2 py-5"
@@ -265,7 +265,7 @@ export default function ActivitiesTable() {
                       )
                     }
                   >
-                    {activity.dateUntil.toLocaleDateString()}
+                    {activity.end_date.toLocaleDateString()}
                   </td>
                   <td
                     className="border-b border-foreground px-2 py-5"
@@ -275,7 +275,7 @@ export default function ActivitiesTable() {
                       )
                     }
                   >
-                    {activity.paymentType}
+                    {activity.payment_type}
                   </td>
                   <td className="border-b border-foreground px-2 py-5">
                     <div className="flex gap-2">
@@ -300,7 +300,7 @@ export default function ActivitiesTable() {
                             <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
                               <p>
                                 {`¿Está seguro de que desea eliminar la actividad '
-                                ${activity.activity}'?`}
+                                ${activity.name}'?`}
                               </p>
                               <div className="flex justify-end gap-2">
                                 <Button
@@ -310,9 +310,7 @@ export default function ActivitiesTable() {
                                   No
                                 </Button>
                                 <Button
-                                  onClick={() =>
-                                    handleDelete(activity.id.toString())
-                                  }
+                                  onClick={() => handleDelete(activity.id)}
                                 >
                                   Sí
                                 </Button>
@@ -327,9 +325,11 @@ export default function ActivitiesTable() {
               ))}
             </tbody>
           ) : (
-            <tbody>
+            <tbody className="text-center">
               <tr>
-                <td colSpan={11}>Sin Actividades.</td>
+                <td colSpan={11} className="py-4 text-lg font-light italic border-b">
+                  Sin Actividades.
+                </td>
               </tr>
             </tbody>
           )}
