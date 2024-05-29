@@ -48,9 +48,9 @@ export default function ActivityForm({
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
   const { toast } = useToast()
   const router = useRouter()
-  const { getWorkingBusiness, loading, token } = useUser()
+  const { getWorkingBusiness, loading, token, businesses } = useUser()
   const { addActivity, updateActivity } = useActivities()
-
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
   useEffect(() => {
     setDataActivity(activity)
   }, [activity])
@@ -63,11 +63,9 @@ export default function ActivityForm({
     }
 
     if (type === 'add' && token) {
-      if (!dataActivity.business || !workingBusiness) {
-        updateWorkingBusiness()
-      }
+      updateWorkingBusiness()
     }
-  }, [token, workingBusiness])
+  }, [token, businesses])
 
   const validations = ({
     dataActivity
@@ -192,7 +190,7 @@ export default function ActivityForm({
               <div className="flex px-6">
                 <Image
                   src={
-                    workingBusiness.logo ? `${workingBusiness.logo}` : noImage
+                    workingBusiness.logo ? `${BASE_URL}${workingBusiness.logo}` : noImage
                   }
                   alt={`${workingBusiness.name} logo`}
                   width={80}

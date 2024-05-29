@@ -101,7 +101,7 @@ export default function ActivitiesContextProvider({
   children: ReactNode
 }) {
   const [activities, setActivities] = useState<Activity[] | []>(
-    initialActivities
+    []
   )
   const [loading, setLoading] = useState<boolean>(false)
   const { toast } = useToast()
@@ -191,8 +191,8 @@ export default function ActivitiesContextProvider({
     const mpAvailableValue = dataActivity.mpAvailable === 'true' ? true : false
 
     const newActivity = {
-      id_business: dataActivity.business?.id,
-      activity: dataActivity.activity,
+      business_id: dataActivity.business?.id,
+      name: dataActivity.activity,
       cost: dataActivity.cost,
       isPublic: isPublicValue,
       quotaGeneration: quotaGenerationValue,
