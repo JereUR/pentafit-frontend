@@ -9,11 +9,20 @@ import noImage from '@public/assets/no-image.png'
 import { Button } from '@/components/ui/button'
 import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 import { useRouter } from 'next/navigation'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@radix-ui/react-dropdown-menu'
+import { Business } from '@/components/types/Business'
 
 const RightBar = () => {
   const [showMenu, setShowMenu] = useState(false)
   const { token, businesses, getBusinesses, updateWorkingBusiness } = useUser()
-  const router=useRouter()
+  const router = useRouter()
   const workingBusiness =
     businesses.length > 0 ? businesses.filter((bus) => bus.is_working) : []
   const otherBusinesses =
@@ -37,8 +46,8 @@ const RightBar = () => {
   }
 
   return (
-    <div className="fixed w-[330px] m-4">
-      <Card className="relative flex flex-col gap-4 bg-gradient-to-t from-bg-background to-bg-card p-4 rounded-lg shadow-md duration-300 ease-in-out">
+    <div className="fixed w-[250px] xl:w-[330px] m-4">
+      <Card className="relative flex flex-col gap-6 bg-gradient-to-t from-bg-background to-bg-card p-4 rounded-lg shadow-md duration-300 ease-in-out">
         {businesses.length > 0 ? (
           <>
             <p className="m-2 text-xl font-extralight">
@@ -47,7 +56,9 @@ const RightBar = () => {
             <div className="flex justify-center">
               <Image
                 src={
-                  workingBusiness[0].logo ? `${BASE_URL}${workingBusiness[0].logo}` : noImage
+                  workingBusiness[0].logo
+                    ? `${BASE_URL}${workingBusiness[0].logo}`
+                    : noImage
                 }
                 alt="Card Image"
                 width={150}
@@ -60,64 +71,99 @@ const RightBar = () => {
                 {workingBusiness[0].name}
               </h2>
               <p className="text-gray-600">{workingBusiness[0].description}</p>
-              {otherBusinesses.length > 0 ? <div className="flex flex-col justify-center w-full items-center mt-4">
-                <Button
-                  className="flex gap-2 items-center font-semibold transition duration-300 ease-in-out bg-primary-orange-700 hover:bg-primary-orange-600"
-                  onClick={() => setShowMenu(!showMenu)}
-                >
-                  Cambiar Area de Trabajo
-                  {showMenu ? (
-                    <MdExpandLess className="h-6 w-6" />
-                  ) : (
-                    <MdExpandMore className="h-6 w-6" />
-                  )}
-                </Button>
-              </div> : <div className="flex flex-col justify-center w-full items-center mt-4">
-                <span>No existen otros negocios activos</span>
-                <Button
-                  className="flex gap-2 items-center font-semibold transition duration-300 ease-in-out bg-primary-orange-700 hover:bg-primary-orange-600"
-                  onClick={() => router.push('/panel-de-control/negocios')}
-                >
-                  Ir a sección Negocios
-                </Button>
-              </div>}
+              {otherBusinesses.length > 0 ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="relative">
+                    <div className="xl:w-full flex justify-center items-center mt-4">
+                      <Button
+                        className="flex w-[180px] text-xs xl:w-full xl:text-base gap-2 items-center font-semibold transition duration-300 ease-in-out bg-primary-orange-700 hover:bg-primary-orange-600 cursor-pointer"
+                        onClick={() => setShowMenu(!showMenu)}
+                      >
+                        Cambiar Area de Trabajo
+                        {showMenu ? (
+                          <MdExpandLess className="h-6 w-6" />
+                        ) : (
+                          <MdExpandMore className="h-6 w-6" />
+                        )}
+                      </Button>
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="center"
+                    className="mt-5 w-[220px] xl:w-[280px] flex flex-col justify-center gap-2 p-3 bg-card shadow-md rounded-md border border-primary-orange-600"
+                  >
+                    {otherBusinesses.map((item: Business, key: number) => (
+                      <DropdownMenuItem
+                        key={key}
+                        className="p-1 px-4 cursor-pointer rounded-r-full transition flex items-start hover:bg-primary-orange-500"
+                      >
+                        <div className="flex justify-start items-center gap-2">
+                          <Image
+                            src={item.logo ? `${item.logo}` : noImage}
+                            alt="Card Image"
+                            width={35}
+                            height={35}
+                            className="w-[35px] h-[35px] rounded-full"
+                          />
+                          <p className="text-sm font-semibold">{item.name}</p>
+                        </div>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <div className="flex flex-col justify-center w-full items-center mt-4">
+                  <span>No existen otros negocios activos</span>
+                  <Button
+                    className="flex gap-2 items-center font-semibold transition duration-300 ease-in-out bg-primary-orange-700 hover:bg-primary-orange-600"
+                    onClick={() => router.push('/panel-de-control/negocios')}
+                  >
+                    Ir a sección Negocios
+                  </Button>
+                </div>
+              )}
             </div>
           </>
         ) : (
-          <div><span>Area de Trabajo no asignada</span><div className="flex flex-col justify-center w-full items-center mt-4">
-                <Button
-                  className="flex gap-2 items-center font-semibold transition duration-300 ease-in-out bg-primary-orange-700 hover:bg-primary-orange-600"
-                  onClick={() => router.push('/panel-de-control/negocios')}
-                >
-                  Ir a sección Negocios
-                </Button>
-              </div></div>
-        )}
-      </Card>
-      {showMenu && (
-        <div className="absolute -bottom-[12vh] left-[25px] w-[280px] flex flex-col justify-start gap-2 p-3 bg-card shadow-md rounded-md border-2 border-primary-orange-600">
-          <div className="flex flex-col gap-4">
-            {otherBusinesses.map((business) => (
-              <div
-                key={business.id}
-                className="p-1 flex items-center rounded-r-full transition duration-300 ease-in-out hover:bg-primary-orange-600 text-sm cursor-pointer"
-                onClick={() => handleChangeWorkingBusiness(business.id)}
+          <div>
+            <span>Area de Trabajo no asignada</span>
+            <div className="flex flex-col justify-center w-full items-center mt-4">
+              <Button
+                className="flex gap-2 items-center font-semibold transition duration-300 ease-in-out bg-primary-orange-700 hover:bg-primary-orange-600"
+                onClick={() => router.push('/panel-de-control/negocios')}
               >
-                <div className="flex justify-start items-center gap-2">
-                  <Image
-                    src={business.logo ? `${BASE_URL}${business.logo}` : noImage}
-                    alt="Card Image"
-                    width={35}
-                    height={35}
-                    className="w-[35px] h-[35px] rounded-full"
-                  />
-                  <p className="text-sm font-semibold">{business.name}</p>
-                </div>
-              </div>
-            ))}
+                Ir a sección Negocios
+              </Button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+        {/* {showMenu && (
+          <div className="mx-auto -mt-3 w-[280px] flex flex-col justify-center gap-2 p-3 bg-card shadow-md rounded-md border-2 border-primary-orange-600">
+            <div className="flex flex-col gap-4">
+              {otherBusinesses.map((business) => (
+                <div
+                  key={business.id}
+                  className="p-1 flex items-center rounded-r-full transition duration-300 ease-in-out hover:bg-primary-orange-600 text-sm cursor-pointer"
+                  onClick={() => handleChangeWorkingBusiness(business.id)}
+                >
+                  <div className="flex justify-start items-center gap-2">
+                    <Image
+                      src={
+                        business.logo ? `${BASE_URL}${business.logo}` : noImage
+                      }
+                      alt="Card Image"
+                      width={35}
+                      height={35}
+                      className="w-[35px] h-[35px] rounded-full"
+                    />
+                    <p className="text-sm font-semibold">{business.name}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )} */}
+      </Card>
     </div>
   )
 }
