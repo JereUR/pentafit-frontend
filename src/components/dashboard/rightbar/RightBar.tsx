@@ -20,6 +20,7 @@ const RightBar = () => {
     businesses.length > 0
       ? businesses.filter((bus) => bus.is_active && !bus.is_working)
       : []
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
   useEffect(() => {
     if (token) {
@@ -46,7 +47,7 @@ const RightBar = () => {
             <div className="flex justify-center">
               <Image
                 src={
-                  workingBusiness[0].logo ? workingBusiness[0].logo : noImage
+                  workingBusiness[0].logo ? `${BASE_URL}${workingBusiness[0].logo}` : noImage
                 }
                 alt="Card Image"
                 width={150}
@@ -104,7 +105,7 @@ const RightBar = () => {
               >
                 <div className="flex justify-start items-center gap-2">
                   <Image
-                    src={business.logo ? business.logo : noImage}
+                    src={business.logo ? `${BASE_URL}${business.logo}` : noImage}
                     alt="Card Image"
                     width={35}
                     height={35}
