@@ -43,6 +43,7 @@ export default function ActivityForm({
   type: string
   activity: PropsAddActivity
 }) {
+  const [showConfirmBack, setShowConfirmBack] = useState<boolean>(false)
   const [dataActivity, setDataActivity] = useState<PropsAddActivity>(activity)
   const [workingBusiness, setWorkingBusiness] = useState(activity.business)
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
@@ -66,6 +67,21 @@ export default function ActivityForm({
       updateWorkingBusiness()
     }
   }, [token, businesses])
+
+  const handleBack = () => {
+    if (showConfirmBack) {
+      router.replace('/panel-de-control/actividades')
+    }
+    setShowConfirmBack(false)
+  }
+
+  const handleConfirmBack = () => {
+    setShowConfirmBack(true)
+  }
+
+  const handleCancelBack = () => {
+    setShowConfirmBack(false)
+  }
 
   const validations = ({
     dataActivity
@@ -332,7 +348,7 @@ export default function ActivityForm({
           <Button
             type="button"
             className="gap-2 mr-2 font-bold text-background bg-red-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-red-600 border-none"
-            onClick={() => router.replace('/panel-de-control/actividades')}
+            onClick={handleConfirmBack}
           >
             <ImCross /> Cerrar
           </Button>
@@ -348,6 +364,22 @@ export default function ActivityForm({
               <Loader className="mt-[1.8vh] ml-[1vw]" />
             )}
           </Button>
+          {showConfirmBack && (
+            <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-50 flex justify-center items-center">
+              <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
+                <p>
+                  Todos los cambios realizados se perderán. ¿Estás seguro de
+                  cerrar el formulario?
+                </p>
+                <div className="flex justify-end gap-2">
+                  <Button variant="secondary" onClick={handleCancelBack}>
+                    No
+                  </Button>
+                  <Button onClick={() => handleBack()}>Sí</Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </form>
     </div>
