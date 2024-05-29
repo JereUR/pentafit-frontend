@@ -29,7 +29,7 @@ export const ActivitiesContext = createContext<ActivitiesContextType | null>(
 
 const initialActivities = [
   {
-    id: 'm5gr84i9',
+    id: 1,
     id_business: 1,
     activity: 'Actividad 1',
     cost: 200,
@@ -42,7 +42,7 @@ const initialActivities = [
     paymentType: 'Mensual'
   },
   {
-    id: '3u1reuv4',
+    id: 2,
     id_business: 1,
     activity: 'Actividad 2',
     cost: 300,
@@ -55,7 +55,7 @@ const initialActivities = [
     paymentType: 'Mensual'
   },
   {
-    id: 'derv1ws0',
+    id: 3,
     id_business: 1,
     activity: 'Actividad 3',
     cost: 400,
@@ -68,7 +68,7 @@ const initialActivities = [
     paymentType: 'Por período'
   },
   {
-    id: '5kma53ae',
+    id: 4,
     id_business: 1,
     activity: 'Actividad 4',
     cost: 200,
@@ -81,7 +81,7 @@ const initialActivities = [
     paymentType: 'Por sesion'
   },
   {
-    id: 'bhqecj4p',
+    id: 5,
     id_business: 1,
     activity: 'Actividad 5',
     cost: 500,
@@ -116,7 +116,7 @@ export default function ActivitiesContextProvider({
     const params = new URLSearchParams()
     params.append('regex', regex.toString())
     params.append('page', page)
-    params.append('itemas_per_page', ITEM_PER_PAGE.toString())
+    params.append('ITEMS_PER_PAGE', ITEM_PER_PAGE.toString())
     const url = `${BASE_URL}get-activities?${params.toString()}`
 
     /* try {
@@ -162,7 +162,7 @@ export default function ActivitiesContextProvider({
     } */
 
     return {
-      id: 'm5gr84i9',
+      id: 1,
       id_business: 1,
       activity: 'Actividad 1',
       cost: 200,
@@ -273,7 +273,7 @@ export default function ActivitiesContextProvider({
     try {
       const response = await axios.put(url)
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 204) {
         return true
       } else {
         toast({

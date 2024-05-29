@@ -1,10 +1,10 @@
 import { Business } from './Business'
 
 export type Activity = {
-  id: string
+  id: number
   id_business: number
   activity: string
-  cost: number
+  cost: number //float
   isPublic: boolean
   publicName?: string
   quotaGeneration: boolean
