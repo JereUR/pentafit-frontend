@@ -47,12 +47,14 @@ const SelectColumns: React.FC<Props> = ({
           Nombre
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
+          className="cursor-pointer"
           checked={selectedColumns.price}
           onCheckedChange={() => handleChange('price', !selectedColumns.price)}
         >
           Precio
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
+          className="cursor-pointer"
           checked={selectedColumns.is_public}
           onCheckedChange={() =>
             handleChange('is_public', !selectedColumns.is_public)
