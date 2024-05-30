@@ -57,3 +57,31 @@ export const initialData = {
   end_date: new Date(),
   payment_type: 'Por sesión'
 }
+
+export interface Columns {
+  company: boolean
+  name: boolean
+  price: boolean
+  is_public: boolean
+  generate_invoice: boolean
+  mp_available: boolean
+  public_name: boolean
+  max_sessions: boolean
+  start_date: boolean
+  end_date: boolean
+  payment_type: boolean
+}
+
+export const initialColumns = {
+  company: true,
+  name: true,
+  price: true,
+  is_public: true,
+  generate_invoice: true,
+  mp_available: true,
+  public_name: true,
+  max_sessions: true,
+  start_date: true,
+  end_date: true,
+  payment_type: true
+}
