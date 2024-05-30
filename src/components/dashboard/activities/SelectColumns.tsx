@@ -40,6 +40,7 @@ const SelectColumns: React.FC<Props> = ({
         <DropdownMenuLabel>Appearance</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem
+          className="cursor-pointer"
           checked={selectedColumns.name}
           onCheckedChange={() => handleChange('name', !selectedColumns.name)}
         >
