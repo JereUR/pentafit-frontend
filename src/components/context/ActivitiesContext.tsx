@@ -191,7 +191,7 @@ export default function ActivitiesContextProvider({
     const mpAvailableValue = dataActivity.mp_available === 'true' ? true : false
 
     const newActivity = {
-      business_id: dataActivity.business?.id,
+      company_id: dataActivity.business?.id,
       name: dataActivity.name,
       price: dataActivity.price,
       is_public: isPublicValue,
