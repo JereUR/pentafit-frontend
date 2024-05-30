@@ -96,7 +96,7 @@ const RightBar = () => {
                       >
                         <div className="flex justify-start items-center gap-2">
                           <Image
-                            src={item.logo ? `${item.logo}` : noImage}
+                            src={item.logo ? `${BASE_URL}${item.logo}` : noImage}
                             alt="Card Image"
                             width={35}
                             height={35}

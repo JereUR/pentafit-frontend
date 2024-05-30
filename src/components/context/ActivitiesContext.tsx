@@ -117,9 +117,9 @@ export default function ActivitiesContextProvider({
     params.append('regex', regex.toString())
     params.append('page', page)
     params.append('ITEMS_PER_PAGE', ITEM_PER_PAGE.toString())
-    const url = `${BASE_URL}get-activities?${params.toString()}`
+    const url = `${BASE_URL}activities?${params.toString()}`
 
-    /* try {
+    try {
       const response = await axios.get(url)
 
       if (response.status === 200 || response.status === 204) {
@@ -137,16 +137,16 @@ export default function ActivitiesContextProvider({
         title: 'Oh no! Algo salió mal.',
         description: error.message
       })
-    } */
+    }
   }
 
   async function getActivityById(id: string) {
-    const url = `${BASE_URL}get-activity?id=${id}`
-    /* try {
+    const url = `${BASE_URL}activity?id=${id}`
+    try {
       const response = await axios.get(url)
 
       if (response.status === 200 || response.status === 204) {
-        return response.data?.activity
+        return response.data
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
@@ -159,22 +159,21 @@ export default function ActivitiesContextProvider({
         title: 'Oh no! Algo salió mal.',
         description: error.message
       })
-    } */
-
-    return {
-      id: 1,
-      company_id: 1,
-      name: 'Actividad 1',
-      price: 200,
-      is_public: true,
-      generate_invoice: true,
-      max_sessions: 5,
-      mp_available: false,
-      start_date: new Date(2024, 4, 20),
-      end_date: new Date(2024, 5, 20),
-      payment_type: 'Mensual',
-      public_name: 'Test'
     }
+    // return {
+    //   id: 1,
+    //   company_id: 1,
+    //   name: 'Actividad 1',
+    //   price: 200,
+    //   is_public: true,
+    //   generate_invoice: true,
+    //   max_sessions: 5,
+    //   mp_available: false,
+    //   start_date: new Date(2024, 4, 20),
+    //   end_date: new Date(2024, 5, 20),
+    //   payment_type: 'Mensual',
+    //   public_name: 'Test'
+    // }
   }
 
   async function addActivity({
@@ -204,7 +203,7 @@ export default function ActivitiesContextProvider({
       payment_type: dataActivity.payment_type
     }
 
-    const url = `${BASE_URL}add-activity`
+    const url = `${BASE_URL}activity`
     try {
       const response = await axios.post(
         url,
@@ -269,7 +268,7 @@ export default function ActivitiesContextProvider({
 
     console.log(newActivity)
 
-    const url = `${BASE_URL}update-activity`
+    const url = `${BASE_URL}activity`
     try {
       const response = await axios.put(url)
 
