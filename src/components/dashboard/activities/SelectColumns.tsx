@@ -1,6 +1,6 @@
 import { FaTableCells } from 'react-icons/fa6'
 import { DropdownMenuCheckboxItemProps } from '@radix-ui/react-dropdown-menu'
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -24,19 +24,28 @@ const SelectColumns: React.FC<Props> = ({
   selectedColumns,
   setSelectedColumns
 }) => {
+  const [isOpen, setIsOpen] = useState(false)
+
   const handleChange = (name: string, value: boolean) => {
     setSelectedColumns({ ...selectedColumns, [name]: value })
   }
 
+  const handleButtonClick = () => {
+    setIsOpen(false)
+  }
+
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" onClick={() => setIsOpen(!isOpen)}>
           <FaTableCells />
           Columnas
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent
+        className="w-56"
+        onCloseAutoFocus={(e) => e.preventDefault()}
+      >
         <DropdownMenuLabel>Columnas a mostrar</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem
@@ -62,6 +71,10 @@ const SelectColumns: React.FC<Props> = ({
         >
           Es pública?
         </DropdownMenuCheckboxItem>
+        <DropdownMenuSeparator />
+        <Button className="mt-2" onClick={handleButtonClick}>
+          Cerrar
+        </Button>
       </DropdownMenuContent>
     </DropdownMenu>
   )
