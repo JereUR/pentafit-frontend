@@ -12,6 +12,8 @@ import Link from 'next/link'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import CustomButton from '@/components/CustomButton'
 import useUser from '@/components/hooks/useUser'
+import { Columns, initialColumns } from '@/components/types/Activity'
+import SelectColumns from './SelectColumns'
 
 const availableColumns = [
   { id: 'description', label: 'Descripción' },
@@ -29,6 +31,8 @@ const availableColumns = [
 export default function ActivitiesTable() {
   const [selectedActivities, setSelectedActivities] = useState<number[]>([])
   const [selectAll, setSelectAll] = useState<boolean>(false)
+  const [selectedColumns, setSelectedColumns] =
+    useState<Columns>(initialColumns)
   const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
   const { theme } = useTheme()
   const router = useRouter()
@@ -54,6 +58,16 @@ export default function ActivitiesTable() {
       getActivities(q, page)
     }
   }, [searchParams, token])
+
+  useEffect(() => {
+    if (window != undefined) {
+      const columns = localStorage.getItem('columns')
+
+      if (columns) {
+        setSelectedColumns(JSON.parse(columns))
+      }
+    }
+  }, [])
 
   const handleDelete = async (id: number) => {
     /* if (showConfirmDelete) {
@@ -100,6 +114,10 @@ export default function ActivitiesTable() {
     <div className="container bg-background p-1 rounded-lg mt-5">
       <div className="flex items-center justify-between my-4">
         <Search placeholder="Buscar una actividad..." />
+        <SelectColumns
+          selectedColumns={selectedColumns}
+          setSelectedColumns={setSelectedColumns}
+        />
         <div className="flex gap-2">
           <Link href="/panel-de-control/actividades/agregar">
             <CustomButton text="Agregar" />
@@ -128,9 +146,11 @@ export default function ActivitiesTable() {
                   className="cursor-pointer h-5 w-5"
                 />
               </td>
-              <td className="px-2 py-5">Actividad</td>
-              <td className="px-2 py-5">priceo</td>
-              <td className="px-2 py-5">Es pública?</td>
+              {selectedColumns.name && <td className="px-2 py-5">Nombre</td>}
+              {selectedColumns.price && <td className="px-2 py-5">Precio</td>}
+              {selectedColumns.is_public && (
+                <td className="px-2 py-5">Es pública?</td>
+              )}
               <td className="px-2 py-5">Permite generación de cuotas</td>
               <td className="px-2 py-5">Cantida máxima de sesiones</td>
               <td className="px-2 py-5">Permite MP a través de la app</td>
@@ -167,42 +187,48 @@ export default function ActivitiesTable() {
                       className="cursor-pointer h-5 w-5"
                     />
                   </td>
-                  <td
-                    className="border-b border-foreground px-2 py-5"
-                    onClick={() =>
-                      router.push(
-                        `/panel-de-control/actividades/${activity.id}`
-                      )
-                    }
-                  >
-                    {activity.name}
-                  </td>
-                  <td
-                    className="border-b border-foreground px-2 py-5"
-                    onClick={() =>
-                      router.push(
-                        `/panel-de-control/actividades/${activity.id}`
-                      )
-                    }
-                  >
-                    ${activity.price}
-                  </td>
-                  <td
-                    className="border-b border-foreground px-2 py-5"
-                    onClick={() =>
-                      router.push(
-                        `/panel-de-control/actividades/${activity.id}`
-                      )
-                    }
-                  >
-                    <div
-                      className={`rounded-xl w-[3vw] ${
-                        activity.is_public ? 'bg-green-400 ' : 'bg-red-400'
-                      } mx-auto`}
+                  {selectedColumns.name && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
                     >
-                      {activity.is_public ? 'Sí' : 'No'}
-                    </div>
-                  </td>
+                      {activity.name}
+                    </td>
+                  )}
+                  {selectedColumns.price && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
+                    >
+                      ${activity.price}
+                    </td>
+                  )}
+                  {selectedColumns.is_public && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
+                    >
+                      <div
+                        className={`rounded-xl w-[3vw] ${
+                          activity.is_public ? 'bg-green-400 ' : 'bg-red-400'
+                        } mx-auto`}
+                      >
+                        {activity.is_public ? 'Sí' : 'No'}
+                      </div>
+                    </td>
+                  )}
                   <td
                     className="border-b border-foreground px-2 py-5"
                     onClick={() =>
@@ -327,7 +353,10 @@ export default function ActivitiesTable() {
           ) : (
             <tbody className="text-center">
               <tr>
-                <td colSpan={11} className="py-4 text-lg font-light italic border-b">
+                <td
+                  colSpan={11}
+                  className="py-4 text-lg font-light italic border-b"
+                >
                   Sin Actividades.
                 </td>
               </tr>
