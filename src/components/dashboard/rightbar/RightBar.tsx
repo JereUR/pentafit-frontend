@@ -75,10 +75,7 @@ const RightBar = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger className="relative">
                     <div className="xl:w-full flex justify-center items-center mt-4">
-                      <Button
-                        className="flex w-[180px] text-xs xl:w-full xl:text-base gap-2 items-center font-semibold transition duration-300 ease-in-out bg-primary-orange-700 hover:bg-primary-orange-600 cursor-pointer"
-                        onClick={() => setShowMenu(!showMenu)}
-                      >
+                      <Button className="flex w-[180px] text-xs xl:w-full xl:text-base gap-2 items-center font-semibold transition duration-300 ease-in-out bg-primary-orange-700 hover:bg-primary-orange-600 cursor-pointer">
                         Cambiar Area de Trabajo
                         {showMenu ? (
                           <MdExpandLess className="h-6 w-6" />
