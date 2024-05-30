@@ -70,7 +70,7 @@ const initialActivities = [
   {
     id: 4,
     company_id: 1,
-    activity: 'Actividad 4',
+    name: 'Actividad 4',
     price: 200,
     is_public: false,
     generate_invoice: true,
@@ -100,7 +100,9 @@ export default function ActivitiesContextProvider({
 }: {
   children: ReactNode
 }) {
-  const [activities, setActivities] = useState<Activity[] | []>([])
+  const [activities, setActivities] = useState<Activity[] | []>(
+    initialActivities
+  )
   const [loading, setLoading] = useState<boolean>(false)
   const { toast } = useToast()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
