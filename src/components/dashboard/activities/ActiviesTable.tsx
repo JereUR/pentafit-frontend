@@ -14,6 +14,7 @@ import CustomButton from '@/components/CustomButton'
 import useUser from '@/components/hooks/useUser'
 import { Columns, initialColumns } from '@/components/types/Activity'
 import SelectColumns from './SelectColumns'
+import { Business } from '@/components/types/Business'
 
 const availableColumns = [
   { id: 'description', label: 'Descripción' },
@@ -29,6 +30,7 @@ const availableColumns = [
 ]
 
 export default function ActivitiesTable() {
+  const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [selectedActivities, setSelectedActivities] = useState<number[]>([])
   const [selectAll, setSelectAll] = useState<boolean>(false)
   const [selectedColumns, setSelectedColumns] =
@@ -42,7 +44,7 @@ export default function ActivitiesTable() {
   const q = searchParams.get('q') || ''
   const { token } = useUser()
   const { activities, getActivities } = useActivities()
-  /* const { activitys, count } = await fetchactivitys(q, page)  */
+  const { getWorkingBusiness } = useUser()
 
   const styles = {
     deleteRow: {
@@ -52,10 +54,22 @@ export default function ActivitiesTable() {
   }
 
   useEffect(() => {
+  async function getData() {
+    const res = await getWorkingBusiness()
+    if (res) {
+      setWorkingBusiness(res)
+    }
+  }
     if (token) {
+      getData()
+    }
+  }, [token])
+
+  useEffect(() => {
+    if (token && workingBusiness) {
       const q = searchParams.get('q') || ''
       const page = searchParams.get('page') || '1'
-      getActivities(q, page)
+      getActivities(q, page,workingBusiness.id)
     }
   }, [searchParams, token])
 

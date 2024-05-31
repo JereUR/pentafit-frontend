@@ -10,8 +10,12 @@ import useUser from '../hooks/useUser'
 type ActivitiesContextType = {
   activities: Activity[] | []
   loading: boolean
-  getActivities: (q: string, page: string) => Promise<Activity[] | [] | void>
-  getActivityById: (id: string) => Promise<Activity | null>
+  getActivities: (
+    q: string,
+    page: string,
+    business_id: number
+  ) => Promise<Activity[] | [] | void>
+  getActivityById: (id: string, business_id: number) => Promise<Activity | null>
   addActivity: ({
     dataActivity
   }: {
@@ -101,9 +105,7 @@ export default function ActivitiesContextProvider({
 }: {
   children: ReactNode
 }) {
-  const [activities, setActivities] = useState<Activity[] | []>(
-    []
-  )
+  const [activities, setActivities] = useState<Activity[] | []>([])
   const [loading, setLoading] = useState<boolean>(false)
   const { toast } = useToast()
   const { token } = useUser()
@@ -111,7 +113,8 @@ export default function ActivitiesContextProvider({
 
   async function getActivities(
     q: string,
-    page: string
+    page: string,
+    business_id: number
   ): Promise<Activity[] | [] | void> {
     const regex = new RegExp(q, 'i')
     const ITEM_PER_PAGE = 4
@@ -119,17 +122,16 @@ export default function ActivitiesContextProvider({
     params.append('regex', regex.toString())
     params.append('page', page)
     params.append('items_per_page', ITEM_PER_PAGE.toString())
+    params.append('company_id', business_id.toString())
     const url = `${BASE_URL}api/v1/activities?${params.toString()}`
 
     try {
-      const response = await axios.get(url,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token
-          }
+      const response = await axios.get(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
         }
-      )
+      })
 
       if (response.status === 200 || response.status === 204) {
         setActivities(response.data?.activities)
@@ -149,11 +151,13 @@ export default function ActivitiesContextProvider({
     }
   }
 
-  async function getActivityById(id: string) {
-    const url = `${BASE_URL}api/v1/activity?id=${id}`
+  async function getActivityById(id: string, business_id: number) {
+    const params = new URLSearchParams()
+    params.append('activity_id', id)
+    params.append('company_id', business_id.toString())
+    const url = `${BASE_URL}api/v1/activity?${params.toString()}`
     try {
-      const response = await axios.get(url,        
-      {
+      const response = await axios.get(url, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: token
