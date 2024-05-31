@@ -54,13 +54,13 @@ export default function ActivitiesTable() {
   }
   console.log(activities)
   useEffect(() => {
-  async function getData() {
-    const res = await getWorkingBusiness()
-    console.log(res)
-    if (res) {
-      setWorkingBusiness(res)
+    async function getData() {
+      const res = await getWorkingBusiness()
+      console.log(res)
+      if (res) {
+        setWorkingBusiness(res)
+      }
     }
-  }
     if (token) {
       getData()
     }
@@ -70,7 +70,7 @@ export default function ActivitiesTable() {
     if (token && workingBusiness) {
       const q = searchParams.get('q') || ''
       const page = searchParams.get('page') || '1'
-      getActivities(q, page,workingBusiness.id)
+      getActivities(q, page, workingBusiness.id)
     }
   }, [searchParams, token, workingBusiness])
 
@@ -129,11 +129,11 @@ export default function ActivitiesTable() {
     <div className="container bg-background p-1 rounded-lg mt-5">
       <div className="flex items-center justify-between my-4">
         <Search placeholder="Buscar una actividad..." />
-        <SelectColumns
-          selectedColumns={selectedColumns}
-          setSelectedColumns={setSelectedColumns}
-        />
         <div className="flex gap-2">
+          <SelectColumns
+            selectedColumns={selectedColumns}
+            setSelectedColumns={setSelectedColumns}
+          />
           <Link href="/panel-de-control/actividades/agregar">
             <CustomButton text="Agregar" />
           </Link>
@@ -166,12 +166,24 @@ export default function ActivitiesTable() {
               {selectedColumns.is_public && (
                 <td className="px-2 py-5">Es pública?</td>
               )}
-              <td className="px-2 py-5">Permite generación de cuotas</td>
-              <td className="px-2 py-5">Cantida máxima de sesiones</td>
-              <td className="px-2 py-5">Permite MP a través de la app</td>
-              <td className="px-2 py-5">Fecha desde</td>
-              <td className="px-2 py-5">Fecha hasta</td>
-              <td className="px-2 py-5">Tipo cobro</td>
+              {selectedColumns.generate_invoice && (
+                <td className="px-2 py-5">Generación de cuotas</td>
+              )}
+              {selectedColumns.max_sessions && (
+                <td className="px-2 py-5">Sesiones máximas</td>
+              )}
+              {selectedColumns.mp_available && (
+                <td className="px-2 py-5">MP disponible</td>
+              )}
+              {selectedColumns.start_date && (
+                <td className="px-2 py-5">Fecha desde</td>
+              )}
+              {selectedColumns.end_date && (
+                <td className="px-2 py-5">Fecha hasta</td>
+              )}
+              {selectedColumns.payment_type && (
+                <td className="px-2 py-5">Tipo cobro</td>
+              )}
               <td className="px-2 py-5">Acción</td>
             </tr>
           </thead>
@@ -202,48 +214,42 @@ export default function ActivitiesTable() {
                       className="cursor-pointer h-5 w-5"
                     />
                   </td>
-                  {selectedColumns.name && (
-                    <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${activity.id}`
-                        )
-                      }
+                  <td
+                    className="border-b border-foreground px-2 py-5"
+                    onClick={() =>
+                      router.push(
+                        `/panel-de-control/actividades/${activity.id}`
+                      )
+                    }
+                  >
+                    {activity.name}
+                  </td>
+                  <td
+                    className="border-b border-foreground px-2 py-5"
+                    onClick={() =>
+                      router.push(
+                        `/panel-de-control/actividades/${activity.id}`
+                      )
+                    }
+                  >
+                    ${activity.price}
+                  </td>
+                  <td
+                    className="border-b border-foreground px-2 py-5"
+                    onClick={() =>
+                      router.push(
+                        `/panel-de-control/actividades/${activity.id}`
+                      )
+                    }
+                  >
+                    <div
+                      className={`rounded-xl w-[3vw] ${
+                        activity.is_public ? 'bg-green-400 ' : 'bg-red-400'
+                      } mx-auto`}
                     >
-                      {activity.name}
-                    </td>
-                  )}
-                  {selectedColumns.price && (
-                    <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${activity.id}`
-                        )
-                      }
-                    >
-                      ${activity.price}
-                    </td>
-                  )}
-                  {selectedColumns.is_public && (
-                    <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${activity.id}`
-                        )
-                      }
-                    >
-                      <div
-                        className={`rounded-xl w-[3vw] ${
-                          activity.is_public ? 'bg-green-400 ' : 'bg-red-400'
-                        } mx-auto`}
-                      >
-                        {activity.is_public ? 'Sí' : 'No'}
-                      </div>
-                    </td>
-                  )}
+                      {activity.is_public ? 'Sí' : 'No'}
+                    </div>
+                  </td>
                   <td
                     className="border-b border-foreground px-2 py-5"
                     onClick={() =>
