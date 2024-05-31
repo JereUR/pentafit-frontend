@@ -5,6 +5,7 @@ import { createContext, ReactNode, useState } from 'react'
 import { Activity, PropsAddActivity } from '../types/Activity'
 import axios from 'axios'
 import { useToast } from '../ui/use-toast'
+import useUser from '../hooks/useUser'
 
 type ActivitiesContextType = {
   activities: Activity[] | []
@@ -101,10 +102,11 @@ export default function ActivitiesContextProvider({
   children: ReactNode
 }) {
   const [activities, setActivities] = useState<Activity[] | []>(
-    initialActivities
+    []
   )
   const [loading, setLoading] = useState<boolean>(false)
   const { toast } = useToast()
+  const { token } = useUser()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
   async function getActivities(
@@ -116,11 +118,18 @@ export default function ActivitiesContextProvider({
     const params = new URLSearchParams()
     params.append('regex', regex.toString())
     params.append('page', page)
-    params.append('ITEMS_PER_PAGE', ITEM_PER_PAGE.toString())
-    const url = `${BASE_URL}activities?${params.toString()}`
+    params.append('items_per_page', ITEM_PER_PAGE.toString())
+    const url = `${BASE_URL}api/v1/activities?${params.toString()}`
 
     try {
-      const response = await axios.get(url)
+      const response = await axios.get(url,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token
+          }
+        }
+      )
 
       if (response.status === 200 || response.status === 204) {
         setActivities(response.data?.activities)
@@ -141,9 +150,15 @@ export default function ActivitiesContextProvider({
   }
 
   async function getActivityById(id: string) {
-    const url = `${BASE_URL}activity?id=${id}`
+    const url = `${BASE_URL}api/v1/activity?id=${id}`
     try {
-      const response = await axios.get(url)
+      const response = await axios.get(url,        
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      })
 
       if (response.status === 200 || response.status === 204) {
         return response.data
@@ -203,7 +218,7 @@ export default function ActivitiesContextProvider({
       payment_type: dataActivity.payment_type
     }
 
-    const url = `${BASE_URL}activity`
+    const url = `${BASE_URL}api/v1/activity`
     try {
       const response = await axios.post(
         url,
@@ -212,8 +227,8 @@ export default function ActivitiesContextProvider({
         },
         {
           headers: {
-            'Content-Type': 'application/json'
-            /* Authorization: token */
+            'Content-Type': 'application/json',
+            Authorization: token
           }
         }
       )
