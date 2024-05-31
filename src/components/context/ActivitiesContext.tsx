@@ -42,8 +42,8 @@ const initialActivities = [
     generate_invoice: true,
     max_sessions: 5,
     mp_available: false,
-    start_date: new Date(2024, 4, 20),
-    end_date: new Date(2024, 5, 20),
+    start_date: '2024, 4, 20',
+    end_date: '2024, 5, 20',
     payment_type: 'Mensual'
   },
   {
@@ -55,8 +55,8 @@ const initialActivities = [
     generate_invoice: true,
     max_sessions: 15,
     mp_available: true,
-    start_date: new Date(2024, 4, 20),
-    end_date: new Date(2024, 5, 20),
+    start_date: '2024, 4, 20',
+    end_date: '2024, 5, 20',
     payment_type: 'Mensual'
   },
   {
@@ -68,8 +68,8 @@ const initialActivities = [
     generate_invoice: true,
     max_sessions: 10,
     mp_available: true,
-    start_date: new Date(2024, 4, 20),
-    end_date: new Date(2024, 5, 20),
+    start_date: '2024, 4, 20',
+    end_date: '2024, 5, 20',
     payment_type: 'Por período'
   },
   {
@@ -81,8 +81,8 @@ const initialActivities = [
     generate_invoice: true,
     max_sessions: 30,
     mp_available: false,
-    start_date: new Date(2024, 4, 20),
-    end_date: new Date(2024, 5, 20),
+    start_date: '2024, 4, 20',
+    end_date: '2024, 5, 20',
     payment_type: 'Por sesion'
   },
   {
@@ -94,8 +94,8 @@ const initialActivities = [
     generate_invoice: true,
     max_sessions: 7,
     mp_available: true,
-    start_date: new Date(2024, 4, 20),
-    end_date: new Date(2024, 5, 20),
+    start_date: '2024, 4, 20',
+    end_date: '2024, 5, 20',
     payment_type: 'Mensual con sesiones'
   }
 ]
@@ -105,7 +105,9 @@ export default function ActivitiesContextProvider({
 }: {
   children: ReactNode
 }) {
-  const [activities, setActivities] = useState<Activity[] | []>([])
+  const [activities, setActivities] = useState<Activity[] | []>(
+    initialActivities
+  )
   const [loading, setLoading] = useState<boolean>(false)
   const { toast } = useToast()
   const { token } = useUser()
@@ -188,8 +190,8 @@ export default function ActivitiesContextProvider({
     //   generate_invoice: true,
     //   max_sessions: 5,
     //   mp_available: false,
-    //   start_date: new Date(2024, 4, 20),
-    //   end_date: new Date(2024, 5, 20),
+    //   start_date: "2024, 4, 20",
+    //   end_date: "2024, 5, 20",
     //   payment_type: 'Mensual',
     //   public_name: 'Test'
     // }

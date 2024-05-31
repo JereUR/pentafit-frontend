@@ -23,6 +23,8 @@ export default function ActivitiesTable() {
   const [selectedColumns, setSelectedColumns] =
     useState<Columns>(initialColumns)
   const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
+  const [showConfirmMultipleDelete, setShowConfirmMultipleDelete] =
+    useState<boolean>(false)
   const { theme } = useTheme()
   const router = useRouter()
 
@@ -69,12 +71,14 @@ export default function ActivitiesTable() {
     }
   }, [])
 
-  const handleDelete = async (id: number) => {
-    /* if (showConfirmDelete) {
-      const res = await deleteActivityById(id)
-      if (res) router.refresh()
-    } */
-    setShowConfirmDelete(false)
+  const handleDelete = async (activities: number[]) => {
+    console.log(activities)
+    if (showConfirmDelete) setShowConfirmDelete(false)
+    if (showConfirmMultipleDelete) setShowConfirmMultipleDelete(false)
+    setSelectedActivities([])
+
+    /* const res = await deleteActivityById(id)
+    if (res) router.refresh() */
   }
 
   const handleConfirmDelete = () => {
@@ -83,6 +87,14 @@ export default function ActivitiesTable() {
 
   const handleCancelDelete = () => {
     setShowConfirmDelete(false)
+  }
+
+  const handleConfirmMultipleDelete = () => {
+    setShowConfirmMultipleDelete(true)
+  }
+
+  const handleCancelMultipleDelete = () => {
+    setShowConfirmMultipleDelete(false)
   }
 
   const handleSelectAllChange = (
@@ -123,14 +135,34 @@ export default function ActivitiesTable() {
             <CustomButton text="Agregar" />
           </Link>
           {selectedActivities.length > 0 && (
-            <Button
-              className="py-2 px-4 rounded-md text-white bg-red-600 border-none cursor-pointer"
-              onClick={() => {
-                console.log('Selected activities:', selectedActivities)
-              }}
-            >
-              Borrar seleccionados ({selectedActivities.length})
-            </Button>
+            <>
+              <Button
+                className="py-2 px-4 rounded-md text-white bg-red-600 border-none cursor-pointer"
+                onClick={handleConfirmMultipleDelete}
+              >
+                Borrar seleccionados ({selectedActivities.length})
+              </Button>
+              {showConfirmMultipleDelete && (
+                <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-50 flex justify-center items-center">
+                  <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
+                    <p>
+                      {`¿Está seguro de que desea eliminar las ${selectedActivities.length} actividades seleccionadas?`}
+                    </p>
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="secondary"
+                        onClick={handleCancelMultipleDelete}
+                      >
+                        No
+                      </Button>
+                      <Button onClick={() => handleDelete(selectedActivities)}>
+                        Sí
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -182,14 +214,7 @@ export default function ActivitiesTable() {
                     styles.deleteRow.backgroundColor
                   }`}
                 >
-                  <td
-                    className="border-b border-foreground px-2 py-5"
-                    onClick={() =>
-                      router.push(
-                        `/panel-de-control/actividades/${activity.id}`
-                      )
-                    }
-                  >
+                  <td className="border-b border-foreground px-2 py-5">
                     <input
                       type="checkbox"
                       checked={selectedActivities.includes(activity.id)}
@@ -342,7 +367,7 @@ export default function ActivitiesTable() {
                                   No
                                 </Button>
                                 <Button
-                                  onClick={() => handleDelete(activity.id)}
+                                  onClick={() => handleDelete([activity.id])}
                                 >
                                   Sí
                                 </Button>
