@@ -59,6 +59,7 @@ export default function ActivityForm({
   useEffect(() => {
     async function updateWorkingBusiness() {
       const res = await getWorkingBusiness()
+      console.log(res)
       setDataActivity({ ...dataActivity, business: res })
       setWorkingBusiness(res)
     }
@@ -158,6 +159,7 @@ export default function ActivityForm({
     event.preventDefault()
 
     const err = validations({ dataActivity })
+    console.log(err)
     setFormErrors(err)
 
     console.log(dataActivity)

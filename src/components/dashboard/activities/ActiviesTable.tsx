@@ -52,10 +52,11 @@ export default function ActivitiesTable() {
         theme === 'light' ? 'delete-row-light' : 'delete-row-dark' // Ejemplo de color oscuro
     }
   }
-
+  console.log(activities)
   useEffect(() => {
   async function getData() {
     const res = await getWorkingBusiness()
+    console.log(res)
     if (res) {
       setWorkingBusiness(res)
     }
@@ -71,7 +72,7 @@ export default function ActivitiesTable() {
       const page = searchParams.get('page') || '1'
       getActivities(q, page,workingBusiness.id)
     }
-  }, [searchParams, token])
+  }, [searchParams, token, workingBusiness])
 
   useEffect(() => {
     if (window != undefined) {

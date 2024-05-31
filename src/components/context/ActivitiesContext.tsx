@@ -116,7 +116,7 @@ export default function ActivitiesContextProvider({
     page: string,
     business_id: number
   ): Promise<Activity[] | [] | void> {
-    const regex = new RegExp(q, 'i')
+    const regex = q != "" ? new RegExp(q, 'i') : q
     const ITEM_PER_PAGE = 4
     const params = new URLSearchParams()
     params.append('regex', regex.toString())
@@ -134,7 +134,7 @@ export default function ActivitiesContextProvider({
       })
 
       if (response.status === 200 || response.status === 204) {
-        setActivities(response.data?.activities)
+        setActivities(response.data)
         return response.data?.activities
       } else {
         toast({
@@ -227,7 +227,7 @@ export default function ActivitiesContextProvider({
       const response = await axios.post(
         url,
         {
-          /* data */
+          activity: newActivity
         },
         {
           headers: {
@@ -285,7 +285,6 @@ export default function ActivitiesContextProvider({
       payment_type: dataActivity.payment_type
     }
 
-    console.log(newActivity)
 
     const url = `${BASE_URL}activity`
     try {
