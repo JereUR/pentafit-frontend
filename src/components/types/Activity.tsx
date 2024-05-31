@@ -10,8 +10,8 @@ export type Activity = {
   generate_invoice: boolean
   max_sessions: number
   mp_available: boolean
-  start_date: Date
-  end_date: Date
+  start_date: string
+  end_date: string
   payment_type: string
 }
 

@@ -296,7 +296,7 @@ export default function ActivitiesTable() {
                       )
                     }
                   >
-                    {activity.start_date.toLocaleDateString()}
+                    {activity.start_date}
                   </td>
                   <td
                     className="border-b border-foreground px-2 py-5"
@@ -306,7 +306,7 @@ export default function ActivitiesTable() {
                       )
                     }
                   >
-                    {activity.end_date.toLocaleDateString()}
+                    {activity.end_date}
                   </td>
                   <td
                     className="border-b border-foreground px-2 py-5"

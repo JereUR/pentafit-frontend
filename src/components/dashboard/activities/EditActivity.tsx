@@ -43,8 +43,8 @@ export default function EditActivity() {
             mp_available: act.mp_available ? 'true' : 'false',
             public_name: act.public_name,
             max_sessions: act.max_sessions.toString(),
-            start_date: act.start_date,
-            end_date: act.end_date,
+            start_date: new Date(act.start_date),
+            end_date: new Date(act.end_date),
             payment_type: act.payment_type
           })
         }
