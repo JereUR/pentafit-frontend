@@ -1,8 +1,8 @@
 import { IoSettings } from 'react-icons/io5'
+import { Dispatch, SetStateAction } from 'react'
 
 import { FormErrors, PropsAddActivity } from '@/components/types/Activity'
 import ErrorText from '@/components/ErrorText'
-import { Dispatch, SetStateAction } from 'react'
 
 interface PublicActivityProps {
   dataActivity: PropsAddActivity

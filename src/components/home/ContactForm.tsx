@@ -2,11 +2,10 @@
 
 import React, { useState } from 'react'
 import Image from 'next/image'
+import axios from 'axios'
 
 import photo from '../../../public/assets/banner-login.png'
 import { Button } from '../ui/button'
-import axios from 'axios'
-import Loading from './../../app/loading'
 import { useToast } from '../ui/use-toast'
 
 interface FormData {

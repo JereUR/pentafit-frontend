@@ -1,19 +1,18 @@
 'use client'
 
 import { ImCross } from 'react-icons/im'
-import { IoSettings } from 'react-icons/io5'
-
-import useActivities from '@/components/hooks/useActivities'
-import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 import { FaCheck } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+
+import useActivities from '@/components/hooks/useActivities'
+import { Button } from '@/components/ui/button'
 import { FormErrors, PropsAddActivity } from '@/components/types/Activity'
 import Loader from '@/components/Loader'
 import ErrorText from '@/components/ErrorText'
 import TextForm from './TextForm'
 import useUser from '@/components/hooks/useUser'
-import Image from 'next/image'
 import { PublicActivityForm } from './PublicActivityForm'
 import noImage from '@public/assets/no-image.png'
 import { useToast } from '@/components/ui/use-toast'
@@ -59,7 +58,6 @@ export default function ActivityForm({
   useEffect(() => {
     async function updateWorkingBusiness() {
       const res = await getWorkingBusiness()
-      console.log(res)
       setDataActivity({ ...dataActivity, business: res })
       setWorkingBusiness(res)
     }
@@ -159,10 +157,7 @@ export default function ActivityForm({
     event.preventDefault()
 
     const err = validations({ dataActivity })
-    console.log(err)
     setFormErrors(err)
-
-    console.log(dataActivity)
 
     if (Object.keys(err).length === 0) {
       if (type === 'add') {

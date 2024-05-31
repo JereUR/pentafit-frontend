@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons'
 import { useRouter, useSearchParams } from 'next/navigation'
 import axios from 'axios'
+
 import { useToast } from '../ui/use-toast'
 import Loader from '../Loader'
 import ErrorText from '../ErrorText'
@@ -86,11 +87,10 @@ export default function RecoverForm() {
     try {
       const response = await axios.post(`${BASE_URL}recover`, user, {
         headers: {
-          'Content-Type': 'application/json' // Include Bearer prefix for authorization
+          'Content-Type': 'application/json'
         }
       })
       if (response.status === 200 || response.status === 204) {
-        console.log('Password update response:', response.data)
         router.push('/iniciar-sesion')
       } else {
         toast({

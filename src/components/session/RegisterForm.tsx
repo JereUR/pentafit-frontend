@@ -6,8 +6,9 @@ import {
   EyeOpenIcon
 } from '@radix-ui/react-icons'
 import { useState } from 'react'
-import { Button } from '../ui/button'
 import Link from 'next/link'
+
+import { Button } from '../ui/button'
 import useUser from '../hooks/useUser'
 import { PropsRegister } from '../types/User'
 import Loader from '../Loader'

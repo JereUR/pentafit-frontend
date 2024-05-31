@@ -1,9 +1,10 @@
 'use client'
 
-import useActivities from '@/components/hooks/useActivities'
-import { initialData, PropsAddActivity } from '@/components/types/Activity'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+
+import useActivities from '@/components/hooks/useActivities'
+import { initialData, PropsAddActivity } from '@/components/types/Activity'
 import ActivityForm from './ActivityForm'
 import useUser from '@/components/hooks/useUser'
 import { Business } from '@/components/types/Business'

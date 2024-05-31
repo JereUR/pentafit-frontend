@@ -1,9 +1,9 @@
 import { FaTableCells } from 'react-icons/fa6'
+import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 import React, { Dispatch, SetStateAction, useState } from 'react'
+
 import { Columns } from '@/components/types/Activity'
 import { Button } from '@/components/ui/button'
-import { MdExpandLess, MdExpandMore } from 'react-icons/md'
-import { CardDescription } from '@/components/ui/card'
 
 interface Props {
   selectedColumns: Columns
@@ -29,7 +29,7 @@ const SelectColumns: React.FC<Props> = ({
   }
 
   const handleMenuClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.stopPropagation() // Evitar que el clic se propague y cierre el menú
+    event.stopPropagation()
   }
 
   return (

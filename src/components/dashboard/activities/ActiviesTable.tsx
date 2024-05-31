@@ -2,32 +2,19 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useTheme } from 'next-themes'
+import Link from 'next/link'
+import { FaEdit, FaTrash } from 'react-icons/fa'
 
 import Search from '../search/Search'
 import Pagination from '../pagination/Pagination'
 import useActivities from '@/components/hooks/useActivities'
 import { Button } from '@/components/ui/button'
-import { useTheme } from 'next-themes'
-import Link from 'next/link'
-import { FaEdit, FaTrash } from 'react-icons/fa'
 import CustomButton from '@/components/CustomButton'
 import useUser from '@/components/hooks/useUser'
 import { Columns, initialColumns } from '@/components/types/Activity'
 import SelectColumns from './SelectColumns'
 import { Business } from '@/components/types/Business'
-
-const availableColumns = [
-  { id: 'description', label: 'Descripción' },
-  { id: 'amount', label: 'priceo' },
-  { id: 'is_public', label: 'Es pública?' },
-  { id: 'generate_invoice', label: 'Permite generación de cuotas' },
-  { id: 'max_sessions', label: 'Cantida máxima de sesiones' },
-  { id: 'mp_available', label: 'Permite MP a través de la app' },
-  { id: 'start_date', label: 'Fecha desde' },
-  { id: 'end_date', label: 'Fecha hasta' },
-  { id: 'payment_type', label: 'Tipo cobro' }
-  // Add more columns here if needed
-]
 
 export default function ActivitiesTable() {
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
@@ -52,11 +39,9 @@ export default function ActivitiesTable() {
         theme === 'light' ? 'delete-row-light' : 'delete-row-dark' // Ejemplo de color oscuro
     }
   }
-  console.log(activities)
   useEffect(() => {
     async function getData() {
       const res = await getWorkingBusiness()
-      console.log(res)
       if (res) {
         setWorkingBusiness(res)
       }

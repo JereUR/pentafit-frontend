@@ -1,5 +1,4 @@
 import { PropsAddBusiness } from '@/components/types/Business'
-import React, { Dispatch, SetStateAction } from 'react'
 import { FormErrors } from './BusinessForm'
 import ErrorText from '@/components/ErrorText'
 

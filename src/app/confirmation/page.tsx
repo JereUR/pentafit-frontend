@@ -29,7 +29,6 @@ export default function ConfirmationPage() {
         return
       }
       const data = await response.json()
-      console.log(data)
     }
   }, [confirmation_token])
 

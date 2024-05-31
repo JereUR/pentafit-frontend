@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { ImCross } from 'react-icons/im'
+import { FaCheck } from 'react-icons/fa'
 
 import ErrorText from '@/components/ErrorText'
 import useUser from '@/components/hooks/useUser'
@@ -10,9 +12,6 @@ import MetadataForm from './MetadataForm'
 import { Button } from '@/components/ui/button'
 import ContactForm from './ContactForm'
 import { useToast } from '@/components/ui/use-toast'
-import { useRouter } from 'next/navigation'
-import { ImCross } from 'react-icons/im'
-import { FaCheck } from 'react-icons/fa'
 import Loader from '@/components/Loader'
 import LogoHandler from './LogoHandler'
 

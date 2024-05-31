@@ -1,9 +1,9 @@
 'use client'
 
 import { createContext, ReactNode, useState } from 'react'
+import axios from 'axios'
 
 import { Activity, PropsAddActivity } from '../types/Activity'
-import axios from 'axios'
 import { useToast } from '../ui/use-toast'
 import useUser from '../hooks/useUser'
 
@@ -116,7 +116,7 @@ export default function ActivitiesContextProvider({
     page: string,
     business_id: number
   ): Promise<Activity[] | [] | void> {
-    const regex = q != "" ? new RegExp(q, 'i') : q
+    const regex = q != '' ? new RegExp(q, 'i') : q
     const ITEM_PER_PAGE = 4
     const params = new URLSearchParams()
     params.append('regex', regex.toString())
@@ -284,7 +284,6 @@ export default function ActivitiesContextProvider({
       end_date: dataActivity.end_date,
       payment_type: dataActivity.payment_type
     }
-
 
     const url = `${BASE_URL}activity`
     try {

@@ -3,7 +3,7 @@
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 import { Tabs, TabsList, TabsTrigger } from './ui/tabs'
-import { DesktopIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons'
+import { MoonIcon, SunIcon } from '@radix-ui/react-icons'
 import { usePathname } from 'next/navigation'
 
 export default function ThemeSwitcher() {

@@ -1,14 +1,12 @@
 'use client'
 
 import BusinessItem from './BusinessItem'
-import { useEffect, useState } from 'react'
-import useUser from '@/components/hooks/useUser'
-import { Button } from '@/components/ui/button'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { MdKeyboardDoubleArrowDown } from 'react-icons/md'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
+import useUser from '@/components/hooks/useUser'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
 export default function BusinessList() {
   const router = useRouter()

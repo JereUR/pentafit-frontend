@@ -8,13 +8,13 @@ import {
   useEffect,
   useState
 } from 'react'
-
-import { PropsLogin, PropsRegister, User } from '../types/User'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
+import axios from 'axios'
+
+import { PropsLogin, PropsRegister, User } from '../types/User'
 import { setCookies } from './setCookies'
 import { removeCookies } from './removeCookies'
-import axios from 'axios'
 import { useToast } from '../ui/use-toast'
 import { Business, PropsAddBusiness } from '../types/Business'
 
@@ -144,7 +144,6 @@ export default function AuthContextProvider({
           router.push('/panel-de-control')
         }, 100)
       } else {
-        console.log(response)
         toast({
           title: 'Oh no! Algo salió mal.',
           description: response.statusText
@@ -305,7 +304,6 @@ export default function AuthContextProvider({
       })
 
       if (response.status === 200 || response.status === 204) {
-        console.log(response)
         if (response.data instanceof Array) {
           setBusinesses(response.data)
         }
@@ -419,7 +417,6 @@ export default function AuthContextProvider({
             if (dataBusiness.logoWeb) {
               formData.append('logo', dataBusiness.logoWeb)
             }
-            console.log(formData)
             url = `${BASE_URL}api/v1/attach_business_image`
             const response = await axios.post(
               `${url}?id=${newBusiness.id}`,
@@ -533,7 +530,6 @@ export default function AuthContextProvider({
             if (dataBusiness.logoWeb) {
               formData.append('logo', dataBusiness.logoWeb)
             }
-            console.log(formData)
             url = `${BASE_URL}api/v1/attach_business_image`
             const response = await axios.post(
               `${url}?id=${data.id}`,

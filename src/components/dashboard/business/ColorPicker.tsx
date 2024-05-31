@@ -6,6 +6,7 @@ import {
   SetStateAction,
   useEffect
 } from 'react'
+
 import { PropsAddBusiness } from '@/components/types/Business'
 
 interface ColorPickerProps {

@@ -2,21 +2,19 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-
-import useUser from '@/components/hooks/useUser'
-import { Card } from '@/components/ui/card'
-import noImage from '@public/assets/no-image.png'
-import { Button } from '@/components/ui/button'
 import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 import { useRouter } from 'next/navigation'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@radix-ui/react-dropdown-menu'
+
+import useUser from '@/components/hooks/useUser'
+import { Card } from '@/components/ui/card'
+import noImage from '@public/assets/no-image.png'
+import { Button } from '@/components/ui/button'
 import { Business } from '@/components/types/Business'
 
 const RightBar = () => {
@@ -82,12 +80,8 @@ const RightBar = () => {
               />
             </div>
             <div className="p-4">
-              <h2 className="text-xl font-semibold">
-                {workingBusines.name}
-              </h2>
-              <p className="text-gray-600">
-                {workingBusines.description}
-              </p>
+              <h2 className="text-xl font-semibold">{workingBusines.name}</h2>
+              <p className="text-gray-600">{workingBusines.description}</p>
               {otherBusinesses.length > 0 ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger className="relative">

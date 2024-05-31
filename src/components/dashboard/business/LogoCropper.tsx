@@ -1,13 +1,7 @@
 'use client'
 
 import ErrorText from '@/components/ErrorText'
-import React, {
-  Dispatch,
-  EventHandler,
-  SetStateAction,
-  useRef,
-  useState
-} from 'react'
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react'
 import ReactCrop, {
   centerCrop,
   convertToPixelCrop,
@@ -15,6 +9,7 @@ import ReactCrop, {
   PercentCrop,
   PixelCrop
 } from 'react-image-crop'
+
 import setCanvasPreview from './setCanvasPreview'
 import { PropsAddBusiness } from '@/components/types/Business'
 import { useToast } from '@/components/ui/use-toast'

@@ -1,10 +1,11 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
+
 import Logo from './Logo'
 import ThemeSwitcher from './ThemeSwitcher'
 import { Button } from './ui/button'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import useUser from './hooks/useUser'
 

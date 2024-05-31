@@ -1,10 +1,10 @@
 import { Cross1Icon } from '@radix-ui/react-icons'
 import React, { useState } from 'react'
+import Image from 'next/image'
 
 import { Button } from '../ui/button'
 import useUser from '../hooks/useUser'
 import mailPhoto from '../../../public/assets/recover-mail.png'
-import Image from 'next/image'
 import Loader from '../Loader'
 
 interface ForgotPasswordModalProps {
@@ -19,7 +19,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
   const [email, setEmail] = useState<string>('')
   const [showModal, setShowModal] = useState(isOpen)
   const [forgotError, setForgotError] = useState('')
-  const { recover, recoverState, setRecoverState,loading } = useUser()
+  const { recover, recoverState, setRecoverState, loading } = useUser()
 
   const handleClose = () => {
     setShowModal(false)
