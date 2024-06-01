@@ -15,13 +15,11 @@ import Loader from '@/components/Loader'
 interface Props {
   selectedActivities: number[]
   setSelectedActivities: Dispatch<SetStateAction<number[]>>
-  working_business_id: number | undefined
 }
 
 const SelectedActivitiesActions: React.FC<Props> = ({
   selectedActivities,
-  setSelectedActivities,
-  working_business_id
+  setSelectedActivities
 }) => {
   const [showConfirmMultipleDelete, setShowConfirmMultipleDelete] =
     useState<boolean>(false)
@@ -79,32 +77,24 @@ const SelectedActivitiesActions: React.FC<Props> = ({
   }
 
   const handleDelete = async () => {
-    if (working_business_id) {
-      const res = await deleteActivitiesById(
-        working_business_id,
-        selectedActivities
-      )
+    const res = await deleteActivitiesById(selectedActivities)
 
-      if (res) {
-        setShowConfirmMultipleDelete(false)
-        setSelectedActivities([])
-      }
+    if (res) {
+      setShowConfirmMultipleDelete(false)
+      setSelectedActivities([])
     }
   }
 
   const handleAdd = async () => {
-    if (working_business_id) {
-      const res = await addActivitiesToBusinesses(
-        working_business_id,
-        selectedActivities,
-        businessesToAdd
-      )
+    const res = await addActivitiesToBusinesses(
+      selectedActivities,
+      businessesToAdd
+    )
 
-      if (res) {
-        setSelectedActivities([])
-        setShowConfirmAddToBusinesses(false)
-        setBusinessesToAdd([])
-      }
+    if (res) {
+      setSelectedActivities([])
+      setShowConfirmAddToBusinesses(false)
+      setBusinessesToAdd([])
     }
   }
 

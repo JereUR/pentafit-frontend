@@ -71,15 +71,10 @@ export default function ActivitiesTable() {
   const handleDelete = async (activity: number) => {
     const activitiesToDelete = [activity]
 
-    if (workingBusiness) {
-      const res = await deleteActivitiesById(
-        workingBusiness.id,
-        activitiesToDelete
-      )
+    const res = await deleteActivitiesById(activitiesToDelete)
 
-      if (res) {
-        setShowConfirmDelete(false)
-      }
+    if (res) {
+      setShowConfirmDelete(false)
     }
   }
 
@@ -175,7 +170,6 @@ export default function ActivitiesTable() {
             <SelectedActivitiesActions
               selectedActivities={selectedActivities}
               setSelectedActivities={setSelectedActivities}
-              working_business_id={workingBusiness?.id}
             />
           )}
         </div>

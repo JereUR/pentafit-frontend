@@ -22,12 +22,8 @@ type ActivitiesContextType = {
   }: {
     dataActivity: PropsAddActivity
   }) => Promise<boolean>
-  deleteActivitiesById: (
-    business_id: number,
-    activities: number[]
-  ) => Promise<boolean>
+  deleteActivitiesById: (activities: number[]) => Promise<boolean>
   addActivitiesToBusinesses: (
-    business_id: number,
     activities: number[],
     businesses: number[]
   ) => Promise<boolean>
@@ -313,13 +309,9 @@ export default function ActivitiesContextProvider({
     }
   }
 
-  async function deleteActivitiesById(
-    business_id: number,
-    activities: number[]
-  ): Promise<boolean> {
+  async function deleteActivitiesById(activities: number[]): Promise<boolean> {
     setLoading(true)
     const params = new URLSearchParams()
-    params.append('company_id', business_id.toString())
     params.append('activities', activities.toString())
     const url = `${BASE_URL}api/v1/activity`
     try {
@@ -357,7 +349,6 @@ export default function ActivitiesContextProvider({
   }
 
   async function addActivitiesToBusinesses(
-    business_id: number,
     activities: number[],
     businesses: number[]
   ): Promise<boolean> {
@@ -365,7 +356,6 @@ export default function ActivitiesContextProvider({
     const url = `${BASE_URL}api/v1/activity`
 
     const data = {
-      company_id: business_id,
       activities,
       businesses
     }
