@@ -4,12 +4,12 @@ export default function CustomButton({ text }: { text: string }) {
   return (
     <div>
       <button className="rounded-lg relative w-36 h-10 cursor-pointer flex items-center border-none bg-primary-orange-600 group hover:bg-primary-orange-700 active:bg-primary-orange-700">
-        <span className="text-muted font-semibold ml-8 transform group-hover:translate-x-10 transition-all duration-300">
+        <span className="text-foreground font-semibold ml-8 transform group-hover:translate-x-10 transition-all duration-300">
           {text}
         </span>
         <span className="absolute right-0 h-full w-10 rounded-lg bg-primary-orange-600 hover:bg-primary-orange-700 flex items-center justify-center transform group-hover:translate-x-0 group-hover:w-full transition-all duration-300">
           <svg
-            className="svg w-8 text-muted"
+            className="svg w-8 text-foreground"
             fill="none"
             height="24"
             stroke="currentColor"
