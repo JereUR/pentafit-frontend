@@ -48,8 +48,8 @@ export default function ActivityForm({
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
   const { toast } = useToast()
   const router = useRouter()
-  const { getWorkingBusiness, loading, token, businesses } = useUser()
-  const { addActivity, updateActivity } = useActivities()
+  const { getWorkingBusiness, token, businesses } = useUser()
+  const { addActivity, updateActivity,loading } = useActivities()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
   useEffect(() => {
     setDataActivity(activity)
@@ -197,13 +197,13 @@ export default function ActivityForm({
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-6 mb-6 border border-gray-300 dark:border-gray-700 pt-2 pb-6 px-2">
           <div className="flex gap-4 items-center">
-            <label className="text-xl font-light">Area de Trabajo</label>
+            <label className="text-xl font-light mt-4 ml-4">Area de Trabajo</label>
             {formErrors.company_id && (
               <ErrorText text={formErrors.company_id} />
             )}
           </div>
           {workingBusiness ? (
-            <div className="flex items-center">
+            <div className="flex items-center mx-6 mb-2">
               <div className="flex px-6">
                 <Image
                   src={
@@ -227,7 +227,12 @@ export default function ActivityForm({
               </div>
             </div>
           ) : (
-            <div>* Sin area de trabajo asignada *</div>
+            <div className="flex flex-col justify-center items-center gap-2 ">
+            <p className='text-xl font-semibold'>Sin area de trabajo asignada</p>
+            <span className="text-sm italic">
+              Debes seleccionar un area de trabajo para realizar tareas
+            </span>
+          </div>
           )}
         </div>
         <div className="grid grid-cols-3 gap-8 mb-4">
