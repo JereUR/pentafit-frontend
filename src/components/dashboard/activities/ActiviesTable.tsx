@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useTheme } from 'next-themes'
+import Image from 'next/image'
 import Link from 'next/link'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 
@@ -15,6 +15,11 @@ import useUser from '@/components/hooks/useUser'
 import { Columns, initialColumns } from '@/components/types/Activity'
 import SelectColumns from './SelectColumns'
 import { Business } from '@/components/types/Business'
+import SelectedActivitiesActions from './SelectedActivitiesActions'
+import noImage from '@public/assets/no-image.png'
+import Loader from '@/components/Loader'
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
 export default function ActivitiesTable() {
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
@@ -23,24 +28,16 @@ export default function ActivitiesTable() {
   const [selectedColumns, setSelectedColumns] =
     useState<Columns>(initialColumns)
   const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
-  const [showConfirmMultipleDelete, setShowConfirmMultipleDelete] =
-    useState<boolean>(false)
-  const { theme } = useTheme()
+
   const router = useRouter()
 
   const searchParams = useSearchParams()
   const count = 4
-  const q = searchParams.get('q') || ''
   const { token } = useUser()
-  const { activities, getActivities } = useActivities()
+  const { activities, getActivities, loading, deleteActivitiesById } =
+    useActivities()
   const { getWorkingBusiness } = useUser()
 
-  const styles = {
-    deleteRow: {
-      backgroundColor:
-        theme === 'light' ? 'delete-row-light' : 'delete-row-dark' // Ejemplo de color oscuro
-    }
-  }
   useEffect(() => {
     async function getData() {
       const res = await getWorkingBusiness()
@@ -71,14 +68,19 @@ export default function ActivitiesTable() {
     }
   }, [])
 
-  const handleDelete = async (activities: number[]) => {
-    console.log(activities)
-    if (showConfirmDelete) setShowConfirmDelete(false)
-    if (showConfirmMultipleDelete) setShowConfirmMultipleDelete(false)
-    setSelectedActivities([])
+  const handleDelete = async (activity: number) => {
+    const activitiesToDelete = [activity]
 
-    /* const res = await deleteActivityById(id)
-    if (res) router.refresh() */
+    if (workingBusiness) {
+      const res = await deleteActivitiesById(
+        workingBusiness.id,
+        activitiesToDelete
+      )
+
+      if (res) {
+        setShowConfirmDelete(false)
+      }
+    }
   }
 
   const handleConfirmDelete = () => {
@@ -87,14 +89,6 @@ export default function ActivitiesTable() {
 
   const handleCancelDelete = () => {
     setShowConfirmDelete(false)
-  }
-
-  const handleConfirmMultipleDelete = () => {
-    setShowConfirmMultipleDelete(true)
-  }
-
-  const handleCancelMultipleDelete = () => {
-    setShowConfirmMultipleDelete(false)
   }
 
   const handleSelectAllChange = (
@@ -124,45 +118,65 @@ export default function ActivitiesTable() {
 
   return (
     <div className="container bg-background p-1 rounded-lg mt-5">
+      <div className="flex flex-col gap-6 mb-6 border border-gray-300 dark:border-gray-700 pt-2 pb-6 px-2">
+        <div className="flex gap-4 items-center">
+          <label className="text-xl font-light mt-4 ml-4">
+            Area de Trabajo
+          </label>
+        </div>
+        {workingBusiness ? (
+          <div className="flex items-center mx-6 mb-2">
+            <div className="flex px-6">
+              <Image
+                src={
+                  workingBusiness.logo
+                    ? `${BASE_URL}${workingBusiness.logo}`
+                    : noImage
+                }
+                alt={`${workingBusiness.name} logo`}
+                width={80}
+                height={80}
+                className="w-[80px] h-[80px] border-[1px] border-primary-orange-600 rounded-full p-1 dark:ring-primary-orange-400"
+              />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold">{workingBusiness.name}</h2>
+              <p className="text-sm">
+                {workingBusiness.description
+                  ? workingBusiness.description
+                  : 'Sin descripción.'}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col justify-center items-center gap-2 ">
+            <p className="text-xl font-semibold">
+              Sin area de trabajo asignada
+            </p>
+            <span className="text-sm italic">
+              Debes seleccionar un area de trabajo para realizar tareas
+            </span>
+          </div>
+        )}
+      </div>
       <div className="flex items-center justify-between my-4">
-        <Search placeholder="Buscar una actividad..." />
-        <div className="flex gap-2">
+        <div className="flex justify-center gap-2">
+          <Search placeholder="Buscar una actividad..." />
           <SelectColumns
             selectedColumns={selectedColumns}
             setSelectedColumns={setSelectedColumns}
           />
+        </div>
+        <div className="flex justify-center gap-4">
           <Link href="/panel-de-control/actividades/agregar">
             <CustomButton text="Agregar" />
           </Link>
           {selectedActivities.length > 0 && (
-            <>
-              <Button
-                className="py-2 px-4 rounded-md text-white bg-red-600 border-none cursor-pointer"
-                onClick={handleConfirmMultipleDelete}
-              >
-                Borrar seleccionados ({selectedActivities.length})
-              </Button>
-              {showConfirmMultipleDelete && (
-                <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-50 flex justify-center items-center">
-                  <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
-                    <p>
-                      {`¿Está seguro de que desea eliminar las ${selectedActivities.length} actividades seleccionadas?`}
-                    </p>
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="secondary"
-                        onClick={handleCancelMultipleDelete}
-                      >
-                        No
-                      </Button>
-                      <Button onClick={() => handleDelete(selectedActivities)}>
-                        Sí
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </>
+            <SelectedActivitiesActions
+              selectedActivities={selectedActivities}
+              setSelectedActivities={setSelectedActivities}
+              working_business_id={workingBusiness?.id}
+            />
           )}
         </div>
       </div>
@@ -211,7 +225,7 @@ export default function ActivitiesTable() {
                   key={activity.id}
                   className={`my-4 transition duration-300 ease-in-out hover:bg-muted cursor-pointer items-center text-center ${
                     selectedActivities.includes(activity.id) &&
-                    styles.deleteRow.backgroundColor
+                    'bg-gray-300 dark:bg-gray-700'
                   }`}
                 >
                   <td className="border-b border-foreground px-2 py-5">
@@ -224,118 +238,136 @@ export default function ActivitiesTable() {
                       className="cursor-pointer h-5 w-5"
                     />
                   </td>
-                  <td
-                    className="border-b border-foreground px-2 py-5"
-                    onClick={() =>
-                      router.push(
-                        `/panel-de-control/actividades/${activity.id}`
-                      )
-                    }
-                  >
-                    {activity.name}
-                  </td>
-                  <td
-                    className="border-b border-foreground px-2 py-5"
-                    onClick={() =>
-                      router.push(
-                        `/panel-de-control/actividades/${activity.id}`
-                      )
-                    }
-                  >
-                    ${activity.price}
-                  </td>
-                  <td
-                    className="border-b border-foreground px-2 py-5"
-                    onClick={() =>
-                      router.push(
-                        `/panel-de-control/actividades/${activity.id}`
-                      )
-                    }
-                  >
-                    <div
-                      className={`rounded-xl w-[3vw] ${
-                        activity.is_public ? 'bg-green-400 ' : 'bg-red-400'
-                      } mx-auto`}
+                  {selectedColumns.name && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
                     >
-                      {activity.is_public ? 'Sí' : 'No'}
-                    </div>
-                  </td>
-                  <td
-                    className="border-b border-foreground px-2 py-5"
-                    onClick={() =>
-                      router.push(
-                        `/panel-de-control/actividades/${activity.id}`
-                      )
-                    }
-                  >
-                    <div
-                      className={`rounded-xl w-[3vw] ${
-                        activity.generate_invoice
-                          ? 'bg-green-400 '
-                          : 'bg-red-400'
-                      } mx-auto`}
+                      {activity.name}
+                    </td>
+                  )}
+                  {selectedColumns.price && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
                     >
-                      {activity.generate_invoice ? 'Sí' : 'No'}
-                    </div>
-                  </td>
-                  <td
-                    className="border-b border-foreground px-2 py-5"
-                    onClick={() =>
-                      router.push(
-                        `/panel-de-control/actividades/${activity.id}`
-                      )
-                    }
-                  >
-                    {activity.max_sessions}
-                  </td>
-                  <td
-                    className="border-b border-foreground px-2 py-5"
-                    onClick={() =>
-                      router.push(
-                        `/panel-de-control/actividades/${activity.id}`
-                      )
-                    }
-                  >
-                    <div
-                      className={`rounded-xl w-[3vw] ${
-                        activity.mp_available ? 'bg-green-400 ' : 'bg-red-400'
-                      } mx-auto`}
+                      ${activity.price}
+                    </td>
+                  )}
+                  {selectedColumns.is_public && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
                     >
-                      {activity.mp_available ? 'Sí' : 'No'}
-                    </div>
-                  </td>
-                  <td
-                    className="border-b border-foreground px-2 py-5"
-                    onClick={() =>
-                      router.push(
-                        `/panel-de-control/actividades/${activity.id}`
-                      )
-                    }
-                  >
-                    {activity.start_date}
-                  </td>
-                  <td
-                    className="border-b border-foreground px-2 py-5"
-                    onClick={() =>
-                      router.push(
-                        `/panel-de-control/actividades/${activity.id}`
-                      )
-                    }
-                  >
-                    {activity.end_date}
-                  </td>
-                  <td
-                    className="border-b border-foreground px-2 py-5"
-                    onClick={() =>
-                      router.push(
-                        `/panel-de-control/actividades/${activity.id}`
-                      )
-                    }
-                  >
-                    {activity.payment_type}
-                  </td>
+                      <div
+                        className={`rounded-xl w-[3vw] ${
+                          activity.is_public ? 'bg-green-400 ' : 'bg-red-400'
+                        } mx-auto`}
+                      >
+                        {activity.is_public ? 'Sí' : 'No'}
+                      </div>
+                    </td>
+                  )}
+                  {selectedColumns.generate_invoice && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
+                    >
+                      <div
+                        className={`rounded-xl w-[3vw] ${
+                          activity.generate_invoice
+                            ? 'bg-green-400 '
+                            : 'bg-red-400'
+                        } mx-auto`}
+                      >
+                        {activity.generate_invoice ? 'Sí' : 'No'}
+                      </div>
+                    </td>
+                  )}
+                  {selectedColumns.max_sessions && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
+                    >
+                      {activity.max_sessions}
+                    </td>
+                  )}
+                  {selectedColumns.mp_available && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
+                    >
+                      <div
+                        className={`rounded-xl w-[3vw] ${
+                          activity.mp_available ? 'bg-green-400 ' : 'bg-red-400'
+                        } mx-auto`}
+                      >
+                        {activity.mp_available ? 'Sí' : 'No'}
+                      </div>
+                    </td>
+                  )}
+                  {selectedColumns.start_date && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
+                    >
+                      {activity.start_date}
+                    </td>
+                  )}
+                  {selectedColumns.end_date && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
+                    >
+                      {activity.end_date}
+                    </td>
+                  )}
+                  {selectedColumns.payment_type && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
+                    >
+                      {activity.payment_type}
+                    </td>
+                  )}
                   <td className="border-b border-foreground px-2 py-5">
-                    <div className="flex gap-2">
+                    <div className="flex justify-center gap-2">
                       <div>
                         <Link
                           href={`/panel-de-control/actividades/editar/${activity.id}`}
@@ -364,12 +396,16 @@ export default function ActivitiesTable() {
                                   variant="secondary"
                                   onClick={handleCancelDelete}
                                 >
-                                  No
+                                  Cancelar
                                 </Button>
                                 <Button
-                                  onClick={() => handleDelete([activity.id])}
+                                  onClick={() => handleDelete(activity.id)}
                                 >
-                                  Sí
+                                  {loading ? (
+                                    <Loader className="mt-[1.8vh] ml-[1vw]" />
+                                  ) : (
+                                    'Confirmar'
+                                  )}
                                 </Button>
                               </div>
                             </div>
@@ -385,7 +421,11 @@ export default function ActivitiesTable() {
             <tbody className="text-center">
               <tr>
                 <td
-                  colSpan={11}
+                  colSpan={
+                    Object.values(selectedColumns).filter(
+                      (value) => value === true
+                    ).length + 2
+                  }
                   className="py-4 text-lg font-light italic border-b"
                 >
                   Sin Actividades.
