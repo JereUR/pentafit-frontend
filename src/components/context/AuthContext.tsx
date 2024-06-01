@@ -682,7 +682,7 @@ export default function AuthContextProvider({
   }
 
   async function getWorkingBusiness() {
-    /*  return businesses[0] */
+    /* return businesses[0] */
     setLoading(true)
     try {
       const response = await axios.get(`${BASE_URL}api/v1/business_working`, {
