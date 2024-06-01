@@ -69,14 +69,6 @@
   }
 }
 
-.delete-row-dark {
-  background-color: #d44238 !important;
-}
-
-.delete-row-light {
-  background-color: #f14c40 !important;
-}
-
 @layer base {
   * {
     @apply border-border;
