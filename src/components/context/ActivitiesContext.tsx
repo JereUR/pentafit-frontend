@@ -10,11 +10,7 @@ import useUser from '../hooks/useUser'
 type ActivitiesContextType = {
   activities: Activity[] | []
   loading: boolean
-  getActivities: (
-    q: string,
-    page: string,
-    business_id: number
-  ) => Promise<Activity[] | [] | void>
+  getActivities: (q: string, page: string, business_id: number) => Promise<void>
   getActivityById: (id: string, business_id: number) => Promise<Activity | null>
   addActivity: ({
     dataActivity
@@ -26,6 +22,15 @@ type ActivitiesContextType = {
   }: {
     dataActivity: PropsAddActivity
   }) => Promise<boolean>
+  deleteActivitiesById: (
+    business_id: number,
+    activities: number[]
+  ) => Promise<boolean>
+  addActivitiesToBusinesses: (
+    business_id: number,
+    activities: number[],
+    businesses: number[]
+  ) => Promise<boolean>
 }
 
 export const ActivitiesContext = createContext<ActivitiesContextType | null>(
@@ -117,7 +122,8 @@ export default function ActivitiesContextProvider({
     q: string,
     page: string,
     business_id: number
-  ): Promise<Activity[] | [] | void> {
+  ): Promise<void> {
+    setLoading(true)
     const regex = q != '' ? new RegExp(q, 'i') : q
     const ITEM_PER_PAGE = 4
     const params = new URLSearchParams()
@@ -137,7 +143,6 @@ export default function ActivitiesContextProvider({
 
       if (response.status === 200 || response.status === 204) {
         setActivities(response.data)
-        return response.data?.activities
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
@@ -150,10 +155,16 @@ export default function ActivitiesContextProvider({
         title: 'Oh no! Algo salió mal.',
         description: error.message
       })
+    } finally {
+      setLoading(false)
     }
   }
 
-  async function getActivityById(id: string, business_id: number) {
+  async function getActivityById(
+    id: string,
+    business_id: number
+  ): Promise<Activity | null> {
+    setLoading(true)
     const params = new URLSearchParams()
     params.append('activity_id', id)
     params.append('company_id', business_id.toString())
@@ -173,6 +184,7 @@ export default function ActivitiesContextProvider({
           title: 'Oh no! Algo salió mal.',
           description: response.statusText
         })
+        return null
       }
     } catch (error: any) {
       toast({
@@ -180,21 +192,10 @@ export default function ActivitiesContextProvider({
         title: 'Oh no! Algo salió mal.',
         description: error.message
       })
+      return null
+    } finally {
+      setLoading(false)
     }
-    // return {
-    //   id: 1,
-    //   company_id: 1,
-    //   name: 'Actividad 1',
-    //   price: 200,
-    //   is_public: true,
-    //   generate_invoice: true,
-    //   max_sessions: 5,
-    //   mp_available: false,
-    //   start_date: "2024, 4, 20",
-    //   end_date: "2024, 5, 20",
-    //   payment_type: 'Mensual',
-    //   public_name: 'Test'
-    // }
   }
 
   async function addActivity({
@@ -312,6 +313,101 @@ export default function ActivitiesContextProvider({
     }
   }
 
+  async function deleteActivitiesById(
+    business_id: number,
+    activities: number[]
+  ): Promise<boolean> {
+    setLoading(true)
+    const params = new URLSearchParams()
+    params.append('company_id', business_id.toString())
+    params.append('activities', activities.toString())
+    const url = `${BASE_URL}api/v1/activity`
+    try {
+      const response = await axios.delete(url, {
+        headers: {
+          Authorization: token
+        }
+      })
+
+      if (response.status === 200 || response.status === 204) {
+        toast({
+          title: `Actividades con id:'${activities.map(
+            (activity) => activity
+          )}' eliminado.`,
+          className: 'bg-green-600'
+        })
+        return true
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return false
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return false
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function addActivitiesToBusinesses(
+    business_id: number,
+    activities: number[],
+    businesses: number[]
+  ): Promise<boolean> {
+    setLoading(true)
+    const url = `${BASE_URL}api/v1/activity`
+
+    const data = {
+      company_id: business_id,
+      activities,
+      businesses
+    }
+    try {
+      const response = await axios.post(
+        url,
+        {
+          data
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token
+          }
+        }
+      )
+
+      if (response.status === 201) {
+        toast({
+          title: `Actividades agregadas con éxito.`,
+          className: 'bg-green-600'
+        })
+        return true
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return false
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return false
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <ActivitiesContext.Provider
       value={{
@@ -320,7 +416,9 @@ export default function ActivitiesContextProvider({
         getActivities,
         getActivityById,
         addActivity,
-        updateActivity
+        updateActivity,
+        deleteActivitiesById,
+        addActivitiesToBusinesses
       }}
     >
       {children}
