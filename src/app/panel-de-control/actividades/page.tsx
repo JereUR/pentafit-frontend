@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 
 import ActivitiesTable from '@/components/dashboard/activities/ActiviesTable'
+import ActivitiesSkeleton from '@/components/dashboard/activities/ActivitiesSkeleton'
 
 export const metadata: Metadata = {
   title: 'PentaFit - Actividades'
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function ActivitiesPage() {
   return (
-    <Suspense fallback="Loading...">
+    <Suspense fallback={<ActivitiesSkeleton />}>
       <ActivitiesTable />
     </Suspense>
   )
