@@ -136,7 +136,7 @@ export default function ContactForm() {
   }
 
   return (
-    <div className="bg-primary-orange-400 p-10 w-full shadow-md">
+    <div className="bg-primary-orange-500 p-10 w-full shadow-md">
       <div className="flex gap-2">
         <div className="w-full m-4">
           <Image
@@ -148,8 +148,8 @@ export default function ContactForm() {
         </div>
         <div className=" m-8">
           <div className="flex flex-col gap-5 mb-5">
-            <h1 className="text-xl font-bold">BUENAS!</h1>
-            <p className="text-3xl italic">Dejanos tu consulta</p>
+            <h1 className="text-4xl font-semibold">BUENAS!</h1>
+            <p className="text-2xl italic">Dejanos tu consulta</p>
           </div>
           <form
             onSubmit={handleSubmit}
@@ -157,7 +157,7 @@ export default function ContactForm() {
           >
             {inputFields.map((field) => (
               <div className="flex flex-col" key={field.name}>
-                <label htmlFor={field.name} className="font-bold mt-2">
+                <label htmlFor={field.name} className="text-lg font-light my-2">
                   {field.label}
                 </label>
                 {field.type === 'textarea' ? (
@@ -165,7 +165,7 @@ export default function ContactForm() {
                     name={field.name}
                     value={formData[field.name]}
                     onChange={handleChange}
-                    className="bg-background border-none rounded-md ml-1 h-32 p-2 focus:outline-none"
+                    className="bg-card border-none rounded-md h-32 p-2 focus:outline-none"
                   />
                 ) : (
                   <input
@@ -173,7 +173,7 @@ export default function ContactForm() {
                     name={field.name}
                     value={formData[field.name]}
                     onChange={handleChange}
-                    className="bg-background border-none rounded-md ml-1 p-2 focus:outline-none"
+                    className="bg-card border-none rounded-md p-2 focus:outline-none"
                   />
                 )}
                 {errors[field.name] && (
@@ -186,7 +186,7 @@ export default function ContactForm() {
             <div className="">
               <Button
                 type="submit"
-                className="absolute bg-primary-orange-600 hover:bg-primary-orange-700 text-xl font-bold p-6 mt-4 right-20 w-[10vw]"
+                className="absolute bg-card text-card-foreground transition duration-300 ease-in-out hover:bg-card-foreground hover:text-card text-xl font-bold p-6 my-4 right-20 w-[10vw]"
               >
                 Enviar
               </Button>
