@@ -55,7 +55,7 @@ export default function BusinessItem({ item }: { item: Business }) {
   }
 
   return (
-    <div className="p-4 m-8 border border-gray-300 dark:border-gray-600 rounded-lg">
+    <div className="p-4 m-8 border border-gray-300 dark:border-gray-600 rounded-lg shadow-md">
       <div className="flex justify-between py-6">
         <div className={`flex ${!item.is_active && 'opacity-40'}`}>
           <div className="flex px-16">
