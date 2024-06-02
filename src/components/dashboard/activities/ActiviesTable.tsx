@@ -115,9 +115,9 @@ export default function ActivitiesTable() {
   return (
     <div className="container bg-background p-1 rounded-lg mt-10">
       <div className="flex justify-between">
-        <div className="flex flex-col gap-6 mb-6 border bg-card border-gray-300 rounded-md dark:border-gray-700 pt-2 pb-6 px-2">
+        <div className="flex flex-col gap-6 mb-6 border bg-card border-gray-300 rounded-md shadow-md dark:border-gray-700 pt-2 pb-6 px-2">
           <div className="flex gap-4 items-center">
-            <label className="text-xl font-light mt-4 ml-4">
+            <label className="text-xl font-bold mt-4 ml-4">
               Area de Trabajo
             </label>
           </div>
@@ -137,7 +137,9 @@ export default function ActivitiesTable() {
                 />
               </div>
               <div>
-                <h2 className="text-lg font-bold">{workingBusiness.name}</h2>
+                <h2 className="text-lg font-semibold">
+                  {workingBusiness.name}
+                </h2>
                 <p className="text-sm">
                   {workingBusiness.description
                     ? workingBusiness.description
