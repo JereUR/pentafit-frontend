@@ -13,7 +13,7 @@ const PriceSection: React.FC<Props> = ({ title, description, price }) => {
       {/* Added flex-1 and margin */}
       <div className="px-6 py-8 sm:p-10 sm:pb-6 flex flex-col flex-grow">
         <div className="flex-grow">
-          <h2 className="text-lg xl:text-xl font-medium tracking-tighter lg:text-3xl pb-4 border-b">
+          <h2 className="text-lg xl:text-3xl font-medium tracking-tighter lg:text-3xl pb-4 border-b">
             {title}
           </h2>
           <div className="m-2 mt-4">
