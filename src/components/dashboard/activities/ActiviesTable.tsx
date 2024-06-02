@@ -113,9 +113,9 @@ export default function ActivitiesTable() {
   }
 
   return (
-    <div className="container bg-background p-1 rounded-lg mt-5">
+    <div className="container bg-background p-1 rounded-lg mt-10">
       <div className="flex justify-between">
-        <div className="flex flex-col gap-6 mb-6 border border-gray-300 rounded-md dark:border-gray-700 pt-2 pb-6 px-2">
+        <div className="flex flex-col gap-6 mb-6 border bg-card border-gray-300 rounded-md dark:border-gray-700 pt-2 pb-6 px-2">
           <div className="flex gap-4 items-center">
             <label className="text-xl font-light mt-4 ml-4">
               Area de Trabajo
@@ -156,7 +156,7 @@ export default function ActivitiesTable() {
             </div>
           )}
         </div>
-        <div className='mr-10'>
+        <div className="mr-10">
           <Card className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md">
             <CardHeader className="text-5xl text-center py-1 text-primary-orange-500 font-semibold dark:text-primary-orange-700">
               {activities.length}
