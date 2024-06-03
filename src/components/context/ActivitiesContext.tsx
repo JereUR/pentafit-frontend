@@ -10,6 +10,7 @@ import useUser from '../hooks/useUser'
 type ActivitiesContextType = {
   activities: Activity[] | []
   loading: boolean
+  getAllActivities: () => Promise<Activity[] | []>
   getActivities: (q: string, page: string, business_id: number) => Promise<void>
   getActivityById: (id: string, business_id: number) => Promise<Activity | null>
   addActivity: ({
@@ -53,6 +54,7 @@ const initialActivities = [
     name: 'Actividad 2',
     price: 300,
     is_public: true,
+    public_name: 'Act 1',
     generate_invoice: true,
     max_sessions: 15,
     mp_available: true,
@@ -66,6 +68,7 @@ const initialActivities = [
     name: 'Actividad 3',
     price: 400,
     is_public: true,
+    public_name: 'Act 1',
     generate_invoice: true,
     max_sessions: 10,
     mp_available: true,
@@ -92,6 +95,7 @@ const initialActivities = [
     name: 'Actividad 5',
     price: 500,
     is_public: true,
+    public_name: 'Act 5',
     generate_invoice: true,
     max_sessions: 7,
     mp_available: true,
@@ -106,13 +110,44 @@ export default function ActivitiesContextProvider({
 }: {
   children: ReactNode
 }) {
-  const [activities, setActivities] = useState<Activity[] | []>(
-    initialActivities
-  )
+  const [activities, setActivities] = useState<Activity[] | []>([])
   const [loading, setLoading] = useState<boolean>(false)
   const { toast } = useToast()
   const { token } = useUser()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
+
+  async function getAllActivities(): Promise<Activity[] | []> {
+    setLoading(true)
+    const url = `${BASE_URL}api/v1/activities`
+
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      })
+
+      if (response.status === 200 || response.status === 204) {
+        return response.data
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return []
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return []
+    } finally {
+      setLoading(false)
+    }
+  }
 
   async function getActivities(
     q: string,
@@ -403,6 +438,7 @@ export default function ActivitiesContextProvider({
       value={{
         activities,
         loading,
+        getAllActivities,
         getActivities,
         getActivityById,
         addActivity,
