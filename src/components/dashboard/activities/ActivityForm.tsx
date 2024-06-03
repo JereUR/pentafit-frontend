@@ -18,7 +18,7 @@ import noImage from '@public/assets/no-image.png'
 import { useToast } from '@/components/ui/use-toast'
 
 const payments = [
-  'Por sesion',
+  'Por sesión',
   'Por período',
   'Mensual',
   'Mensual con sesiones'
