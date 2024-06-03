@@ -19,6 +19,7 @@ import SelectedActivitiesActions from './SelectedActivitiesActions'
 import noImage from '@public/assets/no-image.png'
 import Loader from '@/components/Loader'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import ExportData from './ExportData'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
@@ -182,6 +183,9 @@ export default function ActivitiesTable() {
             selectedColumns={selectedColumns}
             setSelectedColumns={setSelectedColumns}
           />
+          {workingBusiness && activities.length > 0 && (
+            <ExportData business={workingBusiness} />
+          )}
         </div>
         <div className="flex justify-center gap-4">
           <Link href="/panel-de-control/actividades/agregar">
@@ -195,7 +199,7 @@ export default function ActivitiesTable() {
           )}
         </div>
       </div>
-      {activities ? (
+      {activities && (
         <table className="transactions-table w-full mb-4 mt-8">
           <thead className="font-bold text-center text-muted bg-foreground text-sm">
             <tr>
@@ -211,6 +215,9 @@ export default function ActivitiesTable() {
               {selectedColumns.price && <td className="px-2 py-5">Precio</td>}
               {selectedColumns.is_public && (
                 <td className="px-2 py-5">Es pública?</td>
+              )}
+              {selectedColumns.is_public && (
+                <td className="px-2 py-5">Nombre público</td>
               )}
               {selectedColumns.generate_invoice && (
                 <td className="px-2 py-5">Generación de cuotas</td>
@@ -293,6 +300,18 @@ export default function ActivitiesTable() {
                       >
                         {activity.is_public ? 'Sí' : 'No'}
                       </div>
+                    </td>
+                  )}
+                  {selectedColumns.is_public && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
+                    >
+                      {activity.public_name ? activity.public_name : '-'}
                     </td>
                   )}
                   {selectedColumns.generate_invoice && (
@@ -449,10 +468,6 @@ export default function ActivitiesTable() {
             </tbody>
           )}
         </table>
-      ) : (
-        <div>
-          <h1>No data</h1>
-        </div>
       )}
       <Pagination count={count} />
     </div>

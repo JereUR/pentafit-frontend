@@ -36,12 +36,12 @@ const SelectColumns: React.FC<Props> = ({
     <div className="relative">
       <Button
         variant="outline"
-        className="flex items-center gap-2 bg-card "
+        className="flex items-center gap-2 bg-card"
         onClick={handleButtonClick}
       >
-        <FaTableCells />
+        <FaTableCells className='w-4 h-4' />
         Columnas
-        {isOpen ? <MdExpandLess /> : <MdExpandMore />}
+        {isOpen ? <MdExpandLess className='w-5 h-5' /> : <MdExpandMore className='w-5 h-5' />}
       </Button>
       {isOpen && (
         <div
