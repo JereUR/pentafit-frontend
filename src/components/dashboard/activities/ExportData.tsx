@@ -51,7 +51,7 @@ const ExportData: React.FC<Props> = ({ business }) => {
   }
 
   const handleExport = async () => {
-    const allActivities = await getAllActivities()
+    const allActivities = await getAllActivities(business.id)
 
     if (allActivities.length > 0) {
       const data: Data[] = allActivities.map((activity) => {

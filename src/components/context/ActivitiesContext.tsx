@@ -10,7 +10,7 @@ import useUser from '../hooks/useUser'
 type ActivitiesContextType = {
   activities: Activity[] | []
   loading: boolean
-  getAllActivities: () => Promise<Activity[] | []>
+  getAllActivities: (business_id: number) => Promise<Activity[] | []>
   getActivities: (q: string, page: string, business_id: number) => Promise<void>
   getActivityById: (id: string, business_id: number) => Promise<Activity | null>
   addActivity: ({
@@ -116,9 +116,11 @@ export default function ActivitiesContextProvider({
   const { token } = useUser()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
-  async function getAllActivities(): Promise<Activity[] | []> {
+  async function getAllActivities(
+    business_id: number
+  ): Promise<Activity[] | []> {
     setLoading(true)
-    const url = `${BASE_URL}api/v1/activities`
+    const url = `${BASE_URL}api/v1/activities?id=${business_id}`
 
     try {
       const response = await axios.get(url, {
