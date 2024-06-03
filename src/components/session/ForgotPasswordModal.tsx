@@ -89,20 +89,20 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
                 type="email"
                 name="email"
                 placeholder="Correo electrónico"
-                className="bg-transparent border rounded-md text-xl p-2 focus:outline-none my-2 mx-4"
+                className="bg-transparent border rounded-lg text-xl p-2 focus:outline-none my-2 mx-4"
                 value={email}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setEmail(e.target.value)
                 }
               />
               {forgotError != '' && (
-                <span className="text-xs w-max ml-[2vw] mt-[-2vh] text-red-600 py-[2px] px-1 rounded-md animate-pulse">
+                <span className="text-xs w-max ml-[2vw] mt-[-2vh] text-red-600 py-[2px] px-1 rounded-lg animate-pulse">
                   {forgotError}
                 </span>
               )}
               <Button
                 type="submit"
-                className="bg-primary-orange-600 h-[5vh] text-xl m-4 text-foreground rounded-md hover:bg-primary-orange-700"
+                className="bg-primary-orange-600 h-[5vh] text-xl m-4 text-foreground rounded-lg hover:bg-primary-orange-700"
               >
                 {!loading ? 'Enviar' : <Loader className="mt-[2vh]" />}
               </Button>

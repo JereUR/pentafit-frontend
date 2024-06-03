@@ -50,8 +50,8 @@ export const PublicActivityForm: React.FC<PublicActivityProps> = ({
     setDataActivity({ ...dataActivity, mp_available: value })
   }
   return (
-    <div className="border border-gray-300 dark:border-gray-700 mt-6 mb-8">
-      <div className="border-b border-gray-300 dark:border-gray-700 py-4 px-6 bg-muted">
+    <div className="border border-gray-300 dark:border-gray-700 mt-6 mb-8 rounded-lg">
+      <div className="border-b border-gray-300 dark:border-gray-700 py-4 px-6 bg-muted  rounded-t-lg">
         <span className="flex items-center gap-2">
           <IoSettings /> Completá esta sección si la actividad puede ser
           reservada por el usuario
@@ -127,7 +127,7 @@ export const PublicActivityForm: React.FC<PublicActivityProps> = ({
             type="text"
             name="public_name"
             placeholder="Nombre para mostrar"
-            className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+            className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
             value={dataActivity.public_name}
             onChange={handleChange}
           />

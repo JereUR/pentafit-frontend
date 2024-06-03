@@ -94,7 +94,7 @@ export default function LoginForm() {
           <input
             type="email"
             name="email"
-            className="bg-transparent border rounded-md text-xl p-2 focus:outline-none"
+            className="bg-transparent border rounded-lg text-xl p-2 focus:outline-none"
             value={dataLogin.email}
             onChange={handleChange}
           />
@@ -110,7 +110,7 @@ export default function LoginForm() {
             <input
               type={`${showPassword ? 'text' : 'password'}`}
               name="password"
-              className="bg-transparent border rounded-md text-xl focus:outline-none w-full p-2"
+              className="bg-transparent border rounded-lg text-xl focus:outline-none w-full p-2"
               value={dataLogin.password}
               onChange={handleChange}
             />

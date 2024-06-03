@@ -53,7 +53,7 @@ const MetadataForm: React.FC<MetadataProps> = ({
   }
 
   return (
-    <div className="border border-gray-300 dark:border-gray-700 my-4">
+    <div className="border border-gray-300 dark:border-gray-700 my-4 rounded-lg">
       <p className="text-xl font-semibold p-4">
         Metadata{' '}
         <span className="text-sm italic font-light">
@@ -71,7 +71,7 @@ const MetadataForm: React.FC<MetadataProps> = ({
           <input
             type="text"
             name="title"
-            className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+            className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
             value={dataBusiness.title}
             onChange={handleChange}
           />
@@ -86,7 +86,7 @@ const MetadataForm: React.FC<MetadataProps> = ({
           <input
             type="text"
             name="slogan"
-            className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+            className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
             value={dataBusiness.slogan}
             onChange={handleChange}
           />
@@ -94,7 +94,7 @@ const MetadataForm: React.FC<MetadataProps> = ({
         <div>
           <p className="my-2">Colores de Página Web</p>
           <div className="flex gap-10">
-            <div className="flex gap-2 my-4 p-4 border border-gray-300 rounded-md dark:border-gray-700">
+            <div className="flex gap-2 my-4 p-4 border border-gray-300 rounded-lg dark:border-gray-700">
               <div className="flex flex-col justify-center items-center">
                 <div className="flex gap-4 items-center">
                   <label htmlFor="primary_color" className="font-[600]">
@@ -122,14 +122,14 @@ const MetadataForm: React.FC<MetadataProps> = ({
                 <input
                   type="text"
                   name="primary_color"
-                  className="border border-gray-300 w-[7vw] dark:border-gray-700 p-1 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+                  className="border border-gray-300 w-[7vw] dark:border-gray-700 rounded-lg p-1 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
                   value={dataBusiness.primary_color}
                   onChange={handleHexChange}
                   maxLength={7}
                 />
               </div>
             </div>
-            <div className="flex gap-2 my-4 p-4 border border-gray-300 rounded-md dark:border-gray-700">
+            <div className="flex gap-2 my-4 p-4 border border-gray-300 rounded-lg dark:border-gray-700">
               <div className="flex flex-col justify-center items-center">
                 <div className="flex gap-4 items-center">
                   <label htmlFor="secondary_color" className="font-[600]">
@@ -157,14 +157,14 @@ const MetadataForm: React.FC<MetadataProps> = ({
                 <input
                   type="text"
                   name="secondary_color"
-                  className="border border-gray-300 w-[7vw] dark:border-gray-700 p-1 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+                  className="border border-gray-300 w-[7vw] dark:border-gray-700 rounded-lg p-1 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
                   value={dataBusiness.secondary_color}
                   onChange={handleHexChange}
                   maxLength={7}
                 />
               </div>
             </div>
-            <div className="flex gap-2 my-4 p-4 border border-gray-300 rounded-md dark:border-gray-700">
+            <div className="flex gap-2 my-4 p-4 border border-gray-300 rounded-lg dark:border-gray-700">
               <div className="flex flex-col justify-center items-center">
                 <div className="flex gap-4 items-center">
                   <label htmlFor="third_color" className="font-[600]">
@@ -192,7 +192,7 @@ const MetadataForm: React.FC<MetadataProps> = ({
                 <input
                   type="text"
                   name="third_color"
-                  className="border border-gray-300 w-[7vw] dark:border-gray-700 p-1 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+                  className="border border-gray-300 w-[7vw] dark:border-gray-700 rounded-lg p-1 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
                   value={dataBusiness.third_color}
                   onChange={handleHexChange}
                   maxLength={7}
@@ -206,7 +206,7 @@ const MetadataForm: React.FC<MetadataProps> = ({
                 Logo para App Web
               </label>
             </div>
-            <div className="logo-preview mb-4 w-40 h-40 border border-gray-300 dark:border-gray-700 rounded-md overflow-hidden flex items-center justify-center bg-gray-50 dark:bg-gray-800">
+            <div className="logo-preview mb-4 w-40 h-40 border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden flex items-center justify-center bg-gray-50 dark:bg-gray-800">
               <Image
                 src={imgLogoWeb ? imgLogoWeb : noImage}
                 width={150}
@@ -225,7 +225,7 @@ const MetadataForm: React.FC<MetadataProps> = ({
             />
             <label
               htmlFor="logo"
-              className="cursor-pointer bg-primary-orange-500 text-white py-2 px-4 rounded-md hover:bg-primary-orange-600 transition-all duration-300"
+              className="cursor-pointer bg-primary-orange-500 text-white py-2 px-4 rounded-lg hover:bg-primary-orange-600 transition-all duration-300"
             >
               Subir logo
             </label>

@@ -49,7 +49,7 @@ export default function ActivityForm({
   const { toast } = useToast()
   const router = useRouter()
   const { getWorkingBusiness, token, businesses } = useUser()
-  const { addActivity, updateActivity,loading } = useActivities()
+  const { addActivity, updateActivity, loading } = useActivities()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
   useEffect(() => {
     setDataActivity(activity)
@@ -195,9 +195,11 @@ export default function ActivityForm({
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-6 mb-6 border border-gray-300 dark:border-gray-700 pt-2 pb-6 px-2">
+        <div className="flex flex-col gap-6 mb-10 bg-card rounded-lg shadow-md pt-2 pb-6 px-2">
           <div className="flex gap-4 items-center">
-            <label className="text-xl font-light mt-4 ml-4">Area de Trabajo</label>
+            <label className="text-xl font-light mt-4 ml-4">
+              Area de Trabajo
+            </label>
             {formErrors.company_id && (
               <ErrorText text={formErrors.company_id} />
             )}
@@ -228,11 +230,13 @@ export default function ActivityForm({
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center gap-2 ">
-            <p className='text-xl font-semibold'>Sin area de trabajo asignada</p>
-            <span className="text-sm italic">
-              Debes seleccionar un area de trabajo para realizar tareas
-            </span>
-          </div>
+              <p className="text-xl font-semibold">
+                Sin area de trabajo asignada
+              </p>
+              <span className="text-sm italic">
+                Debes seleccionar un area de trabajo para realizar tareas
+              </span>
+            </div>
           )}
         </div>
         <div className="grid grid-cols-3 gap-8 mb-4">
@@ -246,7 +250,7 @@ export default function ActivityForm({
             <input
               type="text"
               name="name"
-              className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataActivity.name}
               onChange={handleChange}
             />
@@ -261,7 +265,7 @@ export default function ActivityForm({
             <input
               type="number"
               name="price"
-              className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataActivity.price}
               onChange={handleChange}
             />
@@ -272,7 +276,7 @@ export default function ActivityForm({
                 Sesiones Máximas
               </label>
               {formErrors.max_sessions && (
-                <span className="text-xs text-red-600 py-[2px] px-1 rounded-md animate-pulse">
+                <span className="text-xs text-red-600 py-[2px] px-1 rounded-lg animate-pulse">
                   {formErrors.max_sessions}
                 </span>
               )}
@@ -280,7 +284,7 @@ export default function ActivityForm({
             <input
               type="number"
               name="max_sessions"
-              className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataActivity.max_sessions}
               onChange={handleChange}
             />
@@ -297,7 +301,7 @@ export default function ActivityForm({
             <input
               type="date"
               name="start_date"
-              className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataActivity.start_date.toISOString().split('T')[0]}
               onChange={handleChange}
             />
@@ -312,7 +316,7 @@ export default function ActivityForm({
             <input
               type="date"
               name="end_date"
-              className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataActivity.end_date.toISOString().split('T')[0]}
               onChange={handleChange}
             />
@@ -323,7 +327,7 @@ export default function ActivityForm({
             </label>
             <select
               name="payment_type"
-              className="border border-gray-300 dark:border-gray-700 p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="border border-gray-300 dark:border-gray-700 rounded-lg p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               onChange={handleChangeSelect}
               defaultValue={dataActivity.payment_type}
             >

@@ -42,7 +42,7 @@ export default function NavBar() {
       >
         <Logo isSticky={isSticky} />
         <div
-          className={`flex gap-4 items-center rounded-md p-4 mx-4 bg-background ${
+          className={`flex gap-4 items-center rounded-lg p-4 mx-4 bg-background ${
             !isSticky && 'shadow-md'
           } ${pathname != '/' && 'bg-foreground dark:bg-white'}`}
         >
@@ -84,7 +84,7 @@ export default function NavBar() {
       >
         <Logo isSticky={isSticky} />
         <div
-          className={`flex gap-4 items-center rounded-md p-4 mx-4 bg-background ${
+          className={`flex gap-4 items-center rounded-lg p-4 mx-4 bg-background ${
             !isSticky && 'shadow-md'
           } ${pathname != '/' && 'bg-foreground dark:bg-white'}`}
         >

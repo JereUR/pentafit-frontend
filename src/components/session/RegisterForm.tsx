@@ -166,7 +166,7 @@ export default function RegisterForm() {
           <input
             type="text"
             name="first_name"
-            className="bg-transparent border rounded-md text-lg p-1 focus:outline-none"
+            className="bg-transparent border rounded-lg text-lg p-1 focus:outline-none"
             value={dataRegister.first_name}
             onChange={handleChange}
           />
@@ -183,7 +183,7 @@ export default function RegisterForm() {
           <input
             type="text"
             name="last_name"
-            className="bg-transparent border rounded-md text-lg p-1 focus:outline-none"
+            className="bg-transparent border rounded-lg text-lg p-1 focus:outline-none"
             value={dataRegister.last_name}
             onChange={handleChange}
           />
@@ -198,7 +198,7 @@ export default function RegisterForm() {
           <input
             type="email"
             name="email"
-            className="bg-transparent border rounded-md text-lg p-1 focus:outline-none"
+            className="bg-transparent border rounded-lg text-lg p-1 focus:outline-none"
             value={dataRegister.email}
             onChange={handleChange}
           />
@@ -213,7 +213,7 @@ export default function RegisterForm() {
                 <ErrorText text={registerErrors.gender} />
               )}
             </div>
-            <div className="flex items-center gap-2 p-4 border rounded-md">
+            <div className="flex items-center gap-2 p-4 border rounded-lg">
               <input
                 type="radio"
                 id="gender-masculino"
@@ -253,7 +253,7 @@ export default function RegisterForm() {
             <input
               type="date"
               name="date"
-              className="bg-transparent border rounded-md text-lg p-3 pr-[2vh] focus:outline-none"
+              className="bg-transparent border rounded-lg text-lg p-3 pr-[2vh] focus:outline-none"
               value={dataRegister.date}
               onChange={handleChange}
             />
@@ -272,7 +272,7 @@ export default function RegisterForm() {
             <input
               type={`${showPassword ? 'text' : 'password'}`}
               name="password"
-              className="bg-transparent border w-full rounded-md text-lg p-1 focus:outline-none"
+              className="bg-transparent border w-full rounded-lg text-lg p-1 focus:outline-none"
               value={dataRegister.password}
               onChange={handleChange}
             />
@@ -304,7 +304,7 @@ export default function RegisterForm() {
             <input
               type={`${showPassword ? 'text' : 'password'}`}
               name="confirm_password"
-              className="bg-transparent border w-full rounded-md text-lg p-1 focus:outline-none"
+              className="bg-transparent border w-full rounded-lg text-lg p-1 focus:outline-none"
               value={dataRegister.confirm_password}
               onChange={handleChange}
             />

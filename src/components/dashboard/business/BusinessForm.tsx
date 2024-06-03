@@ -193,15 +193,15 @@ export default function BusinessForm({
   return (
     <div className="m-10">
       <form onSubmit={handleSubmit}>
-        <div className="flex gap-6 my-6 p-4 border border-gray-300 dark:border-gray-700 rounded-md shadow-md">
+        <div className="flex gap-6 my-6 p-4 border border-gray-300 dark:border-gray-700 rounded-lg">
           <div className="w-1/3">
-            <div className="flex m-4">
+            <div className="flex m-4 ">
               <label htmlFor="logo" className="font-[600]">
                 Foto de Negocio
               </label>
             </div>
             <div className="flex flex-col justify-center items-center mt-8">
-              <div className="flexjustify-center items-center p-6 border border-primary-orange-500 rounded-md overflow-hidden shadow-md bg-gray-200 dark:bg-gray-800">
+              <div className="flexjustify-center items-center p-6 border border-primary-orange-500 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
                 <LogoHandler
                   imageUrl={imgLogo}
                   setDataBusiness={setDataBusiness}
@@ -220,7 +220,7 @@ export default function BusinessForm({
               <input
                 type="text"
                 name="name"
-                className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+                className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
                 value={dataBusiness.name}
                 onChange={handleChange}
               />
@@ -238,7 +238,7 @@ export default function BusinessForm({
               </div>
               <textarea
                 name="description"
-                className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+                className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
                 value={dataBusiness.description}
                 onChange={handleChangeTextArea}
                 maxLength={200}

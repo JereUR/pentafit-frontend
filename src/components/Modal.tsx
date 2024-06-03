@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 
 interface ModalProps {
   children: ReactNode
-  closeModal:() => void
+  closeModal: () => void
 }
 
 const Modal: React.FC<ModalProps> = ({ children, closeModal }) => {
@@ -21,11 +21,11 @@ const Modal: React.FC<ModalProps> = ({ children, closeModal }) => {
             <div className="px-5 py-4">
               <button
                 type="button"
-                className="rounded-md p-1 inline-flex items-center justify-center text-gray-400 transition duration-300 ease-in-out hover:bg-gray-700 focus:outline-none absolute top-2 right-2"
+                className="rounded-lg p-1 inline-flex items-center justify-center text-gray-400 transition duration-300 ease-in-out hover:bg-gray-700 focus:outline-none absolute top-2 right-2"
                 onClick={closeModal}
               >
                 <span className="sr-only">Close menu</span>
-                <Cross1Icon className='h-8 w-8'/>
+                <Cross1Icon className="h-8 w-8" />
               </button>
               {children}
             </div>

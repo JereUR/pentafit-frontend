@@ -7,7 +7,7 @@ const BusinessSkeleton = (props: any) => (
       <Skeleton className="h-32 w-60 rounded-lg" />
       <Skeleton className="h-32 w-60 rounded-lg" />
     </div>
-    <div className="flex justify-between p-6 mx-10 border rounded-md">
+    <div className="flex justify-between p-6 mx-10 border rounded-lg">
       <div className="flex ml-10">
         <Skeleton className="h-44 w-44 mt-3 rounded-full" />
         <div className="ml-10 mt-4">
@@ -25,7 +25,7 @@ const BusinessSkeleton = (props: any) => (
         <Skeleton className="h-10 w-48 rounded-lg" />
       </div>
     </div>
-    <div className="flex justify-between p-6 mx-10 border rounded-md">
+    <div className="flex justify-between p-6 mx-10 border rounded-lg">
       <div className="flex ml-10">
         <Skeleton className="h-44 w-44 mt-3 rounded-full" />
         <div className="ml-10 mt-4">
@@ -43,7 +43,7 @@ const BusinessSkeleton = (props: any) => (
         <Skeleton className="h-10 w-48 rounded-lg" />
       </div>
     </div>
-    <div className="flex justify-between p-6 mx-10 border rounded-md">
+    <div className="flex justify-between p-6 mx-10 border rounded-lg">
       <div className="flex ml-8">
         <Skeleton className="h-44 w-44 mt-3 rounded-full" />
         <div className="ml-10 mt-4">

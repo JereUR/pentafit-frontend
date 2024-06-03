@@ -208,7 +208,7 @@ const SelectedActivitiesActions: React.FC<Props> = ({
       </div>
       <div>
         <Button
-          className="flex items-center text-foreground font-semibold gap-2 py-2 px-4 h-10 rounded-md border-none bg-red-600 transition duration-300 ease-in-out hover:bg-red-700"
+          className="flex items-center text-foreground font-semibold gap-2 py-2 px-4 h-10 rounded-lg border-none bg-red-600 transition duration-300 ease-in-out hover:bg-red-700"
           onClick={handleConfirmMultipleDelete}
         >
           ({selectedActivities.length}) <FaTrash />

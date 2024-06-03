@@ -1,6 +1,6 @@
 export default function TextForm() {
   return (
-    <div className="border border-blue-300 bg-blue-100 text-blue-500 text-sm p-4">
+    <div className="border border-blue-300 bg-blue-100 text-blue-500 text-sm p-4 rounded-lg">
       <p>Control de pago:</p>
       <p>
         1° MENSUAL: No contempla sesiones, y la persona puede reservar turnos

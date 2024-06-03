@@ -130,7 +130,7 @@ export default function RecoverForm() {
               name="password"
               value={password}
               onChange={handleChangePassword}
-              className="bg-transparent border w-full rounded-md text-lg p-1 focus:outline-none"
+              className="bg-transparent border w-full rounded-lg text-lg p-1 focus:outline-none"
             />
             <div
               className="absolute inset-y-0 right-0 flex items-center mr-5 cursor-pointer"
@@ -162,7 +162,7 @@ export default function RecoverForm() {
               name="confirm_password"
               value={confirmPassword}
               onChange={handleChangeConfirmPassword}
-              className="bg-transparent border w-full rounded-md text-lg p-1 focus:outline-none"
+              className="bg-transparent border w-full rounded-lg text-lg p-1 focus:outline-none"
             />
             <div
               className="absolute inset-y-0 right-0 flex items-center mr-5 cursor-pointer"
@@ -177,7 +177,7 @@ export default function RecoverForm() {
           </div>
         </div>
         <div className="flex justify-center">
-          <Button className="bg-primary-orange-600 h-[5vh] w-[40vw] text-xl m-4 text-foreground rounded-md transition duration-300 ease-in-out hover:bg-primary-orange-700 cursor-pointer">
+          <Button className="bg-primary-orange-600 h-[5vh] w-[40vw] text-xl m-4 text-foreground rounded-lg transition duration-300 ease-in-out hover:bg-primary-orange-700 cursor-pointer">
             {!loading ? 'Enviar' : <Loader className="mt-[2vh]" />}
           </Button>
         </div>

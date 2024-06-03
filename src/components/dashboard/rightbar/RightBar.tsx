@@ -60,7 +60,7 @@ const RightBar = () => {
 
   return (
     <div className="fixed w-[250px] xl:w-[330px] m-4">
-      <Card className="relative flex flex-col gap-6 bg-gradient-to-t from-bg-background to-bg-card p-4 rounded-lg shadow-md duration-300 ease-in-out">
+      <Card className="relative flex flex-col gap-6 bg-gradient-to-t from-bg-background to-bg-card p-4 rounded-lg border-none shadow-md duration-300 ease-in-out">
         {workingBusines ? (
           <>
             <p className="m-2 text-xl font-extralight">
@@ -98,7 +98,7 @@ const RightBar = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
                     align="center"
-                    className="mt-5 w-[220px] xl:w-[280px] flex flex-col justify-center gap-2 p-3 bg-card shadow-md rounded-md border border-primary-orange-600"
+                    className="mt-5 w-[220px] xl:w-[280px] flex flex-col justify-center gap-2 p-3 bg-card shadow-md rounded-lg border border-primary-orange-600"
                   >
                     {otherBusinesses.map((item: Business, key: number) => (
                       <DropdownMenuItem
@@ -149,7 +149,7 @@ const RightBar = () => {
           </div>
         )}
         {/* {showMenu && (
-          <div className="mx-auto -mt-3 w-[280px] flex flex-col justify-center gap-2 p-3 bg-card shadow-md rounded-md border-2 border-primary-orange-600">
+          <div className="mx-auto -mt-3 w-[280px] flex flex-col justify-center gap-2 p-3 bg-card shadow-md rounded-lg border-2 border-primary-orange-600">
             <div className="flex flex-col gap-4">
               {otherBusinesses.map((business) => (
                 <div

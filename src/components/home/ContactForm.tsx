@@ -165,7 +165,7 @@ export default function ContactForm() {
                     name={field.name}
                     value={formData[field.name]}
                     onChange={handleChange}
-                    className="bg-card border-none rounded-md h-32 p-2 focus:outline-none"
+                    className="bg-card border-none rounded-lg h-32 p-2 focus:outline-none"
                   />
                 ) : (
                   <input
@@ -173,7 +173,7 @@ export default function ContactForm() {
                     name={field.name}
                     value={formData[field.name]}
                     onChange={handleChange}
-                    className="bg-card border-none rounded-md p-2 focus:outline-none"
+                    className="bg-card border-none rounded-lg p-2 focus:outline-none"
                   />
                 )}
                 {errors[field.name] && (

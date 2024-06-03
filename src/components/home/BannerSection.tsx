@@ -24,7 +24,7 @@ export default function BannerSection({
           Que ofrecemos
         </span>
         <Button
-          className="cursor-pointer bg-background px-2 py-2 rounded-md text-foreground tracking-wider shadow-xl animate-bounce hover:animate-none hover:text-white dark:hover:text-muted mb-[-40px]"
+          className="cursor-pointer bg-background px-2 py-2 rounded-lg text-foreground tracking-wider shadow-xl animate-bounce hover:animate-none hover:text-white dark:hover:text-muted mb-[-40px]"
           onClick={() => {
             servicesRef.current?.scrollIntoView({
               behavior: 'smooth'

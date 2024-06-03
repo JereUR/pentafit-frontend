@@ -97,7 +97,7 @@ export default function Transactions() {
             </TableCell>
             <TableCell>
               <span
-                className={`inline-flex items-center px-2 py-1 rounded-md text-sm text-foreground ${
+                className={`inline-flex items-center px-2 py-1 rounded-lg text-sm text-foreground ${
                   invoice.status === 'Pendiente' &&
                   'bg-yellow-400 bg-opacity-45'
                 } ${

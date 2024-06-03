@@ -23,7 +23,7 @@ export default function BusinessList() {
       {businesses?.length > 0 ? (
         <div>
           <div className="flex justify-around p-2 text-center ">
-            <Card className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg">
+            <Card className="px-4 py-2 border-none rounded-lg">
               <CardHeader className="text-5xl py-1 text-primary-orange-500 font-semibold dark:text-primary-orange-700">
                 {businesses.length}
               </CardHeader>
@@ -31,7 +31,7 @@ export default function BusinessList() {
                 Negocios Totales
               </CardContent>
             </Card>
-            <Card className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg">
+            <Card className="px-4 py-2 border-none rounded-lg">
               <CardHeader className="text-5xl py-1 text-primary-orange-500 font-semibold dark:text-primary-orange-700">
                 {businesses.filter((business) => business.is_active).length}
               </CardHeader>
@@ -39,7 +39,7 @@ export default function BusinessList() {
                 Negocios Activos
               </CardContent>
             </Card>
-            <Card className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg">
+            <Card className="px-4 py-2 border-none rounded-lg">
               <CardHeader className="text-5xl py-1 text-primary-orange-500 font-semibold dark:text-primary-orange-700">
                 {businesses.filter((business) => !business.is_active).length}
               </CardHeader>

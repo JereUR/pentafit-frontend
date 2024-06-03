@@ -14,7 +14,7 @@ const ContactForm: React.FC<ContactProps> = ({
   handleChange
 }) => {
   return (
-    <div className="border border-gray-300 dark:border-gray-700 my-4">
+    <div className="border border-gray-300 dark:border-gray-700 my-4 rounded-lg">
       <p className="text-xl font-semibold p-4">Información de Contacto</p>
       <div className="grid grid-cols-2 gap-4 mx-8 mb-4 mt-2">
         <div className="flex flex-col gap-2">
@@ -27,7 +27,7 @@ const ContactForm: React.FC<ContactProps> = ({
           <input
             type="text"
             name="email"
-            className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+            className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
             value={dataBusiness.email}
             onChange={handleChange}
           />
@@ -42,7 +42,7 @@ const ContactForm: React.FC<ContactProps> = ({
           <input
             type="text"
             name="address"
-            className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+            className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
             value={dataBusiness.address}
             onChange={handleChange}
           />
@@ -57,7 +57,7 @@ const ContactForm: React.FC<ContactProps> = ({
           <input
             type="number"
             name="phone"
-            className="phone-business border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+            className="phone-business border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
             value={dataBusiness.phone}
             onChange={handleChange}
           />
@@ -72,7 +72,7 @@ const ContactForm: React.FC<ContactProps> = ({
           <input
             type="text"
             name="instagram"
-            className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+            className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
             value={dataBusiness.instagram}
             onChange={handleChange}
           />
@@ -87,7 +87,7 @@ const ContactForm: React.FC<ContactProps> = ({
           <input
             type="text"
             name="facebook"
-            className="border border-gray-300 dark:border-gray-700 p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+            className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
             value={dataBusiness.facebook}
             onChange={handleChange}
           />
