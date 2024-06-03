@@ -115,9 +115,9 @@ export default function ActivitiesTable() {
   return (
     <div className="container bg-background p-1 rounded-lg mt-10">
       <div className="flex justify-between">
-        <div className="flex flex-col gap-6 mb-6 border bg-card border-none rounded-lg shadow-md pt-2 pb-6 px-2">
+        <div className="flex flex-col gap-6 mb-6 border bg-card border-none rounded-lg shadow-md pt-2 pb-6 px-4">
           <div className="flex gap-4 items-center">
-            <label className="text-xl font-bold mt-4 ml-4">
+            <label className="text-xl font-light mt-4 ml-4">
               Area de Trabajo
             </label>
           </div>
@@ -155,6 +155,12 @@ export default function ActivitiesTable() {
               <span className="text-sm italic">
                 Debes seleccionar un area de trabajo para realizar tareas
               </span>
+              <Button
+                className="flex mt-2 items-center font-semibold transition duration-300 ease-in-out bg-primary-orange-700 hover:bg-primary-orange-600"
+                onClick={() => router.push('/panel-de-control/negocios')}
+              >
+                Ir a sección Negocios
+              </Button>
             </div>
           )}
         </div>

@@ -236,6 +236,12 @@ export default function ActivityForm({
               <span className="text-sm italic">
                 Debes seleccionar un area de trabajo para realizar tareas
               </span>
+              <Button
+                className="flex mt-2 items-center font-semibold transition duration-300 ease-in-out bg-primary-orange-700 hover:bg-primary-orange-600"
+                onClick={() => router.push('/panel-de-control/negocios')}
+              >
+                Ir a sección Negocios
+              </Button>
             </div>
           )}
         </div>
