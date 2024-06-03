@@ -7,9 +7,10 @@ const ActivitiesSkeleton = (props: any) => (
       <Skeleton className="h-32 w-64 rounded-lg mr-10" />
     </div>
     <div className="flex justify-between mx-10">
-      <div className="flex gap-4">
-        <Skeleton className="h-[4vh] w-64 rounded-lg" />
-        <Skeleton className="h-[3vh] w-40 rounded-lg" />
+      <div className="flex gap-2">
+        <Skeleton className="h-[4vh] w-56 rounded-lg" />
+        <Skeleton className="h-[3vh] w-32 rounded-lg" />
+        <Skeleton className="h-[3vh] w-32 rounded-lg" />
       </div>
       <div>
         <Skeleton className="h-[4vh] w-40 rounded-lg" />
