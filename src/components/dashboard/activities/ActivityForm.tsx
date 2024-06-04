@@ -8,7 +8,12 @@ import { useEffect, useState } from 'react'
 
 import useActivities from '@/components/hooks/useActivities'
 import { Button } from '@/components/ui/button'
-import { FormErrors, PropsAddActivity } from '@/components/types/Activity'
+import {
+  activitiesType,
+  FormErrors,
+  paymentsType,
+  PropsAddActivity
+} from '@/components/types/Activity'
 import Loader from '@/components/Loader'
 import ErrorText from '@/components/ErrorText'
 import TextForm from './TextForm'
@@ -17,12 +22,6 @@ import { PublicActivityForm } from './PublicActivityForm'
 import noImage from '@public/assets/no-image.png'
 import { useToast } from '@/components/ui/use-toast'
 
-const payments = [
-  'Por sesión',
-  'Por período',
-  'Mensual',
-  'Mensual con sesiones'
-]
 const initialErrors = {
   business: '',
   activity: '',
@@ -115,6 +114,14 @@ export default function ActivityForm({
 
     if (!dataActivity.end_date) {
       errorsForm.end_date = `Este campo no debe ser vacío.`
+    }
+
+    if (!dataActivity.payment_type.trim()) {
+      errorsForm.payment_type = `Elija una de las opciones.`
+    }
+
+    if (!dataActivity.activity_type.trim()) {
+      errorsForm.activity_type = `Elija una de las opciones.`
     }
 
     if (dataActivity.is_public === 'true') {
@@ -328,20 +335,57 @@ export default function ActivityForm({
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="payment_type" className="font-[600]">
-              Control de Pago
-            </label>
+            <div className="flex gap-4 items-center">
+              <label htmlFor="payment_type" className="font-[600]">
+                Control de Pago
+              </label>
+              {formErrors.payment_type && (
+                <ErrorText text={formErrors.payment_type} />
+              )}
+            </div>
             <select
               name="payment_type"
               className="border border-gray-300 dark:border-gray-700 rounded-lg p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               onChange={handleChangeSelect}
               defaultValue={dataActivity.payment_type}
             >
-              {payments.map((item) => (
+              <option value="" selected={dataActivity.payment_type === ''}>
+                Seleccione tipo de cobro
+              </option>
+              {paymentsType.map((item) => (
                 <option
                   key={item}
                   value={item}
                   selected={dataActivity.payment_type === item}
+                >
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-4 items-center">
+              <label htmlFor="activity_type" className="font-[600]">
+                Modalidad
+              </label>
+              {formErrors.activity_type && (
+                <ErrorText text={formErrors.activity_type} />
+              )}
+            </div>
+            <select
+              name="activity_type"
+              className="border border-gray-300 dark:border-gray-700 rounded-lg p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              onChange={handleChangeSelect}
+              defaultValue={dataActivity.activity_type}
+            >
+              <option value="" selected={dataActivity.activity_type === ''}>
+                Seleccione modalidad de actividad
+              </option>
+              {activitiesType.map((item) => (
+                <option
+                  key={item}
+                  value={item}
+                  selected={dataActivity.activity_type === item}
                 >
                   {item}
                 </option>
