@@ -119,9 +119,7 @@ export default function ActivitiesContextProvider({
 }: {
   children: ReactNode
 }) {
-  const [activities, setActivities] = useState<Activity[] | []>(
-    initialActivities
-  )
+  const [activities, setActivities] = useState<Activity[] | []>([])
   const [loading, setLoading] = useState<boolean>(false)
   const { toast } = useToast()
   const { token } = useUser()
