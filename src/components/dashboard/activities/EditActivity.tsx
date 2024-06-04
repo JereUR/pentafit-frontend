@@ -35,8 +35,6 @@ export default function EditActivity() {
         const act = await getActivityById(id, workingBusiness?.id)
         if (act) {
           setActivity({
-            business:
-              businesses.find((bus) => bus.id === act.company_id) || null,
             name: act.name,
             price: act.price.toString(),
             is_public: act.is_public ? 'true' : 'false',
@@ -46,7 +44,8 @@ export default function EditActivity() {
             max_sessions: act.max_sessions.toString(),
             start_date: new Date(act.start_date),
             end_date: new Date(act.end_date),
-            payment_type: act.payment_type
+            payment_type: act.payment_type,
+            activity_type: act.activity_type
           })
         }
       }
