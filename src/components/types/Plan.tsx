@@ -49,7 +49,7 @@ export const initialData: PropsAddPlan = {
 
 export const plansType = ['Mensual', 'Clase única', 'Membresía']
 
-export const paymentsType = ['Efectivo', 'Transferencia', 'Debito automático']
+export const paymentsType = ['Efectivo', 'Transferencia', 'Débito automático']
 
 export interface FormErrors {
   business: string
