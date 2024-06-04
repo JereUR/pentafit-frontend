@@ -62,7 +62,7 @@ export default function ActivitiesTable() {
 
   useEffect(() => {
     if (window != undefined) {
-      const columns = localStorage.getItem('columns')
+      const columns = localStorage.getItem('columns-activities')
 
       if (columns) {
         setSelectedColumns(JSON.parse(columns))
