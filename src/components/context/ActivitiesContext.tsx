@@ -14,14 +14,18 @@ type ActivitiesContextType = {
   getActivities: (q: string, page: string, business_id: number) => Promise<void>
   getActivityById: (id: string, business_id: number) => Promise<Activity | null>
   addActivity: ({
-    dataActivity
+    dataActivity,
+    company_id
   }: {
     dataActivity: PropsAddActivity
+    company_id: number
   }) => Promise<boolean>
   updateActivity: ({
-    dataActivity
+    dataActivity,
+    company_id
   }: {
     dataActivity: PropsAddActivity
+    company_id: number
   }) => Promise<boolean>
   deleteActivitiesById: (activities: number[]) => Promise<boolean>
   addActivitiesToBusinesses: (
@@ -239,9 +243,11 @@ export default function ActivitiesContextProvider({
   }
 
   async function addActivity({
-    dataActivity
+    dataActivity,
+    company_id
   }: {
     dataActivity: PropsAddActivity
+    company_id: number
   }): Promise<boolean> {
     setLoading(true)
     const isPublicValue = dataActivity.is_public === 'true' ? true : false
@@ -252,7 +258,7 @@ export default function ActivitiesContextProvider({
     const mpAvailableValue = dataActivity.mp_available === 'true' ? true : false
 
     const newActivity = {
-      company_id: dataActivity.business?.id,
+      company_id,
       name: dataActivity.name,
       price: dataActivity.price,
       is_public: isPublicValue,
@@ -303,9 +309,11 @@ export default function ActivitiesContextProvider({
   }
 
   async function updateActivity({
-    dataActivity
+    dataActivity,
+    company_id
   }: {
     dataActivity: PropsAddActivity
+    company_id: number
   }): Promise<boolean> {
     setLoading(true)
     const isPublicValue = dataActivity.is_public === 'true' ? true : false
@@ -316,7 +324,7 @@ export default function ActivitiesContextProvider({
     const mpAvailableValue = dataActivity.mp_available === 'true' ? true : false
 
     const newActivity = {
-      company_id: dataActivity.business?.id,
+      company_id,
       activity: dataActivity.name,
       price: dataActivity.price,
       is_public: isPublicValue,

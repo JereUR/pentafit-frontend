@@ -17,7 +17,6 @@ export type Activity = {
 }
 
 export interface PropsAddActivity {
-  business: Business | null
   name: string
   price: string
   is_public: string
@@ -31,8 +30,7 @@ export interface PropsAddActivity {
   activity_type: string
 }
 
-export const initialData:PropsAddActivity = {
-  business: null,
+export const initialData: PropsAddActivity = {
   name: '',
   price: '',
   is_public: 'false',
@@ -84,7 +82,7 @@ export interface Columns {
   activity_type: boolean
 }
 
-export const initialColumns:Columns = {
+export const initialColumns: Columns = {
   name: true,
   price: true,
   is_public: true,

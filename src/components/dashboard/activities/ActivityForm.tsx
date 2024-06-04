@@ -21,9 +21,10 @@ import useUser from '@/components/hooks/useUser'
 import { PublicActivityForm } from './PublicActivityForm'
 import noImage from '@public/assets/no-image.png'
 import { useToast } from '@/components/ui/use-toast'
+import { Business } from '@/components/types/Business'
 
 const initialErrors = {
-  business: '',
+  company_id: '',
   activity: '',
   price: '',
   is_public: '',
@@ -43,7 +44,7 @@ export default function ActivityForm({
 }) {
   const [showConfirmBack, setShowConfirmBack] = useState<boolean>(false)
   const [dataActivity, setDataActivity] = useState<PropsAddActivity>(activity)
-  const [workingBusiness, setWorkingBusiness] = useState(activity.business)
+  const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
   const { toast } = useToast()
   const router = useRouter()
@@ -57,7 +58,6 @@ export default function ActivityForm({
   useEffect(() => {
     async function updateWorkingBusiness() {
       const res = await getWorkingBusiness()
-      setDataActivity({ ...dataActivity, business: res })
       setWorkingBusiness(res)
     }
 
@@ -88,7 +88,7 @@ export default function ActivityForm({
   }) => {
     const errorsForm: FormErrors = {}
 
-    if (!dataActivity.business) {
+    if (!workingBusiness) {
       errorsForm.company_id = `Debes tener un area de trabajo (negocio) activo.`
     }
 
@@ -166,9 +166,12 @@ export default function ActivityForm({
     const err = validations({ dataActivity })
     setFormErrors(err)
 
-    if (Object.keys(err).length === 0) {
+    if (Object.keys(err).length === 0 && workingBusiness) {
       if (type === 'add') {
-        const response = await addActivity({ dataActivity })
+        const response = await addActivity({
+          dataActivity,
+          company_id: workingBusiness.id
+        })
         if (response) {
           toast({
             title: 'Actividad agregada.',
@@ -181,7 +184,10 @@ export default function ActivityForm({
           }, 1000)
         }
       } else {
-        const response = await updateActivity({ dataActivity })
+        const response = await updateActivity({
+          dataActivity,
+          company_id: workingBusiness.id
+        })
         if (response) {
           toast({
             title: 'Actividad editada.',
