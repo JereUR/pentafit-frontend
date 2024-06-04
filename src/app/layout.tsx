@@ -14,6 +14,7 @@ import TopBar from '@/components/dashboard/navbar/TopBar'
 import ActivitiesContextProvider from '@/components/context/ActivitiesContext'
 import Logo from '@/components/Logo'
 import { Toaster } from '@/components/ui/toaster'
+import PlansContextProvider from '@/components/context/PlansContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -62,26 +63,28 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <ActivitiesContextProvider>
-              {shouldRenderLayout ? (
-                <>
-                  <NavBar />
-                  {children}
-                  <Toaster />
-                </>
-              ) : (
-                <div className="flex min-h-screen">
-                  <div className="w-1/4 xl:w-1/6 bg-black py-5">
-                    <SideBar />
-                  </div>
-                  <div className="w-3/4 xl:w-5/6">
-                    <TopBar />
+            <PlansContextProvider>
+              <ActivitiesContextProvider>
+                {shouldRenderLayout ? (
+                  <>
+                    <NavBar />
                     {children}
+                    <Toaster />
+                  </>
+                ) : (
+                  <div className="flex min-h-screen">
+                    <div className="w-1/4 xl:w-1/6 bg-black py-5">
+                      <SideBar />
+                    </div>
+                    <div className="w-3/4 xl:w-5/6">
+                      <TopBar />
+                      {children}
+                    </div>
+                    <Toaster />
                   </div>
-                  <Toaster />
-                </div>
-              )}
-            </ActivitiesContextProvider>
+                )}
+              </ActivitiesContextProvider>
+            </PlansContextProvider>
           </ThemeProvider>
         </AuthContextProvider>
       </body>
