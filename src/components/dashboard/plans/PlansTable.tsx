@@ -170,7 +170,7 @@ export default function PlansTable() {
               {plans.length}
             </CardHeader>
             <CardContent className="text-lg py-1 font-medium">
-              planes Totales
+              Planes Totales
             </CardContent>
           </Card>
         </div>
