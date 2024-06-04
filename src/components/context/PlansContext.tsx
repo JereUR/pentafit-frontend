@@ -13,8 +13,20 @@ type PlansContextType = {
   getAllPlans: (business_id: number) => Promise<Plan[] | []>
   getPlans: (q: string, page: string, business_id: number) => Promise<void>
   getPlanById: (id: string, business_id: number) => Promise<Plan | null>
-  addPlan: ({ dataPlan }: { dataPlan: PropsAddPlan }) => Promise<boolean>
-  updatePlan: ({ dataPlan }: { dataPlan: PropsAddPlan }) => Promise<boolean>
+  addPlan: ({
+    dataPlan,
+    company_id
+  }: {
+    dataPlan: PropsAddPlan
+    company_id: number
+  }) => Promise<boolean>
+  updatePlan: ({
+    dataPlan,
+    company_id
+  }: {
+    dataPlan: PropsAddPlan
+    company_id: number
+  }) => Promise<boolean>
   deletePlansById: (plans: number[]) => Promise<boolean>
   addPlansToBusinesses: (
     plans: number[],
@@ -27,7 +39,7 @@ export const PlansContext = createContext<PlansContextType | null>(null)
 const initialPlans = [
   {
     id: 1,
-    company_id: [1,2],
+    company_id: [1, 2],
     name: 'Plan 1',
     description: 'test',
     price: 200,
@@ -40,7 +52,8 @@ const initialPlans = [
     free_test: false,
     current: false,
     activities: ['Actividad 1', 'Actividad 2']
-  },{
+  },
+  {
     id: 2,
     company_id: [1],
     name: 'Plan 2',
@@ -183,9 +196,11 @@ export default function PlansContextProvider({
   }
 
   async function addPlan({
-    dataPlan
+    dataPlan,
+    company_id
   }: {
     dataPlan: PropsAddPlan
+    company_id: number
   }): Promise<boolean> {
     setLoading(true)
     const freeTestValue = dataPlan.free_test === 'true' ? true : false
@@ -196,7 +211,7 @@ export default function PlansContextProvider({
     const currentValue = dataPlan.current === 'true' ? true : false
 
     const newPlan = {
-      company_id: dataPlan.business?.id,
+      company_id,
       name: dataPlan.name,
       description: dataPlan.description,
       price: dataPlan.price,
@@ -247,9 +262,11 @@ export default function PlansContextProvider({
   }
 
   async function updatePlan({
-    dataPlan
+    dataPlan,
+    company_id
   }: {
     dataPlan: PropsAddPlan
+    company_id: number
   }): Promise<boolean> {
     setLoading(true)
     const freeTestValue = dataPlan.free_test === 'true' ? true : false
@@ -260,7 +277,7 @@ export default function PlansContextProvider({
     const currentValue = dataPlan.current === 'true' ? true : false
 
     const newPlan = {
-      company_id: dataPlan.business?.id,
+      company_id,
       name: dataPlan.name,
       description: dataPlan.description,
       price: dataPlan.price,
