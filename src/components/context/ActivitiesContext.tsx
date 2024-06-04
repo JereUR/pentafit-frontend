@@ -37,7 +37,7 @@ export const ActivitiesContext = createContext<ActivitiesContextType | null>(
 const initialActivities = [
   {
     id: 1,
-    company_id: 1,
+    company_id: [1],
     name: 'Actividad 1',
     price: 200,
     is_public: false,
@@ -46,11 +46,12 @@ const initialActivities = [
     mp_available: false,
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
-    payment_type: 'Mensual'
+    payment_type: 'Mensual',
+    activity_type: 'Individual'
   },
   {
     id: 2,
-    company_id: 1,
+    company_id: [1],
     name: 'Actividad 2',
     price: 300,
     is_public: true,
@@ -60,11 +61,12 @@ const initialActivities = [
     mp_available: true,
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
-    payment_type: 'Mensual'
+    payment_type: 'Mensual',
+    activity_type: 'Individual'
   },
   {
     id: 3,
-    company_id: 1,
+    company_id: [1],
     name: 'Actividad 3',
     price: 400,
     is_public: true,
@@ -74,11 +76,12 @@ const initialActivities = [
     mp_available: true,
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
-    payment_type: 'Por período'
+    payment_type: 'Por período',
+    activity_type: 'Grupal'
   },
   {
     id: 4,
-    company_id: 1,
+    company_id: [1],
     name: 'Actividad 4',
     price: 200,
     is_public: false,
@@ -87,11 +90,12 @@ const initialActivities = [
     mp_available: false,
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
-    payment_type: 'Por sesion'
+    payment_type: 'Por sesion',
+    activity_type: 'Grupal'
   },
   {
     id: 5,
-    company_id: 1,
+    company_id: [1],
     name: 'Actividad 5',
     price: 500,
     is_public: true,
@@ -101,7 +105,8 @@ const initialActivities = [
     mp_available: true,
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
-    payment_type: 'Mensual con sesiones'
+    payment_type: 'Mensual con sesiones',
+    activity_type: 'Individual'
   }
 ]
 
@@ -110,7 +115,9 @@ export default function ActivitiesContextProvider({
 }: {
   children: ReactNode
 }) {
-  const [activities, setActivities] = useState<Activity[] | []>([])
+  const [activities, setActivities] = useState<Activity[] | []>(
+    initialActivities
+  )
   const [loading, setLoading] = useState<boolean>(false)
   const { toast } = useToast()
   const { token } = useUser()
@@ -255,7 +262,8 @@ export default function ActivitiesContextProvider({
       public_name: dataActivity.public_name,
       start_date: dataActivity.start_date,
       end_date: dataActivity.end_date,
-      payment_type: dataActivity.payment_type
+      payment_type: dataActivity.payment_type,
+      activity_type: dataActivity.activity_type
     }
 
     const url = `${BASE_URL}api/v1/activity`
@@ -318,12 +326,24 @@ export default function ActivitiesContextProvider({
       public_name: dataActivity.public_name,
       start_date: dataActivity.start_date,
       end_date: dataActivity.end_date,
-      payment_type: dataActivity.payment_type
+      payment_type: dataActivity.payment_type,
+      activity_type: dataActivity.activity_type
     }
 
     const url = `${BASE_URL}activity`
     try {
-      const response = await axios.put(url)
+      const response = await axios.put(
+        url,
+        {
+          activity: newActivity
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token
+          }
+        }
+      )
 
       if (response.status === 200 || response.status === 204) {
         return true

@@ -2,7 +2,7 @@ import { Business } from './Business'
 
 export type Activity = {
   id: number
-  company_id: number
+  company_id: number[]
   name: string
   price: number
   is_public: boolean
@@ -13,6 +13,7 @@ export type Activity = {
   start_date: string
   end_date: string
   payment_type: string
+  activity_type: string
 }
 
 export interface PropsAddActivity {
@@ -27,7 +28,32 @@ export interface PropsAddActivity {
   start_date: Date
   end_date: Date
   payment_type: string
+  activity_type: string
 }
+
+export const initialData:PropsAddActivity = {
+  business: null,
+  name: '',
+  price: '',
+  is_public: 'false',
+  generate_invoice: 'false',
+  mp_available: 'false',
+  public_name: '',
+  max_sessions: '',
+  start_date: new Date(),
+  end_date: new Date(),
+  payment_type: '',
+  activity_type: ''
+}
+
+export const paymentsType = [
+  'Por sesión',
+  'Por período',
+  'Mensual',
+  'Mensual con sesiones'
+]
+
+export const activitiesType = ['Individual', 'Grupal']
 
 export interface FormErrors {
   business?: string
@@ -40,48 +66,33 @@ export interface FormErrors {
   start_date?: string
   end_date?: string
   payment_type?: string
+  activity_type?: string
   public_name?: string
   [key: string]: string | undefined
 }
 
-export const initialData = {
-  business: null,
-  name: '',
-  price: '',
-  is_public: 'false',
-  generate_invoice: 'false',
-  mp_available: 'false',
-  public_name: '',
-  max_sessions: '',
-  start_date: new Date(),
-  end_date: new Date(),
-  payment_type: 'Por sesión'
-}
-
 export interface Columns {
-  company: boolean
   name: boolean
   price: boolean
   is_public: boolean
   generate_invoice: boolean
   mp_available: boolean
-  public_name: boolean
   max_sessions: boolean
   start_date: boolean
   end_date: boolean
   payment_type: boolean
+  activity_type: boolean
 }
 
-export const initialColumns = {
-  company: true,
+export const initialColumns:Columns = {
   name: true,
   price: true,
   is_public: true,
   generate_invoice: true,
   mp_available: true,
-  public_name: true,
   max_sessions: true,
   start_date: true,
   end_date: true,
-  payment_type: true
+  payment_type: true,
+  activity_type: true
 }
