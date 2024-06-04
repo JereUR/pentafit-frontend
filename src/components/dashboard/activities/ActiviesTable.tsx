@@ -201,7 +201,7 @@ export default function ActivitiesTable() {
       </div>
       {activities && (
         <table className="transactions-table w-full mb-4 mt-8">
-          <thead className="font-bold text-center text-muted bg-foreground text-sm">
+          <thead className="font-bold text-center text-muted bg-foreground text-xs xl:text-sm">
             <tr>
               <td className="px-2 py-5">
                 <input
@@ -235,13 +235,16 @@ export default function ActivitiesTable() {
                 <td className="px-2 py-5">Fecha hasta</td>
               )}
               {selectedColumns.payment_type && (
-                <td className="px-2 py-5">Tipo cobro</td>
+                <td className="px-2 py-5">Tipo de cobro</td>
+              )}
+              {selectedColumns.activity_type && (
+                <td className="px-2 py-5">Modalidad </td>
               )}
               <td className="px-2 py-5">Acción</td>
             </tr>
           </thead>
           {activities.length > 0 ? (
-            <tbody className="text-foreground text-sm font-light">
+            <tbody className="text-foreground text-xs xl:text-sm font-light">
               {activities.map((activity) => (
                 <tr
                   key={activity.id}
@@ -398,6 +401,18 @@ export default function ActivitiesTable() {
                       }
                     >
                       {activity.payment_type}
+                    </td>
+                  )}
+                  {selectedColumns.activity_type && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
+                    >
+                      {activity.activity_type}
                     </td>
                   )}
                   <td className="border-b border-foreground px-2 py-5">
