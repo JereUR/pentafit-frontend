@@ -39,9 +39,13 @@ const SelectColumns: React.FC<Props> = ({
         className="flex items-center gap-2 bg-card"
         onClick={handleButtonClick}
       >
-        <FaTableCells className='w-4 h-4' />
+        <FaTableCells className="w-4 h-4" />
         Columnas
-        {isOpen ? <MdExpandLess className='w-5 h-5' /> : <MdExpandMore className='w-5 h-5' />}
+        {isOpen ? (
+          <MdExpandLess className="w-5 h-5" />
+        ) : (
+          <MdExpandMore className="w-5 h-5" />
+        )}
       </Button>
       {isOpen && (
         <div
@@ -167,6 +171,19 @@ const SelectColumns: React.FC<Props> = ({
               />
               <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
                 Tipo de pago
+              </span>
+            </label>
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                className="mr-2 cursor-pointer"
+                checked={selectedColumns.activity_type}
+                onChange={() =>
+                  handleChange('activity_type', !selectedColumns.activity_type)
+                }
+              />
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+                Tipo de actividad
               </span>
             </label>
             <hr className="my-2 border-gray-200 dark:border-gray-500" />
