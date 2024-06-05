@@ -5,7 +5,6 @@ import { SiMicrosoftexcel } from 'react-icons/si'
 import React from 'react'
 import { saveAs } from 'file-saver'
 
-import { Activity } from '@/components/types/Activity'
 import { Button } from '@/components/ui/button'
 import { Business } from '@/components/types/Business'
 import useActivities from '@/components/hooks/useActivities'

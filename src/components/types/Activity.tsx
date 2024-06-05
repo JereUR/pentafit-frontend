@@ -2,7 +2,7 @@ import { Business } from './Business'
 
 export type Activity = {
   id: number
-  company_id: number[]
+  company_id: number
   name: string
   price: number
   is_public: boolean

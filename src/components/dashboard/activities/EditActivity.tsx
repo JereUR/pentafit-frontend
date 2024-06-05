@@ -15,7 +15,7 @@ export default function EditActivity() {
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const id = pathname.split('/')[4]
   const { getActivityById } = useActivities()
-  const { token, businesses, getBusinesses, getWorkingBusiness } = useUser()
+  const { token, getBusinesses, getWorkingBusiness } = useUser()
 
   useEffect(() => {
     async function getData() {
