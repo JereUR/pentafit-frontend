@@ -20,6 +20,7 @@ import SelectColumns from './SelectColumns'
 import { Columns, initialColumns } from '@/components/types/Plan'
 import SelectedPlansActions from './SelectedPlansActions'
 import ExportData from './ExportData'
+import { paymentsType } from './../../types/Plan'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
@@ -346,7 +347,13 @@ export default function PlansTable() {
                         router.push(`/panel-de-control/planes/${plan.id}`)
                       }
                     >
-                      {plan.payment_type}
+                      {plan.payment_type.map((payment, index) => {
+                        if (index < plan.payment_type.length - 1) {
+                          return payment + ' | '
+                        } else {
+                          return payment
+                        }
+                      })}
                     </td>
                   )}
                   {selectedColumns.plan_type && (

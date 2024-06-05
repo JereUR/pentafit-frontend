@@ -47,7 +47,7 @@ const initialPlans = [
     end_date: '2024-5-20',
     expiration_period: 30,
     generate_invoice: false,
-    payment_type: ['Efectivo', 'Debito automático'],
+    payment_type: ['Efectivo', 'Transferencia', 'Debito automático'],
     plan_type: 'Mensual',
     free_test: false,
     current: false,
