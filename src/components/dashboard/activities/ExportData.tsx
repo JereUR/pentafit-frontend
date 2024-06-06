@@ -65,7 +65,8 @@ const ExportData: React.FC<Props> = ({ business }) => {
           Sesiones_máximas: activity.max_sessions,
           Fecha_inicio: activity.start_date,
           Fecha_fin: activity.end_date,
-          Tipo_de_cobro: activity.payment_type
+          Tipo_de_cobro: activity.payment_type,
+          Modalidad:activity.activity_type
         }
       })
 

@@ -6,6 +6,7 @@ import axios from 'axios'
 import { Activity, PropsAddActivity } from '../types/Activity'
 import { useToast } from '../ui/use-toast'
 import useUser from '../hooks/useUser'
+import { revalidatePath } from 'next/cache'
 
 type ActivitiesContextType = {
   activities: Activity[] | []
@@ -129,7 +130,7 @@ export default function ActivitiesContextProvider({
     business_id: number
   ): Promise<Activity[] | []> {
     setLoading(true)
-    const url = `${BASE_URL}api/v1/activities?id=${business_id}`
+    const url = `${BASE_URL}api/v1/all_activities?company_id=${business_id}`
 
     try {
       const response = await axios.get(url, {
@@ -167,9 +168,9 @@ export default function ActivitiesContextProvider({
   ): Promise<void> {
     setLoading(true)
     const regex = q != '' ? new RegExp(q, 'i') : q
-    const ITEM_PER_PAGE = 4
+    const ITEM_PER_PAGE = 5
     const params = new URLSearchParams()
-    params.append('regex', regex.toString())
+    params.append('regex', q)
     params.append('page', page)
     params.append('items_per_page', ITEM_PER_PAGE.toString())
     params.append('company_id', business_id.toString())
@@ -376,12 +377,14 @@ export default function ActivitiesContextProvider({
   async function deleteActivitiesById(activities: number[]): Promise<boolean> {
     setLoading(true)
     const params = new URLSearchParams()
-    params.append('activities', activities.toString())
     const url = `${BASE_URL}api/v1/activity`
     try {
       const response = await axios.delete(url, {
         headers: {
           Authorization: token
+        },
+        data: {
+          ids: activities
         }
       })
 
@@ -417,27 +420,22 @@ export default function ActivitiesContextProvider({
     businesses: number[]
   ): Promise<boolean> {
     setLoading(true)
-    const url = `${BASE_URL}api/v1/activity`
-
-    const data = {
-      activities,
-      businesses
-    }
+    const url = `${BASE_URL}api/v1/duplicate_activities`
     try {
       const response = await axios.post(
         url,
         {
-          data
+          ids: activities,
+          company_ids: businesses
         },
         {
           headers: {
-            'Content-Type': 'application/json',
             Authorization: token
           }
         }
       )
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         toast({
           title: `Actividades agregadas con éxito.`,
           className: 'bg-green-600'

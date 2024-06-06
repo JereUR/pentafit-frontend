@@ -77,6 +77,7 @@ export default function ActivitiesTable() {
 
     if (res) {
       setShowConfirmDelete(false)
+      window.location.reload()
     }
   }
 

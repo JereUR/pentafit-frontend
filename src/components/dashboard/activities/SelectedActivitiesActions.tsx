@@ -28,9 +28,15 @@ const SelectedActivitiesActions: React.FC<Props> = ({
   const [otherBusinesses, setOtherBusinesses] = useState<Business[] | []>([])
   const [businessesToAdd, setBusinessesToAdd] = useState<number[]>([])
   const [addIsOpen, setAddIsOpen] = useState<boolean>(false)
-  const { businesses } = useUser()
-  const { deleteActivitiesById, addActivitiesToBusinesses, loading } =
-    useActivities()
+  const { businesses, token, getBusinesses } = useUser()
+  const { deleteActivitiesById, addActivitiesToBusinesses, loading } = useActivities()
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
+
+  useEffect(() => {
+    if (token) {
+      getBusinesses()
+    }
+  }, [token])
 
   useEffect(() => {
     if (businesses.length > 0) {
@@ -82,6 +88,7 @@ const SelectedActivitiesActions: React.FC<Props> = ({
     if (res) {
       setShowConfirmMultipleDelete(false)
       setSelectedActivities([])
+      window.location.reload()
     }
   }
 
@@ -134,7 +141,7 @@ const SelectedActivitiesActions: React.FC<Props> = ({
                       />
                       <span className="flex gap-2 text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
                         <Image
-                          src={business.logo ? business.logo : noImage}
+                          src={business.logo ? `${BASE_URL}${business.logo}` : noImage}
                           alt={`${business?.name} logo`}
                           width={20}
                           height={20}
@@ -176,7 +183,7 @@ const SelectedActivitiesActions: React.FC<Props> = ({
                       className="flex items-center gap-2 m-2"
                     >
                       <Image
-                        src={business?.logo ? business.logo : noImage}
+                        src={business?.logo ? `${BASE_URL}${business.logo}` : noImage}
                         alt={`${business?.name} logo`}
                         width={30}
                         height={30}

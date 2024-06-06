@@ -180,7 +180,7 @@ export default function ActivityForm({
           })
 
           setTimeout(() => {
-            router.replace('/panel-de-control/negocios')
+            router.replace('/panel-de-control/actividades')
           }, 1000)
         }
       } else {
@@ -196,7 +196,7 @@ export default function ActivityForm({
           })
 
           setTimeout(() => {
-            router.replace('/panel-de-control/negocios')
+            router.replace('/panel-de-control/actividades')
           }, 1000)
         }
       }
