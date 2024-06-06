@@ -6,7 +6,6 @@ import axios from 'axios'
 import { Activity, PropsAddActivity } from '../types/Activity'
 import { useToast } from '../ui/use-toast'
 import useUser from '../hooks/useUser'
-import { revalidatePath } from 'next/cache'
 
 type ActivitiesContextType = {
   activities: Activity[] | []
@@ -39,7 +38,7 @@ export const ActivitiesContext = createContext<ActivitiesContextType | null>(
   null
 )
 
-const initialActivities = [
+export const initialActivities = [
   {
     id: 1,
     company_id: 1,
@@ -167,7 +166,6 @@ export default function ActivitiesContextProvider({
     business_id: number
   ): Promise<void> {
     setLoading(true)
-    const regex = q != '' ? new RegExp(q, 'i') : q
     const ITEM_PER_PAGE = 5
     const params = new URLSearchParams()
     params.append('regex', q)
@@ -376,7 +374,6 @@ export default function ActivitiesContextProvider({
 
   async function deleteActivitiesById(activities: number[]): Promise<boolean> {
     setLoading(true)
-    const params = new URLSearchParams()
     const url = `${BASE_URL}api/v1/activity`
     try {
       const response = await axios.delete(url, {
