@@ -15,17 +15,21 @@ type PlansContextType = {
   getPlanById: (id: string, business_id: number) => Promise<Plan | null>
   addPlan: ({
     dataPlan,
-    company_id
+    company_id,
+    activities
   }: {
     dataPlan: PropsAddPlan
     company_id: number
+    activities: number[]
   }) => Promise<boolean>
   updatePlan: ({
     dataPlan,
-    company_id
+    company_id,
+    activities
   }: {
     dataPlan: PropsAddPlan
     company_id: number
+    activities: number[]
   }) => Promise<boolean>
   deletePlansById: (plans: number[]) => Promise<boolean>
   addPlansToBusinesses: (
@@ -76,7 +80,7 @@ export default function PlansContextProvider({
 }: {
   children: ReactNode
 }) {
-  const [plans, setPlans] = useState<Plan[] | []>(initialPlans)
+  const [plans, setPlans] = useState<Plan[] | []>([])
   const [loading, setLoading] = useState<boolean>(false)
   const { toast } = useToast()
   const { token } = useUser()
@@ -84,7 +88,7 @@ export default function PlansContextProvider({
 
   async function getAllPlans(business_id: number): Promise<Plan[] | []> {
     setLoading(true)
-    const url = `${BASE_URL}api/v1/plans?id=${business_id}`
+    const url = `${BASE_URL}api/v1/all_plans?company_id=${business_id}`
 
     try {
       const response = await axios.get(url, {
@@ -121,10 +125,9 @@ export default function PlansContextProvider({
     business_id: number
   ): Promise<void> {
     setLoading(true)
-    const regex = q != '' ? new RegExp(q, 'i') : q
     const ITEM_PER_PAGE = 4
     const params = new URLSearchParams()
-    params.append('regex', regex.toString())
+    params.append('regex', q)
     params.append('page', page)
     params.append('items_per_page', ITEM_PER_PAGE.toString())
     params.append('company_id', business_id.toString())
@@ -163,7 +166,7 @@ export default function PlansContextProvider({
   ): Promise<Plan | null> {
     setLoading(true)
     const params = new URLSearchParams()
-    params.append('plan_id', id)
+    params.append('id', id)
     params.append('company_id', business_id.toString())
     const url = `${BASE_URL}api/v1/plan?${params.toString()}`
     try {
@@ -197,10 +200,12 @@ export default function PlansContextProvider({
 
   async function addPlan({
     dataPlan,
-    company_id
+    company_id,
+    activities
   }: {
     dataPlan: PropsAddPlan
     company_id: number
+    activities: number[]
   }): Promise<boolean> {
     setLoading(true)
     const freeTestValue = dataPlan.free_test === 'true' ? true : false
@@ -222,7 +227,7 @@ export default function PlansContextProvider({
       payment_type: dataPlan.payment_type,
       plan_type: dataPlan.plan_type,
       current: currentValue,
-      activities: dataPlan.activities
+      activities
     }
 
     const url = `${BASE_URL}api/v1/plan`
@@ -263,10 +268,12 @@ export default function PlansContextProvider({
 
   async function updatePlan({
     dataPlan,
-    company_id
+    company_id,
+    activities
   }: {
     dataPlan: PropsAddPlan
     company_id: number
+    activities: number[]
   }): Promise<boolean> {
     setLoading(true)
     const freeTestValue = dataPlan.free_test === 'true' ? true : false
@@ -288,7 +295,7 @@ export default function PlansContextProvider({
       payment_type: dataPlan.payment_type,
       plan_type: dataPlan.plan_type,
       current: currentValue,
-      activities: dataPlan.activities
+      activities
     }
 
     const url = `${BASE_URL}plan`
@@ -329,13 +336,14 @@ export default function PlansContextProvider({
 
   async function deletePlansById(plans: number[]): Promise<boolean> {
     setLoading(true)
-    const params = new URLSearchParams()
-    params.append('plans', plans.toString())
     const url = `${BASE_URL}api/v1/plan`
     try {
       const response = await axios.delete(url, {
         headers: {
           Authorization: token
+        },
+        data: {
+          ids: plans
         }
       })
 
@@ -369,17 +377,13 @@ export default function PlansContextProvider({
     businesses: number[]
   ): Promise<boolean> {
     setLoading(true)
-    const url = `${BASE_URL}api/v1/plan`
-
-    const data = {
-      plans,
-      businesses
-    }
+    const url = `${BASE_URL}api/v1/duplicate_plan`
     try {
       const response = await axios.post(
         url,
         {
-          data
+          ids: plans,
+          company_ids: businesses
         },
         {
           headers: {
@@ -389,9 +393,9 @@ export default function PlansContextProvider({
         }
       )
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         toast({
-          title: `Planes agregadas con éxito.`,
+          title: `Planes agregados con éxito.`,
           className: 'bg-green-600'
         })
         return true
