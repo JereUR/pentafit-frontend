@@ -503,7 +503,10 @@ export default function PlanForm({
           </div>
           <div className="flex justify-center items-center border rounded-lg py-6 m-4">
             {paymentsType.map((paymentType) => (
-              <label className="container flex justify-center items-center gap-4 whitespace-nowrap">
+              <label
+                key={paymentType}
+                className="container flex justify-center items-center gap-4 whitespace-nowrap"
+              >
                 <input
                   value={paymentType}
                   className="peer cursor-pointer hidden after:opacity-100"
