@@ -22,7 +22,10 @@ type ActivitiesContextType = {
     business_id: number
     ITEMS_PER_PAGE: number
   }) => Promise<void>
-  getActivityById: (id: string, business_id: number) => Promise<Activity | null>
+  getActivityById: ({id,
+    business_id}:
+    {id: string,
+    business_id: number}) => Promise<Activity | null>
   addActivity: ({
     dataActivity,
     company_id
@@ -216,9 +219,10 @@ export default function ActivitiesContextProvider({
     }
   }
 
-  async function getActivityById(
-    id: string,
-    business_id: number
+  async function getActivityById({id,
+    business_id}:
+    {id: string,
+    business_id: number}
   ): Promise<Activity | null> {
     setLoading(true)
     const params = new URLSearchParams()

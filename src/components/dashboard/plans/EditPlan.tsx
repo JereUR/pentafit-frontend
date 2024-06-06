@@ -32,7 +32,7 @@ export default function EditPlan() {
   useEffect(() => {
     async function fetchPlan() {
       if (workingBusiness) {
-        const p = await getPlanById(id, workingBusiness.id)
+        const p = await getPlanById({ id, business_id: workingBusiness.id })
         if (p) {
           setPlan({
             id: p.id ? p.id : null,

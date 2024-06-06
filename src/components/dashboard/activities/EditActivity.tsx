@@ -32,7 +32,7 @@ export default function EditActivity() {
   useEffect(() => {
     async function fetchActivity() {
       if (workingBusiness) {
-        const act = await getActivityById(id, workingBusiness.id)
+        const act = await getActivityById({id, business_id:workingBusiness.id})
         console.log(act)
         if (act) {
           setActivity({
