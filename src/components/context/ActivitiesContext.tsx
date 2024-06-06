@@ -11,7 +11,17 @@ type ActivitiesContextType = {
   activities: Activity[] | []
   loading: boolean
   getAllActivities: (business_id: number) => Promise<Activity[] | []>
-  getActivities: (q: string, page: string, business_id: number) => Promise<void>
+  getActivities: ({
+    q,
+    page,
+    business_id,
+    ITEMS_PER_PAGE
+  }: {
+    q: string
+    page: string
+    business_id: number
+    ITEMS_PER_PAGE: number
+  }) => Promise<void>
   getActivityById: (id: string, business_id: number) => Promise<Activity | null>
   addActivity: ({
     dataActivity,
@@ -160,17 +170,22 @@ export default function ActivitiesContextProvider({
     }
   }
 
-  async function getActivities(
-    q: string,
-    page: string,
+  async function getActivities({
+    q,
+    page,
+    business_id,
+    ITEMS_PER_PAGE
+  }: {
+    q: string
+    page: string
     business_id: number
-  ): Promise<void> {
+    ITEMS_PER_PAGE: number
+  }): Promise<void> {
     setLoading(true)
-    const ITEM_PER_PAGE = 5
     const params = new URLSearchParams()
     params.append('regex', q)
     params.append('page', page)
-    params.append('items_per_page', ITEM_PER_PAGE.toString())
+    params.append('items_per_page', ITEMS_PER_PAGE.toString())
     params.append('company_id', business_id.toString())
     const url = `${BASE_URL}api/v1/activities?${params.toString()}`
 

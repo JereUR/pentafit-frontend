@@ -2,7 +2,13 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-const Pagination = ({ count }: { count: number }) => {
+const Pagination = ({
+  count,
+  ITEMS_PER_PAGE
+}: {
+  count: number
+  ITEMS_PER_PAGE: number
+}) => {
   const searchParams = useSearchParams()
   const { replace } = useRouter()
   const pathname = usePathname()
@@ -10,10 +16,9 @@ const Pagination = ({ count }: { count: number }) => {
   const page = searchParams.get('page') || '1'
 
   const params = new URLSearchParams(searchParams)
-  const ITEM_PER_PAGE = 5 //TO DO: Add scroll bar for select number of items per page (5, 10, 20, 50)
 
-  const hasPrev = ITEM_PER_PAGE * (parseInt(page) - 1) > 0
-  const hasNext = ITEM_PER_PAGE * (parseInt(page) - 1) + ITEM_PER_PAGE < count
+  const hasPrev = ITEMS_PER_PAGE * (parseInt(page) - 1) > 0
+  const hasNext = ITEMS_PER_PAGE * (parseInt(page) - 1) + ITEMS_PER_PAGE < count
 
   const handleChangePage = (type: string) => {
     type === 'prev'

@@ -11,8 +11,24 @@ type PlansContextType = {
   plans: Plan[] | []
   loading: boolean
   getAllPlans: (business_id: number) => Promise<Plan[] | []>
-  getPlans: (q: string, page: string, business_id: number) => Promise<void>
-  getPlanById: (id: string, business_id: number) => Promise<Plan | null>
+  getPlans: ({
+    q,
+    page,
+    business_id,
+    ITEMS_PER_PAGE
+  }: {
+    q: string
+    page: string
+    business_id: number
+    ITEMS_PER_PAGE: number
+  }) => Promise<void>
+  getPlanById: ({
+    id,
+    business_id
+  }: {
+    id: string
+    business_id: number
+  }) => Promise<Plan | null>
   addPlan: ({
     dataPlan,
     company_id,
@@ -119,17 +135,22 @@ export default function PlansContextProvider({
     }
   }
 
-  async function getPlans(
-    q: string,
-    page: string,
+  async function getPlans({
+    q,
+    page,
+    business_id,
+    ITEMS_PER_PAGE
+  }: {
+    q: string
+    page: string
     business_id: number
-  ): Promise<void> {
+    ITEMS_PER_PAGE: number
+  }): Promise<void> {
     setLoading(true)
-    const ITEM_PER_PAGE = 4
     const params = new URLSearchParams()
     params.append('regex', q)
     params.append('page', page)
-    params.append('items_per_page', ITEM_PER_PAGE.toString())
+    params.append('items_per_page', ITEMS_PER_PAGE.toString())
     params.append('company_id', business_id.toString())
     const url = `${BASE_URL}api/v1/plans?${params.toString()}`
 
@@ -161,8 +182,13 @@ export default function PlansContextProvider({
   }
 
   async function getPlanById(
-    id: string,
+    {
+    id,
+    business_id
+  }: {
+    id: string
     business_id: number
+  }
   ): Promise<Plan | null> {
     setLoading(true)
     const params = new URLSearchParams()

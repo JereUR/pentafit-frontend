@@ -21,6 +21,7 @@ import { Columns, initialColumns } from '@/components/types/Plan'
 import SelectedPlansActions from './SelectedPlansActions'
 import ExportData from './ExportData'
 import { paymentsType } from './../../types/Plan'
+import SelectItemsPerPage from '../SelectItemsPerPage'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
@@ -28,6 +29,7 @@ export default function PlansTable() {
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [selectedPlans, setSelectedPlans] = useState<number[]>([])
   const [selectAll, setSelectAll] = useState<boolean>(false)
+  const [selectedItemsPerPage, setSelectedItemsPerPage] = useState<number>(5)
   const [selectedColumns, setSelectedColumns] =
     useState<Columns>(initialColumns)
   const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
@@ -56,9 +58,14 @@ export default function PlansTable() {
     if (token && workingBusiness) {
       const q = searchParams.get('q') || ''
       const page = searchParams.get('page') || '1'
-      getPlans(q, page, workingBusiness.id)
+      getPlans({
+        q,
+        page,
+        business_id: workingBusiness.id,
+        ITEMS_PER_PAGE: selectedItemsPerPage
+      })
     }
-  }, [searchParams, token, workingBusiness])
+  }, [searchParams, token, workingBusiness, selectedItemsPerPage])
 
   useEffect(() => {
     if (window != undefined) {
@@ -183,6 +190,10 @@ export default function PlansTable() {
           <SelectColumns
             selectedColumns={selectedColumns}
             setSelectedColumns={setSelectedColumns}
+          />
+          <SelectItemsPerPage
+            selectedItemsPerPage={selectedItemsPerPage}
+            setSelectedItemsPerPage={setSelectedItemsPerPage}
           />
           {workingBusiness && plans.length > 0 && (
             <ExportData business={workingBusiness} />
@@ -471,7 +482,7 @@ export default function PlansTable() {
           )}
         </table>
       )}
-      <Pagination count={count} />
+      <Pagination count={count} ITEMS_PER_PAGE={selectedItemsPerPage} />
     </div>
   )
 }

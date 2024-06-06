@@ -20,6 +20,7 @@ import noImage from '@public/assets/no-image.png'
 import Loader from '@/components/Loader'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import ExportData from './ExportData'
+import SelectItemsPerPage from '../SelectItemsPerPage'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
@@ -27,6 +28,7 @@ export default function ActivitiesTable() {
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [selectedActivities, setSelectedActivities] = useState<number[]>([])
   const [selectAll, setSelectAll] = useState<boolean>(false)
+  const [selectedItemsPerPage, setSelectedItemsPerPage] = useState<number>(5)
   const [selectedColumns, setSelectedColumns] =
     useState<Columns>(initialColumns)
   const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
@@ -56,9 +58,14 @@ export default function ActivitiesTable() {
     if (token && workingBusiness) {
       const q = searchParams.get('q') || ''
       const page = searchParams.get('page') || '1'
-      getActivities(q, page, workingBusiness.id)
+      getActivities({
+        q,
+        page,
+        business_id: workingBusiness.id,
+        ITEMS_PER_PAGE: selectedItemsPerPage
+      })
     }
-  }, [searchParams, token, workingBusiness])
+  }, [searchParams, token, workingBusiness, selectedItemsPerPage])
 
   useEffect(() => {
     if (window != undefined) {
@@ -183,6 +190,10 @@ export default function ActivitiesTable() {
           <SelectColumns
             selectedColumns={selectedColumns}
             setSelectedColumns={setSelectedColumns}
+          />
+          <SelectItemsPerPage
+            selectedItemsPerPage={selectedItemsPerPage}
+            setSelectedItemsPerPage={setSelectedItemsPerPage}
           />
           {workingBusiness && activities.length > 0 && (
             <ExportData business={workingBusiness} />
@@ -485,7 +496,7 @@ export default function ActivitiesTable() {
           )}
         </table>
       )}
-      <Pagination count={count} />
+      <Pagination count={count} ITEMS_PER_PAGE={selectedItemsPerPage} />
     </div>
   )
 }
