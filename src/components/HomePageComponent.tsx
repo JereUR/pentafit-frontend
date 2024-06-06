@@ -23,7 +23,7 @@ export default function HomePageComponent() {
           <div className="w-1/3 flex items-center justify-center relative">
             <div className="absolute m-4 w-[80%] h-[70%] rounded-3xl bg-primary-orange-500 clip-triangle"></div>
             <p className="relative z-10 text-3xl -top-14 -left-10 -rotate-[51deg] xl:text-4xl xl:-top-12 xl:-left-20 xl:-rotate-[38deg] py-4 border-y-2 border-y-slate-800  text-wrap font-semibold ">
-              Nuestros Precios
+              Nuestros Planes
             </p>
           </div>
           <div className="w-2/3 flex justify-around items-stretch my-10">
