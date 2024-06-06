@@ -15,7 +15,7 @@ export default function EditActivity() {
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const id = pathname.split('/')[4]
   const { getActivityById } = useActivities()
-  const { token, businesses, getBusinesses, getWorkingBusiness } = useUser()
+  const { token, getWorkingBusiness } = useUser()
 
   useEffect(() => {
     async function getData() {
@@ -32,7 +32,7 @@ export default function EditActivity() {
   useEffect(() => {
     async function fetchActivity() {
       if (workingBusiness) {
-        const act = await getActivityById(id, workingBusiness?.id)
+        const act = await getActivityById(id, workingBusiness.id)
         console.log(act)
         if (act) {
           setActivity({
@@ -54,7 +54,6 @@ export default function EditActivity() {
     }
 
     if (token && workingBusiness) {
-      // getBusinesses()
       fetchActivity()
     }
   }, [id, token, workingBusiness])
