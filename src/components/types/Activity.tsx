@@ -1,5 +1,3 @@
-import { Business } from './Business'
-
 export type Activity = {
   id: number
   company_id: number
@@ -29,6 +27,7 @@ export interface PropsAddActivity {
   end_date: Date
   payment_type: string
   activity_type: string
+  [key: string]: string | undefined | Date | number | null
 }
 
 export const initialData: PropsAddActivity = {
