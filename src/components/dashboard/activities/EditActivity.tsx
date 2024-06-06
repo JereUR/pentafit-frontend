@@ -15,7 +15,7 @@ export default function EditActivity() {
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const id = pathname.split('/')[4]
   const { getActivityById } = useActivities()
-  const { token, getBusinesses, getWorkingBusiness } = useUser()
+  const { token, businesses, getBusinesses, getWorkingBusiness } = useUser()
 
   useEffect(() => {
     async function getData() {
@@ -35,21 +35,22 @@ export default function EditActivity() {
         const act = await getActivityById(id, workingBusiness?.id)
         if (act) {
           setActivity({
-            name: act.name,
-            price: act.price.toString(),
+            name: act.name ? act.name : '',
+            price: act.price ? act.price.toString() : '',
             is_public: act.is_public ? 'true' : 'false',
             generate_invoice: act.generate_invoice ? 'true' : 'false',
             mp_available: act.mp_available ? 'true' : 'false',
-            public_name: act.public_name,
-            max_sessions: act.max_sessions.toString(),
+            public_name: act.public_name ? act.public_name : '',
+            max_sessions: act.max_sessions ? act.max_sessions.toString() : '',
             start_date: new Date(act.start_date),
             end_date: new Date(act.end_date),
-            payment_type: act.payment_type,
-            activity_type: act.activity_type
+            payment_type: act.payment_type ? act.payment_type : '',
+            activity_type: act.activity_type ? act.activity_type : ''
           })
         }
       }
     }
+
     if (token && workingBusiness) {
       getBusinesses()
       fetchActivity()

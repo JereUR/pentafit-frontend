@@ -21,13 +21,15 @@ export default function EditBusiness() {
       if (bus) {
         setBusiness({
           id: bus.id,
-          name: bus.name,
-          description: bus.description,
-          email: bus.email,
-          address: bus.address,
-          phone: bus.phone,
-          instagram: bus.instagram,
-          facebook: bus.facebook,
+          name: bus.name ? bus.name : '',
+          description: bus.description ? bus.description : '',
+          email: bus.email ? bus.email : '',
+          address: bus.address ? bus.address : '',
+          phone: bus.phone ? bus.phone : '',
+          instagram: bus.instagram ? bus.instagram : '',
+
+          facebook: bus.facebook ? bus.facebook : '',
+
           logoUrl: bus.logo ? `${BASE_URL}${bus.logo}` : '',
           logo: null,
           title: bus.metadata?.title ? bus.metadata.title : '',
