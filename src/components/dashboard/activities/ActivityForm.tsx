@@ -61,7 +61,7 @@ export default function ActivityForm({
       setWorkingBusiness(res)
     }
 
-    if (type === 'add' && token) {
+    if (token) {
       updateWorkingBusiness()
     }
   }, [token, businesses])

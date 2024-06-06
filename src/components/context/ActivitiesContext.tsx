@@ -208,7 +208,7 @@ export default function ActivitiesContextProvider({
   ): Promise<Activity | null> {
     setLoading(true)
     const params = new URLSearchParams()
-    params.append('activity_id', id)
+    params.append('id', id)
     params.append('company_id', business_id.toString())
     const url = `${BASE_URL}api/v1/activity?${params.toString()}`
     try {
@@ -323,7 +323,7 @@ export default function ActivitiesContextProvider({
 
     const newActivity = {
       company_id,
-      activity: dataActivity.name,
+      name: dataActivity.name,
       price: dataActivity.price,
       is_public: isPublicValue,
       generate_invoice: generateInvoiceValue,
@@ -336,7 +336,7 @@ export default function ActivitiesContextProvider({
       activity_type: dataActivity.activity_type
     }
 
-    const url = `${BASE_URL}activity`
+    const url = `${BASE_URL}api/v1/activity`
     try {
       const response = await axios.put(
         url,
