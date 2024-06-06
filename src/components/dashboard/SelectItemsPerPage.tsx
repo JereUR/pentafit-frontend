@@ -38,7 +38,7 @@ const SelectItemsPerPage: React.FC<Props> = ({
         onClick={handleButtonClick}
       >
         <MdOutlineNumbers className="w-4 h-4" />
-        Items por página ({selectedItemsPerPage})
+        Resultados ({selectedItemsPerPage})
         {isOpen ? (
           <MdExpandLess className="w-5 h-5" />
         ) : (
@@ -52,7 +52,7 @@ const SelectItemsPerPage: React.FC<Props> = ({
         >
           <div className="p-4" onClick={handleMenuClick}>
             <p className="text-lg font-medium text-foreground">
-              Nro de elementos a mostrar 
+              Nro de elementos a mostrar
             </p>
             <hr className="my-2 border-gray-200 dark:border-gray-500" />
             {numbersOptions.map((n) => (
