@@ -88,7 +88,7 @@ export default function AuthContextProvider({
       token: 'Bearer 1234'
     } */
   )
-  const [businesses, setBusinesses] = useState<Business[] | []>(initialBusiness)
+  const [businesses, setBusinesses] = useState<Business[] | []>([])
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const [loading, setLoading] = useState(false)
@@ -682,7 +682,7 @@ export default function AuthContextProvider({
   }
 
   async function getWorkingBusiness() {
-    return businesses[0]
+    /* return businesses[0] */
     setLoading(true)
     try {
       const response = await axios.get(`${BASE_URL}api/v1/business_working`, {

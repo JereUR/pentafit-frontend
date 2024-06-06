@@ -17,6 +17,7 @@ export type Activity = {
 }
 
 export interface PropsAddActivity {
+  id: number | null
   name: string
   price: string
   is_public: string
@@ -31,6 +32,7 @@ export interface PropsAddActivity {
 }
 
 export const initialData: PropsAddActivity = {
+  id: null,
   name: '',
   price: '',
   is_public: 'false',

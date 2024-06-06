@@ -323,6 +323,7 @@ export default function ActivitiesContextProvider({
 
     const newActivity = {
       company_id,
+      id: dataActivity.id,
       name: dataActivity.name,
       price: dataActivity.price,
       is_public: isPublicValue,

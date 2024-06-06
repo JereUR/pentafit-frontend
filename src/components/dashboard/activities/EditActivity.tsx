@@ -36,6 +36,7 @@ export default function EditActivity() {
         console.log(act)
         if (act) {
           setActivity({
+            id: act.id ? act.id : null,
             name: act.name ? act.name : '',
             price: act.price ? act.price.toString() : '',
             is_public: act.is_public ? 'true' : 'false',
