@@ -86,7 +86,10 @@ const SelectedPlansActions: React.FC<Props> = ({
   }
 
   const handleAdd = async () => {
-    const res = await addPlansToBusinesses(selectedPlans, businessesToAdd)
+    const res = await addPlansToBusinesses({
+      plans: selectedPlans,
+      businesses: businessesToAdd
+    })
 
     if (res) {
       setSelectedPlans([])

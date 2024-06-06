@@ -48,10 +48,13 @@ type PlansContextType = {
     activities: number[]
   }) => Promise<boolean>
   deletePlansById: (plans: number[]) => Promise<boolean>
-  addPlansToBusinesses: (
-    plans: number[],
+  addPlansToBusinesses: ({
+    plans,
+    businesses
+  }: {
+    plans: number[]
     businesses: number[]
-  ) => Promise<boolean>
+  }) => Promise<boolean>
 }
 
 export const PlansContext = createContext<PlansContextType | null>(null)
@@ -181,15 +184,13 @@ export default function PlansContextProvider({
     }
   }
 
-  async function getPlanById(
-    {
+  async function getPlanById({
     id,
     business_id
   }: {
     id: string
     business_id: number
-  }
-  ): Promise<Plan | null> {
+  }): Promise<Plan | null> {
     setLoading(true)
     const params = new URLSearchParams()
     params.append('id', id)
@@ -398,10 +399,13 @@ export default function PlansContextProvider({
     }
   }
 
-  async function addPlansToBusinesses(
-    plans: number[],
+  async function addPlansToBusinesses({
+    plans,
+    businesses
+  }: {
+    plans: number[]
     businesses: number[]
-  ): Promise<boolean> {
+  }): Promise<boolean> {
     setLoading(true)
     const url = `${BASE_URL}api/v1/duplicate_plan`
     try {

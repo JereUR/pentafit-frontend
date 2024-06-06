@@ -22,10 +22,13 @@ type ActivitiesContextType = {
     business_id: number
     ITEMS_PER_PAGE: number
   }) => Promise<void>
-  getActivityById: ({id,
-    business_id}:
-    {id: string,
-    business_id: number}) => Promise<Activity | null>
+  getActivityById: ({
+    id,
+    business_id
+  }: {
+    id: string
+    business_id: number
+  }) => Promise<Activity | null>
   addActivity: ({
     dataActivity,
     company_id
@@ -41,10 +44,13 @@ type ActivitiesContextType = {
     company_id: number
   }) => Promise<boolean>
   deleteActivitiesById: (activities: number[]) => Promise<boolean>
-  addActivitiesToBusinesses: (
-    activities: number[],
+  addActivitiesToBusinesses: ({
+    activities,
+    businesses
+  }: {
+    activities: number[]
     businesses: number[]
-  ) => Promise<boolean>
+  }) => Promise<boolean>
 }
 
 export const ActivitiesContext = createContext<ActivitiesContextType | null>(
@@ -219,11 +225,13 @@ export default function ActivitiesContextProvider({
     }
   }
 
-  async function getActivityById({id,
-    business_id}:
-    {id: string,
-    business_id: number}
-  ): Promise<Activity | null> {
+  async function getActivityById({
+    id,
+    business_id
+  }: {
+    id: string
+    business_id: number
+  }): Promise<Activity | null> {
     setLoading(true)
     const params = new URLSearchParams()
     params.append('id', id)
@@ -431,10 +439,13 @@ export default function ActivitiesContextProvider({
     }
   }
 
-  async function addActivitiesToBusinesses(
-    activities: number[],
+  async function addActivitiesToBusinesses({
+    activities,
+    businesses
+  }: {
+    activities: number[]
     businesses: number[]
-  ): Promise<boolean> {
+  }): Promise<boolean> {
     setLoading(true)
     const url = `${BASE_URL}api/v1/duplicate_activities`
     try {
