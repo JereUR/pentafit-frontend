@@ -77,6 +77,7 @@ export default function PlansTable() {
 
     if (res) {
       setShowConfirmDelete(false)
+      window.location.reload()
     }
   }
 
@@ -188,7 +189,7 @@ export default function PlansTable() {
           )}
         </div>
         <div className="flex justify-center gap-4">
-          <Link href="/panel-de-control/planes/agregar">
+          <Link href="/panel-de-control/facturacion/planes/agregar">
             <CustomButton text="Agregar" />
           </Link>
           {selectedPlans.length > 0 && (
@@ -407,7 +408,7 @@ export default function PlansTable() {
                     <div className="flex justify-center gap-2">
                       <div>
                         <Link
-                          href={`/panel-de-control/planes/editar/${plan.id}`}
+                          href={`/panel-de-control/facturacion/planes/editar/${plan.id}`}
                         >
                           <button className="p-2 rounded-lg text-white bg-sky-600 border-none cursor-pointer transitiopn duration-300 ease-in-out hover:scale-105 hover:shadow-md">
                             <FaEdit />
