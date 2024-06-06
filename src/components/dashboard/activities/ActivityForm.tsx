@@ -35,6 +35,8 @@ const initialErrors = {
   public_name: ''
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
+
 export default function ActivityForm({
   type,
   activity
@@ -50,7 +52,7 @@ export default function ActivityForm({
   const router = useRouter()
   const { getWorkingBusiness, token, businesses } = useUser()
   const { addActivity, updateActivity, loading } = useActivities()
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
+
   useEffect(() => {
     setDataActivity(activity)
   }, [activity])
