@@ -1,5 +1,3 @@
-import { Business } from './Business'
-
 export type Plan = {
   id: number
   company_id: number[]
@@ -14,10 +12,11 @@ export type Plan = {
   plan_type: string
   free_test: boolean
   current: boolean
-  activities: string[] | []
+  activities: number[] | []
 }
 
 export interface PropsAddPlan {
+  id: number | null
   name: string
   description: string
   price: string
@@ -25,14 +24,16 @@ export interface PropsAddPlan {
   end_date: Date
   expiration_period: string
   generate_invoice: string
-  payment_type: string
+  payment_type: string[]
   plan_type: string
   free_test: string
   current: string
-  activities: string[] | []
+  activities: number[] | []
+  [key: string]: string | undefined | Date | String[] | null | number | number[]
 }
 
 export const initialData: PropsAddPlan = {
+  id: null,
   name: '',
   description: '',
   price: '',
@@ -40,7 +41,7 @@ export const initialData: PropsAddPlan = {
   end_date: new Date(),
   expiration_period: '',
   generate_invoice: 'false',
-  payment_type: '',
+  payment_type: [],
   plan_type: '',
   free_test: 'false',
   current: 'false',
@@ -52,19 +53,19 @@ export const plansType = ['Mensual', 'Clase única', 'Membresía']
 export const paymentsType = ['Efectivo', 'Transferencia', 'Débito automático']
 
 export interface FormErrors {
-  business: string
-  name: string
-  description: string
-  price: string
-  start_date: string
-  end_date: string
-  expiration_period: string
-  generate_invoice: string
-  payment_type: string
-  plan_type: string
-  free_test: string
-  current: string
-  activities: string
+  business?: string
+  name?: string
+  description?: string
+  price?: string
+  start_date?: string
+  end_date?: string
+  expiration_period?: string
+  generate_invoice?: string
+  payment_type?: string
+  plan_type?: string
+  free_test?: string
+  current?: string
+  activities?: string
   [key: string]: string | undefined
 }
 
