@@ -33,6 +33,7 @@ export default function EditActivity() {
     async function fetchActivity() {
       if (workingBusiness) {
         const act = await getActivityById(id, workingBusiness?.id)
+        console.log(act)
         if (act) {
           setActivity({
             name: act.name ? act.name : '',
@@ -52,10 +53,10 @@ export default function EditActivity() {
     }
 
     if (token && workingBusiness) {
-      getBusinesses()
+      // getBusinesses()
       fetchActivity()
     }
-  }, [id, token])
+  }, [id, token, workingBusiness])
 
   return (
     <div className="m-10">
