@@ -41,7 +41,7 @@ export const ActivitiesContext = createContext<ActivitiesContextType | null>(
 const initialActivities = [
   {
     id: 1,
-    company_id: [1],
+    company_id: 1,
     name: 'Actividad 1',
     price: 200,
     is_public: false,
@@ -55,7 +55,7 @@ const initialActivities = [
   },
   {
     id: 2,
-    company_id: [1],
+    company_id: 1,
     name: 'Actividad 2',
     price: 300,
     is_public: true,
@@ -70,7 +70,7 @@ const initialActivities = [
   },
   {
     id: 3,
-    company_id: [1],
+    company_id: 1,
     name: 'Actividad 3',
     price: 400,
     is_public: true,
@@ -85,7 +85,7 @@ const initialActivities = [
   },
   {
     id: 4,
-    company_id: [1],
+    company_id: 1,
     name: 'Actividad 4',
     price: 200,
     is_public: false,
@@ -99,7 +99,7 @@ const initialActivities = [
   },
   {
     id: 5,
-    company_id: [1],
+    company_id: 1,
     name: 'Actividad 5',
     price: 500,
     is_public: true,
