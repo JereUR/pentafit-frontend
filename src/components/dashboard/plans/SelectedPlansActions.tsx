@@ -81,6 +81,7 @@ const SelectedPlansActions: React.FC<Props> = ({
     if (res) {
       setShowConfirmMultipleDelete(false)
       setSelectedPlans([])
+      window.location.reload()
     }
   }
 
