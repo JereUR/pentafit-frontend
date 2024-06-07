@@ -10,6 +10,7 @@ import useUser from '../hooks/useUser'
 type ActivitiesContextType = {
   activities: Activity[] | []
   loading: boolean
+  count: number
   getAllActivities: (business_id: number) => Promise<Activity[] | []>
   getActivities: ({
     q,
@@ -140,6 +141,7 @@ export default function ActivitiesContextProvider({
 }) {
   const [activities, setActivities] = useState<Activity[] | []>([])
   const [loading, setLoading] = useState<boolean>(false)
+  const [count, setCount] = useState(0)
   const { toast } = useToast()
   const { token } = useUser()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
@@ -208,6 +210,7 @@ export default function ActivitiesContextProvider({
 
       if (response.status === 200 || response.status === 204) {
         setActivities(response.data.activities)
+        setCount(response.data.count)
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
@@ -492,6 +495,7 @@ export default function ActivitiesContextProvider({
       value={{
         activities,
         loading,
+        count,
         getAllActivities,
         getActivities,
         getActivityById,

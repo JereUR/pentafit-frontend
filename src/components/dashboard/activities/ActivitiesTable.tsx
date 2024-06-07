@@ -36,9 +36,8 @@ export default function ActivitiesTable() {
   const router = useRouter()
 
   const searchParams = useSearchParams()
-  const count = 4
   const { token } = useUser()
-  const { activities, getActivities, loading, deleteActivitiesById } =
+  const { activities, getActivities, loading, deleteActivitiesById, count } =
     useActivities()
   const { getWorkingBusiness } = useUser()
 

@@ -37,12 +37,9 @@ export default function PlansTable() {
   const router = useRouter()
 
   const searchParams = useSearchParams()
-  const count = 7
   const { token } = useUser()
-  const { plans, getPlans, loading, deletePlansById } = usePlans()
+  const { plans, getPlans, loading, deletePlansById, count } = usePlans()
   const { getWorkingBusiness } = useUser()
-
-  console.log(plans)
 
   useEffect(() => {
     async function getData() {

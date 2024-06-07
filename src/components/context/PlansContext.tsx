@@ -10,6 +10,7 @@ import useUser from '../hooks/useUser'
 type PlansContextType = {
   plans: Plan[] | []
   loading: boolean
+  count: number
   getAllPlans: (business_id: number) => Promise<Plan[] | []>
   getPlans: ({
     q,
@@ -101,6 +102,7 @@ export default function PlansContextProvider({
 }) {
   const [plans, setPlans] = useState<Plan[] | []>([])
   const [loading, setLoading] = useState<boolean>(false)
+  const [count, setCount] = useState(0)
   const { toast } = useToast()
   const { token } = useUser()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
@@ -164,9 +166,10 @@ export default function PlansContextProvider({
           Authorization: token
         }
       })
-      console.log(response.data)
+
       if (response.status === 200 || response.status === 204) {
         setPlans(response.data.plans)
+        setCount(response.data.count)
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
@@ -488,6 +491,7 @@ export default function PlansContextProvider({
       value={{
         plans,
         loading,
+        count,
         getAllPlans,
         getPlans,
         getPlanById,

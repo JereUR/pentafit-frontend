@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 import { MdExpandLess, MdExpandMore, MdOutlineNumbers } from 'react-icons/md'
 
@@ -24,6 +26,10 @@ const SelectItemsPerPage: React.FC<Props> = ({
   const handleCloseMenu = () => {
     setSelectedItemsPerPage(partialOption)
     setIsOpen(false)
+
+    const url = new URL(window.location.href)
+    url.searchParams.set('page', '1')
+    window.history.pushState({}, '', url)
   }
 
   const handleMenuClick = (event: React.MouseEvent<HTMLDivElement>) => {
