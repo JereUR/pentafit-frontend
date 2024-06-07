@@ -55,7 +55,7 @@ export default function BusinessForm({
   business: PropsAddBusiness
   type: string
 }) {
-  const { loading, addBusiness, updateBusiness } = useUser()
+  const { loadingUser, addBusiness, updateBusiness } = useUser()
   const [showConfirmBack, setShowConfirmBack] = useState<boolean>(false)
   const [dataBusiness, setDataBusiness] = useState<PropsAddBusiness>(business)
   const [imgLogo, setImgLogo] = useState<string | null>(
@@ -272,7 +272,7 @@ export default function BusinessForm({
             type="submit"
             className="gap-2 font-bold text-background bg-green-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-green-600 border-none"
           >
-            {!loading ? (
+            {!loadingUser ? (
               <div className="flex gap-2 items-center">
                 <FaCheck /> {type === 'add' ? 'Agregar' : 'Actualizar'}
               </div>
