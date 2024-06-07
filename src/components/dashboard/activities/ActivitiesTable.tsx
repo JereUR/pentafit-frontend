@@ -21,9 +21,9 @@ import Loader from '@/components/Loader'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import ExportData from './ExportData'
 import SelectItemsPerPage from '../SelectItemsPerPage'
-import TableSkeleton from './TableSkeleton'
-import WorkingBusinessSkeleton from './WorkingBusinessSkeleton'
-import CountActivitiesSkeleton from './CountActivitiesSkeleton'
+import TableSkeleton from '../skeletons/TableSkeleton'
+import WorkingBusinessSkeleton from '../skeletons/WorkingBusinessSkeleton'
+import CountItemsSkeleton from '../skeletons/CountItemsSkeleton'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
@@ -184,7 +184,7 @@ export default function ActivitiesTable() {
           </div>
         )}
         {workingBusiness && loadingActivity ? (
-          <CountActivitiesSkeleton />
+          <CountItemsSkeleton />
         ) : (
           <div className="mr-10">
             <Card className="px-4 py-2 border border-none rounded-lg">
