@@ -23,7 +23,7 @@ type AuthContextType = {
   businesses: Business[] | []
   token: string | null
   recoverState: boolean
-  loading: boolean
+  loadingUser: boolean
   setRecoverState: Dispatch<SetStateAction<boolean>>
   signIn: ({ dataLogin }: { dataLogin: PropsLogin }) => Promise<void>
   signOut: () => Promise<void>
@@ -78,20 +78,11 @@ export default function AuthContextProvider({
 }: {
   children: ReactNode
 }) {
-  const [user, setUser] = useState<User | null>(
-    null /* {
-      id: 1,
-      first_name: 'Jeremías',
-      last_name: 'Dominguez Vega',
-      email: 'jeremias.jdv@gmail.com',
-      photo_url: '/assets/profile-photo.png',
-      token: 'Bearer 1234'
-    } */
-  )
+  const [user, setUser] = useState<User | null>(null)
   const [businesses, setBusinesses] = useState<Business[] | []>([])
-  const [token, setToken] = useState<string | null>(null)
+  const [token, setToken] = useState<string | null>('1234')
   const [recoverState, setRecoverState] = useState<boolean>(false)
-  const [loading, setLoading] = useState(false)
+  const [loadingUser, setLoadingUser] = useState(true)
   const router = useRouter()
   const pathname = usePathname()
   const { toast } = useToast()
@@ -114,7 +105,7 @@ export default function AuthContextProvider({
   }, [])
 
   async function signIn({ dataLogin }: { dataLogin: PropsLogin }) {
-    setLoading(true)
+    setLoadingUser(true)
     try {
       const response = await axios.post(
         `${BASE_URL}login`,
@@ -163,12 +154,12 @@ export default function AuthContextProvider({
         })
       }
     } finally {
-      setLoading(false)
+      setLoadingUser(false)
     }
   }
 
   async function signOut() {
-    setLoading(true)
+    setLoadingUser(true)
     try {
       const response = await axios.delete(`${BASE_URL}logout`, {
         headers: {
@@ -200,7 +191,7 @@ export default function AuthContextProvider({
         description: error.message
       })
     } finally {
-      setLoading(false)
+      setLoadingUser(false)
     }
   }
 
@@ -209,7 +200,7 @@ export default function AuthContextProvider({
   }: {
     dataRegister: PropsRegister
   }): Promise<void> {
-    setLoading(true)
+    setLoadingUser(true)
     const user = {
       first_name: dataRegister.first_name,
       last_name: dataRegister.last_name,
@@ -254,12 +245,12 @@ export default function AuthContextProvider({
         description: error.message
       })
     } finally {
-      setLoading(false)
+      setLoadingUser(false)
     }
   }
 
   async function recover({ email }: { email: string }): Promise<void> {
-    setLoading(true)
+    setLoadingUser(true)
     try {
       const response = await axios.post(
         `${BASE_URL}recover`,
@@ -289,12 +280,12 @@ export default function AuthContextProvider({
         description: error.message
       })
     } finally {
-      setLoading(false)
+      setLoadingUser(false)
     }
   }
 
   async function getBusinesses() {
-    setLoading(true)
+    setLoadingUser(true)
 
     try {
       const response = await axios.get(`${BASE_URL}api/v1/businesses`, {
@@ -320,12 +311,12 @@ export default function AuthContextProvider({
         description: error.message
       })
     } finally {
-      setLoading(false)
+      setLoadingUser(false)
     }
   }
 
   async function getBusinessById(id: string) {
-    setLoading(true)
+    setLoadingUser(true)
     try {
       const response = await axios.get(`${BASE_URL}api/v1/business?id=${id}`, {
         headers: {
@@ -350,7 +341,7 @@ export default function AuthContextProvider({
       })
       return null
     } finally {
-      setLoading(false)
+      setLoadingUser(false)
     }
   }
 
@@ -359,7 +350,7 @@ export default function AuthContextProvider({
   }: {
     dataBusiness: PropsAddBusiness
   }): Promise<boolean> {
-    setLoading(true)
+    setLoadingUser(true)
 
     const metadata = {
       title: dataBusiness.title,
@@ -399,14 +390,7 @@ export default function AuthContextProvider({
       )
 
       if (response.status === 201) {
-        const newBusiness: Business = {
-          id: response.data.id,
-          ...data
-        }
-
-        const newBusinesses = [...businesses, newBusiness]
-        setBusinesses(newBusinesses)
-        /* revalidatePath('/panel-de-control/negocios') */
+        const id = response.data.id
 
         if (dataBusiness.logo || dataBusiness.logoWeb) {
           try {
@@ -418,25 +402,22 @@ export default function AuthContextProvider({
               formData.append('logo', dataBusiness.logoWeb)
             }
             url = `${BASE_URL}api/v1/attach_business_image`
-            const response = await axios.post(
-              `${url}?id=${newBusiness.id}`,
-              formData,
-              {
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                  Authorization: token
-                }
+            const response = await axios.post(`${url}?id=${id}`, formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: token
               }
-            )
+            })
 
-            if (response.status !== 200) {
+            if (response.status === 201) {
+              return true
+            } else {
               toast({
                 title: 'Oh no! Algo salió mal.',
                 description: response.statusText
               })
               return false
             }
-            return true
           } catch (error: any) {
             toast({
               variant: 'destructive',
@@ -463,7 +444,7 @@ export default function AuthContextProvider({
       })
       return false
     } finally {
-      setLoading(false)
+      setLoadingUser(false)
     }
   }
 
@@ -472,7 +453,7 @@ export default function AuthContextProvider({
   }: {
     dataBusiness: PropsAddBusiness
   }): Promise<boolean> {
-    setLoading(true)
+    setLoadingUser(true)
 
     const metadata = {
       title: dataBusiness.title,
@@ -512,15 +493,6 @@ export default function AuthContextProvider({
       )
 
       if (response.status === 200) {
-        const filterBusinesses = businesses.filter((b) => b.id !== data.id)
-        const index = businesses.findIndex((b) => b.id === data.id)
-        const newBusinesses = [
-          ...filterBusinesses.slice(0, index),
-          data,
-          ...filterBusinesses.slice(index)
-        ]
-        setBusinesses(newBusinesses)
-        /* revalidatePath('/panel-de-control/negocios') */
         if (dataBusiness.logo || dataBusiness.logoWeb) {
           try {
             const formData = new FormData()
@@ -542,14 +514,15 @@ export default function AuthContextProvider({
               }
             )
 
-            if (response.status !== 200) {
+            if (response.status === 200 || response.status === 204) {
+              return true
+            } else {
               toast({
                 title: 'Oh no! Algo salió mal.',
                 description: response.statusText
               })
               return false
             }
-            return true
           } catch (error: any) {
             toast({
               variant: 'destructive',
@@ -576,12 +549,12 @@ export default function AuthContextProvider({
       })
       return false
     } finally {
-      setLoading(false)
+      setLoadingUser(false)
     }
   }
 
   async function updateStatusBusiness(id: number): Promise<boolean> {
-    setLoading(true)
+    setLoadingUser(true)
     let url = `${BASE_URL}api/v1/change_business_status?id=${id}`
     try {
       const response = await axios.put(url, null, {
@@ -608,12 +581,12 @@ export default function AuthContextProvider({
       })
       return false
     } finally {
-      setLoading(false)
+      setLoadingUser(false)
     }
   }
 
   async function updateWorkingBusiness(id: number): Promise<boolean> {
-    setLoading(true)
+    setLoadingUser(true)
     let url = `${BASE_URL}api/v1/activate_business_working_status?id=${id}`
     try {
       const response = await axios.put(url, null, {
@@ -640,12 +613,12 @@ export default function AuthContextProvider({
       })
       return false
     } finally {
-      setLoading(false)
+      setLoadingUser(false)
     }
   }
 
   async function deleteBusinessById(id: string) {
-    setLoading(true)
+    setLoadingUser(true)
     try {
       const response = await axios.delete(
         `${BASE_URL}api/v1/business?id=${id}`,
@@ -677,13 +650,12 @@ export default function AuthContextProvider({
       })
       return false
     } finally {
-      setLoading(false)
+      setLoadingUser(false)
     }
   }
 
   async function getWorkingBusiness() {
-    /* return businesses[0] */
-    setLoading(true)
+    setLoadingUser(true)
     try {
       const response = await axios.get(`${BASE_URL}api/v1/business_working`, {
         headers: {
@@ -708,7 +680,7 @@ export default function AuthContextProvider({
       })
       return null
     } finally {
-      setLoading(false)
+      setLoadingUser(false)
     }
   }
 
@@ -719,7 +691,7 @@ export default function AuthContextProvider({
         businesses,
         token,
         recoverState,
-        loading,
+        loadingUser,
         setRecoverState,
         signIn,
         signOut,

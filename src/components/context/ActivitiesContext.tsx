@@ -9,7 +9,7 @@ import useUser from '../hooks/useUser'
 
 type ActivitiesContextType = {
   activities: Activity[] | []
-  loading: boolean
+  loadingActivity: boolean
   count: number
   getAllActivities: (business_id: number) => Promise<Activity[] | []>
   getActivities: ({
@@ -140,7 +140,7 @@ export default function ActivitiesContextProvider({
   children: ReactNode
 }) {
   const [activities, setActivities] = useState<Activity[] | []>([])
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loadingActivity, setLoadingActivity] = useState<boolean>(true)
   const [count, setCount] = useState(0)
   const { toast } = useToast()
   const { token } = useUser()
@@ -149,7 +149,7 @@ export default function ActivitiesContextProvider({
   async function getAllActivities(
     business_id: number
   ): Promise<Activity[] | []> {
-    setLoading(true)
+    setLoadingActivity(true)
     const url = `${BASE_URL}api/v1/all_activities?company_id=${business_id}`
 
     try {
@@ -177,7 +177,7 @@ export default function ActivitiesContextProvider({
       })
       return []
     } finally {
-      setLoading(false)
+      setLoadingActivity(false)
     }
   }
 
@@ -192,7 +192,7 @@ export default function ActivitiesContextProvider({
     business_id: number
     ITEMS_PER_PAGE: number
   }): Promise<void> {
-    setLoading(true)
+    setLoadingActivity(true)
     const params = new URLSearchParams()
     params.append('regex', q)
     params.append('page', page)
@@ -224,7 +224,7 @@ export default function ActivitiesContextProvider({
         description: error.message
       })
     } finally {
-      setLoading(false)
+      setLoadingActivity(false)
     }
   }
 
@@ -235,7 +235,7 @@ export default function ActivitiesContextProvider({
     id: string
     business_id: number
   }): Promise<Activity | null> {
-    setLoading(true)
+    setLoadingActivity(true)
     const params = new URLSearchParams()
     params.append('id', id)
     params.append('company_id', business_id.toString())
@@ -265,7 +265,7 @@ export default function ActivitiesContextProvider({
       })
       return null
     } finally {
-      setLoading(false)
+      setLoadingActivity(false)
     }
   }
 
@@ -276,7 +276,7 @@ export default function ActivitiesContextProvider({
     dataActivity: PropsAddActivity
     company_id: number
   }): Promise<boolean> {
-    setLoading(true)
+    setLoadingActivity(true)
     const isPublicValue = dataActivity.is_public === 'true' ? true : false
 
     const generateInvoiceValue =
@@ -331,7 +331,7 @@ export default function ActivitiesContextProvider({
       })
       return false
     } finally {
-      setLoading(false)
+      setLoadingActivity(false)
     }
   }
 
@@ -342,7 +342,7 @@ export default function ActivitiesContextProvider({
     dataActivity: PropsAddActivity
     company_id: number
   }): Promise<boolean> {
-    setLoading(true)
+    setLoadingActivity(true)
     const isPublicValue = dataActivity.is_public === 'true' ? true : false
 
     const generateInvoiceValue =
@@ -398,12 +398,12 @@ export default function ActivitiesContextProvider({
       })
       return false
     } finally {
-      setLoading(false)
+      setLoadingActivity(false)
     }
   }
 
   async function deleteActivitiesById(activities: number[]): Promise<boolean> {
-    setLoading(true)
+    setLoadingActivity(true)
     const url = `${BASE_URL}api/v1/activity`
     try {
       const response = await axios.delete(url, {
@@ -438,7 +438,7 @@ export default function ActivitiesContextProvider({
       })
       return false
     } finally {
-      setLoading(false)
+      setLoadingActivity(false)
     }
   }
 
@@ -449,7 +449,7 @@ export default function ActivitiesContextProvider({
     activities: number[]
     businesses: number[]
   }): Promise<boolean> {
-    setLoading(true)
+    setLoadingActivity(true)
     const url = `${BASE_URL}api/v1/duplicate_activities`
     try {
       const response = await axios.post(
@@ -486,7 +486,7 @@ export default function ActivitiesContextProvider({
       })
       return false
     } finally {
-      setLoading(false)
+      setLoadingActivity(false)
     }
   }
 
@@ -494,7 +494,7 @@ export default function ActivitiesContextProvider({
     <ActivitiesContext.Provider
       value={{
         activities,
-        loading,
+        loadingActivity,
         count,
         getAllActivities,
         getActivities,
