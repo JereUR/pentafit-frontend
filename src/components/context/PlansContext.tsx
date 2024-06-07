@@ -9,7 +9,7 @@ import useUser from '../hooks/useUser'
 
 type PlansContextType = {
   plans: Plan[] | []
-  loandingPlan: boolean
+  loadingPlan: boolean
   count: number
   getAllPlans: (business_id: number) => Promise<Plan[] | []>
   getPlans: ({
@@ -101,14 +101,14 @@ export default function PlansContextProvider({
   children: ReactNode
 }) {
   const [plans, setPlans] = useState<Plan[] | []>([])
-  const [loandingPlan, setLoandingPlan] = useState<boolean>(true)
+  const [loadingPlan, setLoadingPlan] = useState<boolean>(true)
   const [count, setCount] = useState(0)
   const { toast } = useToast()
   const { token } = useUser()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
   async function getAllPlans(business_id: number): Promise<Plan[] | []> {
-    setLoandingPlan(true)
+    setLoadingPlan(true)
     const url = `${BASE_URL}api/v1/all_plans?company_id=${business_id}`
 
     try {
@@ -136,7 +136,7 @@ export default function PlansContextProvider({
       })
       return []
     } finally {
-      setLoandingPlan(false)
+      setLoadingPlan(false)
     }
   }
 
@@ -151,7 +151,7 @@ export default function PlansContextProvider({
     business_id: number
     ITEMS_PER_PAGE: number
   }): Promise<void> {
-    setLoandingPlan(true)
+    setLoadingPlan(true)
     const params = new URLSearchParams()
     params.append('regex', q)
     params.append('page', page)
@@ -183,7 +183,7 @@ export default function PlansContextProvider({
         description: error.message
       })
     } finally {
-      setLoandingPlan(false)
+      setLoadingPlan(false)
     }
   }
 
@@ -194,7 +194,7 @@ export default function PlansContextProvider({
     id: string
     business_id: number
   }): Promise<Plan | null> {
-    setLoandingPlan(true)
+    setLoadingPlan(true)
     const params = new URLSearchParams()
     params.append('id', id)
     params.append('company_id', business_id.toString())
@@ -224,7 +224,7 @@ export default function PlansContextProvider({
       })
       return null
     } finally {
-      setLoandingPlan(false)
+      setLoadingPlan(false)
     }
   }
 
@@ -237,7 +237,7 @@ export default function PlansContextProvider({
     company_id: number
     activities: number[]
   }): Promise<boolean> {
-    setLoandingPlan(true)
+    setLoadingPlan(true)
     const freeTestValue = dataPlan.free_test === 'true' ? true : false
 
     const generateInvoiceValue =
@@ -327,7 +327,7 @@ export default function PlansContextProvider({
       })
       return false
     } finally {
-      setLoandingPlan(false)
+      setLoadingPlan(false)
     }
   }
 
@@ -340,7 +340,7 @@ export default function PlansContextProvider({
     company_id: number
     activities: number[]
   }): Promise<boolean> {
-    setLoandingPlan(true)
+    setLoadingPlan(true)
     const freeTestValue = dataPlan.free_test === 'true' ? true : false
 
     const generateInvoiceValue =
@@ -395,12 +395,12 @@ export default function PlansContextProvider({
       })
       return false
     } finally {
-      setLoandingPlan(false)
+      setLoadingPlan(false)
     }
   }
 
   async function deletePlansById(plans: number[]): Promise<boolean> {
-    setLoandingPlan(true)
+    setLoadingPlan(true)
     const url = `${BASE_URL}api/v1/plan`
     try {
       const response = await axios.delete(url, {
@@ -433,7 +433,7 @@ export default function PlansContextProvider({
       })
       return false
     } finally {
-      setLoandingPlan(false)
+      setLoadingPlan(false)
     }
   }
 
@@ -444,7 +444,7 @@ export default function PlansContextProvider({
     plans: number[]
     businesses: number[]
   }): Promise<boolean> {
-    setLoandingPlan(true)
+    setLoadingPlan(true)
     const url = `${BASE_URL}api/v1/duplicate_plan`
     try {
       const response = await axios.post(
@@ -482,7 +482,7 @@ export default function PlansContextProvider({
       })
       return false
     } finally {
-      setLoandingPlan(false)
+      setLoadingPlan(false)
     }
   }
 
@@ -490,7 +490,7 @@ export default function PlansContextProvider({
     <PlansContext.Provider
       value={{
         plans,
-        loandingPlan,
+        loadingPlan,
         count,
         getAllPlans,
         getPlans,
