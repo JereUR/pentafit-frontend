@@ -47,7 +47,7 @@ export default function RegisterForm() {
     password: '',
     confirm_password: ''
   })
-  const { signUp, loading } = useUser()
+  const { signUp, loadingUser } = useUser()
 
   const validations = ({ dataRegister }: { dataRegister: PropsRegister }) => {
     const errorsForm: FormErrors = {}
@@ -324,7 +324,7 @@ export default function RegisterForm() {
           type="submit"
           className="bg-primary-orange-600 w-full my-[2vh] py-6 text-xl hover:bg-primary-orange-700"
         >
-          {!loading ? 'Enviar' : <Loader className="mt-[2vh]" />}
+          {!loadingUser ? 'Enviar' : <Loader className="mt-[2vh]" />}
         </Button>
       </form>
     </div>

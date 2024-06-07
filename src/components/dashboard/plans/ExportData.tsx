@@ -31,7 +31,7 @@ interface Data {
 }
 
 const ExportData: React.FC<Props> = ({ business }) => {
-  const { getAllPlans, loading } = usePlans()
+  const { getAllPlans, loadingPlan } = usePlans()
 
   const exportToExcel = async (jsonData: Data[], fileName: string) => {
     const workbook = new ExcelJS.Workbook()
@@ -82,7 +82,7 @@ const ExportData: React.FC<Props> = ({ business }) => {
       className="flex items-center gap-2 bg-card"
       onClick={handleExport}
     >
-      {loading ? (
+      {loadingPlan ? (
         <Loader className="mt-[1.8vh] ml-[1vw]" />
       ) : (
         <>

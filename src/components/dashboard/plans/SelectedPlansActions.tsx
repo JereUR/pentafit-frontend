@@ -29,7 +29,7 @@ const SelectedPlansActions: React.FC<Props> = ({
   const [businessesToAdd, setBusinessesToAdd] = useState<number[]>([])
   const [addIsOpen, setAddIsOpen] = useState<boolean>(false)
   const { businesses } = useUser()
-  const { deletePlansById, addPlansToBusinesses, loading } = usePlans()
+  const { deletePlansById, addPlansToBusinesses, loadingPlan } = usePlans()
 
   useEffect(() => {
     if (businesses.length > 0) {
@@ -195,7 +195,7 @@ const SelectedPlansActions: React.FC<Props> = ({
                   Cancelar
                 </Button>
                 <Button onClick={handleAdd}>
-                  {loading ? (
+                  {loadingPlan ? (
                     <Loader className="mt-[1.8vh] ml-[1vw]" />
                   ) : (
                     'Confirmar'
@@ -227,7 +227,7 @@ const SelectedPlansActions: React.FC<Props> = ({
                   Cancelar
                 </Button>
                 <Button onClick={handleDelete}>
-                  {loading ? (
+                  {loadingPlan ? (
                     <Loader className="mt-[1.8vh] ml-[1vw]" />
                   ) : (
                     'Confirmar'

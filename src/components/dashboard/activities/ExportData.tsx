@@ -29,7 +29,7 @@ interface Data {
 }
 
 const ExportData: React.FC<Props> = ({ business }) => {
-  const { getAllActivities, loading } = useActivities()
+  const { getAllActivities, loadingActivity } = useActivities()
 
   const exportToExcel = async (jsonData: Data[], fileName: string) => {
     const workbook = new ExcelJS.Workbook()
@@ -66,7 +66,7 @@ const ExportData: React.FC<Props> = ({ business }) => {
           Fecha_inicio: activity.start_date,
           Fecha_fin: activity.end_date,
           Tipo_de_cobro: activity.payment_type,
-          Modalidad:activity.activity_type
+          Modalidad: activity.activity_type
         }
       })
 
@@ -80,7 +80,7 @@ const ExportData: React.FC<Props> = ({ business }) => {
       className="flex items-center gap-2 bg-card"
       onClick={handleExport}
     >
-      {loading ? (
+      {loadingActivity ? (
         <Loader className="mt-[1.8vh] ml-[1vw]" />
       ) : (
         <>

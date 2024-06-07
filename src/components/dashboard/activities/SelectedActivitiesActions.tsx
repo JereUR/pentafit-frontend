@@ -29,7 +29,7 @@ const SelectedActivitiesActions: React.FC<Props> = ({
   const [businessesToAdd, setBusinessesToAdd] = useState<number[]>([])
   const [addIsOpen, setAddIsOpen] = useState<boolean>(false)
   const { businesses, token, getBusinesses } = useUser()
-  const { deleteActivitiesById, addActivitiesToBusinesses, loading } =
+  const { deleteActivitiesById, addActivitiesToBusinesses, loadingActivity } =
     useActivities()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
@@ -211,7 +211,7 @@ const SelectedActivitiesActions: React.FC<Props> = ({
                   Cancelar
                 </Button>
                 <Button onClick={handleAdd}>
-                  {loading ? (
+                  {loadingActivity ? (
                     <Loader className="mt-[1.8vh] ml-[1vw]" />
                   ) : (
                     'Confirmar'
@@ -243,7 +243,7 @@ const SelectedActivitiesActions: React.FC<Props> = ({
                   Cancelar
                 </Button>
                 <Button onClick={handleDelete}>
-                  {loading ? (
+                  {loadingActivity ? (
                     <Loader className="mt-[1.8vh] ml-[1vw]" />
                   ) : (
                     'Confirmar'
