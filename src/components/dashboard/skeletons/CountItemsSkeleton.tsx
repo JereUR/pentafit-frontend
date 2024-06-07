@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton'
 
-const CountActivitiesSkeleton = () => {
+const CountItemsSkeleton = () => {
   return (
     <div>
       <Skeleton className="h-32 w-64 rounded-lg mr-10" />
@@ -8,4 +8,4 @@ const CountActivitiesSkeleton = () => {
   )
 }
 
-export default CountActivitiesSkeleton
+export default CountItemsSkeleton
