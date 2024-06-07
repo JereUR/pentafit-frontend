@@ -253,11 +253,10 @@ export default function PlansContextProvider({
       generate_invoice: generateInvoiceValue,
       payment_type: dataPlan.payment_type,
       plan_type: dataPlan.plan_type,
-      current: currentValue,
-      activities
+      current: currentValue
     }
 
-    const url = `${BASE_URL}api/v1/plan`
+    let url = `${BASE_URL}api/v1/plan`
     try {
       const response = await axios.post(
         url,
@@ -273,7 +272,39 @@ export default function PlansContextProvider({
       )
 
       if (response.status === 201) {
-        return true
+        const id = response.data.id
+        url = `${BASE_URL}api/v1/plan_activities?id=${id}`
+        try {
+          const response = await axios.post(
+            url,
+            {
+              activities
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+              }
+            }
+          )
+
+          if (response.status === 201) {
+            return true
+          } else {
+            toast({
+              title: 'Oh no! Algo salió mal.',
+              description: response.statusText
+            })
+            return false
+          }
+        } catch (error: any) {
+          toast({
+            variant: 'destructive',
+            title: 'Oh no! Algo salió mal.',
+            description: error.message
+          })
+          return false
+        }
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
