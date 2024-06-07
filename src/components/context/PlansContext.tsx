@@ -164,9 +164,9 @@ export default function PlansContextProvider({
           Authorization: token
         }
       })
-
+      console.log(response.data)
       if (response.status === 200 || response.status === 204) {
-        setPlans(response.data)
+        setPlans(response.data.plans)
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
@@ -253,7 +253,8 @@ export default function PlansContextProvider({
       generate_invoice: generateInvoiceValue,
       payment_type: dataPlan.payment_type,
       plan_type: dataPlan.plan_type,
-      current: currentValue
+      current: currentValue,
+      expiration_period: dataPlan.expiration_period
     }
 
     let url = `${BASE_URL}api/v1/plan`
@@ -273,12 +274,15 @@ export default function PlansContextProvider({
 
       if (response.status === 201) {
         const id = response.data.id
-        url = `${BASE_URL}api/v1/plan_activities?id=${id}`
+        url = `${BASE_URL}api/v1/plan_activities`
         try {
           const response = await axios.post(
             url,
             {
-              activities
+              plan_activity: {
+                plan_id: id,
+                activity_ids: activities
+              }
             },
             {
               headers: {

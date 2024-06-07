@@ -207,7 +207,7 @@ export default function ActivitiesContextProvider({
       })
 
       if (response.status === 200 || response.status === 204) {
-        setActivities(response.data)
+        setActivities(response.data.activities)
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',

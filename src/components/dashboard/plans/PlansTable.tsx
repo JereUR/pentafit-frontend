@@ -37,10 +37,12 @@ export default function PlansTable() {
   const router = useRouter()
 
   const searchParams = useSearchParams()
-  const count = 4
+  const count = 7
   const { token } = useUser()
   const { plans, getPlans, loading, deletePlansById } = usePlans()
   const { getWorkingBusiness } = useUser()
+
+  console.log(plans)
 
   useEffect(() => {
     async function getData() {
@@ -359,7 +361,7 @@ export default function PlansTable() {
                         router.push(`/panel-de-control/planes/${plan.id}`)
                       }
                     >
-                      {plan.payment_type.map((payment, index) => {
+                      {plan?.payment_type?.map((payment, index) => {
                         if (index < plan.payment_type.length - 1) {
                           return payment + ' | '
                         } else {
@@ -412,7 +414,7 @@ export default function PlansTable() {
                         router.push(`/panel-de-control/planes/${plan.id}`)
                       }
                     >
-                      {plan.activities.length}
+                      {plan?.activities?.length}
                     </td>
                   )}
                   <td className="border-b border-foreground px-2 py-5">
