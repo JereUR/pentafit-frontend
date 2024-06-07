@@ -25,6 +25,7 @@ import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 import { activitiesType, Activity } from './../../types/Activity'
 import useActivities from '@/components/hooks/useActivities'
 import { initialActivities } from '@/components/context/ActivitiesContext'
+import AddActivitiesButton from './AddActivitiesButton'
 
 const initialErrors = {
   name: '',
@@ -50,10 +51,6 @@ export default function PlanForm({
   const [dataPlan, setDataPlan] = useState<PropsAddPlan>(plan)
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
-  const [addIsOpen, setAddIsOpen] = useState<boolean>(false)
-  const [activities, setActivities] = useState<Activity[] | []>(
-    initialActivities
-  )
   const [activitiesToAdd, setActivitiesToAdd] = useState<number[]>(
     dataPlan.activities
   )
@@ -62,25 +59,10 @@ export default function PlanForm({
   const router = useRouter()
   const { getWorkingBusiness, token } = useUser()
   const { addPlan, updatePlan, loading } = usePlans()
-  const { getAllActivities } = useActivities()
 
   useEffect(() => {
     setDataPlan(plan)
   }, [plan])
-
-  useEffect(() => {
-    async function updateActivities() {
-      if (workingBusiness) {
-        const res = await getAllActivities(workingBusiness.id)
-
-        if (res) setActivities(res)
-      }
-    }
-
-    if (token && workingBusiness) {
-      updateActivities()
-    }
-  }, [token, workingBusiness])
 
   useEffect(() => {
     async function updateWorkingBusiness() {
@@ -189,28 +171,6 @@ export default function PlanForm({
     }
   }
 
-  const handleChangeActivities = (id: number) => {
-    if (activitiesToAdd.includes(id)) {
-      setActivitiesToAdd(
-        activitiesToAdd.filter((activityId) => activityId !== id)
-      )
-    } else {
-      setActivitiesToAdd([...activitiesToAdd, id])
-    }
-  }
-
-  const handleButtonClick = () => {
-    setAddIsOpen(!addIsOpen)
-  }
-
-  const handleCloseMenu = () => {
-    setAddIsOpen(false)
-  }
-
-  const handleMenuClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.stopPropagation()
-  }
-
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
@@ -309,61 +269,12 @@ export default function PlanForm({
         )}
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="relative mb-8">
-          <Button
-            type="button"
-            variant="outline"
-            className="flex h-10 text-foreground font-semibold items-center gap-2 border-none bg-green-600 transition duration-300 ease-in-out hover:bg-green-700"
-            onClick={handleButtonClick}
-          >
-            Agregar actividades
-            {addIsOpen ? <MdExpandLess /> : <MdExpandMore />}
-          </Button>
-          {addIsOpen && (
-            <div
-              onClick={() => setAddIsOpen(false)}
-              className="absolute w-[20vw] xl:w-[15vw] bg-card mt-3 mr-5 rounded shadow-lg z-10"
-            >
-              <div className="p-4" onClick={handleMenuClick}>
-                <p className="text-lg font-medium text-foreground">
-                  Actividades a agregar
-                </p>
-                <hr className="my-2 border-gray-200 dark:border-gray-500" />
-                {activities.length > 0 ? (
-                  activities.map((activity) => (
-                    <label
-                      key={activity.id}
-                      className="flex items-center cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        className="mr-2 cursor-pointer"
-                        checked={activitiesToAdd.includes(activity.id)}
-                        onChange={() => handleChangeActivities(activity.id)}
-                      />
-                      <span className="flex gap-2 text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
-                        {activity.name}
-                      </span>
-                    </label>
-                  ))
-                ) : (
-                  <div>No hay actividades</div>
-                )}
-
-                <hr className="my-2 border-gray-200 dark:border-gray-500" />
-                <div className="flex justify-center">
-                  <Button
-                    type="button"
-                    className="font-semibold text-foreground bg-background transition duration-300 ease-in-out hover:bg-accent w-full mx-4 mb-1 mt-2 p-1"
-                    onClick={handleCloseMenu}
-                  >
-                    Confirmar
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+        <AddActivitiesButton
+          workingBusiness={workingBusiness}
+          token={token}
+          activitiesToAdd={activitiesToAdd}
+          setActivitiesToAdd={setActivitiesToAdd}
+        />
         <div className="grid grid-cols-2 xl:grid-cols-3 gap-10 mb-4">
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
