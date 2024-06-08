@@ -16,6 +16,7 @@ import { Card } from '@/components/ui/card'
 import noImage from '@public/assets/no-image.png'
 import { Button } from '@/components/ui/button'
 import { Business } from '@/components/types/Business'
+import RightBarSkeleton from './RightBarSkeleton'
 
 const RightBar = () => {
   const [showMenu, setShowMenu] = useState(false)
@@ -66,10 +67,10 @@ const RightBar = () => {
 
   return (
     <div className="fixed w-[250px] xl:w-[330px] m-5">
-      <Card className="relative flex flex-col gap-6 bg-gradient-to-t from-bg-background to-bg-card p-4 rounded-lg border-none shadow-md duration-300 ease-in-out">
-        {loadingUser ? (
-          <div>Loading...</div>
-        ) : (
+      {loadingUser ? (
+        <RightBarSkeleton />
+      ) : (
+        <Card className="relative flex flex-col gap-6 bg-gradient-to-t from-bg-background to-bg-card p-4 rounded-lg border-none shadow-md duration-300 ease-in-out">
           <div>
             {workingBusines ? (
               <>
@@ -167,8 +168,8 @@ const RightBar = () => {
               </div>
             )}
           </div>
-        )}
-        {/* {showMenu && (
+
+          {/* {showMenu && (
           <div className="mx-auto -mt-3 w-[280px] flex flex-col justify-center gap-2 p-3 bg-card shadow-md rounded-lg border-2 border-primary-orange-600">
             <div className="flex flex-col gap-4">
               {otherBusinesses.map((business) => (
@@ -194,7 +195,8 @@ const RightBar = () => {
             </div>
           </div>
         )} */}
-      </Card>
+        </Card>
+      )}
     </div>
   )
 }

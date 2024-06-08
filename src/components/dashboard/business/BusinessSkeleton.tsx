@@ -3,11 +3,11 @@ import { Skeleton } from '@/components/ui/skeleton'
 const BusinessSkeleton = (props: any) => (
   <div className="flex flex-col gap-10 mt-10">
     <div className="flex justify-around">
-      <Skeleton className="h-32 w-60 rounded-lg" />
-      <Skeleton className="h-32 w-60 rounded-lg" />
-      <Skeleton className="h-32 w-60 rounded-lg" />
+      <Skeleton className="h-24 w-60 rounded-lg" />
+      <Skeleton className="h-24 w-60 rounded-lg" />
+      <Skeleton className="h-24 w-60 rounded-lg" />
     </div>
-    <div className="flex justify-between p-6 mx-10 border rounded-lg">
+    <div className="flex justify-between p-10 mx-10 border rounded-lg">
       <div className="flex ml-10">
         <Skeleton className="h-44 w-44 mt-3 rounded-full" />
         <div className="ml-10 mt-4">
@@ -25,7 +25,7 @@ const BusinessSkeleton = (props: any) => (
         <Skeleton className="h-10 w-48 rounded-lg" />
       </div>
     </div>
-    <div className="flex justify-between p-6 mx-10 border rounded-lg">
+    <div className="flex justify-between p-10 mx-10 border rounded-lg">
       <div className="flex ml-10">
         <Skeleton className="h-44 w-44 mt-3 rounded-full" />
         <div className="ml-10 mt-4">
@@ -43,7 +43,7 @@ const BusinessSkeleton = (props: any) => (
         <Skeleton className="h-10 w-48 rounded-lg" />
       </div>
     </div>
-    <div className="flex justify-between p-6 mx-10 border rounded-lg">
+    <div className="flex justify-between p-10 mx-10 border rounded-lg">
       <div className="flex ml-8">
         <Skeleton className="h-44 w-44 mt-3 rounded-full" />
         <div className="ml-10 mt-4">
