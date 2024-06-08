@@ -21,10 +21,6 @@ import noImage from '@public/assets/no-image.png'
 import { Button } from '@/components/ui/button'
 import Loader from '@/components/Loader'
 import { CustomCheckbox } from '../CustomCheckbox'
-import { MdExpandLess, MdExpandMore } from 'react-icons/md'
-import { activitiesType, Activity } from './../../types/Activity'
-import useActivities from '@/components/hooks/useActivities'
-import { initialActivities } from '@/components/context/ActivitiesContext'
 import AddActivitiesButton from './AddActivitiesButton'
 
 const initialErrors = {
