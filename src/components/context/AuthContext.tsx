@@ -100,8 +100,10 @@ export default function AuthContextProvider({
       console.error('Error parsing user data from localStorage:', error)
     }
 
-    if (storedToken) setToken(storedToken)
-    if (userFromStorage) setUser(userFromStorage)
+    if (storedToken && userFromStorage) {
+      setToken(storedToken)
+      setUser(userFromStorage)
+    }
   }, [])
 
   async function signIn({ dataLogin }: { dataLogin: PropsLogin }) {
