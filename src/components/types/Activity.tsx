@@ -2,6 +2,7 @@ export type Activity = {
   id: number
   company_id: number
   name: string
+  description: string
   price: number
   is_public: boolean
   public_name?: string
@@ -17,6 +18,7 @@ export type Activity = {
 export interface PropsAddActivity {
   id: number | null
   name: string
+  description: string
   price: string
   is_public: string
   generate_invoice: string
@@ -33,6 +35,7 @@ export interface PropsAddActivity {
 export const initialData: PropsAddActivity = {
   id: null,
   name: '',
+  description: '',
   price: '',
   is_public: 'false',
   generate_invoice: 'false',
@@ -72,6 +75,7 @@ export interface FormErrors {
 
 export interface Columns {
   name: boolean
+  description: boolean
   price: boolean
   is_public: boolean
   generate_invoice: boolean
@@ -85,6 +89,7 @@ export interface Columns {
 
 export const initialColumns: Columns = {
   name: true,
+  description: true,
   price: true,
   is_public: true,
   generate_invoice: true,

@@ -68,6 +68,19 @@ const SelectColumns: React.FC<Props> = ({
                 Nombre
               </span>
             </label>
+            <label className="flex items-center cursor-pointer ">
+              <input
+                type="checkbox"
+                className="mr-2 cursor-pointer"
+                checked={selectedColumns.description}
+                onChange={() =>
+                  handleChange('description', !selectedColumns.description)
+                }
+              />
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+                Descripción
+              </span>
+            </label>
             <label className="flex items-center cursor-pointer">
               <input
                 type="checkbox"

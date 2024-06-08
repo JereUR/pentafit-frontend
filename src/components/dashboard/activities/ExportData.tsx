@@ -17,6 +17,7 @@ interface Props {
 interface Data {
   ID?: number
   Nombre?: string
+  Descripción?: string
   Precio?: string
   Es_publica?: string
   Nombre_publico?: string
@@ -57,6 +58,7 @@ const ExportData: React.FC<Props> = ({ business }) => {
         return {
           ID: activity.id,
           Nombre: activity.name,
+          Descripción: activity.description,
           Precio: `$${activity.price}`,
           Es_publica: activity.is_public ? 'Si' : 'No',
           Nombre_publico: activity.public_name ? activity.public_name : '-',

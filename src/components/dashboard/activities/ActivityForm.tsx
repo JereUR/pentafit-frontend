@@ -16,12 +16,11 @@ import {
 } from '@/components/types/Activity'
 import Loader from '@/components/Loader'
 import ErrorText from '@/components/ErrorText'
-import TextForm from './TextForm'
 import useUser from '@/components/hooks/useUser'
-import { PublicActivityForm } from './PublicActivityForm'
 import noImage from '@public/assets/no-image.png'
 import { useToast } from '@/components/ui/use-toast'
 import { Business } from '@/components/types/Business'
+import { CustomCheckbox } from '../CustomCheckbox'
 
 const initialErrors = {
   company_id: '',
@@ -128,7 +127,7 @@ export default function ActivityForm({
 
     if (dataActivity.is_public === 'true') {
       if (!dataActivity.public_name) {
-        errorsForm.public_name = `Este campo no debe ser vacío.`
+        errorsForm.public_name = `Si has declarado la actividad como pública, este campo no debe ser vacio.`
       }
     }
 
@@ -144,18 +143,16 @@ export default function ActivityForm({
     }
   }
 
-  /* const handleChangeBusiness = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-    const newId = Number(value)
-    let company_id = dataActivity.company_id.map((Business) => Business)
-    if (company_id.includes(newId)) {
-      company_id = company_id.filter((c) => c !== newId)
+  const handleChangeBoolean = (name: string) => {
+    let value
+    if (dataActivity[name] === 'true') {
+      value = 'false'
     } else {
-      company_id.push(newId)
+      value = 'true'
     }
 
-    setDataActivity({ ...dataActivity, company_id: company_id })
-  } */
+    setDataActivity({ ...dataActivity, [name]: value })
+  }
 
   const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -210,7 +207,7 @@ export default function ActivityForm({
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-6 mb-10 bg-card rounded-lg shadow-md pt-2 pb-6 px-2">
+        <div className="flex flex-col gap-8 mb-10 bg-card rounded-lg shadow-md pt-2 pb-6 px-2">
           <div className="flex gap-4 items-center">
             <label className="text-xl font-light mt-4 ml-4">
               Area de Trabajo
@@ -260,19 +257,53 @@ export default function ActivityForm({
             </div>
           )}
         </div>
-        <div className="grid grid-cols-3 gap-8 mb-4">
+        <div className="grid grid-cols-2 xl:grid-cols-3 gap-8 mb-12">
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
               <label htmlFor="name" className="font-[600]">
-                Actividad
+                Nombre
               </label>
               {formErrors.name && <ErrorText text={formErrors.name} />}
             </div>
             <input
               type="text"
               name="name"
-              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataActivity.name}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-4 items-center">
+              <label htmlFor="public_name" className="font-[600]">
+                Nombre Público
+              </label>
+              {formErrors.public_name && (
+                <ErrorText text={formErrors.public_name} />
+              )}
+            </div>
+            <input
+              type="text"
+              name="public_name"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              value={dataActivity.public_name}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-4 items-center">
+              <label htmlFor="description" className="font-[600]">
+                Descripción
+              </label>
+              {formErrors.description && (
+                <ErrorText text={formErrors.description} />
+              )}
+            </div>
+            <input
+              type="text"
+              name="description"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              value={dataActivity.description}
               onChange={handleChange}
             />
           </div>
@@ -286,7 +317,7 @@ export default function ActivityForm({
             <input
               type="number"
               name="price"
-              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataActivity.price}
               onChange={handleChange}
             />
@@ -305,7 +336,7 @@ export default function ActivityForm({
             <input
               type="number"
               name="max_sessions"
-              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataActivity.max_sessions}
               onChange={handleChange}
             />
@@ -322,7 +353,7 @@ export default function ActivityForm({
             <input
               type="date"
               name="start_date"
-              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataActivity.start_date.toISOString().split('T')[0]}
               onChange={handleChange}
             />
@@ -337,7 +368,7 @@ export default function ActivityForm({
             <input
               type="date"
               name="end_date"
-              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataActivity.end_date.toISOString().split('T')[0]}
               onChange={handleChange}
             />
@@ -353,7 +384,7 @@ export default function ActivityForm({
             </div>
             <select
               name="payment_type"
-              className="border border-gray-300 dark:border-gray-700 rounded-lg p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               onChange={handleChangeSelect}
               defaultValue={dataActivity.payment_type}
             >
@@ -382,7 +413,7 @@ export default function ActivityForm({
             </div>
             <select
               name="activity_type"
-              className="border border-gray-300 dark:border-gray-700 rounded-lg p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               onChange={handleChangeSelect}
               defaultValue={dataActivity.activity_type}
             >
@@ -401,13 +432,32 @@ export default function ActivityForm({
             </select>
           </div>
         </div>
-        <PublicActivityForm
-          dataActivity={dataActivity}
-          setDataActivity={setDataActivity}
-          formErrors={formErrors}
-          handleChange={handleChange}
-        />
-        <TextForm />
+        <div className="grid grid-cols-2 xl:grid-cols-3 gap-8 mb-4">
+          <div className="border bg-card rounded-lg flex items-center p-4">
+            <CustomCheckbox
+              label="¿Permite generación de cuota?"
+              value={dataActivity.generate_invoice}
+              name="generate_invoice"
+              action={handleChangeBoolean}
+            />
+          </div>
+          <div className="border bg-card rounded-lg flex items-center p-4">
+            <CustomCheckbox
+              label="¿Permite pago con Mercado Pago?"
+              value={dataActivity.mp_available}
+              name="mp_available"
+              action={handleChangeBoolean}
+            />
+          </div>
+          <div className="border bg-card rounded-lg flex items-center p-4">
+            <CustomCheckbox
+              label="¿Es una actividad Pública? (Se autogeneran turnos)"
+              value={dataActivity.is_public}
+              name="is_public"
+              action={handleChangeBoolean}
+            />
+          </div>
+        </div>
         <div className="flex justify-end mt-10">
           <Button
             type="button"

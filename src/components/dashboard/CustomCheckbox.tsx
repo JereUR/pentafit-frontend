@@ -14,7 +14,7 @@ export const CustomCheckbox: React.FC<Props> = ({
   name
 }) => {
   return (
-    <div className="flex flex-col gap-4 ">
+    <div className="flex gap-4 m-auto justify-center items-center">
       <label htmlFor={name} className="font-[600]">
         {label}
       </label>

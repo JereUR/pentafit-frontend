@@ -241,6 +241,9 @@ export default function ActivitiesTable() {
                 />
               </td>
               {selectedColumns.name && <td className="px-2 py-5">Nombre</td>}
+              {selectedColumns.description && (
+                <td className="px-2 py-5">Descripción</td>
+              )}
               {selectedColumns.price && <td className="px-2 py-5">Precio</td>}
               {selectedColumns.is_public && (
                 <td className="px-2 py-5">Es pública?</td>
@@ -302,6 +305,18 @@ export default function ActivitiesTable() {
                       }
                     >
                       {activity.name}
+                    </td>
+                  )}
+                  {selectedColumns.description && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(
+                          `/panel-de-control/actividades/${activity.id}`
+                        )
+                      }
+                    >
+                      {activity.description}
                     </td>
                   )}
                   {selectedColumns.price && (
@@ -502,7 +517,7 @@ export default function ActivitiesTable() {
                   colSpan={
                     Object.values(selectedColumns).filter(
                       (value) => value === true
-                    ).length + 2
+                    ).length + 3
                   }
                   className="py-4 text-lg font-light italic border-b"
                 >
