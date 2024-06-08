@@ -80,7 +80,7 @@ export default function AuthContextProvider({
 }) {
   const [user, setUser] = useState<User | null>(null)
   const [businesses, setBusinesses] = useState<Business[] | []>([])
-  const [token, setToken] = useState<string | null>('1234')
+  const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const [loadingUser, setLoadingUser] = useState(true)
   const router = useRouter()
