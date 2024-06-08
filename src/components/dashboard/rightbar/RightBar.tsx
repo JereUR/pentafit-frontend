@@ -29,7 +29,7 @@ const RightBar = () => {
     businesses,
     getBusinesses,
     updateWorkingBusiness,
-    loadingUser
+    loadingBusiness
   } = useUser()
   const router = useRouter()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
@@ -67,7 +67,7 @@ const RightBar = () => {
 
   return (
     <div className="fixed w-[250px] xl:w-[330px] m-5">
-      {loadingUser ? (
+      {loadingBusiness ? (
         <RightBarSkeleton />
       ) : (
         <Card className="relative flex flex-col gap-6 bg-gradient-to-t from-bg-background to-bg-card p-4 rounded-lg border-none shadow-md duration-300 ease-in-out">

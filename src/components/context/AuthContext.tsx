@@ -24,6 +24,7 @@ type AuthContextType = {
   token: string | null
   recoverState: boolean
   loadingUser: boolean
+  loadingBusiness: boolean
   setRecoverState: Dispatch<SetStateAction<boolean>>
   signIn: ({ dataLogin }: { dataLogin: PropsLogin }) => Promise<void>
   signOut: () => Promise<void>
@@ -82,7 +83,8 @@ export default function AuthContextProvider({
   const [businesses, setBusinesses] = useState<Business[] | []>([])
   const [token, setToken] = useState<string | null>(null)
   const [recoverState, setRecoverState] = useState<boolean>(false)
-  const [loadingUser, setLoadingUser] = useState(true)
+  const [loadingUser, setLoadingUser] = useState(false)
+  const [loadingBusiness, setLoadingBusiness] = useState(true)
   const router = useRouter()
   const pathname = usePathname()
   const { toast } = useToast()
@@ -285,7 +287,7 @@ export default function AuthContextProvider({
   }
 
   async function getBusinesses() {
-    setLoadingUser(true)
+    setLoadingBusiness(true)
 
     try {
       const response = await axios.get(`${BASE_URL}api/v1/businesses`, {
@@ -311,12 +313,12 @@ export default function AuthContextProvider({
         description: error.message
       })
     } finally {
-      setLoadingUser(false)
+      setLoadingBusiness(false)
     }
   }
 
   async function getBusinessById(id: string) {
-    setLoadingUser(true)
+    setLoadingBusiness(true)
     try {
       const response = await axios.get(`${BASE_URL}api/v1/business?id=${id}`, {
         headers: {
@@ -341,7 +343,7 @@ export default function AuthContextProvider({
       })
       return null
     } finally {
-      setLoadingUser(false)
+      setLoadingBusiness(false)
     }
   }
 
@@ -350,7 +352,7 @@ export default function AuthContextProvider({
   }: {
     dataBusiness: PropsAddBusiness
   }): Promise<boolean> {
-    setLoadingUser(true)
+    setLoadingBusiness(true)
 
     const metadata = {
       title: dataBusiness.title,
@@ -444,7 +446,7 @@ export default function AuthContextProvider({
       })
       return false
     } finally {
-      setLoadingUser(false)
+      setLoadingBusiness(false)
     }
   }
 
@@ -453,7 +455,7 @@ export default function AuthContextProvider({
   }: {
     dataBusiness: PropsAddBusiness
   }): Promise<boolean> {
-    setLoadingUser(true)
+    setLoadingBusiness(true)
 
     const metadata = {
       title: dataBusiness.title,
@@ -549,12 +551,12 @@ export default function AuthContextProvider({
       })
       return false
     } finally {
-      setLoadingUser(false)
+      setLoadingBusiness(false)
     }
   }
 
   async function updateStatusBusiness(id: number): Promise<boolean> {
-    setLoadingUser(true)
+    setLoadingBusiness(true)
     let url = `${BASE_URL}api/v1/change_business_status?id=${id}`
     try {
       const response = await axios.put(url, null, {
@@ -581,12 +583,12 @@ export default function AuthContextProvider({
       })
       return false
     } finally {
-      setLoadingUser(false)
+      setLoadingBusiness(false)
     }
   }
 
   async function updateWorkingBusiness(id: number): Promise<boolean> {
-    setLoadingUser(true)
+    setLoadingBusiness(true)
     let url = `${BASE_URL}api/v1/activate_business_working_status?id=${id}`
     try {
       const response = await axios.put(url, null, {
@@ -613,12 +615,12 @@ export default function AuthContextProvider({
       })
       return false
     } finally {
-      setLoadingUser(false)
+      setLoadingBusiness(false)
     }
   }
 
   async function deleteBusinessById(id: string) {
-    setLoadingUser(true)
+    setLoadingBusiness(true)
     try {
       const response = await axios.delete(
         `${BASE_URL}api/v1/business?id=${id}`,
@@ -650,12 +652,12 @@ export default function AuthContextProvider({
       })
       return false
     } finally {
-      setLoadingUser(false)
+      setLoadingBusiness(false)
     }
   }
 
   async function getWorkingBusiness() {
-    setLoadingUser(true)
+    setLoadingBusiness(true)
     try {
       const response = await axios.get(`${BASE_URL}api/v1/business_working`, {
         headers: {
@@ -680,7 +682,7 @@ export default function AuthContextProvider({
       })
       return null
     } finally {
-      setLoadingUser(false)
+      setLoadingBusiness(false)
     }
   }
 
@@ -692,6 +694,7 @@ export default function AuthContextProvider({
         token,
         recoverState,
         loadingUser,
+        loadingBusiness,
         setRecoverState,
         signIn,
         signOut,

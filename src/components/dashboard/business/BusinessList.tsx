@@ -11,7 +11,7 @@ import BusinessSkeleton from './BusinessSkeleton'
 
 export default function BusinessList() {
   const router = useRouter()
-  const { token, businesses, getBusinesses, loadingUser } = useUser()
+  const { token, businesses, getBusinesses, loadingBusiness } = useUser()
 
   useEffect(() => {
     if (token) {
@@ -21,7 +21,7 @@ export default function BusinessList() {
 
   return (
     <div className="mt-8">
-      {loadingUser ? (
+      {loadingBusiness ? (
         <BusinessSkeleton />
       ) : (
         <div>

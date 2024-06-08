@@ -39,7 +39,7 @@ export default function ActivitiesTable() {
   const router = useRouter()
 
   const searchParams = useSearchParams()
-  const { token, getWorkingBusiness, loadingUser } = useUser()
+  const { token, getWorkingBusiness, loadingBusiness } = useUser()
   const {
     activities,
     getActivities,
@@ -130,7 +130,7 @@ export default function ActivitiesTable() {
   return (
     <div className="container bg-background p-1 rounded-lg mt-10">
       <div className="flex justify-between">
-        {loadingUser ? (
+        {loadingBusiness ? (
           <WorkingBusinessSkeleton />
         ) : (
           <div className="flex flex-col gap-6 mb-6 border bg-card border-none rounded-lg shadow-md pt-2 pb-6 px-4">
