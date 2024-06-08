@@ -220,7 +220,7 @@ export default function BusinessForm({
               <input
                 type="text"
                 name="name"
-                className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+                className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
                 value={dataBusiness.name}
                 onChange={handleChange}
               />
@@ -238,7 +238,7 @@ export default function BusinessForm({
               </div>
               <textarea
                 name="description"
-                className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+                className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
                 value={dataBusiness.description}
                 onChange={handleChangeTextArea}
                 maxLength={200}

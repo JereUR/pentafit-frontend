@@ -64,14 +64,14 @@ const MetadataForm: React.FC<MetadataProps> = ({
         <div className="flex flex-col gap-2">
           <div className="flex gap-4 items-center">
             <label htmlFor="title" className="font-[600]">
-              Título de Página Web
+              Título de Página Web (Nombre)
             </label>
             {formErrors.title && <ErrorText text={formErrors.title} />}
           </div>
           <input
             type="text"
             name="title"
-            className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+            className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
             value={dataBusiness.title}
             onChange={handleChange}
           />
@@ -86,7 +86,7 @@ const MetadataForm: React.FC<MetadataProps> = ({
           <input
             type="text"
             name="slogan"
-            className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+            className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
             value={dataBusiness.slogan}
             onChange={handleChange}
           />
@@ -94,7 +94,7 @@ const MetadataForm: React.FC<MetadataProps> = ({
         <div>
           <p className="my-2">Colores de Página Web</p>
           <div className="flex gap-10">
-            <div className="flex gap-2 my-4 p-4 border border-gray-300 rounded-lg dark:border-gray-700">
+            <div className="flex gap-2 my-4 p-4 bg-card border border-gray-300 rounded-lg dark:border-gray-700">
               <div className="flex flex-col justify-center items-center">
                 <div className="flex gap-4 items-center">
                   <label htmlFor="primary_color" className="font-[600]">
@@ -122,14 +122,14 @@ const MetadataForm: React.FC<MetadataProps> = ({
                 <input
                   type="text"
                   name="primary_color"
-                  className="border border-gray-300 w-[7vw] dark:border-gray-700 rounded-lg p-1 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+                  className="bg-card border border-gray-300 w-[7vw] dark:border-gray-700 rounded-lg p-1 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
                   value={dataBusiness.primary_color}
                   onChange={handleHexChange}
                   maxLength={7}
                 />
               </div>
             </div>
-            <div className="flex gap-2 my-4 p-4 border border-gray-300 rounded-lg dark:border-gray-700">
+            <div className="flex gap-2 my-4 p-4 bg-card border border-gray-300 rounded-lg dark:border-gray-700">
               <div className="flex flex-col justify-center items-center">
                 <div className="flex gap-4 items-center">
                   <label htmlFor="secondary_color" className="font-[600]">
@@ -157,14 +157,14 @@ const MetadataForm: React.FC<MetadataProps> = ({
                 <input
                   type="text"
                   name="secondary_color"
-                  className="border border-gray-300 w-[7vw] dark:border-gray-700 rounded-lg p-1 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+                  className="bg-card border border-gray-300 w-[7vw] dark:border-gray-700 rounded-lg p-1 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
                   value={dataBusiness.secondary_color}
                   onChange={handleHexChange}
                   maxLength={7}
                 />
               </div>
             </div>
-            <div className="flex gap-2 my-4 p-4 border border-gray-300 rounded-lg dark:border-gray-700">
+            <div className="flex gap-2 my-4 p-4 bg-card border border-gray-300 rounded-lg dark:border-gray-700">
               <div className="flex flex-col justify-center items-center">
                 <div className="flex gap-4 items-center">
                   <label htmlFor="third_color" className="font-[600]">
@@ -192,7 +192,7 @@ const MetadataForm: React.FC<MetadataProps> = ({
                 <input
                   type="text"
                   name="third_color"
-                  className="border border-gray-300 w-[7vw] dark:border-gray-700 rounded-lg p-1 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+                  className="bg-card border border-gray-300 w-[7vw] dark:border-gray-700 rounded-lg p-1 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
                   value={dataBusiness.third_color}
                   onChange={handleHexChange}
                   maxLength={7}

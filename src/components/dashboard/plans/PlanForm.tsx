@@ -286,7 +286,7 @@ export default function PlanForm({
             <input
               type="text"
               name="name"
-              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataPlan.name}
               onChange={handleChange}
             />
@@ -303,7 +303,7 @@ export default function PlanForm({
             <input
               type="date"
               name="start_date"
-              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataPlan.start_date.toISOString().split('T')[0]}
               onChange={handleChange}
             />
@@ -318,7 +318,7 @@ export default function PlanForm({
             <input
               type="date"
               name="end_date"
-              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataPlan.end_date.toISOString().split('T')[0]}
               onChange={handleChange}
             />
@@ -333,7 +333,7 @@ export default function PlanForm({
             <input
               type="number"
               name="price"
-              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataPlan.price}
               onChange={handleChange}
             />
@@ -349,7 +349,7 @@ export default function PlanForm({
             </div>
             <select
               name="plan_type"
-              className="border border-gray-300 dark:border-gray-700 rounded-lg p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               onChange={handleChangeSelect}
               defaultValue={dataPlan.plan_type}
             >
@@ -379,29 +379,35 @@ export default function PlanForm({
             <input
               type="number"
               name="expiration_period"
-              className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataPlan.expiration_period}
               onChange={handleChange}
             />
           </div>
-          <CustomCheckbox
-            label="¿Permite generación de cuota?"
-            value={dataPlan.generate_invoice}
-            action={handleChangeBoolean}
-            name="generate_invoice"
-          />
-          <CustomCheckbox
-            label="¿Ofrece clase de prueba?"
-            value={dataPlan.free_test}
-            action={handleChangeBoolean}
-            name="free_test"
-          />
-          <CustomCheckbox
-            label="Vigente"
-            value={dataPlan.current}
-            action={handleChangeBoolean}
-            name="current"
-          />
+          <div className="border bg-card rounded-lg flex items-center p-4 mt-2">
+            <CustomCheckbox
+              label="¿Permite generación de cuota?"
+              value={dataPlan.generate_invoice}
+              action={handleChangeBoolean}
+              name="generate_invoice"
+            />
+          </div>
+          <div className="border bg-card rounded-lg flex items-center p-4 mt-2">
+            <CustomCheckbox
+              label="¿Ofrece clase de prueba?"
+              value={dataPlan.free_test}
+              action={handleChangeBoolean}
+              name="free_test"
+            />
+          </div>
+          <div className="border bg-card rounded-lg flex items-center p-4 mt-2">
+            <CustomCheckbox
+              label="Vigente"
+              value={dataPlan.current}
+              action={handleChangeBoolean}
+              name="current"
+            />
+          </div>
         </div>
         <div className="flex flex-col gap-2 mb-10 mt-12">
           <div className="flex gap-4 items-center">
@@ -412,7 +418,7 @@ export default function PlanForm({
               <ErrorText text={formErrors.payment_type} />
             )}
           </div>
-          <div className="flex justify-center items-center border rounded-lg py-6 m-4">
+          <div className="bg-card flex justify-center items-center border rounded-lg py-6">
             {paymentsType.map((paymentType) => (
               <label
                 key={paymentType}
@@ -443,7 +449,7 @@ export default function PlanForm({
           <textarea
             name="description"
             rows={4}
-            className="border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+            className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
             value={dataPlan.description}
             onChange={(e) =>
               setDataPlan({ ...dataPlan, description: e.target.value })

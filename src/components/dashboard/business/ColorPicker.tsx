@@ -38,7 +38,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
       <input
         type="color"
         name={name}
-        className="w-12 h-12 opacity-0 absolute inset-0 cursor-pointer"
+        className="bg-card w-12 h-12 opacity-0 absolute inset-0 cursor-pointer"
         value={color}
         onChange={handleChange}
         ref={colorInputRef}
