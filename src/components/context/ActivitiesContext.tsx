@@ -77,7 +77,7 @@ export const initialActivities = [
   {
     id: 2,
     company_id: 1,
-    name: 'Actividad 2',
+    name: 'Actividad 2 con nombre mas largo',
     description: 'Test',
     price: 300,
     is_public: true,
@@ -93,7 +93,7 @@ export const initialActivities = [
   {
     id: 3,
     company_id: 1,
-    name: 'Actividad 3',
+    name: 'Actividad 3 con nombre mas largo que el anterior',
     description: 'Test',
     price: 400,
     is_public: true,

@@ -1,6 +1,8 @@
 import ErrorText from '@/components/ErrorText'
 import { Activity } from '@/components/types/Activity'
 import { FormErrorActivities, PropsAddPlan } from '@/components/types/Plan'
+import { Button } from '@/components/ui/button'
+import { Cross1Icon } from '@radix-ui/react-icons'
 import React from 'react'
 
 interface Props {
@@ -60,18 +62,74 @@ const ActivityItems: React.FC<Props> = ({
   const daysOfWeekLabels = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab']
 
   return (
-    <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
-      {dataPlan.activities.map((activity) => {
-        const activityData = activities.find((act) => act.id === activity.id)
-        if (!activityData) return null
+    <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 xl:gap-8">
+      {dataPlan.activities.map(
+        (activity: {
+          id: number
+          days_of_week: boolean[]
+          sessions_per_week: string
+        }) => {
+          const activityData = activities.find((act) => act.id === activity.id)
+          if (!activityData) return null
 
-        return (
-          <div
-            key={activity.id}
-            className="bg-card mx-4 p-2 border rounded-lg w-full"
-          >
-            <div className="flex items-center">
-              <span className="mr-2">{activityData.name}</span>
+          return (
+            <div
+              key={activity.id}
+              className="bg-card mx-2 xl:mx-6 p-4 border rounded-lg flex flex-col justify-between h-full"
+            >
+              <div>
+                <div className="flex justify-between gap-4">
+                  <span className="mr-2 text-lg font-light py-1 px-2 bg-gray-100 dark:bg-background rounded-lg">
+                    {activityData.name}
+                  </span>
+                  <Button
+                    type="button"
+                    className="bg-gray-50 dark:bg-background transition duration-300 ease-in-out hover:bg-background dark:hover:bg-card hover:border hover:scale-[1.02]"
+                    onClick={() => handleRemoveActivity(activity.id)}
+                  >
+                    <Cross1Icon className="text-red-600" />
+                  </Button>
+                </div>
+              </div>
+              
+              <div>
+                <div className="my-4">
+                  <p className="italic text-primary-orange-600">
+                    Restricciones (Opcional)
+                  </p>
+                </div>
+                <div className="m-2 p-4 border rounded-lg">
+                  <span className="font-semibold">
+                    Días de la semana habilitados:
+                  </span>
+                  <div className="flex justify-center items-center gap-2 mt-2">
+                    {daysOfWeekLabels.map((day, index) => (
+                      <label
+                        key={index}
+                        className="flex flex-col items-center gap-2 cursor-pointer"
+                      >
+                        <span className="ml-1">{day}</span>
+                        <input
+                          type="checkbox"
+                          checked={activity.days_of_week[index]}
+                          onChange={() => handleDayChange(activity.id, index)}
+                        />
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-2 my-4 mx-2 p-4 border rounded-lg">
+                  <span>Maximo de sesiones por semana:</span>
+                  <input
+                    className="bg-card border border-gray-300 dark:border-gray-700 text-center rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+                    type="number"
+                    min="1"
+                    max="7"
+                    value={activity.sessions_per_week}
+                    onChange={(e) => handleSessionsChange(e, activity.id)}
+                  />
+                </div>
+              </div>
               {formErrorsActivities &&
                 formErrorsActivities.map((errorActivity) => {
                   if (errorActivity.id === activity.id) {
@@ -84,43 +142,10 @@ const ActivityItems: React.FC<Props> = ({
                   }
                   return null
                 })}
-              <button
-                type="button"
-                className="text-red-600 text-lg"
-                onClick={() => handleRemoveActivity(activity.id)}
-              >
-                x
-              </button>
             </div>
-
-            <div className="flex items-center gap-2 mt-2">
-              {daysOfWeekLabels.map((day, index) => (
-                <label key={index} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={activity.days_of_week[index]}
-                    onChange={() => handleDayChange(activity.id, index)}
-                  />
-                  <span className="ml-1">{day}</span>
-                </label>
-              ))}
-            </div>
-
-            <div className="flex items-center gap-2 mt-2">
-              <label>
-                Maximo de sesiones por semana:
-                <input
-                  type="number"
-                  min="1"
-                  max="7"
-                  value={activity.sessions_per_week}
-                  onChange={(e) => handleSessionsChange(e, activity.id)}
-                />
-              </label>
-            </div>
-          </div>
-        )
-      })}
+          )
+        }
+      )}
     </div>
   )
 }
