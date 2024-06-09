@@ -12,7 +12,8 @@ export type Plan = {
   plan_type: string
   free_test: boolean
   current: boolean
-  activities: { id: number; days_of_week: boolean[]; sessions_per_week: number }[]
+  activities:
+    | { id: number; days_of_week: boolean[]; sessions_per_week: number }[]
 }
 
 export interface PropsAddPlan {
@@ -28,7 +29,11 @@ export interface PropsAddPlan {
   plan_type: string
   free_test: string
   current: string
-  activities: { id: number; days_of_week: boolean[]; sessions_per_week: string }[]
+  activities: {
+    id: number
+    days_of_week: boolean[]
+    sessions_per_week: string
+  }[]
   [key: string]:
     | string
     | undefined
