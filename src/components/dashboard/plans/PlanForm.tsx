@@ -11,6 +11,7 @@ import usePlans from '@/components/hooks/usePlans'
 import useUser from '@/components/hooks/useUser'
 import { Business } from '@/components/types/Business'
 import {
+  FormErrorActivities,
   FormErrors,
   paymentsType,
   plansType,
@@ -47,9 +48,9 @@ export default function PlanForm({
   const [dataPlan, setDataPlan] = useState<PropsAddPlan>(plan)
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
-  const [activitiesToAdd, setActivitiesToAdd] = useState<number[]>(
-    dataPlan.activities
-  )
+  const [formErrorsActivities, setFormErrorsActivities] = useState<
+    FormErrorActivities[]
+  >([])
 
   const { toast } = useToast()
   const router = useRouter()
@@ -88,6 +89,7 @@ export default function PlanForm({
 
   const validations = ({ dataPlan }: { dataPlan: PropsAddPlan }) => {
     const errorsForm: FormErrors = {}
+    const errorsFormActivities: FormErrorActivities[] = []
 
     if (!workingBusiness) {
       errorsForm.company_id = `Debes tener un area de trabajo (negocio) activo.`
@@ -123,7 +125,22 @@ export default function PlanForm({
       errorsForm.plan_type = `Elija una de las opciones.`
     }
 
-    return errorsForm
+    if (dataPlan.activities.length > 0) {
+      dataPlan.activities.forEach((activity) => {
+        const activeDaysCount = activity.days_of_week.filter(
+          (day) => day
+        ).length
+        if (activeDaysCount < parseInt(activity.sessions_per_week)) {
+          errorsFormActivities.push({
+            id: activity.id,
+            error:
+              'El número de sesiones por semana no puede ser mayor al número de días seleccionados.'
+          })
+        }
+      })
+    }
+
+    return { errorsForm, errorsFormActivities }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -170,15 +187,19 @@ export default function PlanForm({
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    const err = validations({ dataPlan })
-    setFormErrors(err)
+    const { errorsForm, errorsFormActivities } = validations({ dataPlan })
+    setFormErrors(errorsForm)
+    setFormErrorsActivities(errorsFormActivities)
 
-    if (Object.keys(err).length === 0 && workingBusiness) {
+    if (
+      Object.keys(errorsForm).length === 0 &&
+      Object.keys(errorsFormActivities).length === 0 &&
+      workingBusiness
+    ) {
       if (type === 'add') {
         const response = await addPlan({
           dataPlan,
-          company_id: workingBusiness.id,
-          activities: activitiesToAdd
+          company_id: workingBusiness.id
         })
         if (response) {
           toast({
@@ -194,8 +215,7 @@ export default function PlanForm({
       } else {
         const response = await updatePlan({
           dataPlan,
-          company_id: workingBusiness.id,
-          activities: activitiesToAdd
+          company_id: workingBusiness.id
         })
         if (response) {
           toast({
@@ -268,8 +288,9 @@ export default function PlanForm({
         <AddActivitiesButton
           workingBusiness={workingBusiness}
           token={token}
-          activitiesToAdd={activitiesToAdd}
-          setActivitiesToAdd={setActivitiesToAdd}
+          dataPlan={dataPlan}
+          setDataPlan={setDataPlan}
+          formErrorsActivities={formErrorsActivities}
         />
         <div className="grid grid-cols-2 xl:grid-cols-3 gap-10 mb-4">
           <div className="flex flex-col gap-2">

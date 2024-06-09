@@ -32,21 +32,17 @@ type PlansContextType = {
   }) => Promise<Plan | null>
   addPlan: ({
     dataPlan,
-    company_id,
-    activities
+    company_id
   }: {
     dataPlan: PropsAddPlan
     company_id: number
-    activities: number[]
   }) => Promise<boolean>
   updatePlan: ({
     dataPlan,
-    company_id,
-    activities
+    company_id
   }: {
     dataPlan: PropsAddPlan
     company_id: number
-    activities: number[]
   }) => Promise<boolean>
   deletePlansById: (plans: number[]) => Promise<boolean>
   addPlansToBusinesses: ({
@@ -230,12 +226,10 @@ export default function PlansContextProvider({
 
   async function addPlan({
     dataPlan,
-    company_id,
-    activities
+    company_id
   }: {
     dataPlan: PropsAddPlan
     company_id: number
-    activities: number[]
   }): Promise<boolean> {
     setLoadingPlan(true)
     const freeTestValue = dataPlan.free_test === 'true' ? true : false
@@ -284,7 +278,7 @@ export default function PlansContextProvider({
             {
               plan_activity: {
                 plan_id: id,
-                activity_ids: activities
+                activity_ids: dataPlan.activities
               }
             },
             {
@@ -333,12 +327,10 @@ export default function PlansContextProvider({
 
   async function updatePlan({
     dataPlan,
-    company_id,
-    activities
+    company_id
   }: {
     dataPlan: PropsAddPlan
     company_id: number
-    activities: number[]
   }): Promise<boolean> {
     setLoadingPlan(true)
     const freeTestValue = dataPlan.free_test === 'true' ? true : false
@@ -360,10 +352,10 @@ export default function PlansContextProvider({
       payment_type: dataPlan.payment_type,
       plan_type: dataPlan.plan_type,
       current: currentValue,
-      activities
+      activities: dataPlan.activities
     }
 
-    const url = `${BASE_URL}plan`
+    let url = `${BASE_URL}plan`
     try {
       const response = await axios.put(
         url,
@@ -378,8 +370,42 @@ export default function PlansContextProvider({
         }
       )
 
-      if (response.status === 200 || response.status === 204) {
-        return true
+      if (response.status === 200) {
+        url = `${BASE_URL}api/v1/plan_activities`
+        try {
+          const response = await axios.post(
+            url,
+            {
+              plan_activity: {
+                plan_id: dataPlan.id,
+                activity_ids: dataPlan.activities
+              }
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+              }
+            }
+          )
+
+          if (response.status === 201) {
+            return true
+          } else {
+            toast({
+              title: 'Oh no! Algo salió mal.',
+              description: response.statusText
+            })
+            return false
+          }
+        } catch (error: any) {
+          toast({
+            variant: 'destructive',
+            title: 'Oh no! Algo salió mal.',
+            description: error.message
+          })
+          return false
+        }
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',

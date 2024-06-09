@@ -1,25 +1,26 @@
-'use client'
-
-import { initialActivities } from '@/components/context/ActivitiesContext'
 import useActivities from '@/components/hooks/useActivities'
 import { Activity } from '@/components/types/Activity'
 import { Business } from '@/components/types/Business'
 import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
 import { MdExpandLess, MdExpandMore } from 'react-icons/md'
+import ActivityItems from './ActivityItems'
+import { FormErrorActivities, PropsAddPlan } from '@/components/types/Plan'
 
 interface Props {
   workingBusiness: Business | null
   token: string | null
-  activitiesToAdd: number[]
-  setActivitiesToAdd: React.Dispatch<React.SetStateAction<number[]>>
+  dataPlan: PropsAddPlan
+  setDataPlan: React.Dispatch<React.SetStateAction<PropsAddPlan>>
+  formErrorsActivities: FormErrorActivities[]
 }
 
 const AddActivitiesButton: React.FC<Props> = ({
   workingBusiness,
   token,
-  activitiesToAdd,
-  setActivitiesToAdd
+  dataPlan,
+  setDataPlan,
+  formErrorsActivities
 }) => {
   const [addIsOpen, setAddIsOpen] = useState<boolean>(false)
   const [activities, setActivities] = useState<Activity[] | []>([])
@@ -29,7 +30,6 @@ const AddActivitiesButton: React.FC<Props> = ({
     async function updateActivities() {
       if (workingBusiness) {
         const res = await getAllActivities(workingBusiness.id)
-
         if (res) setActivities(res)
       }
     }
@@ -40,17 +40,20 @@ const AddActivitiesButton: React.FC<Props> = ({
   }, [token, workingBusiness])
 
   const handleChangeActivities = (id: number) => {
-    if (activitiesToAdd.includes(id)) {
-      setActivitiesToAdd(
-        activitiesToAdd.filter((activityId) => activityId !== id)
-      )
+    if (dataPlan.activities.some((activity) => activity.id === id)) {
+      setDataPlan({
+        ...dataPlan,
+        activities: dataPlan.activities.filter((activity) => activity.id !== id)
+      })
     } else {
-      setActivitiesToAdd([...activitiesToAdd, id])
+      setDataPlan({
+        ...dataPlan,
+        activities: [
+          ...dataPlan.activities,
+          { id, days_of_week: Array(7).fill(true), sessions_per_week: '7' }
+        ]
+      })
     }
-  }
-
-  const handleRemoveActivity = (activityId: number) => {
-    setActivitiesToAdd(activitiesToAdd.filter((id) => id !== activityId))
   }
 
   const handleButtonClick = () => {
@@ -66,7 +69,7 @@ const AddActivitiesButton: React.FC<Props> = ({
   }
 
   return (
-    <div className="flex gap-6 items-center mb-8">
+    <div className="flex flex-col justify-center gap-6 items-center mb-8">
       <div className="relative">
         <Button
           type="button"
@@ -96,7 +99,9 @@ const AddActivitiesButton: React.FC<Props> = ({
                     <input
                       type="checkbox"
                       className="mr-2 cursor-pointer"
-                      checked={activitiesToAdd.includes(activity.id)}
+                      checked={dataPlan.activities.some(
+                        (a) => a.id === activity.id
+                      )}
                       onChange={() => handleChangeActivities(activity.id)}
                     />
                     <span className="flex gap-2 text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
@@ -122,26 +127,12 @@ const AddActivitiesButton: React.FC<Props> = ({
           </div>
         )}
       </div>
-      <div className="flex gap-4">
-        {activitiesToAdd.map((activityId) => {
-          const activity = activities.find((act) => act.id === activityId)
-          return (
-            <div
-              key={activityId}
-              className="flex items-center my-2 p-2 border rounded-lg"
-            >
-              <span className="mr-2">{activity?.name}</span>
-              <button
-                type="button"
-                className="text-red-600 text-lg"
-                onClick={() => handleRemoveActivity(activityId)}
-              >
-                x
-              </button>
-            </div>
-          )
-        })}
-      </div>
+      <ActivityItems
+        activities={activities}
+        dataPlan={dataPlan}
+        setDataPlan={setDataPlan}
+        formErrorsActivities={formErrorsActivities}
+      />
     </div>
   )
 }
