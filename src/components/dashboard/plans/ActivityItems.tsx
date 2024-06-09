@@ -1,9 +1,10 @@
+import { Cross1Icon } from '@radix-ui/react-icons'
+import React from 'react'
+
 import ErrorText from '@/components/ErrorText'
 import { Activity } from '@/components/types/Activity'
 import { FormErrorActivities, PropsAddPlan } from '@/components/types/Plan'
 import { Button } from '@/components/ui/button'
-import { Cross1Icon } from '@radix-ui/react-icons'
-import React from 'react'
 
 interface Props {
   dataPlan: PropsAddPlan
@@ -91,7 +92,7 @@ const ActivityItems: React.FC<Props> = ({
                   </Button>
                 </div>
               </div>
-              
+
               <div>
                 <div className="my-4">
                   <p className="italic text-primary-orange-600">
