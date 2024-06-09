@@ -63,6 +63,7 @@ export const initialActivities = [
     id: 1,
     company_id: 1,
     name: 'Actividad 1',
+    description: 'Test',
     price: 200,
     is_public: false,
     generate_invoice: true,
@@ -71,12 +72,13 @@ export const initialActivities = [
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
     payment_type: 'Mensual',
-    activity_type: 'Individual'
+    activity_type: 'Individual',
   },
   {
     id: 2,
     company_id: 1,
     name: 'Actividad 2',
+    description: 'Test',
     price: 300,
     is_public: true,
     public_name: 'Act 1',
@@ -86,12 +88,13 @@ export const initialActivities = [
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
     payment_type: 'Mensual',
-    activity_type: 'Individual'
+    activity_type: 'Individual',
   },
   {
     id: 3,
     company_id: 1,
     name: 'Actividad 3',
+    description: 'Test',
     price: 400,
     is_public: true,
     public_name: 'Act 1',
@@ -101,12 +104,13 @@ export const initialActivities = [
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
     payment_type: 'Por período',
-    activity_type: 'Grupal'
+    activity_type: 'Grupal',
   },
   {
     id: 4,
     company_id: 1,
     name: 'Actividad 4',
+    description: 'Test',
     price: 200,
     is_public: false,
     generate_invoice: true,
@@ -115,12 +119,13 @@ export const initialActivities = [
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
     payment_type: 'Por sesion',
-    activity_type: 'Grupal'
+    activity_type: 'Grupal',
   },
   {
     id: 5,
     company_id: 1,
     name: 'Actividad 5',
+    description: 'Test',
     price: 500,
     is_public: true,
     public_name: 'Act 5',
@@ -130,7 +135,7 @@ export const initialActivities = [
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
     payment_type: 'Mensual con sesiones',
-    activity_type: 'Individual'
+    activity_type: 'Individual',
   }
 ]
 
