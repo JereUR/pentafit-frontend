@@ -76,7 +76,7 @@ const ActivityItems: React.FC<Props> = ({
           return (
             <div
               key={activity.id}
-              className="bg-card mx-2 xl:mx-6 p-4 border rounded-lg flex flex-col justify-between h-full"
+              className="bg-card mx-2 xl:mx-6 p-4 rounded-lg flex flex-col justify-between h-full shadow-md"
             >
               <div>
                 <div className="flex justify-between gap-4">
