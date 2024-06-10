@@ -85,7 +85,7 @@ const AddActivitiesButton: React.FC<Props> = ({
         {addIsOpen && (
           <div
             onClick={() => setAddIsOpen(false)}
-            className="absolute w-[40vw] xl:w-[30vw] bg-card mt-3 mr-5 rounded-lg shadow-lg border dark:border-none z-10"
+            className="absolute w-[40vw] xl:w-[30vw] bg-card mt-3 mr-5 rounded-lg shadow-lg border dark:border-none z-20"
           >
             <div className="p-4" onClick={handleMenuClick}>
               <div className="flex justify-between items-center">

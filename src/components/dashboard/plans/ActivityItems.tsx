@@ -1,5 +1,9 @@
-import { Cross1Icon } from '@radix-ui/react-icons'
-import React from 'react'
+import {
+  Cross1Icon,
+  ChevronDownIcon,
+  ChevronUpIcon
+} from '@radix-ui/react-icons'
+import React, { useState, useEffect } from 'react'
 
 import ErrorText from '@/components/ErrorText'
 import { Activity } from '@/components/types/Activity'
@@ -19,6 +23,19 @@ const ActivityItems: React.FC<Props> = ({
   activities,
   formErrorsActivities
 }) => {
+  const [showRestrictions, setShowRestrictions] = useState<{
+    [key: number]: boolean
+  }>({})
+
+  // Initialize showRestrictions state for existing activities
+  useEffect(() => {
+    const initialRestrictionsState: { [key: number]: boolean } = {}
+    dataPlan.activities.forEach((activity) => {
+      initialRestrictionsState[activity.id] = false
+    })
+    setShowRestrictions(initialRestrictionsState)
+  }, [dataPlan.activities])
+
   const handleRemoveActivity = (activityId: number) => {
     setDataPlan({
       ...dataPlan,
@@ -60,6 +77,13 @@ const ActivityItems: React.FC<Props> = ({
     }))
   }
 
+  const toggleRestrictions = (activityId: number) => {
+    setShowRestrictions((prev) => ({
+      ...prev,
+      [activityId]: !prev[activityId]
+    }))
+  }
+
   const daysOfWeekLabels = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab']
 
   return (
@@ -76,7 +100,7 @@ const ActivityItems: React.FC<Props> = ({
           return (
             <div
               key={activity.id}
-              className="bg-card mx-2 xl:mx-6 p-4 rounded-lg flex flex-col justify-between h-full shadow-md"
+              className="bg-card mx-2 xl:mx-6 p-4 rounded-lg flex flex-col justify-between h-full shadow-md relative"
             >
               <div>
                 <div className="flex justify-between gap-4">
@@ -92,44 +116,60 @@ const ActivityItems: React.FC<Props> = ({
                   </Button>
                 </div>
               </div>
-
-              <div>
-                <div className="my-4">
-                  <p className="italic text-primary-orange-600">
-                    Restricciones (Opcional)
-                  </p>
-                </div>
-                <div className="m-2 p-4 border rounded-lg">
-                  <span className="font-semibold">
-                    Días de la semana habilitados:
-                  </span>
-                  <div className="flex justify-center items-center gap-2 mt-2">
-                    {daysOfWeekLabels.map((day, index) => (
-                      <label
-                        key={index}
-                        className="flex flex-col items-center gap-2 cursor-pointer"
-                      >
-                        <span className="ml-1">{day}</span>
-                        <input
-                          type="checkbox"
-                          checked={activity.days_of_week[index]}
-                          onChange={() => handleDayChange(activity.id, index)}
-                        />
-                      </label>
-                    ))}
+              <div className="my-4">
+                <button
+                  className="flex items-center italic text-primary-orange-600 cursor-pointer focus:outline-none"
+                  onClick={() => toggleRestrictions(activity.id)}
+                >
+                  Restricciones (Opcional)
+                  {showRestrictions[activity.id] ? (
+                    <ChevronUpIcon className="ml-2" />
+                  ) : (
+                    <ChevronDownIcon className="ml-2" />
+                  )}
+                </button>
+                {showRestrictions[activity.id] && (
+                  <div
+                    className="absolute z-10 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 p-4 rounded-lg shadow-lg mt-2 left-0"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      e.preventDefault()
+                    }}
+                  >
+                    <div className="m-2 p-2 border rounded-lg bg-gray-50 dark:bg-gray-700">
+                      <span className="font-semibold">
+                        Días de la semana habilitados:
+                      </span>
+                      <div className="flex justify-center items-center gap-2 mt-2">
+                        {daysOfWeekLabels.map((day, index) => (
+                          <label
+                            key={index}
+                            className="flex flex-col items-center gap-2 cursor-pointer"
+                            onClick={() => handleDayChange(activity.id, index)}
+                          >
+                            <span className="ml-1">{day}</span>
+                            <input
+                              type="checkbox"
+                              checked={activity.days_of_week[index]}
+                              className="form-checkbox h-5 w-5 text-primary-orange-600 transition duration-150 ease-in-out"
+                            />
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-center gap-2 my-4 mx-2 p-2 border rounded-lg bg-gray-50 dark:bg-gray-700">
+                      <span>Máximo de sesiones por semana:</span>
+                      <input
+                        className="bg-card border border-gray-300 dark:border-gray-700 text-center rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+                        type="number"
+                        min="1"
+                        max="7"
+                        value={activity.sessions_per_week}
+                        onChange={(e) => handleSessionsChange(e, activity.id)}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col items-center gap-2 my-4 mx-2 p-4 border rounded-lg">
-                  <span>Maximo de sesiones por semana:</span>
-                  <input
-                    className="bg-card border border-gray-300 dark:border-gray-700 text-center rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
-                    type="number"
-                    min="1"
-                    max="7"
-                    value={activity.sessions_per_week}
-                    onChange={(e) => handleSessionsChange(e, activity.id)}
-                  />
-                </div>
+                )}
               </div>
               {formErrorsActivities &&
                 formErrorsActivities.map((errorActivity) => {
