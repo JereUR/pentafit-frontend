@@ -76,7 +76,7 @@ const AddActivitiesButton: React.FC<Props> = ({
         <Button
           type="button"
           variant="outline"
-          className="flex h-10 text-foreground font-semibold  gap-2 border-none bg-green-600 transition duration-300 ease-in-out hover:bg-green-700"
+          className="flex h-10 text-foreground font-semibold  gap-2 border-none bg-green-500 dark:bg-green-600 transition duration-300 ease-in-out hover:bg-green-600 dark:hover:bg-green-700"
           onClick={handleButtonClick}
         >
           Agregar actividades
