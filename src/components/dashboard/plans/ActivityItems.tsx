@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Cross1Icon } from '@radix-ui/react-icons'
 import React from 'react'
 
@@ -5,6 +6,7 @@ import ErrorText from '@/components/ErrorText'
 import { Activity } from '@/components/types/Activity'
 import { FormErrorActivities, PropsAddPlan } from '@/components/types/Plan'
 import { Button } from '@/components/ui/button'
+import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 
 interface Props {
   dataPlan: PropsAddPlan
@@ -13,12 +15,18 @@ interface Props {
   formErrorsActivities: FormErrorActivities[]
 }
 
+const daysOfWeekLabels = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab']
+
 const ActivityItems: React.FC<Props> = ({
   dataPlan,
   setDataPlan,
   activities,
   formErrorsActivities
 }) => {
+  const [dropdownOpen, setDropdownOpen] = useState<{ [key: number]: boolean }>(
+    {}
+  )
+
   const handleRemoveActivity = (activityId: number) => {
     setDataPlan({
       ...dataPlan,
@@ -60,7 +68,12 @@ const ActivityItems: React.FC<Props> = ({
     }))
   }
 
-  const daysOfWeekLabels = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab']
+  const toggleDropdown = (activityId: number) => {
+    setDropdownOpen((prev) => ({
+      ...prev,
+      [activityId]: !prev[activityId]
+    }))
+  }
 
   return (
     <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 xl:gap-8">
@@ -76,7 +89,7 @@ const ActivityItems: React.FC<Props> = ({
           return (
             <div
               key={activity.id}
-              className="bg-card mx-2 xl:mx-6 p-4 rounded-lg flex flex-col justify-between h-full shadow-md"
+              className="bg-card mx-2 xl:mx-6 p-4 rounded-lg flex flex-col justify-between h-full shadow-md relative"
             >
               <div>
                 <div className="flex justify-between gap-4">
@@ -92,44 +105,58 @@ const ActivityItems: React.FC<Props> = ({
                   </Button>
                 </div>
               </div>
-
-              <div>
-                <div className="my-4">
-                  <p className="italic text-primary-orange-600">
-                    Restricciones (Opcional)
-                  </p>
-                </div>
-                <div className="m-2 p-4 border rounded-lg">
-                  <span className="font-semibold">
-                    Días de la semana habilitados:
+              <div className="relative m-2 mt-6">
+                <Button
+                  type="button"
+                  className="flex items-center bg-card justify-between w-full text-left p-2 border rounded-lg transition duration-300 ease-in-out hover:bg-gray-100 dark:hover:bg-background"
+                  onClick={() => toggleDropdown(activity.id)}
+                >
+                  <span className="italic text-primary-orange-600">
+                    Configurar Restricciones (Opcional)
                   </span>
-                  <div className="flex justify-center items-center gap-2 mt-2">
-                    {daysOfWeekLabels.map((day, index) => (
-                      <label
-                        key={index}
-                        className="flex flex-col items-center gap-2 cursor-pointer"
-                      >
-                        <span className="ml-1">{day}</span>
-                        <input
-                          type="checkbox"
-                          checked={activity.days_of_week[index]}
-                          onChange={() => handleDayChange(activity.id, index)}
-                        />
-                      </label>
-                    ))}
+                  {dropdownOpen[activity.id] ? (
+                    <MdExpandLess className="text-primary-orange-600" />
+                  ) : (
+                    <MdExpandMore className="text-primary-orange-600" />
+                  )}
+                </Button>
+                {dropdownOpen[activity.id] && (
+                  <div className="absolute left-0 w-full mt-2 p-4 bg-card border rounded-lg shadow-lg z-10">
+                    <div className="m-2 p-4 border rounded-lg">
+                      <span className="font-semibold">
+                        Días de la semana habilitados:
+                      </span>
+                      <div className="flex justify-center items-center gap-2 mt-2">
+                        {daysOfWeekLabels.map((day, index) => (
+                          <label
+                            key={index}
+                            className="flex flex-col items-center gap-2 cursor-pointer"
+                          >
+                            <span className="ml-1">{day}</span>
+                            <input
+                              type="checkbox"
+                              checked={activity.days_of_week[index]}
+                              onChange={() =>
+                                handleDayChange(activity.id, index)
+                              }
+                            />
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-center gap-2 my-4 mx-2 p-4 border rounded-lg">
+                      <span>Maximo de sesiones por semana:</span>
+                      <input
+                        className="bg-card border border-gray-300 dark:border-gray-700 text-center rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+                        type="number"
+                        min="1"
+                        max="7"
+                        value={activity.sessions_per_week}
+                        onChange={(e) => handleSessionsChange(e, activity.id)}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col items-center gap-2 my-4 mx-2 p-4 border rounded-lg">
-                  <span>Maximo de sesiones por semana:</span>
-                  <input
-                    className="bg-card border border-gray-300 dark:border-gray-700 text-center rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
-                    type="number"
-                    min="1"
-                    max="7"
-                    value={activity.sessions_per_week}
-                    onChange={(e) => handleSessionsChange(e, activity.id)}
-                  />
-                </div>
+                )}
               </div>
               {formErrorsActivities &&
                 formErrorsActivities.map((errorActivity) => {
