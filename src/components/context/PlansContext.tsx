@@ -6,6 +6,7 @@ import axios from 'axios'
 import { Plan, PropsAddPlan } from '../types/Plan'
 import { useToast } from '../ui/use-toast'
 import useUser from '../hooks/useUser'
+import { revalidatePath } from 'next/cache'
 
 type PlansContextType = {
   plans: Plan[] | []
@@ -341,6 +342,7 @@ export default function PlansContextProvider({
     const currentValue = dataPlan.current === 'true' ? true : false
 
     const newPlan = {
+      id: dataPlan.id,
       company_id,
       name: dataPlan.name,
       description: dataPlan.description,
@@ -355,7 +357,7 @@ export default function PlansContextProvider({
       activities: dataPlan.activities
     }
 
-    let url = `${BASE_URL}plan`
+    let url = `${BASE_URL}api/v1/plan`
     try {
       const response = await axios.put(
         url,
@@ -369,49 +371,53 @@ export default function PlansContextProvider({
           }
         }
       )
+      if (dataPlan.activities.length > 0) {
+        if (response.status === 200 ) {
+          url = `${BASE_URL}api/v1/plan_activities`
+          try {
+            const response = await axios.post(
+              url,
+              {
+                plan_activity: {
+                  plan_id: dataPlan.id,
+                  activity_ids: dataPlan.activities
+                }
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: token
+                }
+              }
+            )
 
-      if (response.status === 200) {
-        url = `${BASE_URL}api/v1/plan_activities`
-        try {
-          const response = await axios.post(
-            url,
-            {
-              plan_activity: {
-                plan_id: dataPlan.id,
-                activity_ids: dataPlan.activities
-              }
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: token
-              }
+            if (response.status === 201) {
+              return true
+            } else {
+              toast({
+                title: 'Oh no! Algo salió mal.',
+                description: response.statusText
+              })
+              return false
             }
-          )
-
-          if (response.status === 201) {
-            return true
-          } else {
+          } catch (error: any) {
             toast({
+              variant: 'destructive',
               title: 'Oh no! Algo salió mal.',
-              description: response.statusText
+              description: error.message
             })
             return false
           }
-        } catch (error: any) {
+        } else {
           toast({
-            variant: 'destructive',
             title: 'Oh no! Algo salió mal.',
-            description: error.message
+            description: response.statusText
           })
           return false
         }
-      } else {
-        toast({
-          title: 'Oh no! Algo salió mal.',
-          description: response.statusText
-        })
-        return false
+      }
+      else {
+        return true
       }
     } catch (error: any) {
       toast({

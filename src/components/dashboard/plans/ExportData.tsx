@@ -56,6 +56,7 @@ const ExportData: React.FC<Props> = ({ business }) => {
 
     if (allPlans.length > 0) {
       const data: Data[] = allPlans.map((plan) => {
+        console.log(plan)
         return {
           ID: plan.id,
           Nombre: plan.name,
@@ -68,7 +69,7 @@ const ExportData: React.FC<Props> = ({ business }) => {
           Tipo_de_plan: plan.plan_type,
           Ofrece_clase_de_prueba: plan.free_test ? 'Si' : 'No',
           Vigente: plan.current ? 'Si' : 'No',
-          Numero_de_Actividades: plan.activities.length
+          Numero_de_Actividades: plan.activities
         }
       })
 
