@@ -3,16 +3,15 @@
 import { createContext, ReactNode, useState } from 'react'
 import axios from 'axios'
 
-import { Plan, PropsAddPlan } from '../types/Plan'
+import { ExportPlan, Plan, PropsAddPlan } from '../types/Plan'
 import { useToast } from '../ui/use-toast'
 import useUser from '../hooks/useUser'
-import { revalidatePath } from 'next/cache'
 
 type PlansContextType = {
   plans: Plan[] | []
   loadingPlan: boolean
   count: number
-  getAllPlans: (business_id: number) => Promise<Plan[] | []>
+  getAllPlans: (business_id: number) => Promise<ExportPlan[] | []>
   getPlans: ({
     q,
     page,
@@ -72,7 +71,7 @@ const initialPlans = [
     plan_type: 'Mensual',
     free_test: false,
     current: false,
-    activities: ['Actividad 1', 'Actividad 2']
+    activities: []
   },
   {
     id: 2,
@@ -88,7 +87,7 @@ const initialPlans = [
     plan_type: 'Mensual',
     free_test: false,
     current: false,
-    activities: ['Actividad 1']
+    activities: []
   }
 ]
 
@@ -104,7 +103,7 @@ export default function PlansContextProvider({
   const { token } = useUser()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
-  async function getAllPlans(business_id: number): Promise<Plan[] | []> {
+  async function getAllPlans(business_id: number): Promise<ExportPlan[] | []> {
     setLoadingPlan(true)
     const url = `${BASE_URL}api/v1/all_plans?company_id=${business_id}`
 
@@ -372,7 +371,7 @@ export default function PlansContextProvider({
         }
       )
       if (dataPlan.activities.length > 0) {
-        if (response.status === 200 ) {
+        if (response.status === 200) {
           url = `${BASE_URL}api/v1/plan_activities`
           try {
             const response = await axios.post(
@@ -415,8 +414,7 @@ export default function PlansContextProvider({
           })
           return false
         }
-      }
-      else {
+      } else {
         return true
       }
     } catch (error: any) {
