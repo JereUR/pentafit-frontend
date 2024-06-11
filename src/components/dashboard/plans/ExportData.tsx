@@ -56,7 +56,6 @@ const ExportData: React.FC<Props> = ({ business }) => {
 
     if (allPlans.length > 0) {
       const data: Data[] = allPlans.map((plan) => {
-        console.log(plan)
         return {
           ID: plan.id,
           Nombre: plan.name,
