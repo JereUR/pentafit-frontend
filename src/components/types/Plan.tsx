@@ -16,6 +16,23 @@ export type Plan = {
     | { id: number; days_of_week: boolean[]; sessions_per_week: number }[]
 }
 
+export type ExportPlan = {
+  id: number
+  company_id: number[]
+  name: string
+  description: string
+  price: number
+  start_date: string
+  end_date: string
+  expiration_period: number
+  generate_invoice: boolean
+  payment_type: string[]
+  plan_type: string
+  free_test: boolean
+  current: boolean
+  activities: number
+}
+
 export interface PropsAddPlan {
   id: number | null
   name: string
