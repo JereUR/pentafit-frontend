@@ -34,7 +34,9 @@ export default function ActivitiesTable() {
   const [selectedItemsPerPage, setSelectedItemsPerPage] = useState<number>(5)
   const [selectedColumns, setSelectedColumns] =
     useState<Columns>(initialColumns)
-  const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
+  const [showConfirmDeleteMap, setShowConfirmDeleteMap] = useState<{
+    [key: number]: boolean
+  }>({})
 
   const router = useRouter()
 
@@ -89,17 +91,26 @@ export default function ActivitiesTable() {
     const res = await deleteActivitiesById(activitiesToDelete)
 
     if (res) {
-      setShowConfirmDelete(false)
+      setShowConfirmDeleteMap((prevState) => ({
+        ...prevState,
+        [activity]: false
+      }))
       window.location.reload()
     }
   }
 
-  const handleConfirmDelete = () => {
-    setShowConfirmDelete(true)
+  const handleConfirmDelete = (activityId: number) => {
+    setShowConfirmDeleteMap((prevState) => ({
+      ...prevState,
+      [activityId]: true
+    }))
   }
 
-  const handleCancelDelete = () => {
-    setShowConfirmDelete(false)
+  const handleCancelDelete = (activityId: number) => {
+    setShowConfirmDeleteMap((prevState) => ({
+      ...prevState,
+      [activityId]: false
+    }))
   }
 
   const handleSelectAllChange = (
@@ -473,11 +484,11 @@ export default function ActivitiesTable() {
                       <div>
                         <button
                           className="p-2 rounded-lg text-white bg-red-600 border-none cursor-pointer transitiopn duration-300 ease-in-out  hover:scale-105 hover:shadow-md"
-                          onClick={handleConfirmDelete}
+                          onClick={() => handleConfirmDelete(activity.id)}
                         >
                           <FaTrash />
                         </button>
-                        {showConfirmDelete && (
+                        {showConfirmDeleteMap[activity.id] && (
                           <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-50 flex justify-center items-center">
                             <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
                               <p>
@@ -487,7 +498,9 @@ export default function ActivitiesTable() {
                               <div className="flex justify-end gap-2">
                                 <Button
                                   variant="secondary"
-                                  onClick={handleCancelDelete}
+                                  onClick={() =>
+                                    handleCancelDelete(activity.id)
+                                  }
                                 >
                                   Cancelar
                                 </Button>

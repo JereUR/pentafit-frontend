@@ -34,7 +34,9 @@ export default function PlansTable() {
   const [selectedItemsPerPage, setSelectedItemsPerPage] = useState<number>(5)
   const [selectedColumns, setSelectedColumns] =
     useState<Columns>(initialColumns)
-  const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
+  const [showConfirmDeleteMap, setShowConfirmDeleteMap] = useState<{
+    [key: number]: boolean
+  }>({})
 
   const router = useRouter()
 
@@ -83,17 +85,26 @@ export default function PlansTable() {
     const res = await deletePlansById(plansToDelete)
 
     if (res) {
-      setShowConfirmDelete(false)
+      setShowConfirmDeleteMap((prevState) => ({
+        ...prevState,
+        [plan]: false
+      }))
       window.location.reload()
     }
   }
 
-  const handleConfirmDelete = () => {
-    setShowConfirmDelete(true)
+  const handleConfirmDelete = (planId: number) => {
+    setShowConfirmDeleteMap((prevState) => ({
+      ...prevState,
+      [planId]: true
+    }))
   }
 
-  const handleCancelDelete = () => {
-    setShowConfirmDelete(false)
+  const handleCancelDelete = (planId: number) => {
+    setShowConfirmDeleteMap((prevState) => ({
+      ...prevState,
+      [planId]: false
+    }))
   }
 
   const handleSelectAllChange = (
@@ -439,11 +450,11 @@ export default function PlansTable() {
                       <div>
                         <button
                           className="p-2 rounded-lg text-white bg-red-600 border-none cursor-pointer transitiopn duration-300 ease-in-out  hover:scale-105 hover:shadow-md"
-                          onClick={handleConfirmDelete}
+                          onClick={() => handleConfirmDelete(plan.id)}
                         >
                           <FaTrash />
                         </button>
-                        {showConfirmDelete && (
+                        {showConfirmDeleteMap[plan.id] && (
                           <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-50 flex justify-center items-center">
                             <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
                               <p>
@@ -453,7 +464,7 @@ export default function PlansTable() {
                               <div className="flex justify-end gap-2">
                                 <Button
                                   variant="secondary"
-                                  onClick={handleCancelDelete}
+                                  onClick={() => handleCancelDelete(plan.id)}
                                 >
                                   Cancelar
                                 </Button>
