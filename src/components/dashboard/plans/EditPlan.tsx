@@ -33,6 +33,7 @@ export default function EditPlan() {
     async function fetchPlan() {
       if (workingBusiness) {
         const p = await getPlanById({ id, business_id: workingBusiness.id })
+        console.log(p)
         if (p) {
           setPlan({
             id: p.id ? p.id : null,
@@ -49,12 +50,15 @@ export default function EditPlan() {
             plan_type: p.plan_type ? p.plan_type : '',
             free_test: p.free_test ? 'true' : 'false',
             current: p.current ? 'true' : 'false',
+            activities: p.activities ? p.activities : []
+            /*
             activities: p.activities
               ? p.activities.map((activity) => ({
                   ...activity,
                   sessions_per_week: activity.sessions_per_week.toString()
                 }))
               : []
+              */
           })
         }
       }

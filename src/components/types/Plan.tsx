@@ -12,8 +12,8 @@ export type Plan = {
   plan_type: string
   free_test: boolean
   current: boolean
-  activities:
-    | { id: number; days_of_week: boolean[]; sessions_per_week: number }[]
+  activities: { id: number }[]
+    // | { id: number; days_of_week: boolean[]; sessions_per_week: number }[]
 }
 
 export type ExportPlan = {
