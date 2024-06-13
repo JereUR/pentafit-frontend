@@ -42,18 +42,18 @@ const AddActivitiesButton: React.FC<Props> = ({
   }, [token, workingBusiness])
 
   const handleChangeActivities = (id: number) => {
-    if (dataPlan.activities.some((activity) => activity.id === id)) {
+    if (dataPlan.activities.some((activity) => activity === id)) {
       setDataPlan({
         ...dataPlan,
-        activities: dataPlan.activities.filter((activity) => activity.id !== id)
+        activities: dataPlan.activities.filter((activity) => activity !== id)
       })
     } else {
       setDataPlan({
         ...dataPlan,
-        activities: [
+        activities: dataPlan.activities /* [
           ...dataPlan.activities,
           { id, days_of_week: Array(7).fill(true), sessions_per_week: '7' }
-        ]
+        ] */
       })
     }
   }
@@ -111,7 +111,7 @@ const AddActivitiesButton: React.FC<Props> = ({
                         type="checkbox"
                         className="mr-2 cursor-pointer"
                         checked={dataPlan.activities.some(
-                          (a) => a.id === activity.id
+                          (a) => a === activity.id
                         )}
                         onChange={() => handleChangeActivities(activity.id)}
                       />

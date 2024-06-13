@@ -126,7 +126,7 @@ export default function PlanForm({
     }
 
     if (dataPlan.activities.length > 0) {
-      dataPlan.activities.forEach((activity) => {
+      /* dataPlan.activities.forEach((activity) => {
         const activeDaysCount = activity.days_of_week.filter(
           (day) => day
         ).length
@@ -137,7 +137,7 @@ export default function PlanForm({
               'El número de sesiones por semana no puede ser mayor al número de días seleccionados.'
           })
         }
-      })
+      }) */
     }
 
     return { errorsForm, errorsFormActivities }
