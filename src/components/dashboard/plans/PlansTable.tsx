@@ -433,7 +433,7 @@ export default function PlansTable() {
                         router.push(`/panel-de-control/planes/${plan.id}`)
                       }
                     >
-                      {plan?.activities?.length}
+                      {plan?.activities}
                     </td>
                   )}
                   <td className="border-b border-foreground px-2 py-5">

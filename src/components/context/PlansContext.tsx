@@ -8,7 +8,7 @@ import { useToast } from '../ui/use-toast'
 import useUser from '../hooks/useUser'
 
 type PlansContextType = {
-  plans: Plan[] | []
+  plans: ExportPlan[] | []
   loadingPlan: boolean
   count: number
   getAllPlans: (business_id: number) => Promise<ExportPlan[] | []>
@@ -96,7 +96,7 @@ export default function PlansContextProvider({
 }: {
   children: ReactNode
 }) {
-  const [plans, setPlans] = useState<Plan[] | []>([])
+  const [plans, setPlans] = useState<ExportPlan[] | []>([])
   const [loadingPlan, setLoadingPlan] = useState<boolean>(true)
   const [count, setCount] = useState(0)
   const { toast } = useToast()
