@@ -74,7 +74,7 @@ export default function PlanForm({
 
   const handleBack = () => {
     if (showConfirmBack) {
-      router.replace('/panel-de-control/actividades')
+      router.replace('/panel-de-control/facturacion/planes')
     }
     setShowConfirmBack(false)
   }

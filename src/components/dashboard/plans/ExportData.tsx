@@ -72,7 +72,7 @@ const ExportData: React.FC<Props> = ({ business }) => {
         }
       })
 
-      exportToExcel(data, `${business.name} - Actividades`)
+      exportToExcel(data, `${business.name} - Planes`)
     }
   }
 
