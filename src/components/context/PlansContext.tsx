@@ -475,7 +475,7 @@ export default function PlansContextProvider({
     businesses: number[]
   }): Promise<boolean> {
     setLoadingPlan(true)
-    const url = `${BASE_URL}api/v1/duplicate_plan`
+    const url = `${BASE_URL}api/v1/duplicate_plans`
     try {
       const response = await axios.post(
         url,

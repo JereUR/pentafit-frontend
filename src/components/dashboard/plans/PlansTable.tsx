@@ -314,7 +314,7 @@ export default function PlansTable() {
                         router.push(`/panel-de-control/planes/${plan.id}`)
                       }
                     >
-                      {plan.description}
+                      {plan.description?plan.description:'-'}
                     </td>
                   )}
                   {selectedColumns.price && (
