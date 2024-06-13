@@ -194,7 +194,8 @@ export default function PlansContextProvider({
     const params = new URLSearchParams()
     params.append('id', id)
     params.append('company_id', business_id.toString())
-    const url = `${BASE_URL}api/v1/plan?${params.toString()}`
+    let url = `${BASE_URL}api/v1/plan?${params.toString()}`
+    let data
     try {
       const response = await axios.get(url, {
         headers: {
@@ -204,7 +205,33 @@ export default function PlansContextProvider({
       })
 
       if (response.status === 200 || response.status === 204) {
-        return response.data
+        data = response.data
+        url = `${BASE_URL}api/v1/plan_activities?id=${id}`
+        try {
+          const response = await axios.get(url, {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: token
+            }
+          })
+
+          if (response.status === 200 || response.status === 204) {
+            return { ...data, activities: response.data }
+          } else {
+            toast({
+              title: 'Oh no! Algo salió mal.',
+              description: response.statusText
+            })
+            return null
+          }
+        } catch (error: any) {
+          toast({
+            variant: 'destructive',
+            title: 'Oh no! Algo salió mal.',
+            description: error.message
+          })
+          return null
+        }
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
