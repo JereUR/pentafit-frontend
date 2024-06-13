@@ -31,7 +31,7 @@ const ActivityItems: React.FC<Props> = ({
     setDataPlan({
       ...dataPlan,
       activities: dataPlan.activities.filter(
-        (activity) => activity.id !== activityId
+        (activity) => activity !== activityId
       )
     })
   }
@@ -40,13 +40,13 @@ const ActivityItems: React.FC<Props> = ({
     setDataPlan((prev) => ({
       ...prev,
       activities: prev.activities.map((activity) =>
-        activity.id === activityId
-          ? {
+        activity === activityId
+          ? activity /* {
               ...activity,
               days_of_week: activity.days_of_week.map((day, index) =>
                 index === dayIndex ? !day : day
               )
-            }
+            } */
           : activity
       )
     }))
@@ -61,8 +61,8 @@ const ActivityItems: React.FC<Props> = ({
     setDataPlan((prev) => ({
       ...prev,
       activities: prev.activities.map((activity) =>
-        activity.id === activityId
-          ? { ...activity, sessions_per_week: value }
+        activity /* .id */ === activityId
+          ? activity /* { ...activity, sessions_per_week: value } */
           : activity
       )
     }))
@@ -78,17 +78,21 @@ const ActivityItems: React.FC<Props> = ({
   return (
     <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 xl:gap-8">
       {dataPlan.activities.map(
-        (activity: {
+        (
+          activity /* {
           id: number
           days_of_week: boolean[]
           sessions_per_week: string
-        }) => {
-          const activityData = activities.find((act) => act.id === activity.id)
+        } */
+        ) => {
+          const activityData = activities.find(
+            (act) => act.id === activity /* .id */
+          )
           if (!activityData) return null
 
           return (
             <div
-              key={activity.id}
+              key={activity /* .id */}
               className="bg-card mx-2 xl:mx-6 p-4 rounded-lg flex flex-col justify-between h-full shadow-md relative"
             >
               <div>
@@ -99,7 +103,7 @@ const ActivityItems: React.FC<Props> = ({
                   <Button
                     type="button"
                     className="bg-gray-50 dark:bg-background transition duration-300 ease-in-out hover:bg-background dark:hover:bg-card hover:border hover:scale-[1.02]"
-                    onClick={() => handleRemoveActivity(activity.id)}
+                    onClick={() => handleRemoveActivity(activity /* .id */)}
                   >
                     <Cross1Icon className="text-red-600" />
                   </Button>
@@ -109,18 +113,18 @@ const ActivityItems: React.FC<Props> = ({
                 <Button
                   type="button"
                   className="flex items-center bg-card justify-between w-full text-left p-2 border rounded-lg transition duration-300 ease-in-out hover:bg-gray-100 dark:hover:bg-background"
-                  onClick={() => toggleDropdown(activity.id)}
+                  onClick={() => toggleDropdown(activity /* .id */)}
                 >
                   <span className="italic text-primary-orange-600">
                     Configurar Restricciones (Opcional)
                   </span>
-                  {dropdownOpen[activity.id] ? (
+                  {dropdownOpen[activity /* .id */] ? (
                     <MdExpandLess className="text-primary-orange-600" />
                   ) : (
                     <MdExpandMore className="text-primary-orange-600" />
                   )}
                 </Button>
-                {dropdownOpen[activity.id] && (
+                {dropdownOpen[activity /* .id */] && (
                   <div className="absolute left-0 w-full mt-2 p-4 bg-card border rounded-lg shadow-lg z-10">
                     <div className="m-2 p-4 border rounded-lg">
                       <span className="font-semibold">
@@ -135,9 +139,9 @@ const ActivityItems: React.FC<Props> = ({
                             <span className="ml-1">{day}</span>
                             <input
                               type="checkbox"
-                              checked={activity.days_of_week[index]}
+                              /* checked={activity.days_of_week[index]} */
                               onChange={() =>
-                                handleDayChange(activity.id, index)
+                                handleDayChange(activity /* .id */, index)
                               }
                             />
                           </label>
@@ -151,8 +155,10 @@ const ActivityItems: React.FC<Props> = ({
                         type="number"
                         min="1"
                         max="7"
-                        value={activity.sessions_per_week}
-                        onChange={(e) => handleSessionsChange(e, activity.id)}
+                        /* value={activity.sessions_per_week} */
+                        onChange={(e) =>
+                          handleSessionsChange(e, activity /* .id */)
+                        }
                       />
                     </div>
                   </div>
@@ -160,7 +166,7 @@ const ActivityItems: React.FC<Props> = ({
               </div>
               {formErrorsActivities &&
                 formErrorsActivities.map((errorActivity) => {
-                  if (errorActivity.id === activity.id) {
+                  if (errorActivity.id === activity /* .id */) {
                     return (
                       <ErrorText
                         key={errorActivity.id}
