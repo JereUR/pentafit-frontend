@@ -71,7 +71,7 @@ export const initialDiaries = [
     term_duration: 30,
     amount_of_people: 25,
     is_active: true,
-    genre_exclusive: false,
+    genre_exclusive: 'Masculino',
     works_holidays: false,
     observations: 'Observation 1'
   },
@@ -89,7 +89,7 @@ export const initialDiaries = [
     term_duration: 30,
     amount_of_people: 25,
     is_active: true,
-    genre_exclusive: false,
+    genre_exclusive: 'No',
     works_holidays: true,
     observations: 'Observation 2'
   },
@@ -107,7 +107,7 @@ export const initialDiaries = [
     term_duration: 30,
     amount_of_people: 25,
     is_active: true,
-    genre_exclusive: false,
+    genre_exclusive: 'Femenino',
     works_holidays: false,
     observations: 'Observation 1'
   },
@@ -125,7 +125,7 @@ export const initialDiaries = [
     term_duration: 30,
     amount_of_people: 25,
     is_active: true,
-    genre_exclusive: false,
+    genre_exclusive: 'Masculino',
     works_holidays: false,
     observations: 'Observation 1'
   },
@@ -143,7 +143,7 @@ export const initialDiaries = [
     term_duration: 30,
     amount_of_people: 25,
     is_active: true,
-    genre_exclusive: false,
+    genre_exclusive: 'No',
     works_holidays: false,
     observations: 'Observation 1'
   }

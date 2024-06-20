@@ -12,7 +12,7 @@ export type Diary = {
   term_duration: number
   amount_of_people: number
   is_active: boolean
-  genre_exclusive: boolean
+  genre_exclusive: string
   works_holidays: boolean
   observations?: string
 }
@@ -32,7 +32,7 @@ export interface PropsAddDiary {
   term_duration: number
   amount_of_people: number
   is_active: boolean
-  genre_exclusive: boolean
+  genre_exclusive: string
   works_holidays: boolean
   observations: string
   [key: string]: string | undefined | boolean | Date | number | null | boolean[]
@@ -51,12 +51,13 @@ export const initialData: PropsAddDiary = {
   term_duration: 0,
   amount_of_people: 0,
   is_active: false,
-  genre_exclusive: false,
+  genre_exclusive: 'No',
   works_holidays: false,
   observations: ''
 }
 
 export interface Columns {
+  id: boolean
   type_schedule: boolean
   date_from: boolean
   date_until: boolean
@@ -74,6 +75,7 @@ export interface Columns {
 }
 
 export const initialColumns: Columns = {
+  id: true,
   type_schedule: true,
   date_from: true,
   date_until: true,
@@ -88,4 +90,22 @@ export const initialColumns: Columns = {
   genre_exclusive: true,
   works_holidays: true,
   observations: true
+}
+
+export interface ExcelData {
+  ID?: number
+  Tipo?: string
+  Fecha_inicio?: string
+  Fecha_fin?: string
+  Horario_desde?: string
+  Horario_hasta?: string
+  Dias_habilitados?: string
+  Repetir_por?: number
+  Días_de_ofertas?: string
+  Duración?: number
+  Cantidad_de_personas?: number
+  Activa?: string
+  Exclusividad_de_géneros?: string
+  Trabaja_feriados?: string
+  Observaciones?: string
 }
