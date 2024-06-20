@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 
-import DiariesList from '@/components/dashboard/diaries/DiariesList'
+import DiariesTable from '@/components/dashboard/diaries/DiariesTable'
 import DiariesSkeleton from '@/components/dashboard/diaries/DiariesSkeleton'
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export default function DiaryPage() {
   return (
     <div>
       <Suspense fallback={<DiariesSkeleton />}>
-        <DiariesList />
+        <DiariesTable />
       </Suspense>
     </div>
   )
