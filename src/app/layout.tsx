@@ -15,6 +15,7 @@ import ActivitiesContextProvider from '@/components/context/ActivitiesContext'
 import Logo from '@/components/Logo'
 import { Toaster } from '@/components/ui/toaster'
 import PlansContextProvider from '@/components/context/PlansContext'
+import DiariesContextProvider from '@/components/context/DiariesContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -64,26 +65,28 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <PlansContextProvider>
-              <ActivitiesContextProvider>
-                {shouldRenderLayout ? (
-                  <>
-                    <NavBar />
-                    {children}
-                    <Toaster />
-                  </>
-                ) : (
-                  <div className="flex min-h-screen">
-                    <div className="w-1/4 xl:w-1/6 bg-black py-5">
-                      <SideBar />
-                    </div>
-                    <div className="w-3/4 xl:w-5/6">
-                      <TopBar />
+              <DiariesContextProvider>
+                <ActivitiesContextProvider>
+                  {shouldRenderLayout ? (
+                    <>
+                      <NavBar />
                       {children}
+                      <Toaster />
+                    </>
+                  ) : (
+                    <div className="flex min-h-screen">
+                      <div className="w-1/4 xl:w-1/6 bg-black py-5">
+                        <SideBar />
+                      </div>
+                      <div className="w-3/4 xl:w-5/6">
+                        <TopBar />
+                        {children}
+                      </div>
+                      <Toaster />
                     </div>
-                    <Toaster />
-                  </div>
-                )}
-              </ActivitiesContextProvider>
+                  )}
+                </ActivitiesContextProvider>
+              </DiariesContextProvider>
             </PlansContextProvider>
           </ThemeProvider>
         </AuthContextProvider>
