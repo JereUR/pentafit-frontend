@@ -1,7 +1,7 @@
 'use client'
 
 import { FaHome, FaUser } from 'react-icons/fa'
-import { FaMoneyBillTransfer } from 'react-icons/fa6'
+import { FaMoneyBillTransfer, FaRegCalendarDays } from 'react-icons/fa6'
 import { MdForkLeft, MdExpandLess, MdExpandMore } from 'react-icons/md'
 import { TiThListOutline } from 'react-icons/ti'
 import { IoIosFitness, IoMdBusiness } from 'react-icons/io'
@@ -33,9 +33,9 @@ const menuItems = [
     list: null
   },
   {
-    title: 'Turnos',
-    path: '/panel-de-control/turnos',
-    icon: <MdForkLeft className="h-6 w-6" />,
+    title: 'Agenda',
+    path: '/panel-de-control/agenda',
+    icon: <FaRegCalendarDays className="h-6 w-6" />,
     list: null
   },
   {
