@@ -72,6 +72,19 @@ const SelectColumns: React.FC<Props> = ({
               <input
                 type="checkbox"
                 className="mr-2 cursor-pointer"
+                checked={selectedColumns.activity}
+                onChange={() =>
+                  handleChange('activity', !selectedColumns.activity)
+                }
+              />
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+                Actividad
+              </span>
+            </label>
+            <label className="flex items-center cursor-pointer ">
+              <input
+                type="checkbox"
+                className="mr-2 cursor-pointer"
                 checked={selectedColumns.type_schedule}
                 onChange={() =>
                   handleChange('type_schedule', !selectedColumns.type_schedule)

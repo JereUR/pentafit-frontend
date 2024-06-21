@@ -68,6 +68,7 @@ const ExportData: React.FC<Props> = ({ business }) => {
         return {
           ID: diary.id,
           Tipo: diary.type_schedule,
+          Actividad: diary.activity.name,
           Fecha_inicio: diary.date_from,
           Fecha_fin: diary.date_until,
           Horario_desde: diary.time_from,

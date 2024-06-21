@@ -257,6 +257,9 @@ export default function DiariesTable() {
                 />
               </td>
               {selectedColumns.id && <td className="text-xs px-2 py-5">#</td>}
+              {selectedColumns.activity && (
+                <td className="text-xs px-2 py-5">Actividad</td>
+              )}
               {selectedColumns.type_schedule && (
                 <td className="text-xs px-2 py-5">Tipo</td>
               )}
@@ -330,6 +333,16 @@ export default function DiariesTable() {
                       }
                     >
                       {diary.id}
+                    </td>
+                  )}
+                  {selectedColumns.activity && (
+                    <td
+                      className="text-xs border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(`/panel-de-control/actividades/${diary.id}`)
+                      }
+                    >
+                      {diary.activity.name}
                     </td>
                   )}
                   {selectedColumns.type_schedule && (

@@ -1,6 +1,7 @@
 export type Diary = {
   id: number
   company_id: number
+  activity: { id: number; name: string }
   type_schedule: string
   date_from: string
   date_until: string
@@ -20,7 +21,8 @@ export type Diary = {
 export const scheduleTypes = ['Por turnos', 'Libre']
 
 export interface PropsAddDiary {
-  id: number | null
+  id?: number
+  activity: { id: number; name: string }
   type_schedule: string
   date_from: Date
   date_until: Date
@@ -31,15 +33,23 @@ export interface PropsAddDiary {
   offer_days: boolean[]
   term_duration: number
   amount_of_people: number
-  is_active: boolean
+  is_active: string
   genre_exclusive: string
-  works_holidays: boolean
+  works_holidays: string
   observations: string
-  [key: string]: string | undefined | boolean | Date | number | null | boolean[]
+  [key: string]:
+    | string
+    | undefined
+    | boolean
+    | Date
+    | number
+    | null
+    | boolean[]
+    | { id: number; name: string }
 }
 
 export const initialData: PropsAddDiary = {
-  id: null,
+  activity: { id: 0, name: '' },
   type_schedule: '',
   date_from: new Date(),
   date_until: new Date(),
@@ -50,14 +60,15 @@ export const initialData: PropsAddDiary = {
   offer_days: Array(7).fill(false),
   term_duration: 0,
   amount_of_people: 0,
-  is_active: false,
+  is_active: 'false',
   genre_exclusive: 'No',
-  works_holidays: false,
+  works_holidays: 'false',
   observations: ''
 }
 
 export interface Columns {
   id: boolean
+  activity: boolean
   type_schedule: boolean
   date_from: boolean
   date_until: boolean
@@ -76,6 +87,7 @@ export interface Columns {
 
 export const initialColumns: Columns = {
   id: true,
+  activity: true,
   type_schedule: true,
   date_from: true,
   date_until: true,
@@ -95,6 +107,7 @@ export const initialColumns: Columns = {
 export interface ExcelData {
   ID?: number
   Tipo?: string
+  Actividad?: string
   Fecha_inicio?: string
   Fecha_fin?: string
   Horario_desde?: string

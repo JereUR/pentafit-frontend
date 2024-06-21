@@ -56,10 +56,11 @@ type DiariesContextType = {
 
 export const DiariesContext = createContext<DiariesContextType | null>(null)
 
-export const initialDiaries = [
+export const initialDiaries: Diary[] = [
   {
     id: 1,
     company_id: 1,
+    activity: { id: 1, name: 'Actividad 1' },
     type_schedule: 'Por turnos',
     date_from: '01-06-2024',
     date_until: '01-07-2024',
@@ -78,6 +79,7 @@ export const initialDiaries = [
   {
     id: 3,
     company_id: 1,
+    activity: { id: 2, name: 'Actividad 2' },
     type_schedule: 'Libre',
     date_from: '01-06-2024',
     date_until: '01-07-2024',
@@ -96,6 +98,7 @@ export const initialDiaries = [
   {
     id: 3,
     company_id: 1,
+    activity: { id: 1, name: 'Actividad 1' },
     type_schedule: 'Por turnos',
     date_from: '01-06-2024',
     date_until: '01-07-2024',
@@ -114,6 +117,7 @@ export const initialDiaries = [
   {
     id: 4,
     company_id: 1,
+    activity: { id: 4, name: 'Actividad 4' },
     type_schedule: 'Por turnos',
     date_from: '01-06-2024',
     date_until: '01-07-2024',
@@ -132,6 +136,7 @@ export const initialDiaries = [
   {
     id: 5,
     company_id: 1,
+    activity: { id: 7, name: 'Actividad 7' },
     type_schedule: 'Por turnos',
     date_from: '01-06-2024',
     date_until: '01-07-2024',
@@ -292,27 +297,28 @@ export default function DiariesContextProvider({
     company_id: number
   }): Promise<boolean> {
     setLoadingDiary(true)
-    const isPublicValue = dataDiary.is_public === 'true' ? true : false
+    const isActiveValue = dataDiary.is_active === 'true' ? true : false
 
-    const generateInvoiceValue =
-      dataDiary.generate_invoice === 'true' ? true : false
-
-    const mpAvailableValue = dataDiary.mp_available === 'true' ? true : false
+    const worksHolidaysValue =
+      dataDiary.works_holidays === 'true' ? true : false
 
     const newDiary = {
       company_id,
-      name: dataDiary.name,
-      price: dataDiary.price,
-      description: dataDiary.description,
-      is_public: isPublicValue,
-      generate_invoice: generateInvoiceValue,
-      max_sessions: dataDiary.max_sessions,
-      mp_available: mpAvailableValue,
-      public_name: dataDiary.public_name,
-      start_date: dataDiary.start_date,
-      end_date: dataDiary.end_date,
-      payment_type: dataDiary.payment_type,
-      Diary_type: dataDiary.Diary_type
+      activity: { id: dataDiary.activity.id, name: dataDiary.activity.name },
+      type_schedule: dataDiary.type_schedule,
+      date_from: dataDiary.date_from,
+      date_until: dataDiary.date_until,
+      time_from: dataDiary.time_from,
+      time_until: dataDiary.time_until,
+      days_available: dataDiary.days_available,
+      repeat_for: dataDiary.repeat_for,
+      offer_days: dataDiary.offer_days,
+      term_duration: dataDiary.term_duration,
+      amount_of_people: dataDiary.amount_of_people,
+      is_active: isActiveValue,
+      genre_exclusive: dataDiary.genre_exclusive,
+      works_holidays: worksHolidaysValue,
+      observations: dataDiary.observations
     }
 
     const url = `${BASE_URL}api/v1/diary`
@@ -359,28 +365,29 @@ export default function DiariesContextProvider({
     company_id: number
   }): Promise<boolean> {
     setLoadingDiary(true)
-    const isPublicValue = dataDiary.is_public === 'true' ? true : false
+    const isActiveValue = dataDiary.is_active === 'true' ? true : false
 
-    const generateInvoiceValue =
-      dataDiary.generate_invoice === 'true' ? true : false
-
-    const mpAvailableValue = dataDiary.mp_available === 'true' ? true : false
+    const worksHolidaysValue =
+      dataDiary.works_holidays === 'true' ? true : false
 
     const newDiary = {
       company_id,
       id: dataDiary.id,
-      name: dataDiary.name,
-      description: dataDiary.description,
-      price: dataDiary.price,
-      is_public: isPublicValue,
-      generate_invoice: generateInvoiceValue,
-      max_sessions: dataDiary.max_sessions,
-      mp_available: mpAvailableValue,
-      public_name: dataDiary.public_name,
-      start_date: dataDiary.start_date,
-      end_date: dataDiary.end_date,
-      payment_type: dataDiary.payment_type,
-      Diary_type: dataDiary.Diary_type
+      activity: { id: dataDiary.activity.id, name: dataDiary.activity.name },
+      type_schedule: dataDiary.type_schedule,
+      date_from: dataDiary.date_from,
+      date_until: dataDiary.date_until,
+      time_from: dataDiary.time_from,
+      time_until: dataDiary.time_until,
+      days_available: dataDiary.days_available,
+      repeat_for: dataDiary.repeat_for,
+      offer_days: dataDiary.offer_days,
+      term_duration: dataDiary.term_duration,
+      amount_of_people: dataDiary.amount_of_people,
+      is_active: isActiveValue,
+      genre_exclusive: dataDiary.genre_exclusive,
+      works_holidays: worksHolidaysValue,
+      observations: dataDiary.observations
     }
 
     const url = `${BASE_URL}api/v1/diary`
