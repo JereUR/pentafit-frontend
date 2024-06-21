@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import {
   activitiesType,
   FormErrors,
+  initialErrors,
   paymentsType,
   PropsAddActivity
 } from '@/components/types/Activity'
@@ -21,18 +22,6 @@ import { useToast } from '@/components/ui/use-toast'
 import { Business } from '@/components/types/Business'
 import { CustomCheckbox } from '../CustomCheckbox'
 import ErrorText from '../global/ErrorText'
-
-const initialErrors = {
-  company_id: '',
-  activity: '',
-  price: '',
-  is_public: '',
-  max_sessions: '',
-  start_date: '',
-  end_date: '',
-  payment_type: '',
-  public_name: ''
-}
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 

@@ -12,6 +12,7 @@ import { Business } from '@/components/types/Business'
 import {
   FormErrorActivities,
   FormErrors,
+  initialErrors,
   paymentsType,
   plansType,
   PropsAddPlan
@@ -23,17 +24,6 @@ import Loader from '@/components/Loader'
 import { CustomCheckbox } from '../CustomCheckbox'
 import AddActivitiesButton from './AddActivitiesButton'
 import ErrorText from '../global/ErrorText'
-
-const initialErrors = {
-  name: '',
-  description: '',
-  price: '',
-  start_date: '',
-  end_date: '',
-  expiration_period: '',
-  payment_type: '',
-  plan_type: ''
-}
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 

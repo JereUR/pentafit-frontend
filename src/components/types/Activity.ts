@@ -16,7 +16,7 @@ export type Activity = {
 }
 
 export interface PropsAddActivity {
-  id?: number
+  id?: number | null
   name: string
   description: string
   price: string
@@ -70,6 +70,18 @@ export interface FormErrors {
   activity_type?: string
   public_name?: string
   [key: string]: string | undefined
+}
+
+export const initialErrors: FormErrors = {
+  company_id: '',
+  Diary: '',
+  price: '',
+  is_public: '',
+  max_sessions: '',
+  start_date: '',
+  end_date: '',
+  payment_type: '',
+  public_name: ''
 }
 
 export interface Columns {

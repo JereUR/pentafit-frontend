@@ -34,7 +34,7 @@ export type ExportPlan = {
 }
 
 export interface PropsAddPlan {
-  id?: number
+  id?: number | null
   name: string
   description: string
   price: string
@@ -91,6 +91,17 @@ export interface FormErrors {
   free_test?: string
   current?: string
   [key: string]: string | undefined
+}
+
+export const initialErrors: FormErrors = {
+  name: '',
+  description: '',
+  price: '',
+  start_date: '',
+  end_date: '',
+  expiration_period: '',
+  payment_type: '',
+  plan_type: ''
 }
 
 export interface FormErrorActivities {

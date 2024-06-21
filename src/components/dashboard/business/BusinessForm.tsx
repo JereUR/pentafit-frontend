@@ -6,7 +6,11 @@ import { ImCross } from 'react-icons/im'
 import { FaCheck } from 'react-icons/fa'
 
 import useUser from '@/components/hooks/useUser'
-import { PropsAddBusiness } from '@/components/types/Business'
+import {
+  FormErrors,
+  initialErrors,
+  PropsAddBusiness
+} from '@/components/types/Business'
 import MetadataForm from './MetadataForm'
 import { Button } from '@/components/ui/button'
 import ContactForm from './ContactForm'
@@ -14,39 +18,6 @@ import { useToast } from '@/components/ui/use-toast'
 import Loader from '@/components/Loader'
 import LogoHandler from './LogoHandler'
 import ErrorText from '../global/ErrorText'
-
-export interface FormErrors {
-  name?: string
-  description?: string
-  email?: string
-  address?: string
-  phone?: string
-  instagram?: string
-  facebook?: string
-  logo?: string
-  title?: string
-  primary_color?: string
-  secondary_color?: string
-  third_color?: string
-  slogan?: string
-  [key: string]: string | undefined
-}
-
-const initialErrors = {
-  name: '',
-  description: '',
-  email: '',
-  address: '',
-  phone: '',
-  instagram: '',
-  facebook: '',
-  logo: '',
-  title: '',
-  primary_color: '',
-  secondary_color: '',
-  third_color: '',
-  slogan: ''
-}
 
 export default function BusinessForm({
   business,

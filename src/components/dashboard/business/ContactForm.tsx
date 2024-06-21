@@ -1,5 +1,4 @@
-import { PropsAddBusiness } from '@/components/types/Business'
-import { FormErrors } from './BusinessForm'
+import { FormErrors, PropsAddBusiness } from '@/components/types/Business'
 import ErrorText from '../global/ErrorText'
 
 interface ContactProps {

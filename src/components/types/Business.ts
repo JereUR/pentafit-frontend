@@ -23,7 +23,7 @@ export type Business = {
 }
 
 export interface PropsAddBusiness {
-  id?: number
+  id?: number | null
   name: string
   description?: string
   email?: string
@@ -59,4 +59,37 @@ export const initialData = {
   slogan: '',
   logoWebUrl: '',
   logoWeb: null
+}
+
+export interface FormErrors {
+  name?: string
+  description?: string
+  email?: string
+  address?: string
+  phone?: string
+  instagram?: string
+  facebook?: string
+  logo?: string
+  title?: string
+  primary_color?: string
+  secondary_color?: string
+  third_color?: string
+  slogan?: string
+  [key: string]: string | undefined
+}
+
+export const initialErrors = {
+  name: '',
+  description: '',
+  email: '',
+  address: '',
+  phone: '',
+  instagram: '',
+  facebook: '',
+  logo: '',
+  title: '',
+  primary_color: '',
+  secondary_color: '',
+  third_color: '',
+  slogan: ''
 }
