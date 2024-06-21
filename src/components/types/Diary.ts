@@ -171,3 +171,5 @@ export const daysOfWeek = [
   'Viernes',
   'Sábado'
 ]
+
+export const daysOfWeekCut = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
