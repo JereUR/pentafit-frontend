@@ -20,8 +20,10 @@ export type Diary = {
 
 export const scheduleTypes = ['Por turnos', 'Libre']
 
+export const genreTypes = ['No', 'Masculino', 'Femenino']
+
 export interface PropsAddDiary {
-  id?: number
+  id?: number | null
   activity: { id: number; name: string }
   type_schedule: string
   date_from: Date
@@ -122,3 +124,50 @@ export interface ExcelData {
   Trabaja_feriados?: string
   Observaciones?: string
 }
+
+export interface FormErrors {
+  activity?: string
+  type_schedule?: string
+  date_from?: string
+  date_until?: string
+  time_from?: string
+  time_until?: string
+  days_available?: string
+  repeat_for?: string
+  offer_days?: string
+  term_duration?: string
+  amount_of_people?: string
+  is_active?: string
+  genre_exclusive?: string
+  works_holidays?: string
+  observations?: string
+  [key: string]: string | undefined
+}
+
+export const initialErrors: FormErrors = {
+  activity: '',
+  type_schedule: '',
+  date_from: '',
+  date_until: '',
+  time_from: '',
+  time_until: '',
+  days_available: '',
+  repeat_for: '',
+  offer_days: '',
+  term_duration: '',
+  amount_of_people: '',
+  is_active: '',
+  genre_exclusive: '',
+  works_holidays: '',
+  observations: ''
+}
+
+export const daysOfWeek = [
+  'Domingo',
+  'Lunes',
+  'Martes',
+  'Miércoles',
+  'Jueves',
+  'Viernes',
+  'Sábado'
+]

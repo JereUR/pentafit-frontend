@@ -20,22 +20,12 @@ import SelectItemsPerPage from '../SelectItemsPerPage'
 import TableSkeleton from '../skeletons/TableSkeleton'
 import WorkingBusinessSkeleton from '../skeletons/WorkingBusinessSkeleton'
 import CountItemsSkeleton from '../skeletons/CountItemsSkeleton'
-import { Columns, initialColumns } from '@/components/types/Diary'
+import { Columns, daysOfWeek, initialColumns } from '@/components/types/Diary'
 import SelectColumns from './SelectedColumn'
 import SelectedDiariesActions from './SelectedDiariesActions'
 import ExportData from './ExportData'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
-
-const daysOfWeek = [
-  'Domingo',
-  'Lunes',
-  'Martes',
-  'Miércoles',
-  'Jueves',
-  'Viernes',
-  'Sábado'
-]
 
 export default function DiariesTable() {
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
@@ -230,7 +220,7 @@ export default function DiariesTable() {
           )}
         </div>
         <div className="flex justify-center gap-4">
-          <Link href="/panel-de-control/agendas/agregar">
+          <Link href="/panel-de-control/agenda/agregar">
             <CustomButton text="Agregar" />
           </Link>
           {selectedDiaries.length > 0 && (
@@ -521,7 +511,7 @@ export default function DiariesTable() {
                     <div className="flex justify-center gap-2">
                       <div>
                         <Link
-                          href={`/panel-de-control/agendas/editar/${diary.id}`}
+                          href={`/panel-de-control/agenda/editar/${diary.id}`}
                         >
                           <button className="p-2 rounded-lg text-white bg-sky-600 border-none cursor-pointer transitiopn duration-300 ease-in-out hover:scale-105 hover:shadow-md">
                             <FaEdit />
