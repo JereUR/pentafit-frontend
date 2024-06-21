@@ -16,7 +16,7 @@ export type Activity = {
 }
 
 export interface PropsAddActivity {
-  id: number | null
+  id?: number
   name: string
   description: string
   price: string
@@ -33,7 +33,6 @@ export interface PropsAddActivity {
 }
 
 export const initialData: PropsAddActivity = {
-  id: null,
   name: '',
   description: '',
   price: '',

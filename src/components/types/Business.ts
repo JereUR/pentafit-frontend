@@ -23,7 +23,7 @@ export type Business = {
 }
 
 export interface PropsAddBusiness {
-  id: number
+  id?: number
   name: string
   description?: string
   email?: string
@@ -43,7 +43,6 @@ export interface PropsAddBusiness {
 }
 
 export const initialData = {
-  id: 1,
   name: '',
   description: '',
   email: '',

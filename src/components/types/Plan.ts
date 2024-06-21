@@ -34,7 +34,7 @@ export type ExportPlan = {
 }
 
 export interface PropsAddPlan {
-  id: number | null
+  id?: number
   name: string
   description: string
   price: string
@@ -59,7 +59,6 @@ export interface PropsAddPlan {
 }
 
 export const initialData: PropsAddPlan = {
-  id: null,
   name: '',
   description: '',
   price: '',
