@@ -12,8 +12,8 @@ import {
   FormErrors,
   scheduleTypes,
   PropsAddDiary,
-  daysOfWeek,
-  genreTypes
+  genreTypes,
+  daysOfWeekCut
 } from '@/components/types/Diary'
 import Loader from '@/components/Loader'
 import useUser from '@/components/hooks/useUser'
@@ -91,7 +91,7 @@ export default function DiaryForm({
     }
 
     if (dataDiary.activity.id === 0 || dataDiary.activity.name === '') {
-      errorsForm.activity = `Debe asignar una Agenda.`
+      errorsForm.activity = `Debe asignar una actividad a la agenda.`
     }
 
     if (!dataDiary.type_schedule.trim()) {
@@ -126,6 +126,13 @@ export default function DiaryForm({
 
     if (dataDiary.amount_of_people <= 0) {
       errorsForm.amount_of_people = `La cantidad de personas debe ser mayor a 0.`
+    }
+
+    for (let i = 0; i < dataDiary.days_available.length; i++) {
+      if (dataDiary.offer_days[i] && !dataDiary.days_available[i]) {
+        errorsForm.offer_days = `No puede haber un día de oferta donde el día no está disponible.`
+        break
+      }
     }
 
     return errorsForm
@@ -348,7 +355,7 @@ export default function DiaryForm({
                 Horario Inicial
               </label>
               {formErrors.time_from && (
-                <span className="text-red-500">{formErrors.time_from}</span>
+                <ErrorText text={formErrors.time_from} />
               )}
             </div>
             <input
@@ -366,7 +373,7 @@ export default function DiaryForm({
                 Horario Final
               </label>
               {formErrors.time_until && (
-                <span className="text-red-500">{formErrors.time_until}</span>
+                <ErrorText text={formErrors.time_until} />
               )}
             </div>
             <input
@@ -376,20 +383,6 @@ export default function DiaryForm({
               value={dataDiary.time_until}
               onChange={handleChange}
             />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label className="font-[600]">Días Disponibles</label>
-            {daysOfWeek.map((day, index) => (
-              <div key={index} className="flex gap-2 items-center">
-                <input
-                  type="checkbox"
-                  name="days_available"
-                  checked={dataDiary.days_available[index]}
-                  onChange={(e) => handleChangeDays(e, index)}
-                />
-                <label>{day}</label>
-              </div>
-            ))}
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
@@ -407,20 +400,6 @@ export default function DiaryForm({
               value={dataDiary.repeat_for}
               onChange={handleChange}
             />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label className="font-[600]">Días de Oferta</label>
-            {daysOfWeek.map((day, index) => (
-              <div key={index} className="flex gap-2 items-center">
-                <input
-                  type="checkbox"
-                  name="offer_days"
-                  checked={dataDiary.offer_days[index]}
-                  onChange={(e) => handleChangeDays(e, index)}
-                />
-                <label>{day}</label>
-              </div>
-            ))}
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
@@ -485,28 +464,89 @@ export default function DiaryForm({
               ))}
             </select>
           </div>
-          <div className="grid grid-cols-2 xl:grid-cols-3 gap-8 mb-4">
-            <div className="border bg-card rounded-lg flex items-center p-4">
+        </div>
+        <div>
+          <div className="flex gap-16 mb-6">
+            <div className="flex-1 flex flex-col gap-2 p-6 bg-card justify-center items-center rounded-lg border">
+              <label className="text-lg font-[600] text-center mb-4">
+                Días Disponibles
+              </label>
+              <div className="flex flex-wrap justify-center gap-4">
+                {daysOfWeekCut.map((day, index) => (
+                  <div key={index} className="flex flex-col items-center">
+                    <input
+                      type="checkbox"
+                      name="days_available"
+                      id={`days_available_${index}`}
+                      className="mb-1 cursor-pointer"
+                      checked={dataDiary.days_available[index]}
+                      onChange={(e) => handleChangeDays(e, index)}
+                    />
+                    <label
+                      htmlFor={`days_available_${index}`}
+                      className="cursor-pointer"
+                    >
+                      {day}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex-1 flex flex-col gap-2 p-6 bg-card justify-center items-center rounded-lg border">
+              <div className="flex flex-col gap-4 items-center">
+                {formErrors.offer_days && (
+                  <ErrorText text={formErrors.offer_days} />
+                )}
+                <label className="text-lg font-[600] text-center mb-4">
+                  Días de Oferta
+                </label>
+              </div>
+              <div className="flex flex-wrap justify-center gap-4">
+                {daysOfWeekCut.map((day, index) => (
+                  <div key={index} className="flex flex-col items-center">
+                    <input
+                      type="checkbox"
+                      name="offer_days"
+                      id={`offer_days_${index}`}
+                      className="mb-1 cursor-pointer"
+                      checked={dataDiary.offer_days[index]}
+                      onChange={(e) => handleChangeDays(e, index)}
+                    />
+                    <label
+                      htmlFor={`offer_days_${index}`}
+                      className="cursor-pointer"
+                    >
+                      {day}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center gap-16 mb-6">
+            <div className="border bg-card rounded-lg flex items-center py-4 w-[20vw]">
               <CustomCheckbox
                 label="Activa"
                 value={dataDiary.is_active}
                 name="is_active"
                 action={handleChangeBoolean}
+                className="flex-col"
               />
             </div>
-            <div className="border bg-card rounded-lg flex items-center p-4">
+            <div className="border bg-card rounded-lg flex items-center py-4 w-[20vw]">
               <CustomCheckbox
                 label="¿Trabaja feriados?"
                 value={dataDiary.works_holidays}
                 name="works_holidays"
                 action={handleChangeBoolean}
+                className="flex-col"
               />
             </div>
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
               <label htmlFor="description" className="font-[600]">
-                Observcaciones
+                Observaciones
               </label>
               {formErrors.description && (
                 <ErrorText text={formErrors.description} />
