@@ -1,6 +1,5 @@
 'use client'
 
-import ErrorText from '@/components/ErrorText'
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react'
 import ReactCrop, {
   centerCrop,
@@ -13,6 +12,7 @@ import ReactCrop, {
 import setCanvasPreview from './setCanvasPreview'
 import { PropsAddBusiness } from '@/components/types/Business'
 import { useToast } from '@/components/ui/use-toast'
+import ErrorText from '../global/ErrorText'
 
 interface Props {
   text: string

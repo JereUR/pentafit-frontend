@@ -1,6 +1,6 @@
 import { PropsAddBusiness } from '@/components/types/Business'
 import { FormErrors } from './BusinessForm'
-import ErrorText from '@/components/ErrorText'
+import ErrorText from '../global/ErrorText'
 
 interface ContactProps {
   dataBusiness: PropsAddBusiness

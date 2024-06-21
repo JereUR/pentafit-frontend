@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react'
 import { ImCross } from 'react-icons/im'
 import { FaCheck } from 'react-icons/fa'
 
-import ErrorText from '@/components/ErrorText'
 import usePlans from '@/components/hooks/usePlans'
 import useUser from '@/components/hooks/useUser'
 import { Business } from '@/components/types/Business'
@@ -23,6 +22,7 @@ import { Button } from '@/components/ui/button'
 import Loader from '@/components/Loader'
 import { CustomCheckbox } from '../CustomCheckbox'
 import AddActivitiesButton from './AddActivitiesButton'
+import ErrorText from '../global/ErrorText'
 
 const initialErrors = {
   name: '',

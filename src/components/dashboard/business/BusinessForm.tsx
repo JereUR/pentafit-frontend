@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { ImCross } from 'react-icons/im'
 import { FaCheck } from 'react-icons/fa'
 
-import ErrorText from '@/components/ErrorText'
 import useUser from '@/components/hooks/useUser'
 import { PropsAddBusiness } from '@/components/types/Business'
 import MetadataForm from './MetadataForm'
@@ -14,6 +13,7 @@ import ContactForm from './ContactForm'
 import { useToast } from '@/components/ui/use-toast'
 import Loader from '@/components/Loader'
 import LogoHandler from './LogoHandler'
+import ErrorText from '../global/ErrorText'
 
 export interface FormErrors {
   name?: string

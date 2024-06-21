@@ -9,7 +9,7 @@ import useUser from '../hooks/useUser'
 import ForgotPasswordModal from './ForgotPasswordModal'
 import { PropsLogin } from '../types/User'
 import Loader from '../Loader'
-import ErrorText from '../ErrorText'
+import ErrorText from '../dashboard/global/ErrorText'
 
 interface FormErrors {
   email?: string

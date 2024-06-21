@@ -8,7 +8,7 @@ import axios from 'axios'
 
 import { useToast } from '../ui/use-toast'
 import Loader from '../Loader'
-import ErrorText from '../ErrorText'
+import ErrorText from '../dashboard/global/ErrorText'
 
 interface FormErrors {
   password?: string
