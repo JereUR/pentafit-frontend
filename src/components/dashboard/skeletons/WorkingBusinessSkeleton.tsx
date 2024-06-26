@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from 'components/ui/skeleton'
 
 const WorkingBusinessSkeleton = (props: any) => (
   <div className="flex justify-between mb-6">

@@ -10,10 +10,10 @@ import {
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { Business } from '@/components/types/Business'
+import { Business } from 'components/types/Business'
 import noImage from '@public/assets/no-image.png'
-import { Button } from '@/components/ui/button'
-import useUser from '@/components/hooks/useUser'
+import { Button } from 'components/ui/button'
+import useUser from 'components/hooks/useUser'
 
 export default function BusinessItem({ item }: { item: Business }) {
   const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)

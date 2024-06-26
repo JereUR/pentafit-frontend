@@ -2,9 +2,9 @@
 
 import { useRef } from 'react'
 
-import BannerSection from '@/components/home/BannerSection'
-import ContactForm from '@/components/home/ContactForm'
-import ServicesSection from '@/components/home/ServicesSection'
+import BannerSection from 'components/home/BannerSection'
+import ContactForm from 'components/home/ContactForm'
+import ServicesSection from 'components/home/ServicesSection'
 import PriceSection from './home/PriceSection'
 
 export default function HomePageComponent() {

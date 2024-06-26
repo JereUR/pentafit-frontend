@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 import { Cross1Icon } from '@radix-ui/react-icons'
 
-import useActivities from '@/components/hooks/useActivities'
-import { Activity } from '@/components/types/Activity'
-import { Business } from '@/components/types/Business'
-import { Button } from '@/components/ui/button'
+import useActivities from 'components/hooks/useActivities'
+import { Activity } from 'components/types/Activity'
+import { Business } from 'components/types/Business'
+import { Button } from 'components/ui/button'
 import ActivityItems from './ActivityItems'
-import { FormErrorActivities, PropsAddPlan } from '@/components/types/Plan'
+import { FormErrorActivities, PropsAddPlan } from 'components/types/Plan'
 
 interface Props {
   workingBusiness: Business | null

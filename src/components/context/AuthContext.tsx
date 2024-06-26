@@ -34,7 +34,7 @@ type AuthContextType = {
     authToken: string | null
     user: User
     business: Business[]
-    error: string
+    error: string | null
   }) => void
   userSignOut: () => void
   signUp: ({ dataRegister }: { dataRegister: PropsRegister }) => Promise<void>
@@ -124,7 +124,7 @@ export default function AuthContextProvider({
     authToken: string | null
     user: User
     business: Business[]
-    error: string
+    error: string | null
   }) {
     if (error) {
       toast({

@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import HomePageComponent from '@/components/HomePageComponent'
+import HomePageComponent from 'components/HomePageComponent'
 
 export const metadata: Metadata = {
   title: 'PentaFit'

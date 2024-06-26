@@ -14,12 +14,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+} from 'components/ui/dropdown-menu'
 /* import profilePhoto from '../../../../public/assets/profile-photo.png' */
 import profilePhoto from '../../../../public/assets/noavatar.png'
-import useUser from '@/components/hooks/useUser'
-import { signOut } from '@/components/actions/authActions'
-import Loader from '@/components/Loader'
+import useUser from 'components/hooks/useUser'
+import Loader from 'components/Loader'
 
 interface DropdownProp {
   title: string
@@ -46,12 +45,26 @@ export default function ProfileDropdownMenu() {
   async function handleSignOut() {
     if (token) {
       setLoadingUser(true)
-      const response = await signOut({ token })
+      try {
+        const response = await fetch('/api/signout', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(token)
+        })
 
-      if (response) {
-        userSignOut()
+        const result = await response.json()
+        console.log(result)
+        if (result) {
+          userSignOut()
+        }
+      } catch (error) {
+        console.error('Error during sign out:', error)
+        return false
+      } finally {
+        setLoadingUser(false)
       }
-      setLoadingUser(false)
     }
   }
 

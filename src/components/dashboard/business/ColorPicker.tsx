@@ -7,7 +7,7 @@ import {
   useEffect
 } from 'react'
 
-import { PropsAddBusiness } from '@/components/types/Business'
+import { PropsAddBusiness } from 'components/types/Business'
 
 interface ColorPickerProps {
   value: string

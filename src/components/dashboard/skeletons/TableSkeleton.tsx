@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from 'components/ui/skeleton'
 
 const TableSkeleton = (props: any) => (
   <div className="flex flex-col justify-center pt-[6vh] mx-10 border">

@@ -10,7 +10,6 @@ import ForgotPasswordModal from './ForgotPasswordModal'
 import { PropsLogin } from '../types/User'
 import Loader from '../Loader'
 import ErrorText from '../dashboard/global/ErrorText'
-import { signIn } from '../actions/authActions'
 
 interface FormErrors {
   email?: string
@@ -72,16 +71,37 @@ export default function LoginForm() {
     if (Object.keys(err).length === 0) {
       setLoadingUser(true)
 
-      const { authToken, data, error } = await signIn({ dataLogin })
+      try {
+        const response = await fetch('/api/signin', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ dataLogin })
+        })
+        const result = await response.json()
+        console.log(response)
 
-      userSignIn({
-        authToken,
-        user: data.user,
-        business: data.user.business,
-        error
-      })
-
-      setLoadingUser(false)
+        if (response.ok) {
+          userSignIn({
+            authToken: result.authToken,
+            user: result.data.user,
+            business: result.data.user.business,
+            error: null
+          })
+          setLoginErrors({
+            email: '',
+            password: ''
+          })
+        } else {
+          setLoginErrors({ ...loginErrors, general: result.error })
+        }
+      } catch (error) {
+        console.error('Error:', error)
+        setLoginErrors({ ...loginErrors, general: 'Error en la solicitud' })
+      } finally {
+        setLoadingUser(false)
+      }
       setLoginErrors({
         email: '',
         password: ''

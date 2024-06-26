@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 
-import ActivityForm from '@/components/dashboard/activities/ActivityForm'
-import { initialData } from '@/components/types/Activity'
+import ActivityForm from 'components/dashboard/activities/ActivityForm'
+import { initialData } from 'components/types/Activity'
 
 export const metadata: Metadata = {
   title: 'PentaFit - Agregar actividad'

@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from 'components/ui/skeleton'
 
 const BusinessSkeleton = (props: any) => (
   <div className="flex flex-col gap-10 mt-10">

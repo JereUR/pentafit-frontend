@@ -11,11 +11,11 @@ import {
   DropdownMenuTrigger
 } from '@radix-ui/react-dropdown-menu'
 
-import useUser from '@/components/hooks/useUser'
-import { Card } from '@/components/ui/card'
-import noImage from '@public/assets/no-image.png'
-import { Button } from '@/components/ui/button'
-import { Business } from '@/components/types/Business'
+import useUser from 'components/hooks/useUser'
+import { Card } from 'components/ui/card'
+import noImage from '../../../../public/assets/no-image.png'
+import { Button } from 'components/ui/button'
+import { Business } from 'components/types/Business'
 import RightBarSkeleton from './RightBarSkeleton'
 
 const RightBar = () => {

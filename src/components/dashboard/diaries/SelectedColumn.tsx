@@ -2,8 +2,8 @@ import { FaTableCells } from 'react-icons/fa6'
 import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 import React, { Dispatch, SetStateAction, useState } from 'react'
 
-import { Columns } from '@/components/types/Diary'
-import { Button } from '@/components/ui/button'
+import { Columns } from 'components/types/Diary'
+import { Button } from 'components/ui/button'
 
 interface Props {
   selectedColumns: Columns

@@ -6,9 +6,9 @@ import React, { useEffect, useState } from 'react'
 import { ImCross } from 'react-icons/im'
 import { FaCheck } from 'react-icons/fa'
 
-import usePlans from '@/components/hooks/usePlans'
-import useUser from '@/components/hooks/useUser'
-import { Business } from '@/components/types/Business'
+import usePlans from 'components/hooks/usePlans'
+import useUser from 'components/hooks/useUser'
+import { Business } from 'components/types/Business'
 import {
   FormErrorActivities,
   FormErrors,
@@ -16,11 +16,11 @@ import {
   paymentsType,
   plansType,
   PropsAddPlan
-} from '@/components/types/Plan'
-import { useToast } from '@/components/ui/use-toast'
+} from 'components/types/Plan'
+import { useToast } from 'components/ui/use-toast'
 import noImage from '@public/assets/no-image.png'
-import { Button } from '@/components/ui/button'
-import Loader from '@/components/Loader'
+import { Button } from 'components/ui/button'
+import Loader from 'components/Loader'
 import { CustomCheckbox } from '../CustomCheckbox'
 import AddActivitiesButton from './AddActivitiesButton'
 import ErrorText from '../global/ErrorText'

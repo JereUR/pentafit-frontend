@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { Cross1Icon } from '@radix-ui/react-icons'
 import React from 'react'
 
-import { Activity } from '@/components/types/Activity'
-import { FormErrorActivities, PropsAddPlan } from '@/components/types/Plan'
-import { Button } from '@/components/ui/button'
+import { Activity } from 'components/types/Activity'
+import { FormErrorActivities, PropsAddPlan } from 'components/types/Plan'
+import { Button } from 'components/ui/button'
 import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 import ErrorText from '../global/ErrorText'
 

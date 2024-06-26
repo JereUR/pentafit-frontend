@@ -9,7 +9,6 @@ import { Button } from './ui/button'
 import { usePathname } from 'next/navigation'
 import useUser from './hooks/useUser'
 import Loader from './Loader'
-import { signOut } from './actions/authActions'
 
 export default function NavBar() {
   const [isSticky, setIsSticky] = useState(false)
@@ -38,13 +37,26 @@ export default function NavBar() {
   async function handleSignOut() {
     if (token) {
       setLoadingUser(true)
-      const response = await signOut({ token })
+      try {
+        const response = await fetch('/api/signout', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(token)
+        })
 
-      if (response) {
-        userSignOut()
+        const result = await response.json()
+        console.log(result)
+        if (result) {
+          userSignOut()
+        }
+      } catch (error) {
+        console.error('Error during sign out:', error)
+        return false
+      } finally {
+        setLoadingUser(false)
       }
-
-      setLoadingUser(false)
     }
   }
 

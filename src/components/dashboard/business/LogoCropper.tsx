@@ -10,8 +10,8 @@ import ReactCrop, {
 } from 'react-image-crop'
 
 import setCanvasPreview from './setCanvasPreview'
-import { PropsAddBusiness } from '@/components/types/Business'
-import { useToast } from '@/components/ui/use-toast'
+import { PropsAddBusiness } from 'components/types/Business'
+import { useToast } from 'components/ui/use-toast'
 import ErrorText from '../global/ErrorText'
 
 interface Props {

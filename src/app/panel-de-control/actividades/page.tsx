@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 
-import ActivitiesTable from '@/components/dashboard/activities/ActivitiesTable'
-import ActivitiesSkeleton from '@/components/dashboard/activities/ActivitiesSkeleton'
+import ActivitiesTable from 'components/dashboard/activities/ActivitiesTable'
+import ActivitiesSkeleton from 'components/dashboard/activities/ActivitiesSkeleton'
 
 export const metadata: Metadata = {
   title: 'PentaFit - Actividades'

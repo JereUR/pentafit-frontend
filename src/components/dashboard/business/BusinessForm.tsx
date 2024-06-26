@@ -5,17 +5,17 @@ import { useRouter } from 'next/navigation'
 import { ImCross } from 'react-icons/im'
 import { FaCheck } from 'react-icons/fa'
 
-import useUser from '@/components/hooks/useUser'
+import useUser from 'components/hooks/useUser'
 import {
   FormErrors,
   initialErrors,
   PropsAddBusiness
-} from '@/components/types/Business'
+} from 'components/types/Business'
 import MetadataForm from './MetadataForm'
-import { Button } from '@/components/ui/button'
+import { Button } from 'components/ui/button'
 import ContactForm from './ContactForm'
-import { useToast } from '@/components/ui/use-toast'
-import Loader from '@/components/Loader'
+import { useToast } from 'components/ui/use-toast'
+import Loader from 'components/Loader'
 import LogoHandler from './LogoHandler'
 import ErrorText from '../global/ErrorText'
 

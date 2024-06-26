@@ -3,11 +3,11 @@
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import usePlans from '@/components/hooks/usePlans'
-import { initialData, PropsAddPlan } from '@/components/types/Plan'
+import usePlans from 'components/hooks/usePlans'
+import { initialData, PropsAddPlan } from 'components/types/Plan'
 import PlanForm from './PlanForm'
-import useUser from '@/components/hooks/useUser'
-import { Business } from '@/components/types/Business'
+import useUser from 'components/hooks/useUser'
+import { Business } from 'components/types/Business'
 
 export default function EditPlan() {
   const pathname = usePathname()

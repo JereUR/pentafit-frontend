@@ -8,16 +8,16 @@ import { FaEdit, FaTrash } from 'react-icons/fa'
 
 import Search from '../search/Search'
 import Pagination from '../pagination/Pagination'
-import usePlans from '@/components/hooks/usePlans'
-import { Button } from '@/components/ui/button'
-import CustomButton from '@/components/CustomButton'
-import useUser from '@/components/hooks/useUser'
-import { Business } from '@/components/types/Business'
+import usePlans from 'components/hooks/usePlans'
+import { Button } from 'components/ui/button'
+import CustomButton from 'components/CustomButton'
+import useUser from 'components/hooks/useUser'
+import { Business } from 'components/types/Business'
 import noImage from '@public/assets/no-image.png'
-import Loader from '@/components/Loader'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import Loader from 'components/Loader'
+import { Card, CardContent, CardHeader } from 'components/ui/card'
 import SelectColumns from './SelectColumns'
-import { Columns, initialColumns } from '@/components/types/Plan'
+import { Columns, initialColumns } from 'components/types/Plan'
 import SelectedPlansActions from './SelectedPlansActions'
 import ExportData from './ExportData'
 import SelectItemsPerPage from '../SelectItemsPerPage'
@@ -314,7 +314,7 @@ export default function PlansTable() {
                         router.push(`/panel-de-control/planes/${plan.id}`)
                       }
                     >
-                      {plan.description?plan.description:'-'}
+                      {plan.description ? plan.description : '-'}
                     </td>
                   )}
                   {selectedColumns.price && (

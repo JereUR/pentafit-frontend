@@ -7,7 +7,7 @@ import { Pencil1Icon } from '@radix-ui/react-icons'
 import noImage from '@public/assets/no-image.png'
 import Modal from '../../Modal'
 import LogoCropper from './LogoCropper'
-import { PropsAddBusiness } from '@/components/types/Business'
+import { PropsAddBusiness } from 'components/types/Business'
 
 interface LogoProps {
   imageUrl: string | null

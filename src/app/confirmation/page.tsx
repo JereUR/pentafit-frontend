@@ -3,8 +3,8 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
-import { Button } from '@/components/ui/button'
-import { useToast } from '@/components/ui/use-toast'
+import { Button } from 'components/ui/button'
+import { useToast } from 'components/ui/use-toast'
 
 export default function ConfirmationPage() {
   const router = useRouter()

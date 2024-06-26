@@ -6,20 +6,20 @@ import { FaCheck } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import useActivities from '@/components/hooks/useActivities'
-import { Button } from '@/components/ui/button'
+import useActivities from 'components/hooks/useActivities'
+import { Button } from 'components/ui/button'
 import {
   activitiesType,
   FormErrors,
   initialErrors,
   paymentsType,
   PropsAddActivity
-} from '@/components/types/Activity'
-import Loader from '@/components/Loader'
-import useUser from '@/components/hooks/useUser'
+} from 'components/types/Activity'
+import Loader from 'components/Loader'
+import useUser from 'components/hooks/useUser'
 import noImage from '@public/assets/no-image.png'
-import { useToast } from '@/components/ui/use-toast'
-import { Business } from '@/components/types/Business'
+import { useToast } from 'components/ui/use-toast'
+import { Business } from 'components/types/Business'
 import { CustomCheckbox } from '../CustomCheckbox'
 import ErrorText from '../global/ErrorText'
 

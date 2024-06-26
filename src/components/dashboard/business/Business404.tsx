@@ -4,9 +4,9 @@ import Image from 'next/image'
 import { TfiReload } from 'react-icons/tfi'
 import { useState } from 'react'
 
-import { Button } from '@/components/ui/button'
+import { Button } from 'components/ui/button'
 import errorImage from '@public/assets/404-image.png'
-import Loader from '@/components/Loader'
+import Loader from 'components/Loader'
 
 export default function Business404({ id }: { id: string }) {
   const [loading, setLoading] = useState(false)

@@ -5,12 +5,12 @@ import { FaTrash } from 'react-icons/fa'
 import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 import Image from 'next/image'
 
-import { Button } from '@/components/ui/button'
-import useUser from '@/components/hooks/useUser'
-import { Business } from '@/components/types/Business'
+import { Button } from 'components/ui/button'
+import useUser from 'components/hooks/useUser'
+import { Business } from 'components/types/Business'
 import noImage from '@public/assets/no-image.png'
-import usePlans from '@/components/hooks/usePlans'
-import Loader from '@/components/Loader'
+import usePlans from 'components/hooks/usePlans'
+import Loader from 'components/Loader'
 
 interface Props {
   selectedPlans: number[]

@@ -3,11 +3,11 @@
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import useDiaries from '@/components/hooks/useDiaries'
-import { initialData, PropsAddDiary } from '@/components/types/Diary'
+import useDiaries from 'components/hooks/useDiaries'
+import { initialData, PropsAddDiary } from 'components/types/Diary'
 import DiaryForm from './DiaryForm'
-import useUser from '@/components/hooks/useUser'
-import { Business } from '@/components/types/Business'
+import useUser from 'components/hooks/useUser'
+import { Business } from 'components/types/Business'
 
 export default function EditDiary() {
   const pathname = usePathname()

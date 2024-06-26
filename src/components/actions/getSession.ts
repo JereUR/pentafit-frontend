@@ -17,11 +17,11 @@ export default async function getSession(
   const sessionToken = cookies().get('session')?.value
   let session: Session | null = null
 
-  if (!sessionToken) {
+  /* if (!sessionToken) {
     return null
-  }
+  } */
 
-  /*  session = {
+  session = {
     user: {
       id: 4,
       email: 'jeremias.jdv@gmail.com',
@@ -35,9 +35,9 @@ export default async function getSession(
     }
   }
 
-  return session */
+  return session
 
-  const CACHE_EXPIRATION_TIME = 5 * 60 * 1000
+  /* const CACHE_EXPIRATION_TIME = 5 * 60 * 1000
   const currentTime = Date.now()
 
   if (
@@ -57,7 +57,6 @@ export default async function getSession(
       credentials: 'include',
       headers: headers
     })
-    console.log({ response })
     const data = await response.json()
     const session = data || null
 
@@ -72,5 +71,5 @@ export default async function getSession(
   } catch (error) {
     console.error('Error validating session:', error)
     return null
-  }
+  } */
 }

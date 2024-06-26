@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
+import { Button } from 'components/ui/button'
 import { useState } from 'react'
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons'
 import { useRouter, useSearchParams } from 'next/navigation'

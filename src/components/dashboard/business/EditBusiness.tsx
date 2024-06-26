@@ -3,9 +3,9 @@
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import { PropsAddBusiness } from '@/components/types/Business'
+import { PropsAddBusiness } from 'components/types/Business'
 import BusinessForm from './BusinessForm'
-import useUser from '@/components/hooks/useUser'
+import useUser from 'components/hooks/useUser'
 import Business404 from './Business404'
 
 export default function EditBusiness() {

@@ -5,8 +5,8 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { MdKeyboardDoubleArrowDown } from 'react-icons/md'
 
-import useUser from '@/components/hooks/useUser'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import useUser from 'components/hooks/useUser'
+import { Card, CardContent, CardHeader } from 'components/ui/card'
 import BusinessSkeleton from './BusinessSkeleton'
 
 export default function BusinessList() {

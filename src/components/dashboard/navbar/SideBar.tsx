@@ -11,7 +11,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import ThemeSwitcher from '@/components/ThemeSwitcher'
+import ThemeSwitcher from 'components/ThemeSwitcher'
 
 const menuItems = [
   {
