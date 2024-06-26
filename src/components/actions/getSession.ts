@@ -3,7 +3,7 @@
 import { NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 import { Session } from '../types/User'
-import { setCookies } from '../context/setCookies'
+import { setCookies } from './setCookies'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
@@ -21,7 +21,7 @@ export default async function getSession(
     return null
   }
 
-  /* session = {
+  /*  session = {
     user: {
       id: 4,
       email: 'jeremias.jdv@gmail.com',
@@ -57,6 +57,7 @@ export default async function getSession(
       credentials: 'include',
       headers: headers
     })
+    console.log({ response })
     const data = await response.json()
     const session = data || null
 
