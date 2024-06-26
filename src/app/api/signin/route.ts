@@ -6,6 +6,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
 export async function POST(request: Request) {
   const dataLogin = await request.json()
+  console.log(dataLogin)
   try {
     const response = await axios.post(
       `${BASE_URL}login`,
