@@ -352,7 +352,7 @@ export default function DiaryForm({
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
               <label htmlFor="time_from" className="font-[600]">
-                Horario Inicial
+                Horario Desde
               </label>
               {formErrors.time_from && (
                 <ErrorText text={formErrors.time_from} />
@@ -370,7 +370,7 @@ export default function DiaryForm({
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
               <label htmlFor="time_until" className="font-[600]">
-                Horario Final
+                Horario Hasta
               </label>
               {formErrors.time_until && (
                 <ErrorText text={formErrors.time_until} />
