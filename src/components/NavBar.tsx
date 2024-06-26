@@ -8,11 +8,13 @@ import ThemeSwitcher from './ThemeSwitcher'
 import { Button } from './ui/button'
 import { usePathname } from 'next/navigation'
 import useUser from './hooks/useUser'
+import Loader from './Loader'
+import { signOut } from './actions/authActions'
 
 export default function NavBar() {
   const [isSticky, setIsSticky] = useState(false)
   const pathname = usePathname()
-  const { user, signOut } = useUser()
+  const { user, userSignOut, token, loadingUser, setLoadingUser } = useUser()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,6 +34,19 @@ export default function NavBar() {
       localStorage.removeItem('isLoggedOut')
     }
   }, [pathname, user])
+
+  async function handleSignOut() {
+    if (token) {
+      setLoadingUser(true)
+      const response = await signOut({ token })
+
+      if (response) {
+        userSignOut()
+      }
+
+      setLoadingUser(false)
+    }
+  }
 
   if (user) {
     return (
@@ -54,9 +69,13 @@ export default function NavBar() {
               </Button>
               <Button
                 className="bg-primary-orange-600 hover:bg-primary-orange-700"
-                onClick={signOut}
+                onClick={handleSignOut}
               >
-                Cerrar Sesión
+                {!loadingUser ? (
+                  'Cerrar Sesión'
+                ) : (
+                  <Loader className="mt-[1.8vh]" />
+                )}
               </Button>
             </div>
           ) : (
@@ -66,9 +85,13 @@ export default function NavBar() {
               </Button>
               <Button
                 className="bg-primary-orange-600 hover:bg-primary-orange-700"
-                onClick={signOut}
+                onClick={handleSignOut}
               >
-                Cerrar Sesión
+                {!loadingUser ? (
+                  'Cerrar Sesión'
+                ) : (
+                  <Loader className="mt-[1.8vh]" />
+                )}
               </Button>
             </div>
           )}

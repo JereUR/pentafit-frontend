@@ -18,6 +18,8 @@ import {
 /* import profilePhoto from '../../../../public/assets/profile-photo.png' */
 import profilePhoto from '../../../../public/assets/noavatar.png'
 import useUser from '@/components/hooks/useUser'
+import { signOut } from '@/components/actions/authActions'
+import Loader from '@/components/Loader'
 
 interface DropdownProp {
   title: string
@@ -39,7 +41,19 @@ const dropdownMenuItems = [
 ]
 
 export default function ProfileDropdownMenu() {
-  const { signOut, user } = useUser()
+  const { userSignOut, user, token, setLoadingUser, loadingUser } = useUser()
+
+  async function handleSignOut() {
+    if (token) {
+      setLoadingUser(true)
+      const response = await signOut({ token })
+
+      if (response) {
+        userSignOut()
+      }
+      setLoadingUser(false)
+    }
+  }
 
   return (
     <div className="flex items-center justify-end">
@@ -86,9 +100,13 @@ export default function ProfileDropdownMenu() {
             </DropdownMenuItem>
           ))}
           <DropdownMenuItem className="p-1 px-4 my-1 cursor-pointer rounded-r-full ml-[-10px] transition flex items-start gap-2 hover:bg-primary-orange-500">
-            <span className="flex items-center gap-2 " onClick={signOut}>
+            <span className="flex items-center gap-2 " onClick={handleSignOut}>
               <MdLogout />
-              Cerrar Sesión
+              {!loadingUser ? (
+                'Cerrar Sesión'
+              ) : (
+                <Loader className="mt-[1.8vh]" />
+              )}
             </span>
           </DropdownMenuItem>
         </DropdownMenuContent>

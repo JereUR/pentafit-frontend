@@ -10,6 +10,7 @@ import ForgotPasswordModal from './ForgotPasswordModal'
 import { PropsLogin } from '../types/User'
 import Loader from '../Loader'
 import ErrorText from '../dashboard/global/ErrorText'
+import { signIn } from '../actions/authActions'
 
 interface FormErrors {
   email?: string
@@ -30,7 +31,7 @@ export default function LoginForm() {
     email: '',
     password: ''
   })
-  const { signIn, loadingUser } = useUser()
+  const { loadingUser, setLoadingUser, userSignIn } = useUser()
 
   const handleOpenModal = () => {
     setShowModal(true) // Open the modal on click
@@ -69,7 +70,18 @@ export default function LoginForm() {
     setLoginErrors(err)
 
     if (Object.keys(err).length === 0) {
-      await signIn({ dataLogin })
+      setLoadingUser(true)
+
+      const { authToken, data, error } = await signIn({ dataLogin })
+
+      userSignIn({
+        authToken,
+        user: data.user,
+        business: data.user.business,
+        error
+      })
+
+      setLoadingUser(false)
       setLoginErrors({
         email: '',
         password: ''
