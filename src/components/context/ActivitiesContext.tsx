@@ -72,7 +72,7 @@ export const initialActivities = [
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
     payment_type: 'Mensual',
-    activity_type: 'Individual',
+    activity_type: 'Individual'
   },
   {
     id: 2,
@@ -88,7 +88,7 @@ export const initialActivities = [
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
     payment_type: 'Mensual',
-    activity_type: 'Individual',
+    activity_type: 'Individual'
   },
   {
     id: 3,
@@ -104,7 +104,7 @@ export const initialActivities = [
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
     payment_type: 'Por período',
-    activity_type: 'Grupal',
+    activity_type: 'Grupal'
   },
   {
     id: 4,
@@ -119,7 +119,7 @@ export const initialActivities = [
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
     payment_type: 'Por sesion',
-    activity_type: 'Grupal',
+    activity_type: 'Grupal'
   },
   {
     id: 5,
@@ -135,7 +135,7 @@ export const initialActivities = [
     start_date: '2024, 4, 20',
     end_date: '2024, 5, 20',
     payment_type: 'Mensual con sesiones',
-    activity_type: 'Individual',
+    activity_type: 'Individual'
   }
 ]
 
