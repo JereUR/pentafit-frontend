@@ -10,6 +10,7 @@ import ForgotPasswordModal from './ForgotPasswordModal'
 import { PropsLogin } from '../types/User'
 import Loader from '../Loader'
 import ErrorText from '../dashboard/global/ErrorText'
+import { useToast } from '../ui/use-toast'
 
 interface FormErrors {
   email?: string
@@ -31,6 +32,7 @@ export default function LoginForm() {
     password: ''
   })
   const { loadingUser, setLoadingUser, userSignIn } = useUser()
+  const { toast } = useToast()
 
   const handleOpenModal = () => {
     setShowModal(true) // Open the modal on click
@@ -89,23 +91,22 @@ export default function LoginForm() {
             business: result.data.user.business,
             error: null
           })
+          setDataLogin(initialData)
           setLoginErrors({
             email: '',
             password: ''
           })
-        } else {
-          setLoginErrors({ ...loginErrors, general: result.error })
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error:', error)
-        setLoginErrors({ ...loginErrors, general: 'Error en la solicitud' })
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error
+        })
       } finally {
         setLoadingUser(false)
       }
-      setLoginErrors({
-        email: '',
-        password: ''
-      })
     }
   }
 

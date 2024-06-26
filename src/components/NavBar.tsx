@@ -9,11 +9,13 @@ import { Button } from './ui/button'
 import { usePathname } from 'next/navigation'
 import useUser from './hooks/useUser'
 import Loader from './Loader'
+import { useToast } from './ui/use-toast'
 
 export default function NavBar() {
   const [isSticky, setIsSticky] = useState(false)
   const pathname = usePathname()
   const { user, userSignOut, token, loadingUser, setLoadingUser } = useUser()
+  const { toast } = useToast()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,8 +53,13 @@ export default function NavBar() {
         if (result) {
           userSignOut()
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error during sign out:', error)
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error
+        })
         return false
       } finally {
         setLoadingUser(false)

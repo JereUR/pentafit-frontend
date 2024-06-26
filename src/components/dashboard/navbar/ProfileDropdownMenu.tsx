@@ -19,6 +19,7 @@ import {
 import profilePhoto from '../../../../public/assets/noavatar.png'
 import useUser from 'components/hooks/useUser'
 import Loader from 'components/Loader'
+import { useToast } from '@/components/ui/use-toast'
 
 interface DropdownProp {
   title: string
@@ -41,6 +42,7 @@ const dropdownMenuItems = [
 
 export default function ProfileDropdownMenu() {
   const { userSignOut, user, token, setLoadingUser, loadingUser } = useUser()
+  const { toast } = useToast()
 
   async function handleSignOut() {
     if (token) {
@@ -59,8 +61,13 @@ export default function ProfileDropdownMenu() {
         if (result) {
           userSignOut()
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error during sign out:', error)
+        toast({
+          variant: 'destructive',
+          title: 'Oh no! Algo salió mal.',
+          description: error
+        })
         return false
       } finally {
         setLoadingUser(false)
