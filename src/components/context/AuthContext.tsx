@@ -12,9 +12,7 @@ import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 
-import { PropsLogin, PropsRegister, User } from '../types/User'
-import { setCookies } from './setCookies'
-import { removeCookies } from './removeCookies'
+import { PropsRegister, User } from '../types/User'
 import { useToast } from '../ui/use-toast'
 import { Business, PropsAddBusiness } from '../types/Business'
 
@@ -24,10 +22,21 @@ type AuthContextType = {
   token: string | null
   recoverState: boolean
   loadingUser: boolean
+  setLoadingUser: Dispatch<SetStateAction<boolean>>
   loadingBusiness: boolean
   setRecoverState: Dispatch<SetStateAction<boolean>>
-  signIn: ({ dataLogin }: { dataLogin: PropsLogin }) => Promise<void>
-  signOut: () => Promise<void>
+  userSignIn: ({
+    authToken,
+    user,
+    business,
+    error
+  }: {
+    authToken: string | null
+    user: User
+    business: Business[]
+    error: string
+  }) => void
+  userSignOut: () => void
   signUp: ({ dataRegister }: { dataRegister: PropsRegister }) => Promise<void>
   recover: ({ email }: { email: string }) => Promise<void>
   getBusinesses: () => Promise<void>
@@ -106,95 +115,50 @@ export default function AuthContextProvider({
     }
   }, [])
 
-  async function signIn({ dataLogin }: { dataLogin: PropsLogin }) {
-    setLoadingUser(true)
-    try {
-      const response = await axios.post(
-        `${BASE_URL}login`,
-        {
-          user: {
-            email: dataLogin.email,
-            password: dataLogin.password
-          }
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      )
-
-      if (response.status === 200 || response.status === 204) {
-        const authToken = response.headers.authorization
-        setCookies(authToken)
-        localStorage.setItem('token', authToken)
-        localStorage.setItem('user', JSON.stringify(response.data.user))
-
-        setToken(authToken)
-        setUser(response.data.user)
-        setBusinesses(response.data.user.business)
-        setTimeout(() => {
-          router.push('/panel-de-control')
-        }, 100)
-      } else {
-        toast({
-          title: 'Oh no! Algo salió mal.',
-          description: response.statusText
-        })
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 401) {
-        toast({
-          title: 'Oh no! Algo salió mal.',
-          description: 'Credenciales incorrectas.'
-        })
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Oh no! Algo salió mal.',
-          description: error.message
-        })
-      }
-    } finally {
-      setLoadingUser(false)
-    }
-  }
-
-  async function signOut() {
-    setLoadingUser(true)
-    try {
-      const response = await axios.delete(`${BASE_URL}logout`, {
-        headers: {
-          Authorization: token
-        }
-      })
-
-      if (response.status === 200 || response.status === 204) {
-        removeCookies()
-        setUser(null)
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
-        if (pathname === '/') {
-          window.location.reload()
-          return
-        }
-        localStorage.setItem('isLoggedOut', 'true')
-        router.push('/')
-      } else {
-        toast({
-          title: 'Oh no! Algo salió mal.',
-          description: response.statusText
-        })
-      }
-    } catch (error: any) {
+  async function userSignIn({
+    authToken,
+    user,
+    business,
+    error
+  }: {
+    authToken: string | null
+    user: User
+    business: Business[]
+    error: string
+  }) {
+    if (error) {
       toast({
         variant: 'destructive',
         title: 'Oh no! Algo salió mal.',
-        description: error.message
+        description: error
       })
-    } finally {
-      setLoadingUser(false)
+      return
     }
+
+    if (authToken) {
+      localStorage.setItem('token', authToken)
+      localStorage.setItem('user', JSON.stringify(user))
+
+      setToken(authToken)
+      setUser(user)
+      setBusinesses(business)
+      setLoadingUser(false)
+      setTimeout(() => {
+        router.push('/')
+      }, 100)
+    }
+  }
+
+  async function userSignOut() {
+    setUser(null)
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    if (pathname === '/') {
+      window.location.reload()
+      return
+    }
+    localStorage.setItem('isLoggedOut', 'true')
+    router.push('/')
   }
 
   async function signUp({
@@ -694,10 +658,11 @@ export default function AuthContextProvider({
         token,
         recoverState,
         loadingUser,
+        setLoadingUser,
         loadingBusiness,
         setRecoverState,
-        signIn,
-        signOut,
+        userSignIn,
+        userSignOut,
         signUp,
         recover,
         getBusinesses,
