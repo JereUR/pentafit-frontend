@@ -16,15 +16,15 @@ export async function DELETE(request: Request) {
 
     if (response.status === 200 || response.status === 204) {
       cookies().delete('session')
-      return NextResponse.json(true)
+      return NextResponse.json({ status: true, error: null })
     } else {
-      return NextResponse.json(false)
+      return NextResponse.json({ status: false, error: response.statusText })
     }
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
-      return NextResponse.json(false)
+      return NextResponse.json({ status: false, error: error.statusText })
     } else {
-      return NextResponse.json(false)
+      return NextResponse.json({ status: false, error: error.message })
     }
   }
 }

@@ -102,7 +102,7 @@ export default function LoginForm() {
         toast({
           variant: 'destructive',
           title: 'Oh no! Algo salió mal.',
-          description: error
+          description: error.message
         })
       } finally {
         setLoadingUser(false)

@@ -58,8 +58,14 @@ export default function ProfileDropdownMenu() {
 
         const result = await response.json()
         console.log(result)
-        if (result) {
+        if (result.status) {
           userSignOut()
+        } else {
+          toast({
+            variant: 'destructive',
+            title: 'Oh no! Algo salió mal.',
+            description: result.error
+          })
         }
       } catch (error: any) {
         console.error('Error during sign out:', error)
