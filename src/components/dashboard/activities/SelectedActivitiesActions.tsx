@@ -8,7 +8,7 @@ import Image from 'next/image'
 import { Button } from 'components/ui/button'
 import useUser from 'components/hooks/useUser'
 import { Business } from 'components/types/Business'
-import noImage from '@public/assets/no-image.png'
+import noImage from '../../../../public/assets/no-image.png'
 import useActivities from 'components/hooks/useActivities'
 import Loader from 'components/Loader'
 

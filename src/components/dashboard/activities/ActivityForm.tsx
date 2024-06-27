@@ -17,7 +17,7 @@ import {
 } from 'components/types/Activity'
 import Loader from 'components/Loader'
 import useUser from 'components/hooks/useUser'
-import noImage from '@public/assets/no-image.png'
+import noImage from '../../../../public/assets/no-image.png'
 import { useToast } from 'components/ui/use-toast'
 import { Business } from 'components/types/Business'
 import { CustomCheckbox } from '../CustomCheckbox'

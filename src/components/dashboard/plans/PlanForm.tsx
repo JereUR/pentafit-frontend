@@ -18,7 +18,7 @@ import {
   PropsAddPlan
 } from 'components/types/Plan'
 import { useToast } from 'components/ui/use-toast'
-import noImage from '@public/assets/no-image.png'
+import noImage from '../../../../public/assets/no-image.png'
 import { Button } from 'components/ui/button'
 import Loader from 'components/Loader'
 import { CustomCheckbox } from '../CustomCheckbox'

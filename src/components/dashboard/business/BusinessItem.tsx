@@ -11,7 +11,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { Business } from 'components/types/Business'
-import noImage from '@public/assets/no-image.png'
+import noImage from '../../../../public/assets/no-image.png'
 import { Button } from 'components/ui/button'
 import useUser from 'components/hooks/useUser'
 

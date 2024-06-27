@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 import ColorPicker from './ColorPicker'
 import { FormErrors, PropsAddBusiness } from 'components/types/Business'
-import noImage from '@public/assets/no-image.png'
+import noImage from '../../../../public/assets/no-image.png'
 import { useToast } from 'components/ui/use-toast'
 import ErrorText from '../global/ErrorText'
 

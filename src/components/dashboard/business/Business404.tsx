@@ -5,7 +5,7 @@ import { TfiReload } from 'react-icons/tfi'
 import { useState } from 'react'
 
 import { Button } from 'components/ui/button'
-import errorImage from '@public/assets/404-image.png'
+import errorImage from '../../../../public/assets/404-image.png'
 import Loader from 'components/Loader'
 
 export default function Business404({ id }: { id: string }) {
