@@ -22,6 +22,9 @@ import { useToast } from 'components/ui/use-toast'
 import { Business } from 'components/types/Business'
 import { CustomCheckbox } from '../CustomCheckbox'
 import ErrorText from '../global/ErrorText'
+import { Activity } from '@/components/types/Activity'
+import useActivities from '@/components/hooks/useActivities'
+import ActivityPicker from './ActivityPicker'
 
 const initialErrors = {
   company_id: '',
@@ -47,11 +50,13 @@ export default function DiaryForm({
   const [showConfirmBack, setShowConfirmBack] = useState<boolean>(false)
   const [dataDiary, setDataDiary] = useState<PropsAddDiary>(diary)
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
+  const [activities, setActivities] = useState<Activity[]>([])
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
   const { toast } = useToast()
   const router = useRouter()
   const { getWorkingBusiness, token, businesses } = useUser()
   const { addDiary, updateDiary, loadingDiary } = useDiaries()
+  const { getAllActivities } = useActivities()
 
   useEffect(() => {
     setDataDiary(diary)
@@ -67,6 +72,19 @@ export default function DiaryForm({
       updateWorkingBusiness()
     }
   }, [token, businesses])
+
+  useEffect(() => {
+    async function updateActivities() {
+      if (workingBusiness) {
+        const res = await getAllActivities(workingBusiness.id)
+        setActivities(res)
+      }
+    }
+
+    if (token && workingBusiness) {
+      updateActivities()
+    }
+  }, [token, workingBusiness])
 
   const handleBack = () => {
     if (showConfirmBack) {
@@ -232,6 +250,8 @@ export default function DiaryForm({
     }
   }
 
+  console.log(dataDiary)
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -284,6 +304,13 @@ export default function DiaryForm({
               </Button>
             </div>
           )}
+        </div>
+        <div className='flex justify-center mb-10'>
+          <ActivityPicker
+            dataDiary={dataDiary}
+            setDataDiary={setDataDiary}
+            activities={activities}
+          />
         </div>
         <div className="grid grid-cols-2 xl:grid-cols-3 gap-8 mb-12">
           <div className="flex flex-col gap-2">
