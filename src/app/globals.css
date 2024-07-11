@@ -330,3 +330,36 @@ input[type='number'] {
     transform: translateY(0);
   }
 }
+
+/* Scroll bar styles */
+
+/* Ocultar scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Scrollbar delgada */
+.scrollbar-thin::-webkit-scrollbar {
+  height: 10px;
+  width: 10px; /* También se puede definir el ancho de la barra */
+}
+
+/* Contenedor de la scrollbar (track) */
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #c2c2c2;
+  border-radius: 10px; /* Agregar border-radius al contenedor */
+}
+
+/* Barra de desplazamiento (thumb) */
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #ec6409;
+  border-radius: 10px; /* Agregar border-radius al thumb */
+  opacity: 0.8;
+}
+
+/* Hover en la barra de desplazamiento (thumb) */
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #ec6409;
+  opacity: 0.8;
+  cursor: grab;
+}
