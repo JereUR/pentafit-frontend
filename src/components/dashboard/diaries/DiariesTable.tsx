@@ -232,7 +232,7 @@ export default function DiariesTable() {
         </div>
       </div>
 
-      {workingBusiness && loadingDiary && diaries ? (
+      {/* {workingBusiness && loadingDiary && diaries ? (
         <TableSkeleton />
       ) : (
         <table className="transactions-table w-full mb-4 mt-8">
@@ -573,7 +573,7 @@ export default function DiariesTable() {
             </tbody>
           )}
         </table>
-      )}
+      )} */}
       <Pagination count={count} ITEMS_PER_PAGE={selectedItemsPerPage} />
     </div>
   )
