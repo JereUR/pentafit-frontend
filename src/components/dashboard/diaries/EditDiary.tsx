@@ -38,16 +38,20 @@ export default function EditDiary() {
         })
         if (d) {
           setDiary({
+            ...diary,
             id: d.id ? d.id : null,
             activity: d.activity ? d.activity : initialData.activity,
+            name: d.name ? d.name : '',
             type_schedule: d.type_schedule ? d.type_schedule : '',
             date_from: new Date(d.date_from),
             date_until: new Date(d.date_until),
-            time_from: d.time_from ? d.time_from : '',
-            time_until: d.time_until ? d.time_until : '',
             days_available: d.days_available
               ? d.days_available
-              : Array(7).fill(false),
+              : Array(7).fill({
+                  active: false,
+                  time_start: '',
+                  time_end: ''
+                }),
             repeat_for: d.repeat_for ? d.repeat_for : 0,
             offer_days: d.offer_days ? d.offer_days : Array(7).fill(false),
             term_duration: d.term_duration ? d.term_duration : 0,
