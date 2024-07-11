@@ -1,13 +1,19 @@
+export interface DaysAvailable {
+  active: boolean
+  time_start: string
+  time_end: string
+  [key: string]: boolean | string
+}
+
 export type Diary = {
   id: number
   company_id: number
   activity: { id: number; name: string }
+  name: string
   type_schedule: string
   date_from: string
   date_until: string
-  time_from: string
-  time_until: string
-  days_available: boolean[]
+  days_available: DaysAvailable[]
   repeat_for?: number
   offer_days?: boolean[]
   term_duration: number
@@ -25,12 +31,13 @@ export const genreTypes = ['No', 'Masculino', 'Femenino']
 export interface PropsAddDiary {
   id?: number | null
   activity: { id: number; name: string }
+  name: string
   type_schedule: string
   date_from: Date
   date_until: Date
   time_from: string
   time_until: string
-  days_available: boolean[]
+  days_available: DaysAvailable[]
   repeat_for: number
   offer_days: boolean[]
   term_duration: number
@@ -47,17 +54,23 @@ export interface PropsAddDiary {
     | number
     | null
     | boolean[]
+    | DaysAvailable[]
     | { id: number; name: string }
 }
 
 export const initialData: PropsAddDiary = {
   activity: { id: 0, name: '' },
+  name: '',
   type_schedule: '',
   date_from: new Date(),
   date_until: new Date(),
   time_from: '',
   time_until: '',
-  days_available: Array(7).fill(false),
+  days_available: Array(7).fill({
+    active: false,
+    time_start: '',
+    time_end: ''
+  }),
   repeat_for: 0,
   offer_days: Array(7).fill(false),
   term_duration: 0,
@@ -74,8 +87,6 @@ export interface Columns {
   type_schedule: boolean
   date_from: boolean
   date_until: boolean
-  time_from: boolean
-  time_until: boolean
   days_available: boolean
   repeat_for?: boolean
   offer_days?: boolean
@@ -93,8 +104,6 @@ export const initialColumns: Columns = {
   type_schedule: true,
   date_from: true,
   date_until: true,
-  time_from: true,
-  time_until: true,
   days_available: true,
   repeat_for: true,
   offer_days: true,
@@ -127,12 +136,13 @@ export interface ExcelData {
 
 export interface FormErrors {
   activity?: string
+  name?: string
   type_schedule?: string
   date_from?: string
   date_until?: string
-  time_from?: string
-  time_until?: string
   days_available?: string
+  time_start?: string
+  time_end?: string
   repeat_for?: string
   offer_days?: string
   term_duration?: string
@@ -146,12 +156,13 @@ export interface FormErrors {
 
 export const initialErrors: FormErrors = {
   activity: '',
+  name: '',
   type_schedule: '',
   date_from: '',
   date_until: '',
-  time_from: '',
-  time_until: '',
   days_available: '',
+  time_start: '',
+  time_end: '',
   repeat_for: '',
   offer_days: '',
   term_duration: '',
@@ -173,3 +184,43 @@ export const daysOfWeek = [
 ]
 
 export const daysOfWeekCut = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+
+export const hoursOfDays = [
+  '06:00',
+  '06:30',
+  '07:00',
+  '07:30',
+  '08:00',
+  '08:30',
+  '09:00',
+  '09:30',
+  '10:00',
+  '10:30',
+  '11:00',
+  '11:30',
+  '12:00',
+  '12:30',
+  '13:00',
+  '13:30',
+  '14:00',
+  '14:30',
+  '15:00',
+  '15:30',
+  '16:00',
+  '16:30',
+  '17:00',
+  '17:30',
+  '18:00',
+  '18:30',
+  '19:00',
+  '19:30',
+  '20:00',
+  '20:30',
+  '21:00',
+  '21:30',
+  '22:00',
+  '22:30',
+  '23:00',
+  '23:30',
+  '00:00'
+]

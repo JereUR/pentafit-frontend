@@ -6,6 +6,7 @@ import axios from 'axios'
 import { useToast } from '../ui/use-toast'
 import useUser from '../hooks/useUser'
 import { Diary, PropsAddDiary } from '../types/Diary'
+import { initialDiaries } from '../db/DiaryData'
 
 type DiariesContextType = {
   diaries: Diary[] | []
@@ -55,104 +56,6 @@ type DiariesContextType = {
 }
 
 export const DiariesContext = createContext<DiariesContextType | null>(null)
-
-export const initialDiaries: Diary[] = [
-  {
-    id: 1,
-    company_id: 1,
-    activity: { id: 1, name: 'Actividad 1' },
-    type_schedule: 'Por turnos',
-    date_from: '01-06-2024',
-    date_until: '01-07-2024',
-    time_from: '08:00',
-    time_until: '21:00',
-    days_available: [false, true, true, true, true, true, false],
-    repeat_for: 0,
-    offer_days: [false, true, false, false, false, false, false],
-    term_duration: 30,
-    amount_of_people: 25,
-    is_active: true,
-    genre_exclusive: 'Masculino',
-    works_holidays: false,
-    observations: 'Observation 1'
-  },
-  {
-    id: 3,
-    company_id: 1,
-    activity: { id: 2, name: 'Actividad 2' },
-    type_schedule: 'Libre',
-    date_from: '01-06-2024',
-    date_until: '01-07-2024',
-    time_from: '08:00',
-    time_until: '21:00',
-    days_available: [true, true, true, true, true, true, true],
-    repeat_for: 0,
-    offer_days: [true, true, false, false, false, false, false],
-    term_duration: 30,
-    amount_of_people: 25,
-    is_active: true,
-    genre_exclusive: 'No',
-    works_holidays: true,
-    observations: 'Observation 2'
-  },
-  {
-    id: 3,
-    company_id: 1,
-    activity: { id: 1, name: 'Actividad 1' },
-    type_schedule: 'Por turnos',
-    date_from: '01-06-2024',
-    date_until: '01-07-2024',
-    time_from: '08:00',
-    time_until: '21:00',
-    days_available: [false, true, true, true, true, true, false],
-    repeat_for: 0,
-    offer_days: [false, true, false, false, false, false, false],
-    term_duration: 30,
-    amount_of_people: 25,
-    is_active: true,
-    genre_exclusive: 'Femenino',
-    works_holidays: false,
-    observations: 'Observation 1'
-  },
-  {
-    id: 4,
-    company_id: 1,
-    activity: { id: 4, name: 'Actividad 4' },
-    type_schedule: 'Por turnos',
-    date_from: '01-06-2024',
-    date_until: '01-07-2024',
-    time_from: '08:00',
-    time_until: '21:00',
-    days_available: [false, true, true, true, true, true, false],
-    repeat_for: 0,
-    offer_days: [false, true, false, false, false, false, false],
-    term_duration: 30,
-    amount_of_people: 25,
-    is_active: true,
-    genre_exclusive: 'Masculino',
-    works_holidays: false,
-    observations: 'Observation 1'
-  },
-  {
-    id: 5,
-    company_id: 1,
-    activity: { id: 7, name: 'Actividad 7' },
-    type_schedule: 'Por turnos',
-    date_from: '01-06-2024',
-    date_until: '01-07-2024',
-    time_from: '08:00',
-    time_until: '21:00',
-    days_available: [false, true, true, true, true, true, false],
-    repeat_for: 0,
-    offer_days: [false, true, false, false, false, false, false],
-    term_duration: 30,
-    amount_of_people: 25,
-    is_active: true,
-    genre_exclusive: 'No',
-    works_holidays: false,
-    observations: 'Observation 1'
-  }
-]
 
 export default function DiariesContextProvider({
   children
@@ -308,8 +211,6 @@ export default function DiariesContextProvider({
       type_schedule: dataDiary.type_schedule,
       date_from: dataDiary.date_from,
       date_until: dataDiary.date_until,
-      time_from: dataDiary.time_from,
-      time_until: dataDiary.time_until,
       days_available: dataDiary.days_available,
       repeat_for: dataDiary.repeat_for,
       offer_days: dataDiary.offer_days,
@@ -377,8 +278,6 @@ export default function DiariesContextProvider({
       type_schedule: dataDiary.type_schedule,
       date_from: dataDiary.date_from,
       date_until: dataDiary.date_until,
-      time_from: dataDiary.time_from,
-      time_until: dataDiary.time_until,
       days_available: dataDiary.days_available,
       repeat_for: dataDiary.repeat_for,
       offer_days: dataDiary.offer_days,
