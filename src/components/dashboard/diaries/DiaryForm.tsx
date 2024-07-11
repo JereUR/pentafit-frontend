@@ -9,11 +9,14 @@ import { useEffect, useState } from 'react'
 import useDiaries from 'components/hooks/useDiaries'
 import { Button } from 'components/ui/button'
 import {
-  FormErrors,
   scheduleTypes,
   PropsAddDiary,
   genreTypes,
-  daysOfWeekCut
+  daysOfWeekCut,
+  DaysAvailable,
+  hoursOfDays,
+  FormErrors,
+  initialErrors
 } from 'components/types/Diary'
 import Loader from 'components/Loader'
 import useUser from 'components/hooks/useUser'
@@ -25,20 +28,9 @@ import ErrorText from '../global/ErrorText'
 import { Activity } from '@/components/types/Activity'
 import useActivities from '@/components/hooks/useActivities'
 import ActivityPicker from './ActivityPicker'
-
-const initialErrors = {
-  company_id: '',
-  Diary: '',
-  price: '',
-  is_public: '',
-  max_sessions: '',
-  start_date: '',
-  end_date: '',
-  payment_type: '',
-  public_name: ''
-}
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
+import WorkingArea from '../WorkingArea'
+import DayTimes from './DayTimes'
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 
 export default function DiaryForm({
   type,
@@ -49,6 +41,7 @@ export default function DiaryForm({
 }) {
   const [showConfirmBack, setShowConfirmBack] = useState<boolean>(false)
   const [dataDiary, setDataDiary] = useState<PropsAddDiary>(diary)
+  const [showTimes, setShowTimes] = useState<boolean>(false)
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [activities, setActivities] = useState<Activity[]>([])
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
@@ -124,18 +117,25 @@ export default function DiaryForm({
       errorsForm.date_until = `Este campo no debe ser vacío.`
     }
 
-    if (!dataDiary.time_from.trim()) {
-      errorsForm.time_from = `Debe completar un rango de horario.`
+    if (!dataDiary.days_available.some((day) => day.active)) {
+      errorsForm.days_available = `Debe seleccionar al menos un día disponible.`
     }
-    if (!dataDiary.time_until.trim()) {
-      errorsForm.time_until = `Debe completar un rango de horario.`
-    }
-    if (
-      dataDiary.time_from &&
-      dataDiary.time_until &&
-      dataDiary.time_from >= dataDiary.time_until
-    ) {
-      errorsForm.time_until = `El horario final debe ser mayor que el inicial.`
+
+    for (const day of dataDiary.days_available) {
+      if (day.active) {
+        if (!day.time_start.trim()) {
+          errorsForm.time_start =
+            'Debe completar el horario de inicio de todos los dias.'
+        }
+        if (!day.time_end.trim()) {
+          errorsForm.time_end =
+            'Debe completar el horario de fin de todos los dia.'
+        }
+        if (day.time_start && day.time_end && day.time_start >= day.time_end) {
+          errorsForm.time_end =
+            'El horario final debe ser mayor que el inicial en todos los dias.'
+        }
+      }
     }
 
     if (dataDiary.term_duration <= 0) {
@@ -147,7 +147,7 @@ export default function DiaryForm({
     }
 
     for (let i = 0; i < dataDiary.days_available.length; i++) {
-      if (dataDiary.offer_days[i] && !dataDiary.days_available[i]) {
+      if (dataDiary.offer_days[i] && !dataDiary.days_available[i].active) {
         errorsForm.offer_days = `No puede haber un día de oferta donde el día no está disponible.`
         break
       }
@@ -165,24 +165,60 @@ export default function DiaryForm({
     }
   }
 
+  const handleSelectChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    idx?: number
+  ) => {
+    const { value, name } = e.target
+
+    if (name === 'time_start' || name === 'time_end') {
+      if (idx !== undefined) {
+        const updatedDays = [...dataDiary.days_available]
+        updatedDays[idx][name] = value
+        setDataDiary({ ...dataDiary, days_available: updatedDays })
+      }
+    } else {
+      setDataDiary({ ...dataDiary, [name]: value })
+      if (name === 'time_from') {
+        const updatedDays = [...dataDiary.days_available]
+        updatedDays.map((day) => {
+          day['time_start'] = value
+        })
+        setDataDiary({ ...dataDiary, days_available: updatedDays })
+      }
+      if (name === 'time_until') {
+        const updatedDays = [...dataDiary.days_available]
+        updatedDays.map((day) => {
+          day['time_end'] = value
+        })
+        setDataDiary({ ...dataDiary, days_available: updatedDays })
+      }
+    }
+  }
+
   const handleChangeDays = (
     e: React.ChangeEvent<HTMLInputElement>,
     dayIndex: number
   ) => {
-    const { name } = e.target
+    const { name, value } = e.target
     if (name === 'days_available') {
       setDataDiary({
         ...dataDiary,
-        [name]: dataDiary.days_available.map((day, index) =>
-          index === dayIndex ? !day : day
+        days_available: dataDiary.days_available.map((day, index) =>
+          index === dayIndex ? { ...day, active: !day.active } : day
         )
       })
-    }
-
-    if (name === 'offer_days') {
+    } else if (name === 'time_start' || name === 'time_end') {
       setDataDiary({
         ...dataDiary,
-        [name]: dataDiary.offer_days.map((day, index) =>
+        days_available: dataDiary.days_available.map((day, index) =>
+          index === dayIndex ? { ...day, [name]: value } : day
+        )
+      })
+    } else if (name === 'offer_days') {
+      setDataDiary({
+        ...dataDiary,
+        offer_days: dataDiary.offer_days.map((day, index) =>
           index === dayIndex ? !day : day
         )
       })
@@ -255,57 +291,11 @@ export default function DiaryForm({
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-8 mb-10 bg-card rounded-lg shadow-md pt-2 pb-6 px-2">
-          <div className="flex gap-4 items-center">
-            <label className="text-xl font-light mt-4 ml-4">
-              Area de Trabajo
-            </label>
-            {formErrors.company_id && (
-              <ErrorText text={formErrors.company_id} />
-            )}
-          </div>
-          {workingBusiness ? (
-            <div className="flex items-center mx-6 mb-2">
-              <div className="flex px-6">
-                <Image
-                  src={
-                    workingBusiness.logo
-                      ? `${BASE_URL}${workingBusiness.logo}`
-                      : noImage
-                  }
-                  alt={`${workingBusiness.name} logo`}
-                  width={80}
-                  height={80}
-                  className="w-[80px] h-[80px] border-[1px] border-primary-orange-600 rounded-full p-1 dark:ring-primary-orange-400"
-                />
-              </div>
-              <div>
-                <h2 className="text-lg font-bold">{workingBusiness.name}</h2>
-                <p className="text-sm">
-                  {workingBusiness.description
-                    ? workingBusiness.description
-                    : 'Sin descripción.'}
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col justify-center items-center gap-2 ">
-              <p className="text-xl font-semibold">
-                Sin area de trabajo asignada
-              </p>
-              <span className="text-sm italic">
-                Debes seleccionar un area de trabajo para realizar tareas
-              </span>
-              <Button
-                className="flex mt-2 items-center font-semibold transition duration-300 ease-in-out bg-primary-orange-700 hover:bg-primary-orange-600"
-                onClick={() => router.push('/panel-de-control/negocios')}
-              >
-                Ir a sección Negocios
-              </Button>
-            </div>
-          )}
-        </div>
-        <div className='flex justify-center mb-10'>
+        <WorkingArea
+          formErrors={formErrors}
+          workingBusiness={workingBusiness}
+        />
+        <div className="flex justify-center mb-10">
           <ActivityPicker
             dataDiary={dataDiary}
             setDataDiary={setDataDiary}
@@ -313,6 +303,21 @@ export default function DiaryForm({
           />
         </div>
         <div className="grid grid-cols-2 xl:grid-cols-3 gap-8 mb-12">
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-4 items-center">
+              <label htmlFor="name" className="font-[600]">
+                Nombre
+              </label>
+              {formErrors.name && <ErrorText text={formErrors.name} />}
+            </div>
+            <input
+              type="text"
+              name="name"
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+              value={dataDiary.name}
+              onChange={handleChange}
+            />
+          </div>
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
               <label htmlFor="type_schedule" className="font-[600]">
@@ -379,37 +384,55 @@ export default function DiaryForm({
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
               <label htmlFor="time_from" className="font-[600]">
-                Horario Desde
+                Horario Desde (global)
               </label>
-              {formErrors.time_from && (
-                <ErrorText text={formErrors.time_from} />
-              )}
             </div>
-            <input
-              type="time"
+            <select
               name="time_from"
-              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataDiary.time_from}
-              onChange={handleChange}
-            />
+              onChange={(e) => handleSelectChange(e)}
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+            >
+              <option value="" selected={dataDiary.time_from === ''}>
+                Seleccione un horario de inicio
+              </option>
+              {hoursOfDays.map((time, timeIdx) => (
+                <option
+                  key={timeIdx}
+                  value={time}
+                  selected={dataDiary.time_from === time}
+                >
+                  {time}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
               <label htmlFor="time_until" className="font-[600]">
-                Horario Hasta
+                Horario Hasta (global)
               </label>
-              {formErrors.time_until && (
-                <ErrorText text={formErrors.time_until} />
-              )}
             </div>
-            <input
-              type="time"
+            <select
               name="time_until"
-              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-2 focus:border-primary-orange-500 focus:outline-none focus:ring-0"
               value={dataDiary.time_until}
-              onChange={handleChange}
-            />
+              onChange={(e) => handleSelectChange(e)}
+              className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
+            >
+              <option value="" selected={dataDiary.time_until === ''}>
+                Seleccione un horario de inicio
+              </option>
+              {hoursOfDays.map((time, timeIdx) => (
+                <option
+                  key={timeIdx}
+                  value={time}
+                  selected={dataDiary.time_until === time}
+                >
+                  {time}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
@@ -492,31 +515,59 @@ export default function DiaryForm({
             </select>
           </div>
         </div>
+
         <div>
           <div className="flex gap-16 mb-6">
             <div className="flex-1 flex flex-col gap-2 p-6 bg-card justify-center items-center rounded-lg border">
-              <label className="text-lg font-[600] text-center mb-4">
-                Días Disponibles
-              </label>
-              <div className="flex flex-wrap justify-center gap-4">
-                {daysOfWeekCut.map((day, index) => (
-                  <div key={index} className="flex flex-col items-center">
-                    <input
-                      type="checkbox"
-                      name="days_available"
-                      id={`days_available_${index}`}
-                      className="mb-1 cursor-pointer"
-                      checked={dataDiary.days_available[index]}
-                      onChange={(e) => handleChangeDays(e, index)}
-                    />
-                    <label
-                      htmlFor={`days_available_${index}`}
-                      className="cursor-pointer"
-                    >
-                      {day}
-                    </label>
+              <div className="flex flex-col gap-4 items-center">
+                {formErrors.offer_days && (
+                  <ErrorText text={formErrors.offer_days} />
+                )}
+                <label className="text-lg font-[600] text-center mb-4">
+                  Días disponibles
+                </label>
+              </div>
+              <div className="flex flex-col flex-wrap items-center mx-6 mb-2">
+                <div className="flex flex-col items-center">
+                  <div className="flex gap-2">
+                    {daysOfWeekCut.map((day, idx) => (
+                      <div key={idx} className="flex flex-col items-center">
+                        <input
+                          type="checkbox"
+                          name="days_available"
+                          id={`days_available_${idx}`}
+                          className="mb-1 cursor-pointer"
+                          checked={dataDiary.days_available[idx].active}
+                          onChange={(e) => handleChangeDays(e, idx)}
+                        />
+                        <label>{day}</label>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                  <div className="relative mt-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowTimes(!showTimes)}
+                      className="cursor-pointer text-gray-500"
+                    >
+                      {showTimes&&dataDiary.days_available.some((day) => day.active) ? (
+                        <IoIosArrowUp className="h-5 w-5" />
+                      ) : (
+                        <IoIosArrowDown className="h-5 w-5" />
+                      )}
+                    </button>
+                    {showTimes &&
+                      dataDiary.days_available.some((day) => day.active) && (
+                        <div className="flex justify-center">
+                          <DayTimes
+                            dataDiary={dataDiary}
+                            formErrors={formErrors}
+                            handleSelectChange={handleSelectChange}
+                          />
+                        </div>
+                      )}
+                  </div>
+                </div>
               </div>
             </div>
             <div className="flex-1 flex flex-col gap-2 p-6 bg-card justify-center items-center rounded-lg border">
