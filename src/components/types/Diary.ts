@@ -24,6 +24,18 @@ export type Diary = {
   observations?: string
 }
 
+export type DiaryGroup = GroupedData[]
+
+export type GroupedData = {
+  id: number
+  company_id: number
+  name: string
+  activity: { id: number; name: string }
+  is_active: boolean
+  time_start: string
+  time_end: string
+}
+
 export const scheduleTypes = ['Por turnos', 'Libre']
 
 export const genreTypes = ['No', 'Masculino', 'Femenino']
