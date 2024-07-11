@@ -3,7 +3,7 @@ interface Props {
   value: string
   action: (name: string) => void
   name: string
-  className?:string
+  className?: string
 }
 
 export const CustomCheckbox: React.FC<Props> = ({
@@ -14,7 +14,9 @@ export const CustomCheckbox: React.FC<Props> = ({
   className
 }) => {
   return (
-    <div className={`flex gap-4 m-auto justify-center items-center ${className}`}>
+    <div
+      className={`flex gap-4 m-auto justify-center items-center ${className}`}
+    >
       <label htmlFor={name} className="font-[600]">
         {label}
       </label>
