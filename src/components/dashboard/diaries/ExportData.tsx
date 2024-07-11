@@ -71,8 +71,6 @@ const ExportData: React.FC<Props> = ({ business }) => {
           Actividad: diary.activity.name,
           Fecha_inicio: diary.date_from,
           Fecha_fin: diary.date_until,
-          Horario_desde: diary.time_from,
-          Horario_hasta: diary.time_until,
           Dias_habilitados: daysAvailable.toString(),
           Repetir_por: diary.repeat_for,
           Días_de_ofertas: daysOffer.toString(),
