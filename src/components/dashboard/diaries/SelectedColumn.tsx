@@ -124,32 +124,6 @@ const SelectColumns: React.FC<Props> = ({
               <input
                 type="checkbox"
                 className="mr-2 cursor-pointer"
-                checked={selectedColumns.time_from}
-                onChange={() =>
-                  handleChange('time_from', !selectedColumns.time_from)
-                }
-              />
-              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
-                Horario desde
-              </span>
-            </label>
-            <label className="flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                className="mr-2 cursor-pointer"
-                checked={selectedColumns.time_until}
-                onChange={() =>
-                  handleChange('time_until', !selectedColumns.time_until)
-                }
-              />
-              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
-                Horario hasta
-              </span>
-            </label>
-            <label className="flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                className="mr-2 cursor-pointer"
                 checked={selectedColumns.days_available}
                 onChange={() =>
                   handleChange(
