@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import DiaryItem from './DiaryItem'
 import Link from 'next/link'
+import useDiaries from '@/components/hooks/useDiaries'
 
 interface Props {
   diaries: Diary[]
@@ -31,6 +32,7 @@ const Calendar: React.FC<Props> = ({ diaries, diaryGroup, day }) => {
   const [diaryToShow, setDiaryToShow] = useState<Diary | null>(null)
 
   const router = useRouter()
+  const { deleteDiaryById } = useDiaries()
 
   const closeModal = () => {
     setShowConfirmDelete(false)
@@ -41,9 +43,17 @@ const Calendar: React.FC<Props> = ({ diaries, diaryGroup, day }) => {
     setShowConfirmDelete(true)
   }
 
-  const handleDelete = () => {
-    console.log('Deleting diary:', diaryToDelete?.name)
-    closeModal()
+  const handleDelete = async () => {
+    if (diaryToDelete) {
+      const res = await deleteDiaryById(diaryToDelete.id)
+
+      if (res) {
+        setShowConfirmDelete(false)
+        setDiaryToDelete(null)
+        window.location.reload()
+      }
+      closeModal()
+    }
   }
 
   const handleShowInfo = (diaryId: number) => {
@@ -139,7 +149,7 @@ const Calendar: React.FC<Props> = ({ diaries, diaryGroup, day }) => {
                     className="cursor-pointer text-card dark:text-primary-orange-700 font-semibold text-center sticky left-0 z-10 bg-slate-700 dark:bg-slate-300 md:px-1 py-4 text-xs tracking-wider max-w-[90px] md:max-w-xs whitespace-normal hover:underline"
                     onClick={() => handleShowInfo(diary.id)}
                   >
-                      {diary.activity.name} ({diary.name})
+                    {diary.activity.name} ({diary.name})
                   </td>
                   {hoursOfDays.map((time, timeIndex) => (
                     <td

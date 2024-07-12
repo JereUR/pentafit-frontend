@@ -45,7 +45,7 @@ type DiariesContextType = {
     dataDiary: PropsAddDiary
     company_id: number
   }) => Promise<boolean>
-  deleteDiariesById: (diaries: number[]) => Promise<boolean>
+  deleteDiaryById: (diary: number) => Promise<boolean>
   addDiariesToBusinesses: ({
     diaries,
     businesses
@@ -326,7 +326,7 @@ export default function DiariesContextProvider({
     }
   }
 
-  async function deleteDiariesById(diaries: number[]): Promise<boolean> {
+  async function deleteDiaryById(diary: number): Promise<boolean> {
     setLoadingDiary(true)
     const url = `${BASE_URL}api/v1/Diary`
     try {
@@ -341,9 +341,7 @@ export default function DiariesContextProvider({
 
       if (response.status === 200 || response.status === 204) {
         toast({
-          title: `Actividades con id:'${diaries.map(
-            (diary) => diary
-          )}' eliminado.`,
+          title: `Actividades con id:'${diary}' eliminado.`,
           className: 'bg-green-600'
         })
         return true
@@ -425,7 +423,7 @@ export default function DiariesContextProvider({
         getDiaryById,
         addDiary,
         updateDiary,
-        deleteDiariesById,
+        deleteDiaryById,
         addDiariesToBusinesses
       }}
     >
