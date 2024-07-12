@@ -22,11 +22,13 @@ const DayTimes: React.FC<Props> = ({
   handleSelectChange
 }) => {
   return (
-    <div className="absolute mt-2 bg-card border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg py-4 px-8 w-fit slide-in-up z-50">
+    <div className="absolute mt-2 bg-card border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg py-4 px-8 w-fit slide-in-down-medium z-50">
       <div className="flex flex-col gap-2">
         {formErrors.time_start && <ErrorText text={formErrors.time_start} />}
         {formErrors.time_end && <ErrorText text={formErrors.time_end} />}
-        <label className="font-[600] mb-2">Horarios de inicio y fin por día</label>
+        <label className="font-[600] mb-2">
+          Horarios de inicio y fin por día
+        </label>
         <div className="flex flex-col gap-2">
           {dataDiary.days_available.map((day, idx) => {
             if (day.active)
