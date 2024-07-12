@@ -9,6 +9,7 @@ import {
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import DiaryItem from './DiaryItem'
+import Link from 'next/link'
 
 interface Props {
   diaries: Diary[]
@@ -122,47 +123,57 @@ const Calendar: React.FC<Props> = ({ diaries, diaryGroup, day }) => {
             </tr>
           </thead>
           <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-            {diaryGroup.map((diary, diaryIndex) => (
-              <tr
-                key={diary.id}
-                onClick={() => handleShowInfo(diary.id)}
-                className="cursor-pointer"
-              >
-                <td className="text-card dark:text-primary-orange-700 font-semibold text-center sticky left-0 z-10 bg-slate-700 dark:bg-slate-300 md:px-1 py-4 text-xs tracking-wider max-w-[90px] md:max-w-xs whitespace-normal">
-                  {diary.activity.name} ({diary.name})
-                </td>
-                {hoursOfDays.map((time, timeIndex) => (
-                  <td
-                    key={time}
-                    className={`${cellClasses[diaryIndex][timeIndex]} md:px-1 py-4 whitespace-nowrap`}
-                  ></td>
-                ))}
-                <td className="sticky right-0 z-10 bg-slate-700 dark:bg-slate-300 md:px-1 tracking-wider max-w-[90px] md:max-w-xs whitespace-normal">
-                  <div className="flex justify-center gap-2">
-                    <button
-                      className="bg-transparent text-white py-2 rounded"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        router.push(
-                          `/panel-de-control/agenda/editar/${diary.id}`
-                        )
-                      }}
-                    >
-                      <BiEdit className="h-4 w-4 md:h-5 md:w-5 text-blue-500 dark:text-blue-600 transition duration-300 ease-in-out hover:scale-[1.07] hover:text-blue-800 dark:hover:text-blue-700" />
-                    </button>
-                    <button
-                      className="bg-transparent text-white py-2 rounded"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleClickDelete({ diary })
-                      }}
-                    >
-                      <BiTrash className="h-4 w-4 md:h-5 md:w-5 text-red-500 dark:text-red-600 transition duration-300 ease-in-out hover:scale-[1.07] hover:text-red-800 dark:hover:text-red-700" />
-                    </button>
-                  </div>
+            {diaryGroup.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={hoursOfDays.length + 2}
+                  className="text-center py-4"
+                >
+                  No hay actividades asignadas al día {daysOfWeek[day]}
                 </td>
               </tr>
-            ))}
+            ) : (
+              diaryGroup.map((diary, diaryIndex) => (
+                <tr key={diary.id}>
+                  <td
+                    className="cursor-pointer text-card dark:text-primary-orange-700 font-semibold text-center sticky left-0 z-10 bg-slate-700 dark:bg-slate-300 md:px-1 py-4 text-xs tracking-wider max-w-[90px] md:max-w-xs whitespace-normal hover:underline"
+                    onClick={() => handleShowInfo(diary.id)}
+                  >
+                      {diary.activity.name} ({diary.name})
+                  </td>
+                  {hoursOfDays.map((time, timeIndex) => (
+                    <td
+                      key={time}
+                      className={`${cellClasses[diaryIndex][timeIndex]} md:px-1 py-4 whitespace-nowrap`}
+                    ></td>
+                  ))}
+                  <td className="sticky right-0 z-10 bg-slate-700 dark:bg-slate-300 md:px-1 tracking-wider max-w-[90px] md:max-w-xs whitespace-normal">
+                    <div className="flex justify-center gap-2">
+                      <button
+                        className="bg-transparent text-white py-2 rounded"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          router.push(
+                            `/panel-de-control/agenda/editar/${diary.id}`
+                          )
+                        }}
+                      >
+                        <BiEdit className="h-4 w-4 md:h-5 md:w-5 text-blue-500 dark:text-blue-600 transition duration-300 ease-in-out hover:scale-[1.07] hover:text-blue-800 dark:hover:text-blue-700" />
+                      </button>
+                      <button
+                        className="bg-transparent text-white py-2 rounded"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleClickDelete({ diary })
+                        }}
+                      >
+                        <BiTrash className="h-4 w-4 md:h-5 md:w-5 text-red-500 dark:text-red-600 transition duration-300 ease-in-out hover:scale-[1.07] hover:text-red-800 dark:hover:text-red-700" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
