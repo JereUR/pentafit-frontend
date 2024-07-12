@@ -23,14 +23,11 @@ import SelectDaysToShow from './SelectDaysToShow'
 export default function DiariesTable() {
   const [groupDiaries, setGroupDiaries] = useState<DiaryGroup[]>([])
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
-  const [selectedItemsPerPage, setSelectedItemsPerPage] = useState<number>(5)
-  const [selectedDays, setSelectedDays] =
-    useState<Days>(initialDays)
+  const [selectedDays, setSelectedDays] = useState<Days>(initialDays)
 
   const searchParams = useSearchParams()
-  const { token, getWorkingBusiness, loadingBusiness } = useUser()
-  const { diaries, getDiaries, loadingDiary, deleteDiariesById, count } =
-    useDiaries()
+  const { token, getWorkingBusiness } = useUser()
+  const { diaries, getDiaries, loadingDiary } = useDiaries()
 
   const groupDiaryByDays = (diaries: Diary[]): DiaryGroup[] => {
     const groupedData: DiaryGroup[] = Array.from(
@@ -72,15 +69,12 @@ export default function DiariesTable() {
   useEffect(() => {
     if (token && workingBusiness) {
       const q = searchParams.get('q') || ''
-      const page = searchParams.get('page') || '1'
       getDiaries({
         q,
-        page,
-        business_id: workingBusiness.id,
-        ITEMS_PER_PAGE: selectedItemsPerPage
+        business_id: workingBusiness.id
       })
     }
-  }, [searchParams, token, workingBusiness, selectedItemsPerPage])
+  }, [searchParams, token, workingBusiness])
 
   useEffect(() => {
     if (window != undefined) {
@@ -119,7 +113,11 @@ export default function DiariesTable() {
         <TableSkeleton />
       ) : (
         <div>
-          <DiariesCalendar diaries={diaries} groupDiaries={groupDiaries} selectedDays={selectedDays}/>
+          <DiariesCalendar
+            diaries={diaries}
+            groupDiaries={groupDiaries}
+            selectedDays={selectedDays}
+          />
         </div>
       )}
     </div>
