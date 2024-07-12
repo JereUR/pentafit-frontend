@@ -28,7 +28,7 @@ export const initialDiaries: Diary[] = [
     observations: 'Observation 1'
   },
   {
-    id: 3,
+    id: 2,
     company_id: 1,
     activity: { id: 2, name: 'Actividad 2' },
     name: 'Agenda 2',
@@ -114,7 +114,7 @@ export const initialDiaries: Diary[] = [
     date_from: '01-06-2024',
     date_until: '01-07-2024',
     days_available: [
-      { active: false, time_start: '09:00', time_end: '16:00' },
+      { active: true, time_start: '09:00', time_end: '16:00' },
       { active: true, time_start: '06:00', time_end: '22:00' },
       { active: false, time_start: '06:00', time_end: '22:00' },
       { active: true, time_start: '06:00', time_end: '22:00' },
