@@ -186,16 +186,16 @@ export const initialErrors: FormErrors = {
 }
 
 export const daysOfWeek = [
-  'Domingo',
   'Lunes',
   'Martes',
   'Miércoles',
   'Jueves',
   'Viernes',
-  'Sábado'
+  'Sábado',
+  'Domingo'
 ]
 
-export const daysOfWeekCut = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+export const daysOfWeekCut = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
 
 export const hoursOfDays = [
   '06:00',
