@@ -158,6 +158,7 @@ export default function DiariesContextProvider({
     id: string
     business_id: number
   }): Promise<Diary | null> {
+    return initialDiaries[0]
     setLoadingDiary(true)
     const params = new URLSearchParams()
     params.append('id', id)
