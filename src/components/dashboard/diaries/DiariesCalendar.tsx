@@ -1,18 +1,24 @@
-import { Diary, DiaryGroup } from '@/components/types/Diary'
+import { Diary, DiaryGroup, Days } from '@/components/types/Diary'
 import Calendar from './Calendar'
 
-
 interface Props {
-  diaries:Diary[]
+  diaries: Diary[]
   groupDiaries: DiaryGroup[]
+  selectedDays: Days
 }
 
-const DiariesCalendar:React.FC<Props> = ({diaries, groupDiaries}) => {
+const DiariesCalendar: React.FC<Props> = ({
+  diaries,
+  groupDiaries,
+  selectedDays
+}) => {
   return (
     <div>
       {groupDiaries.map((diaryGroup, index) => (
         <div key={index}>
-          <Calendar diaries={ diaries} diaryGroup={diaryGroup} day={index} />
+          {selectedDays[index] && (
+            <Calendar diaries={diaries} diaryGroup={diaryGroup} day={index} />
+          )}
         </div>
       ))}
     </div>
