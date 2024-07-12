@@ -29,8 +29,7 @@ const SelectedDiariesActions: React.FC<Props> = ({
   const [businessesToAdd, setBusinessesToAdd] = useState<number[]>([])
   const [addIsOpen, setAddIsOpen] = useState<boolean>(false)
   const { businesses, token, getBusinesses } = useUser()
-  const { deleteDiariesById, addDiariesToBusinesses, loadingDiary } =
-    useDiaries()
+  const { deleteDiaryById, addDiariesToBusinesses, loadingDiary } = useDiaries()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
   useEffect(() => {
@@ -84,13 +83,13 @@ const SelectedDiariesActions: React.FC<Props> = ({
   }
 
   const handleDelete = async () => {
-    const res = await deleteDiariesById(selectedDiaries)
+    /* const res = await deleteDiaryById(selectedDiaries) 
 
     if (res) {
       setShowConfirmMultipleDelete(false)
       setSelectedDiaries([])
       window.location.reload()
-    }
+    }*/
   }
 
   const handleAdd = async () => {
