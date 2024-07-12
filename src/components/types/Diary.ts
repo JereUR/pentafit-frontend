@@ -93,38 +93,27 @@ export const initialData: PropsAddDiary = {
   observations: ''
 }
 
-export interface Columns {
-  id: boolean
-  activity: boolean
-  type_schedule: boolean
-  date_from: boolean
-  date_until: boolean
-  days_available: boolean
-  repeat_for?: boolean
-  offer_days?: boolean
-  term_duration: boolean
-  amount_of_people: boolean
-  is_active: boolean
-  genre_exclusive: boolean
-  works_holidays: boolean
-  observations?: boolean
+export interface Days {
+  0: boolean
+  1: boolean
+  2: boolean
+  3: boolean
+  4: boolean
+  5: boolean
+  6: boolean
+  7: boolean
+  [key: number]: boolean
 }
 
-export const initialColumns: Columns = {
-  id: true,
-  activity: true,
-  type_schedule: true,
-  date_from: true,
-  date_until: true,
-  days_available: true,
-  repeat_for: true,
-  offer_days: true,
-  term_duration: true,
-  amount_of_people: true,
-  is_active: true,
-  genre_exclusive: true,
-  works_holidays: true,
-  observations: true
+export const initialDays: Days = {
+  0: true,
+  1: true,
+  2: true,
+  3: true,
+  4: true,
+  5: true,
+  6: true,
+  7: true
 }
 
 export interface ExcelData {
