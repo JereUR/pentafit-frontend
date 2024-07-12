@@ -1,22 +1,33 @@
 import { BiEdit, BiTrash } from 'react-icons/bi'
-
 import {
   daysOfWeek,
+  Diary,
   DiaryGroup,
   GroupedData,
   hoursOfDays
 } from '@/components/types/Diary'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import DiaryItem from './DiaryItem'
 
 interface Props {
+  diaries: Diary[]
   diaryGroup: DiaryGroup
   day: number
 }
 
-const Calendar: React.FC<Props> = ({ diaryGroup, day }) => {
-  const [diaryToDelete, setdiaryToDelete] = useState<GroupedData | null>(null)
+const Calendar: React.FC<Props> = ({ diaries, diaryGroup, day }) => {
+  const [diaryToDelete, setDiaryToDelete] = useState<
+    GroupedData | Diary | null
+  >(null)
   const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
+  const [cellClasses, setCellClasses] = useState<string[][]>(
+    Array(diaryGroup.length).fill(
+      Array(hoursOfDays.length).fill('bg-background')
+    )
+  )
+  const [showInfo, setShowInfo] = useState<boolean>(false)
+  const [diaryToShow, setDiaryToShow] = useState<Diary | null>(null)
 
   const router = useRouter()
 
@@ -24,8 +35,8 @@ const Calendar: React.FC<Props> = ({ diaryGroup, day }) => {
     setShowConfirmDelete(false)
   }
 
-  const handleClickDelete = ({ diary }: { diary: GroupedData }) => {
-    setdiaryToDelete(diary)
+  const handleClickDelete = ({ diary }: { diary: GroupedData | Diary }) => {
+    setDiaryToDelete(diary)
     setShowConfirmDelete(true)
   }
 
@@ -34,8 +45,57 @@ const Calendar: React.FC<Props> = ({ diaryGroup, day }) => {
     closeModal()
   }
 
+  const handleShowInfo = (diaryId: number) => {
+    const diary = diaries.find((d) => d.id === diaryId) || null
+    setDiaryToShow(diary)
+    setShowInfo(true)
+  }
+
+  const handleCloseInfo = () => {
+    setShowInfo(false)
+    setDiaryToShow(null)
+  }
+
+  useEffect(() => {
+    const newCellClasses = Array(diaryGroup.length)
+      .fill(null)
+      .map(() => Array(hoursOfDays.length).fill('bg-background'))
+
+    diaryGroup.forEach((diary, diaryIndex) => {
+      let paintCell = false
+      let lastPaint = false
+
+      hoursOfDays.forEach((time, timeIndex) => {
+        if (lastPaint) paintCell = false
+        if (diary.time_start === time) {
+          paintCell = true
+          lastPaint = false
+        }
+        if (diary.time_end === time) lastPaint = true
+
+        newCellClasses[diaryIndex][timeIndex] = paintCell
+          ? 'bg-green-500 dark:bg-green-600'
+          : 'bg-background'
+      })
+    })
+
+    // Check for empty columns and update the classes
+    hoursOfDays.forEach((time, timeIndex) => {
+      const isColumnEmpty = newCellClasses.every(
+        (row) => row[timeIndex] === 'bg-background'
+      )
+      if (isColumnEmpty) {
+        newCellClasses.forEach((row) => {
+          row[timeIndex] = 'bg-sky-200 dark:bg-sky-400'
+        })
+      }
+    })
+
+    setCellClasses(newCellClasses)
+  }, [diaryGroup])
+
   return (
-    <div className="p-2 md:p-6 my-4 md:my-8 bg-gray-50 dark:bg-slate-800 shadow-lg rounded-lg">
+    <div className="p-2 md:p-6 my-4 md:my-8 bg-gray-50 dark:bg-slate-700 shadow-lg rounded-lg">
       <div className="mb-4">
         <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
           {daysOfWeek[day].toUpperCase()}
@@ -43,74 +103,66 @@ const Calendar: React.FC<Props> = ({ diaryGroup, day }) => {
       </div>
       <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-700">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-100 dark:bg-slate-900">
+          <thead className="bg-slate-700 dark:bg-slate-300 text-card dark:text-primary-orange-700 font-semibold">
             <tr>
-              <th className="sticky left-0 z-10 bg-gray-200 dark:bg-slate-900 py-3 md:px-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider max-w-[90px] md:max-w-xs whitespace-normal">
+              <th className="sticky left-0 z-20 py-3 md:px-2 text-left text-xs uppercase tracking-wider w-[90px] md:max-w-xs whitespace-normal bg-slate-700 dark:bg-slate-300">
                 <span>Agenda \ Horario</span>
               </th>
               {hoursOfDays.map((time) => (
                 <th
                   key={time}
-                  className="md:px-2 py-3 text-left text-xs font-medium bg-gray-200 dark:bg-slate-900 text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  className="md:px-1 py-3 text-left text-xs uppercase tracking-wider"
                 >
                   {time}
                 </th>
               ))}
-              <th className="sticky right-0 z-10 bg-gray-200 dark:bg-slate-900 md:px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider max-w-[90px] md:max-w-xs whitespace-normal">
+              <th className="sticky right-0 z-20 md:px-3 py-3 text-left text-xs uppercase tracking-wider w-[90px] md:max-w-xs whitespace-normal bg-slate-700 dark:bg-slate-300">
                 Acciones
               </th>
             </tr>
           </thead>
           <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-            {diaryGroup.map((diary) => {
-              let paintCell = false
-              let lastPaint = false
-
-              return (
-                <tr key={diary.id}>
-                  <td className="sticky left-0 z-10 bg-gray-200 dark:bg-slate-900  md:px-1 py-4 text-sm font-medium text-gray-900 dark:text-gray-300 tracking-wider max-w-[90px] md:max-w-xs whitespace-normal">
-                    {diary.activity.name} ({diary.name})
-                  </td>
-                  {hoursOfDays.map((time) => {
-                    if (lastPaint) paintCell = false
-                    if (diary.time_start === time) {
-                      paintCell = true
-                      lastPaint = false
-                    }
-                    if (diary.time_end === time) lastPaint = true
-
-                    return (
-                      <td
-                        key={time}
-                        className={`${
-                          paintCell ? 'bg-green-500' : 'bg-background'
-                        }  md:px-1 py-4 whitespace-nowrap`}
-                      ></td>
-                    )
-                  })}
-                  <td className="sticky right-0 z-10 bg-gray-200 dark:bg-slate-900 md:px-1 tracking-wider max-w-[90px] md:max-w-xs whitespace-normal">
-                    <div className="flex justify-center gap-2">
-                      <button
-                        className="bg-transparent text-white py-2 rounded"
-                        onClick={() =>
-                          router.push(
-                            `/panel-de-control/envios/editar/${diary.id}`
-                          )
-                        }
-                      >
-                        <BiEdit className="h-4 w-4 md:h-5 md:w-5 text-blue-600 dark:text-blue-500 transition duration-300 ease-in-out hover:scale-[1.07] hover:text-blue-800 dark:hover:text-blue-700" />
-                      </button>
-                      <button
-                        className="bg-transparent text-white py-2 rounded"
-                        onClick={() => handleClickDelete({ diary })}
-                      >
-                        <BiTrash className="h-4 w-4 md:h-5 md:w-5 text-red-600 dark:text-red-500 transition duration-300 ease-in-out hover:scale-[1.07] hover:text-red-800 dark:hover:text-red-700" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              )
-            })}
+            {diaryGroup.map((diary, diaryIndex) => (
+              <tr
+                key={diary.id}
+                onClick={() => handleShowInfo(diary.id)}
+                className="cursor-pointer"
+              >
+                <td className="text-card dark:text-primary-orange-700 font-semibold text-center sticky left-0 z-10 bg-slate-700 dark:bg-slate-300 md:px-1 py-4 text-xs tracking-wider max-w-[90px] md:max-w-xs whitespace-normal">
+                  {diary.activity.name} ({diary.name})
+                </td>
+                {hoursOfDays.map((time, timeIndex) => (
+                  <td
+                    key={time}
+                    className={`${cellClasses[diaryIndex][timeIndex]} md:px-1 py-4 whitespace-nowrap`}
+                  ></td>
+                ))}
+                <td className="sticky right-0 z-10 bg-slate-700 dark:bg-slate-300 md:px-1 tracking-wider max-w-[90px] md:max-w-xs whitespace-normal">
+                  <div className="flex justify-center gap-2">
+                    <button
+                      className="bg-transparent text-white py-2 rounded"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        router.push(
+                          `/panel-de-control/agenda/editar/${diary.id}`
+                        )
+                      }}
+                    >
+                      <BiEdit className="h-4 w-4 md:h-5 md:w-5 text-blue-500 dark:text-blue-600 transition duration-300 ease-in-out hover:scale-[1.07] hover:text-blue-800 dark:hover:text-blue-700" />
+                    </button>
+                    <button
+                      className="bg-transparent text-white py-2 rounded"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleClickDelete({ diary })
+                      }}
+                    >
+                      <BiTrash className="h-4 w-4 md:h-5 md:w-5 text-red-500 dark:text-red-600 transition duration-300 ease-in-out hover:scale-[1.07] hover:text-red-800 dark:hover:text-red-700" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -120,9 +172,9 @@ const Calendar: React.FC<Props> = ({ diaryGroup, day }) => {
             <h4 className="text-lg font-semibold mb-4">
               Confirmar eliminación
             </h4>
-            <p>
-              ¿Estás seguro de que deseas eliminar el envío{' '}
-              {`'${diaryToDelete?.name}'`}?
+            <p className="text-center">
+              ¿Estás seguro de que deseas eliminar la agenda de{' '}
+              {`' ${diaryToDelete?.activity.name} (${diaryToDelete?.name})'`}?
             </p>
             <div className="flex justify-end space-x-4 mt-4">
               <button
@@ -141,6 +193,12 @@ const Calendar: React.FC<Props> = ({ diaryGroup, day }) => {
           </div>
         </div>
       )}
+      <DiaryItem
+        diaryToShow={diaryToShow}
+        showInfo={showInfo}
+        handleCloseInfo={handleCloseInfo}
+        handleClickDelete={handleClickDelete}
+      />
     </div>
   )
 }
