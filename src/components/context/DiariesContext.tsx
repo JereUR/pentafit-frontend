@@ -15,14 +15,10 @@ type DiariesContextType = {
   getAllDiaries: (business_id: number) => Promise<Diary[] | []>
   getDiaries: ({
     q,
-    page,
-    business_id,
-    ITEMS_PER_PAGE
+    business_id
   }: {
     q: string
-    page: string
     business_id: number
-    ITEMS_PER_PAGE: number
   }) => Promise<void>
   getDiaryById: ({
     id,
@@ -105,20 +101,14 @@ export default function DiariesContextProvider({
 
   async function getDiaries({
     q,
-    page,
-    business_id,
-    ITEMS_PER_PAGE
+    business_id
   }: {
     q: string
-    page: string
     business_id: number
-    ITEMS_PER_PAGE: number
   }): Promise<void> {
     setLoadingDiary(true)
     const params = new URLSearchParams()
     params.append('regex', q)
-    params.append('page', page)
-    params.append('items_per_page', ITEMS_PER_PAGE.toString())
     params.append('company_id', business_id.toString())
     const url = `${BASE_URL}api/v1/diaries?${params.toString()}`
 
