@@ -165,11 +165,12 @@ export default function DiaryForm({
     }
   }
 
-  const handleSelectChange = (
+  const handleHourSelectChange = (
     e: React.ChangeEvent<HTMLSelectElement>,
     idx?: number
   ) => {
     const { value, name } = e.target
+    console.log(name, value)
 
     if (name === 'time_start' || name === 'time_end') {
       if (idx !== undefined) {
@@ -178,20 +179,27 @@ export default function DiaryForm({
         setDataDiary({ ...dataDiary, days_available: updatedDays })
       }
     } else {
-      setDataDiary({ ...dataDiary, [name]: value })
       if (name === 'time_from') {
         const updatedDays = [...dataDiary.days_available]
         updatedDays.map((day) => {
           day['time_start'] = value
         })
-        setDataDiary({ ...dataDiary, days_available: updatedDays })
+        setDataDiary({
+          ...dataDiary,
+          [name]: value,
+          days_available: updatedDays
+        })
       }
       if (name === 'time_until') {
         const updatedDays = [...dataDiary.days_available]
         updatedDays.map((day) => {
           day['time_end'] = value
         })
-        setDataDiary({ ...dataDiary, days_available: updatedDays })
+        setDataDiary({
+          ...dataDiary,
+          [name]: value,
+          days_available: updatedDays
+        })
       }
     }
   }
@@ -390,7 +398,7 @@ export default function DiaryForm({
             <select
               name="time_from"
               value={dataDiary.time_from}
-              onChange={(e) => handleSelectChange(e)}
+              onChange={(e) => handleHourSelectChange(e)}
               className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
             >
               <option value="" selected={dataDiary.time_from === ''}>
@@ -398,7 +406,7 @@ export default function DiaryForm({
               </option>
               {hoursOfDays.map((time, timeIdx) => (
                 <option
-                  key={timeIdx}
+                  key={`${timeIdx}-${dataDiary.time_from === time}`} // Combine index and selected time
                   value={time}
                   selected={dataDiary.time_from === time}
                 >
@@ -417,7 +425,7 @@ export default function DiaryForm({
             <select
               name="time_until"
               value={dataDiary.time_until}
-              onChange={(e) => handleSelectChange(e)}
+              onChange={(e) => handleHourSelectChange(e)}
               className="bg-card border border-gray-300 dark:border-gray-700 rounded-lg p-[10px] cursor-pointer focus:border-primary-orange-500 focus:outline-none focus:ring-0"
             >
               <option value="" selected={dataDiary.time_until === ''}>
@@ -550,7 +558,8 @@ export default function DiaryForm({
                       onClick={() => setShowTimes(!showTimes)}
                       className="cursor-pointer text-gray-500"
                     >
-                      {showTimes&&dataDiary.days_available.some((day) => day.active) ? (
+                      {showTimes &&
+                      dataDiary.days_available.some((day) => day.active) ? (
                         <IoIosArrowUp className="h-5 w-5" />
                       ) : (
                         <IoIosArrowDown className="h-5 w-5" />
@@ -562,7 +571,7 @@ export default function DiaryForm({
                           <DayTimes
                             dataDiary={dataDiary}
                             formErrors={formErrors}
-                            handleSelectChange={handleSelectChange}
+                            handleSelectChange={handleHourSelectChange}
                           />
                         </div>
                       )}
