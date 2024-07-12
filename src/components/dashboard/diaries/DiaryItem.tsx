@@ -1,6 +1,8 @@
 'use client'
 
-import { Diary, GroupedData } from '@/components/types/Diary'
+import { daysOfWeek, Diary, GroupedData } from '@/components/types/Diary'
+import { Card, CardContent, CardTitle } from '@/components/ui/card'
+import { Cross1Icon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { BiEdit, BiTrash } from 'react-icons/bi'
@@ -24,9 +26,9 @@ const DiaryItem: React.FC<Props> = ({
     <div>
       {showInfo && diaryToShow && (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-75">
-          <div className="bg-card text-foreground p-6 rounded-lg shadow-lg w-3/4">
+          <div className="bg-card text-foreground p-6 rounded-lg shadow-lg w-3/4 max-h-[80vh] overflow-y-auto  scrollbar-thin scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-700">
             <div className="flex justify-between items-center mb-4">
-              <h4 className="text-xl font-semibold mb-4 text-primary-orange-500">
+              <h4 className="text-xl font-semibold mb-4 text-primary-orange-500 dark:text-primary-orange-600">
                 Información de la Agenda
               </h4>
               <div className="flex justify-center gap-2">
@@ -49,6 +51,9 @@ const DiaryItem: React.FC<Props> = ({
                   }}
                 >
                   <BiTrash className="h-4 w-4 md:h-6 md:w-6 text-red-500 dark:text-red-600 transition duration-300 ease-in-out hover:scale-[1.07] hover:text-red-800 dark:hover:text-red-700" />
+                </button>
+                <button onClick={handleCloseInfo}>
+                  <Cross1Icon className="h-4 w-4 md:h-6 md:w-6 text-red-500 dark:text-red-600 transition duration-300 ease-in-out hover:scale-[1.07] hover:text-red-800 dark:hover:text-red-700" />
                 </button>
               </div>
             </div>
@@ -99,6 +104,15 @@ const DiaryItem: React.FC<Props> = ({
                 <strong className="text-card">¿Trabaja feriados?:</strong>{' '}
                 {diaryToShow.works_holidays ? 'Sí' : 'No'}
               </p>
+              <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
+                <strong className="text-card">Días de oferta:</strong>{' '}
+                {diaryToShow.offer_days
+                  ? diaryToShow.offer_days
+                      .map((day, index) => (day ? daysOfWeek[index] : null))
+                      .filter(Boolean)
+                      .join(' - ')
+                  : null}
+              </p>
               {diaryToShow.observations && (
                 <p className="text-lg col-span-2 bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
                   <strong className="text-card">Observaciones:</strong>{' '}
@@ -106,19 +120,25 @@ const DiaryItem: React.FC<Props> = ({
                 </p>
               )}
             </div>
-
-            <p>
+            <div className="flex flex-col gap-4 my-8">
               <strong>Días disponibles:</strong>{' '}
-              {JSON.stringify(diaryToShow.days_available)}
-            </p>
-
-            <div className="flex justify-end mt-4">
-              <button
-                className="bg-gray-500 text-white px-4 py-2 rounded"
-                onClick={handleCloseInfo}
-              >
-                Cerrar
-              </button>
+              <div className="grid grid-cols-3 gap-8 p-4">
+                {diaryToShow.days_available.map((diary, index) => (
+                  <Card key={index} className="p-4 pb-0">
+                    <CardTitle className="mb-4">{daysOfWeek[index]}</CardTitle>
+                    <CardContent className="flex flex-col gap-2 justify-center">
+                      <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2 mx-6">
+                        <strong className="text-card">Horario inicio:</strong>{' '}
+                        {diary.time_start}
+                      </p>
+                      <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2 mx-6">
+                        <strong className="text-card">Horario fin:</strong>{' '}
+                        {diary.time_end}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </div>
