@@ -211,7 +211,7 @@ export default function DiariesTable() {
         <TableSkeleton />
       ) : (
         <div>
-          <DiariesCalendar groupDiaries={groupDiaries} />
+          <DiariesCalendar diaries={diaries} groupDiaries={groupDiaries} />
         </div>
       )}
     </div>
