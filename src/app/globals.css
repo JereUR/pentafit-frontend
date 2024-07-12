@@ -346,7 +346,7 @@ input[type='number'] {
 
 /* Contenedor de la scrollbar (track) */
 .scrollbar-thin::-webkit-scrollbar-track {
-  background: #c2c2c2;
+  background: #d2d2d2;
   border-radius: 10px; /* Agregar border-radius al contenedor */
 }
 
