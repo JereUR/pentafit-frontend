@@ -16,9 +16,24 @@ interface Props {
   diaries: Diary[]
   diaryGroup: DiaryGroup
   day: number
+  selectAll: boolean
+  handleSelectAllChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  selectedDiaries: number[]
+  handleCheckboxChange: (
+    diaryId: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void
 }
 
-const Calendar: React.FC<Props> = ({ diaries, diaryGroup, day }) => {
+const Calendar: React.FC<Props> = ({
+  diaries,
+  diaryGroup,
+  day,
+  selectAll,
+  handleSelectAllChange,
+  selectedDiaries,
+  handleCheckboxChange
+}) => {
   const [diaryToDelete, setDiaryToDelete] = useState<
     GroupedData | Diary | null
   >(null)
@@ -32,40 +47,7 @@ const Calendar: React.FC<Props> = ({ diaries, diaryGroup, day }) => {
   const [diaryToShow, setDiaryToShow] = useState<Diary | null>(null)
 
   const router = useRouter()
-  const { deleteDiaryById } = useDiaries()
-
-  const closeModal = () => {
-    setShowConfirmDelete(false)
-  }
-
-  const handleClickDelete = ({ diary }: { diary: GroupedData | Diary }) => {
-    setDiaryToDelete(diary)
-    setShowConfirmDelete(true)
-  }
-
-  const handleDelete = async () => {
-    if (diaryToDelete) {
-      const res = await deleteDiaryById(diaryToDelete.id)
-
-      if (res) {
-        setShowConfirmDelete(false)
-        setDiaryToDelete(null)
-        window.location.reload()
-      }
-      closeModal()
-    }
-  }
-
-  const handleShowInfo = (diaryId: number) => {
-    const diary = diaries.find((d) => d.id === diaryId) || null
-    setDiaryToShow(diary)
-    setShowInfo(true)
-  }
-
-  const handleCloseInfo = () => {
-    setShowInfo(false)
-    setDiaryToShow(null)
-  }
+  const { deleteDiariesById } = useDiaries()
 
   useEffect(() => {
     const newCellClasses = Array(diaryGroup.length)
@@ -97,13 +79,47 @@ const Calendar: React.FC<Props> = ({ diaries, diaryGroup, day }) => {
       )
       if (isColumnEmpty) {
         newCellClasses.forEach((row) => {
-          row[timeIndex] = 'bg-sky-200 dark:bg-sky-400'
+          row[timeIndex] = 'bg-sky-200 dark:bg-sky-300 opacity-90'
         })
       }
     })
 
     setCellClasses(newCellClasses)
   }, [diaryGroup])
+
+  const closeModal = () => {
+    setShowConfirmDelete(false)
+  }
+
+  const handleClickDelete = ({ diary }: { diary: GroupedData | Diary }) => {
+    setDiaryToDelete(diary)
+    setShowConfirmDelete(true)
+  }
+
+  const handleDelete = async () => {
+    if (diaryToDelete) {
+      const diaries = [diaryToDelete.id]
+      const res = await deleteDiariesById(diaries)
+
+      if (res) {
+        setShowConfirmDelete(false)
+        setDiaryToDelete(null)
+        window.location.reload()
+      }
+      closeModal()
+    }
+  }
+
+  const handleShowInfo = (diaryId: number) => {
+    const diary = diaries.find((d) => d.id === diaryId) || null
+    setDiaryToShow(diary)
+    setShowInfo(true)
+  }
+
+  const handleCloseInfo = () => {
+    setShowInfo(false)
+    setDiaryToShow(null)
+  }
 
   return (
     <div className="p-2 md:p-6 my-4 md:my-8 bg-gray-50 dark:bg-slate-700 shadow-lg rounded-lg">
@@ -116,6 +132,14 @@ const Calendar: React.FC<Props> = ({ diaries, diaryGroup, day }) => {
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead className="bg-slate-700 dark:bg-slate-300 text-card dark:text-primary-orange-700 font-semibold">
             <tr>
+              <th className="px-2">
+                <input
+                  type="checkbox"
+                  checked={selectAll}
+                  onChange={handleSelectAllChange}
+                  className="cursor-pointer h-4 w-4"
+                />
+              </th>
               <th className="sticky left-0 z-20 py-3 md:px-2 text-left text-xs uppercase tracking-wider w-[90px] md:max-w-xs whitespace-normal bg-slate-700 dark:bg-slate-300">
                 <span>Agenda \ Horario</span>
               </th>
@@ -145,6 +169,16 @@ const Calendar: React.FC<Props> = ({ diaries, diaryGroup, day }) => {
             ) : (
               diaryGroup.map((diary, diaryIndex) => (
                 <tr key={diary.id}>
+                  <td className="px-2 bg-slate-700 dark:bg-slate-300">
+                    <input
+                      type="checkbox"
+                      checked={selectedDiaries.includes(diary.id)}
+                      onChange={(event) =>
+                        handleCheckboxChange(diary.id, event)
+                      }
+                      className="cursor-pointer h-4 w-4 "
+                    />
+                  </td>
                   <td
                     className="cursor-pointer text-card dark:text-primary-orange-700 font-semibold text-center sticky left-0 z-10 bg-slate-700 dark:bg-slate-300 md:px-1 py-4 text-xs tracking-wider max-w-[90px] md:max-w-xs whitespace-normal hover:underline"
                     onClick={() => handleShowInfo(diary.id)}

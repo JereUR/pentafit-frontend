@@ -29,7 +29,8 @@ const SelectedDiariesActions: React.FC<Props> = ({
   const [businessesToAdd, setBusinessesToAdd] = useState<number[]>([])
   const [addIsOpen, setAddIsOpen] = useState<boolean>(false)
   const { businesses, token, getBusinesses } = useUser()
-  const { deleteDiaryById, addDiariesToBusinesses, loadingDiary } = useDiaries()
+  const { deleteDiariesById, addDiariesToBusinesses, loadingDiary } =
+    useDiaries()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
   useEffect(() => {
@@ -83,13 +84,13 @@ const SelectedDiariesActions: React.FC<Props> = ({
   }
 
   const handleDelete = async () => {
-    /* const res = await deleteDiaryById(selectedDiaries) 
+    const res = await deleteDiariesById(selectedDiaries)
 
     if (res) {
       setShowConfirmMultipleDelete(false)
       setSelectedDiaries([])
       window.location.reload()
-    }*/
+    }
   }
 
   const handleAdd = async () => {
@@ -120,7 +121,7 @@ const SelectedDiariesActions: React.FC<Props> = ({
           {addIsOpen && (
             <div
               onClick={() => setAddIsOpen(false)}
-              className="absolute w-[20vw] xl:w-[15vw] bg-card mt-3 mr-5 rounded shadow-lg"
+              className="absolute w-[20vw] xl:w-[15vw] bg-card mt-3 mr-5 rounded shadow-lg z-50"
             >
               <div className="p-4" onClick={handleMenuClick}>
                 <p className="text-lg font-medium text-foreground">
@@ -164,6 +165,7 @@ const SelectedDiariesActions: React.FC<Props> = ({
                   <Button
                     className="font-semibold text-foreground bg-background transition duration-300 ease-in-out hover:bg-accent w-full mx-4 mb-1 mt-2 p-1"
                     onClick={handleCloseMenu}
+                    disabled={otherBusinesses.length === 0}
                   >
                     Confirmar
                   </Button>
@@ -176,7 +178,9 @@ const SelectedDiariesActions: React.FC<Props> = ({
           <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-50 flex justify-center items-center">
             <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
               <p>
-                {`Agregar las ${selectedDiaries.length} agendas seleccionadas a los siguientes negocios: `}
+                {selectedDiaries.length === 1
+                  ? `Agregar la agenda seleccionada a los siguientes negocios: `
+                  : `Agregar las ${selectedDiaries.length} agendas seleccionadas a los siguientes negocios: `}
               </p>
               <ul className="flex flex-col justify-start items-start">
                 {businessesToAdd.map((item) => {
@@ -229,10 +233,12 @@ const SelectedDiariesActions: React.FC<Props> = ({
           ({selectedDiaries.length}) <FaTrash />
         </Button>
         {showConfirmMultipleDelete && (
-          <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-50 flex justify-center items-center">
-            <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
+          <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-50 flex justify-center items-center ">
+            <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md max-w-xl">
               <p>
-                {`¿Está seguro de que desea eliminar las ${selectedDiaries.length} agendas seleccionadas?`}
+                {selectedDiaries.length === 1
+                  ? `¿Está seguro de que desea eliminar la agenda seleccionada? (Se eliminará la actividad correspondiente a la agenda de todos los días)`
+                  : `¿Está seguro de que desea eliminar las ${selectedDiaries.length} agendas seleccionadas? (Se eliminarán las actividades correspondientes a la agenda de todos los días)`}
               </p>
               <div className="flex justify-end gap-2">
                 <Button

@@ -19,11 +19,14 @@ import WorkingBusiness from '../WorkingBusiness'
 import TableSkeleton from '../skeletons/TableSkeleton'
 import DiariesCalendar from './DiariesCalendar'
 import SelectDaysToShow from './SelectDaysToShow'
+import SelectedDiariesActions from './SelectedDiariesActions'
 
 export default function DiariesTable() {
   const [groupDiaries, setGroupDiaries] = useState<DiaryGroup[]>([])
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [selectedDays, setSelectedDays] = useState<Days>(initialDays)
+  const [selectedDiaries, setSelectedDiaries] = useState<number[]>([])
+  const [selectAll, setSelectAll] = useState<boolean>(false)
 
   const searchParams = useSearchParams()
   const { token, getWorkingBusiness } = useUser()
@@ -92,12 +95,37 @@ export default function DiariesTable() {
     }
   }, [diaries])
 
+  const handleSelectAllChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const checked = event.target.checked
+    setSelectAll(checked)
+
+    if (checked) {
+      setSelectedDiaries(diaries.map((diary) => diary.id))
+    } else {
+      setSelectedDiaries([])
+    }
+  }
+
+  const handleCheckboxChange = (
+    diaryId: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const checked = event.target.checked
+    const newSelectedDiaries = checked
+      ? [...selectedDiaries, diaryId]
+      : selectedDiaries.filter((id) => id !== diaryId)
+
+    setSelectedDiaries(newSelectedDiaries)
+  }
+
   return (
     <div className="container bg-background p-1 rounded-lg mt-10">
       <div className="flex gap-10">
         <WorkingBusiness workingBusiness={workingBusiness} />
       </div>
-      <div className="flex items-center my-4">
+      <div className="flex justify-between items-center my-4">
         <div className="flex gap-4">
           <Link href="/panel-de-control/agenda/agregar">
             <CustomButton text="Agregar" />
@@ -106,6 +134,14 @@ export default function DiariesTable() {
             selectedDays={selectedDays}
             setSelectedDays={setSelectedDays}
           />
+        </div>
+        <div>
+          {selectedDiaries.length > 0 && (
+            <SelectedDiariesActions
+              selectedDiaries={selectedDiaries}
+              setSelectedDiaries={setSelectedDiaries}
+            />
+          )}
         </div>
       </div>
 
@@ -117,6 +153,10 @@ export default function DiariesTable() {
             diaries={diaries}
             groupDiaries={groupDiaries}
             selectedDays={selectedDays}
+            selectAll={selectAll}
+            handleSelectAllChange={handleSelectAllChange}
+            selectedDiaries={selectedDiaries}
+            handleCheckboxChange={handleCheckboxChange}
           />
         </div>
       )}
