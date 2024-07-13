@@ -74,11 +74,11 @@ export default function RootLayout({
                       <Toaster />
                     </>
                   ) : (
-                    <div className="flex min-h-screen">
-                      <div className="w-1/4 xl:w-1/6 bg-black py-5">
+                    <div className="flex min-h-screen max-w-screen">
+                      <div className="w-[6vw] bg-black py-5">
                         <SideBar />
                       </div>
-                      <div className="w-3/4 xl:w-5/6">
+                      <div className="w-[94vw]">
                         <TopBar />
                         {children}
                       </div>

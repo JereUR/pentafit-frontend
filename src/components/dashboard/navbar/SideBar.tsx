@@ -1,8 +1,8 @@
 'use client'
 
-import { FaHome, FaUser } from 'react-icons/fa'
+import { FaArrowLeft, FaArrowRight, FaHome, FaUser } from 'react-icons/fa'
 import { FaMoneyBillTransfer, FaRegCalendarDays } from 'react-icons/fa6'
-import { MdForkLeft, MdExpandLess, MdExpandMore } from 'react-icons/md'
+import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 import { TiThListOutline } from 'react-icons/ti'
 import { IoIosFitness, IoMdBusiness } from 'react-icons/io'
 import { IoFootstepsSharp } from 'react-icons/io5'
@@ -105,6 +105,8 @@ const menuItems = [
 export default function SideBar() {
   const pathname = usePathname()
   const [expandedItems, setExpandedItems] = useState<string[]>([])
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(true)
+  const [activeParent, setActiveParent] = useState<string | null>(null)
 
   useEffect(() => {
     menuItems.forEach((item) => {
@@ -113,19 +115,38 @@ export default function SideBar() {
           if (pathname.startsWith(listItem.path)) {
             const parentTitle = item.title
             const isParentExpanded = expandedItems.includes(parentTitle)
-
+            setActiveParent(parentTitle)
             setExpandedItems(isParentExpanded ? expandedItems : [parentTitle])
           }
         })
       } else {
-        if (pathname.startsWith(item.path)) setExpandedItems([])
+        if (pathname.startsWith(item.path)) {
+          setExpandedItems([])
+          setActiveParent(null)
+        }
       }
     })
   }, [pathname])
 
+  useEffect(() => {
+    if (isCollapsed) {
+      setExpandedItems([])
+    } else {
+      menuItems.forEach((item) => {
+        if (item.list) {
+          item.list.forEach((listItem) => {
+            if (pathname.startsWith(listItem.path)) {
+              setExpandedItems([item.title])
+            }
+          })
+        }
+      })
+    }
+  }, [isCollapsed, pathname])
+
   const handleClick = (title: string) => {
     const isItemExpanded = expandedItems.includes(title)
-
+    setIsCollapsed(false)
     setExpandedItems(
       isItemExpanded
         ? expandedItems.filter((item) => item !== title)
@@ -134,43 +155,60 @@ export default function SideBar() {
   }
 
   return (
-    <div className="flex flex-col top-10 text-white">
-      <div className="fixed flex left-10 xl:left-24 justify-center gap-5 mb-10">
-        <Link href="/" className=" text-4xl font-bold ">
-          Penta
+    <div
+      className={`fixed flex flex-col top-0 z-50 text-white h-full transition-all duration-300 ${
+        isCollapsed ? 'w-24 bg-black' : 'w-60 bg-black'
+      }`}
+    >
+      <div className="flex justify-center gap-2 items-center my-10">
+        <Link href="/" className="text-4xl font-bold flex-1 text-center">
+          {isCollapsed ? 'P' : 'Penta'}
         </Link>
+        <div
+          className="cursor-pointer flex-none mr-4 mt-2 transition duration-300 ease-in-out hover:scale-[1.1] hover:text-primary-orange-600"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          {isCollapsed ? (
+            <FaArrowRight className="h-6 w-6" />
+          ) : (
+            <FaArrowLeft className="h-6 w-6" />
+          )}
+        </div>
       </div>
-      <div className="fixed top-20 left-3 w-1/4 xl:w-1/6 pr-10 list-none">
+      <div className="flex-1">
         {menuItems.map((item) => (
           <div key={item.title} className="my-4">
             {item.path ? (
               <Link
                 href={item.path}
-                className={`p-3 flex items-center gap-4 ml-0 my-1 mr-4 rounded-r-full transition duration-300 ease-in-out hover:bg-primary-orange-600 ${
+                className={`p-3 mr-4 ml-2 flex items-center gap-4  my-1 rounded-r-full transition duration-300 ease-in-out hover:bg-primary-orange-600 ${
                   pathname === item.path && 'bg-primary-orange-600'
                 }`}
+                onClick={() => setIsCollapsed(true)}
               >
                 <span className="flex gap-2 items-center ml-2">
                   {item.icon}
-                  {item.title}
                 </span>
+                {!isCollapsed && <span>{item.title}</span>}
               </Link>
             ) : (
-              // Handle items with sub-items
               <div
-                className="items-center cursor-pointer p-3 rounded-r-ful"
+                className={`items-center cursor-pointer p-3 ml-2 rounded-r-full ${
+                  isCollapsed &&
+                  activeParent === item.title &&
+                  'bg-primary-orange-600'
+                }`}
                 onClick={() => handleClick(item.title)}
               >
                 <div className="flex items-center">
                   <span className="flex gap-2 items-center ml-2">
-                    {item.icon}
-                    {item.title}
+                    {item.icon} {!isCollapsed && item.title}
+                    {expandedItems.includes(item.title) ? (
+                      <MdExpandLess className="ml-auto h-5 w-5" />
+                    ) : (
+                      <MdExpandMore className="ml-auto h-5 w-5" />
+                    )}
                   </span>
-                  {expandedItems.includes(item.title) ? (
-                    <MdExpandLess className="ml-auto" />
-                  ) : (
-                    <MdExpandMore className="ml-auto" />
-                  )}
                 </div>
                 {expandedItems.includes(item.title) && item.list && (
                   <div className="flex flex-col pl-6 mt-4 gap-2">
@@ -178,10 +216,11 @@ export default function SideBar() {
                       <Link
                         key={subItem.title}
                         href={subItem.path}
-                        className={`p-3 flex items-center rounded-r-full transition duration-300 ease-in-out hover:bg-primary-orange-600 text-sm ${
+                        className={`p-3 mr-4 flex items-center rounded-r-full transition duration-300 ease-in-out hover:bg-primary-orange-600 text-sm ${
                           pathname.startsWith(subItem.path) &&
                           'bg-primary-orange-600'
                         }`}
+                        onClick={() => setIsCollapsed(true)}
                       >
                         <li className="list-disc">
                           <span>{subItem.title}</span>
@@ -195,7 +234,11 @@ export default function SideBar() {
           </div>
         ))}
       </div>
-      <div className="fixed bottom-5 w-1/4 xl:w-1/6 border-t text-center flex justify-center items-center bg-black pt-5 px-5">
+      <div
+        className={`flex justify-center items-center p-5 border-t border-gray-700 bg-black ${
+          isCollapsed ? 'w-[6vw]' : 'w-60'
+        }`}
+      >
         <ThemeSwitcher />
       </div>
     </div>
