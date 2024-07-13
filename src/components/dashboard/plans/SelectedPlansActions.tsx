@@ -153,6 +153,7 @@ const SelectedPlansActions: React.FC<Props> = ({
                   <Button
                     className="font-semibold text-foreground bg-background transition duration-300 ease-in-out hover:bg-accent w-full mx-4 mb-1 mt-2 p-1"
                     onClick={handleCloseMenu}
+                    disabled={otherBusinesses.length === 0}
                   >
                     Confirmar
                   </Button>
@@ -163,9 +164,11 @@ const SelectedPlansActions: React.FC<Props> = ({
         </div>
         {showConfirmAddToBusinesses && (
           <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-50 flex justify-center items-center">
-            <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
+            <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md max-w-xl">
               <p>
-                {`Agregar las ${selectedPlans.length} actividades seleccionadas a los siguientes negocios: `}
+                {selectedPlans.length === 1
+                  ? `Agregar el plan seleccionado a los siguientes negocios: `
+                  : `Agregar los ${selectedPlans.length} planes seleccionados a los siguientes negocios: `}
               </p>
               <ul className="flex flex-col justify-start items-start">
                 {businessesToAdd.map((item) => {
@@ -217,7 +220,9 @@ const SelectedPlansActions: React.FC<Props> = ({
           <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-50 flex justify-center items-center">
             <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
               <p>
-                {`¿Está seguro de que desea eliminar las ${selectedPlans.length} actividades seleccionadas?`}
+                {selectedPlans.length === 1
+                  ? `¿Está seguro de que desea eliminar el plan seleccionado?`
+                  : `¿Está seguro de que desea eliminar el/los ${selectedPlans.length} plan/es seleccionado/s?`}
               </p>
               <div className="flex justify-end gap-2">
                 <Button
