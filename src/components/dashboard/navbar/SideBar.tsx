@@ -156,8 +156,8 @@ export default function SideBar() {
 
   return (
     <div
-      className={`fixed flex flex-col top-0 z-50 text-white h-full transition-all duration-300 ${
-        isCollapsed ? 'w-24 bg-black' : 'w-60 bg-black'
+      className={`fixed flex flex-col top-0 z-50 overflow-y-auto overflow-x-hidden text-white h-full transition-all duration-300 scrollbar-thin scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-700 ${
+        isCollapsed ? 'w-24 bg-black' : 'w-64 bg-black'
       }`}
     >
       <div className="flex justify-center gap-2 items-center my-10">
@@ -236,7 +236,7 @@ export default function SideBar() {
       </div>
       <div
         className={`flex justify-center items-center p-5 border-t border-gray-700 bg-black ${
-          isCollapsed ? 'w-[6vw]' : 'w-60'
+          isCollapsed ? 'w-[6vw]' : 'w-64'
         }`}
       >
         <ThemeSwitcher />
