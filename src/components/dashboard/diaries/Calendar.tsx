@@ -129,7 +129,7 @@ const Calendar: React.FC<Props> = ({
         </p>
       </div>
       <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-700">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <table className="min-w-[80vw] divide-y divide-gray-200 dark:divide-gray-700">
           <thead className="bg-slate-700 dark:bg-slate-300 text-card dark:text-primary-orange-700 font-semibold">
             <tr>
               <th className="px-2">
