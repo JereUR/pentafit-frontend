@@ -236,7 +236,7 @@ export default function SideBar() {
       </div>
       <div
         className={`flex justify-center items-center p-5 border-t border-gray-700 bg-black ${
-          isCollapsed ? 'w-[6vw]' : 'w-64'
+          isCollapsed ? 'w-24' : 'w-64'
         }`}
       >
         <ThemeSwitcher />
