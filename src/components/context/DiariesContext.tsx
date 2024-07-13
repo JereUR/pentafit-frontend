@@ -41,7 +41,7 @@ type DiariesContextType = {
     dataDiary: PropsAddDiary
     company_id: number
   }) => Promise<boolean>
-  deleteDiaryById: (diary: number) => Promise<boolean>
+  deleteDiariesById: (diaries: number[]) => Promise<boolean>
   addDiariesToBusinesses: ({
     diaries,
     businesses
@@ -316,9 +316,10 @@ export default function DiariesContextProvider({
     }
   }
 
-  async function deleteDiaryById(diary: number): Promise<boolean> {
+  async function deleteDiariesById(diaries: number[]): Promise<boolean> {
+    console.log(diaries)
     setLoadingDiary(true)
-    const url = `${BASE_URL}api/v1/Diary`
+    const url = `${BASE_URL}api/v1/diary`
     try {
       const response = await axios.delete(url, {
         headers: {
@@ -331,7 +332,9 @@ export default function DiariesContextProvider({
 
       if (response.status === 200 || response.status === 204) {
         toast({
-          title: `Actividades con id:'${diary}' eliminado.`,
+          title: `Agendas con id:'${diaries.map(
+            (diary) => diary
+          )}' eliminadas.`,
           className: 'bg-green-600'
         })
         return true
@@ -361,6 +364,7 @@ export default function DiariesContextProvider({
     diaries: number[]
     businesses: number[]
   }): Promise<boolean> {
+    console.log(diaries, businesses)
     setLoadingDiary(true)
     const url = `${BASE_URL}api/v1/duplicate_diaries`
     try {
@@ -413,7 +417,7 @@ export default function DiariesContextProvider({
         getDiaryById,
         addDiary,
         updateDiary,
-        deleteDiaryById,
+        deleteDiariesById,
         addDiariesToBusinesses
       }}
     >
