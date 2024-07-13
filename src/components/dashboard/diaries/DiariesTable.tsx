@@ -121,7 +121,7 @@ export default function DiariesTable() {
   }
 
   return (
-    <div className="container bg-background p-1 rounded-lg mt-10">
+    <div className="m-10 bg-background p-1 rounded-lg w-[88vw]">
       <div className="flex gap-10">
         <WorkingBusiness workingBusiness={workingBusiness} />
       </div>

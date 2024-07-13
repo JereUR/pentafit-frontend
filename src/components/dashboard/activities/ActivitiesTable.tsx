@@ -140,7 +140,7 @@ export default function ActivitiesTable() {
   }
 
   return (
-    <div className="container bg-background p-1 rounded-lg mt-10">
+    <div className="m-10 bg-background p-1 rounded-lg w-[88vw]">
       <div className="flex justify-between">
         <WorkingBusiness workingBusiness={workingBusiness} />
         {workingBusiness && loadingActivity ? (
