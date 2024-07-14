@@ -122,7 +122,7 @@ const Calendar: React.FC<Props> = ({
   }
 
   return (
-    <div className="p-2 md:p-6 my-4 md:my-8 bg-gray-50 dark:bg-slate-700 shadow-lg rounded-lg">
+    <div className="p-2 md:p-6 mt-4 mb-8 md:my-8 bg-gray-50 dark:bg-slate-700 shadow-lg rounded-lg show-animate">
       <div className="mb-4">
         <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
           {daysOfWeek[day].toUpperCase()}
