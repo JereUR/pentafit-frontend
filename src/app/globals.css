@@ -344,7 +344,30 @@ input[type='number'] {
   }
 }
 
+/* Progress bar styles/animation */
 
+.link-progress {
+  position: relative;
+  overflow: hidden;
+}
+
+.link-progress::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ec6409;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease-in-out;
+  z-index: -1;
+}
+
+.link-progress:hover::before {
+  transform: scaleX(1);
+}
 
 /* Scroll bar styles */
 
