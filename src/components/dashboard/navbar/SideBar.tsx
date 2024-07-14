@@ -181,8 +181,8 @@ export default function SideBar() {
             {item.path ? (
               <Link
                 href={item.path}
-                className={`p-3 mr-4 ml-2 flex items-center gap-4  my-1 rounded-r-full transition duration-300 ease-in-out hover:bg-primary-orange-600 ${
-                  pathname === item.path && 'bg-primary-orange-600'
+                className={`link-progress p-3 mr-4 ml-2 flex items-center gap-4 my-1 rounded-r-full transition duration-300 ease-in-out ${
+                  pathname === item.path ? 'bg-primary-orange-600' : ''
                 }`}
                 onClick={() => setIsCollapsed(true)}
               >
@@ -193,14 +193,16 @@ export default function SideBar() {
               </Link>
             ) : (
               <div
-                className={`items-center cursor-pointer p-3 ml-2 rounded-r-full ${
-                  isCollapsed &&
-                  activeParent === item.title &&
-                  'bg-primary-orange-600'
-                }`}
+                className="items-center cursor-pointer"
                 onClick={() => handleClick(item.title)}
               >
-                <div className="flex items-center">
+                <div
+                  className={`link-progress flex items-center p-3 ml-2 mr-4 rounded-r-full ${
+                    isCollapsed &&
+                    activeParent === item.title &&
+                    'bg-primary-orange-600'
+                  }`}
+                >
                   <span className="flex gap-2 items-center ml-2">
                     {item.icon} {!isCollapsed && item.title}
                     {expandedItems.includes(item.title) ? (
@@ -216,13 +218,16 @@ export default function SideBar() {
                       <Link
                         key={subItem.title}
                         href={subItem.path}
-                        className={`p-3 mr-4 flex items-center rounded-r-full transition duration-300 ease-in-out hover:bg-primary-orange-600 text-sm ${
+                        className={`link-progress p-3 mr-4 flex items-center rounded-r-full transition duration-300 ease-in-out text-sm ${
                           pathname.startsWith(subItem.path) &&
                           'bg-primary-orange-600'
                         }`}
                         onClick={() => setIsCollapsed(true)}
                       >
-                        <li className="list-disc">
+                        <li
+                          className="list-disc"
+                          onClick={() => setIsCollapsed(true)}
+                        >
                           <span>{subItem.title}</span>
                         </li>
                       </Link>

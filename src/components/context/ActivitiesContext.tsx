@@ -154,6 +154,7 @@ export default function ActivitiesContextProvider({
   async function getAllActivities(
     business_id: number
   ): Promise<Activity[] | []> {
+    return initialActivities
     setLoadingActivity(true)
     const url = `${BASE_URL}api/v1/all_activities?company_id=${business_id}`
 
@@ -183,6 +184,7 @@ export default function ActivitiesContextProvider({
       return []
     } finally {
       setLoadingActivity(false)
+      
     }
   }
 

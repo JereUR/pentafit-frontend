@@ -64,7 +64,7 @@ const SelectDaysToShow: React.FC<Props> = ({
                   checked={selectedDays[index]}
                   onChange={() => handleChange(index, !selectedDays[index])}
                 />
-                <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+                <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out link-progress z-50">
                   {daysOfWeek[index]}
                 </span>
               </label>

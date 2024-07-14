@@ -50,21 +50,21 @@ const SelectColumns: React.FC<Props> = ({
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}
-          className="absolute w-[20vw] xl:w-[15vw] bg-card mt-3 mr-5 rounded shadow-lg"
+          className="absolute w-[20vw] xl:w-[15vw] bg-card mt-3 mr-5 rounded shadow-lg max-h-[50vh] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-700"
         >
           <div className="p-4" onClick={handleMenuClick}>
             <p className="text-lg font-medium text-foreground">
               Columnas a mostrar
             </p>
             <hr className="my-2 border-gray-200 dark:border-gray-500" />
-            <label className="flex items-center cursor-pointer ">
+            <label className="flex items-center cursor-pointer">
               <input
                 type="checkbox"
                 className="mr-2 cursor-pointer"
                 checked={selectedColumns.name}
                 onChange={() => handleChange('name', !selectedColumns.name)}
               />
-              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out link-progress z-50">
                 Nombre
               </span>
             </label>
@@ -77,7 +77,7 @@ const SelectColumns: React.FC<Props> = ({
                   handleChange('description', !selectedColumns.description)
                 }
               />
-              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out link-progress z-50">
                 Descripción
               </span>
             </label>
@@ -88,7 +88,7 @@ const SelectColumns: React.FC<Props> = ({
                 checked={selectedColumns.price}
                 onChange={() => handleChange('price', !selectedColumns.price)}
               />
-              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out link-progress z-50">
                 Precio
               </span>
             </label>
@@ -101,7 +101,7 @@ const SelectColumns: React.FC<Props> = ({
                   handleChange('is_public', !selectedColumns.is_public)
                 }
               />
-              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out link-progress z-50">
                 Es pública?
               </span>
             </label>
@@ -117,7 +117,7 @@ const SelectColumns: React.FC<Props> = ({
                   )
                 }
               />
-              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out link-progress z-50">
                 Generación de cuotas
               </span>
             </label>
@@ -130,7 +130,7 @@ const SelectColumns: React.FC<Props> = ({
                   handleChange('max_sessions', !selectedColumns.max_sessions)
                 }
               />
-              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out link-progress z-50">
                 Sesiones máximas
               </span>
             </label>
@@ -143,7 +143,7 @@ const SelectColumns: React.FC<Props> = ({
                   handleChange('mp_available', !selectedColumns.mp_available)
                 }
               />
-              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out link-progress z-50">
                 MP disponible
               </span>
             </label>
@@ -156,7 +156,7 @@ const SelectColumns: React.FC<Props> = ({
                   handleChange('start_date', !selectedColumns.start_date)
                 }
               />
-              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out link-progress z-50">
                 Fecha desde
               </span>
             </label>
@@ -169,7 +169,7 @@ const SelectColumns: React.FC<Props> = ({
                   handleChange('end_date', !selectedColumns.end_date)
                 }
               />
-              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out link-progress z-50">
                 Fecha hasta
               </span>
             </label>
@@ -182,7 +182,7 @@ const SelectColumns: React.FC<Props> = ({
                   handleChange('payment_type', !selectedColumns.payment_type)
                 }
               />
-              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out link-progress z-50">
                 Tipo de pago
               </span>
             </label>
@@ -195,7 +195,7 @@ const SelectColumns: React.FC<Props> = ({
                   handleChange('activity_type', !selectedColumns.activity_type)
                 }
               />
-              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out hover:bg-primary-orange-600">
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out link-progress z-50">
                 Tipo de actividad
               </span>
             </label>

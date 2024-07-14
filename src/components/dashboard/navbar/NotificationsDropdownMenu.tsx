@@ -43,15 +43,15 @@ export default function NotificationsDropdownMenu() {
           {notifications.map((item: any, key: number) => (
             <DropdownMenuItem
               key={key}
-              className="p-1 cursor-pointer hover:bg-primary-orange-600 transition flex items-start gap-2"
+              className="p-1 cursor-pointer link-progress z-50 transition flex items-start gap-2 mb-1"
             >
               <div
                 className={`h-3 w-3 rounded-full my-1 ${
                   !item.read ? 'bg-green-500' : 'bg-neutral-200'
-                }`}
+                } hover:text-white`}
               />
               <div>
-                <p>{item.text}</p>
+                <p className='text-foreground'>{item.text}</p>
                 <p className="text-xs text-neutral-500">{item.date}</p>
               </div>
             </DropdownMenuItem>
