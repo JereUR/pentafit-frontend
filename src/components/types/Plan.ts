@@ -1,6 +1,15 @@
+interface DiaryPlan {
+  id: number
+  name: string
+  activity: string
+  days_of_week: boolean[]
+  sessions_per_week: number
+}
+
 export type Plan = {
   id: number
   company_id: number[]
+  diaries: DiaryPlan[]
   name: string
   description: string
   price: number
@@ -12,29 +21,11 @@ export type Plan = {
   plan_type: string
   free_test: boolean
   current: boolean
-  activities: number[] | []
-  // | { id: number; days_of_week: boolean[]; sessions_per_week: number }[]
-}
-
-export type ExportPlan = {
-  id: number
-  company_id: number[]
-  name: string
-  description: string
-  price: number
-  start_date: string
-  end_date: string
-  expiration_period: number
-  generate_invoice: boolean
-  payment_type: string[]
-  plan_type: string
-  free_test: boolean
-  current: boolean
-  activities: number
 }
 
 export interface PropsAddPlan {
   id?: number | null
+  diaries: DiaryPlan[]
   name: string
   description: string
   price: string
@@ -46,7 +37,6 @@ export interface PropsAddPlan {
   plan_type: string
   free_test: string
   current: string
-  activities: number[]
   [key: string]:
     | string
     | undefined
@@ -54,11 +44,11 @@ export interface PropsAddPlan {
     | String[]
     | null
     | number
-    | number[]
-    | number[]
+    | DiaryPlan[]
 }
 
 export const initialData: PropsAddPlan = {
+  diaries: [],
   name: '',
   description: '',
   price: '',
@@ -69,8 +59,7 @@ export const initialData: PropsAddPlan = {
   payment_type: [],
   plan_type: '',
   free_test: 'false',
-  current: 'false',
-  activities: []
+  current: 'false'
 }
 
 export const plansType = ['Mensual', 'Clase única', 'Membresía']
@@ -79,6 +68,7 @@ export const paymentsType = ['Efectivo', 'Transferencia', 'Débito automático']
 
 export interface FormErrors {
   business?: string
+  diaries?: string
   name?: string
   description?: string
   price?: string
@@ -94,6 +84,7 @@ export interface FormErrors {
 }
 
 export const initialErrors: FormErrors = {
+  diaries: '',
   name: '',
   description: '',
   price: '',
@@ -104,7 +95,7 @@ export const initialErrors: FormErrors = {
   plan_type: ''
 }
 
-export interface FormErrorActivities {
+export interface FormErrorDiaries {
   id: number
   error: string
 }
@@ -121,7 +112,7 @@ export interface Columns {
   plan_type: boolean
   free_test: boolean
   current: boolean
-  activities: boolean
+  diaries: boolean
 }
 
 export const initialColumns: Columns = {
@@ -136,5 +127,5 @@ export const initialColumns: Columns = {
   plan_type: true,
   free_test: true,
   current: true,
-  activities: true
+  diaries: true
 }

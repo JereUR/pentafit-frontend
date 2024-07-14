@@ -3,15 +3,16 @@
 import { createContext, ReactNode, useState } from 'react'
 import axios from 'axios'
 
-import { ExportPlan, Plan, PropsAddPlan } from '../types/Plan'
+import { Plan, PropsAddPlan } from '../types/Plan'
 import { useToast } from '../ui/use-toast'
 import useUser from '../hooks/useUser'
+import { initialPlans } from '../db/PlanData'
 
 type PlansContextType = {
-  plans: ExportPlan[] | []
+  plans: Plan[] | []
   loadingPlan: boolean
   count: number
-  getAllPlans: (business_id: number) => Promise<ExportPlan[] | []>
+  getAllPlans: (business_id: number) => Promise<Plan[] | []>
   getPlans: ({
     q,
     page,
@@ -56,54 +57,19 @@ type PlansContextType = {
 
 export const PlansContext = createContext<PlansContextType | null>(null)
 
-const initialPlans = [
-  {
-    id: 1,
-    company_id: [1, 2],
-    name: 'Plan 1',
-    description: 'test',
-    price: 200,
-    start_date: '2024-4-20',
-    end_date: '2024-5-20',
-    expiration_period: 30,
-    generate_invoice: false,
-    payment_type: ['Efectivo', 'Transferencia', 'Debito automático'],
-    plan_type: 'Mensual',
-    free_test: false,
-    current: false,
-    activities: []
-  },
-  {
-    id: 2,
-    company_id: [1],
-    name: 'Plan 2',
-    description: 'test',
-    price: 200,
-    start_date: '2024-4-20',
-    end_date: '2024-5-20',
-    expiration_period: 30,
-    generate_invoice: false,
-    payment_type: ['Efectivo', 'Debito automático'],
-    plan_type: 'Mensual',
-    free_test: false,
-    current: false,
-    activities: []
-  }
-]
-
 export default function PlansContextProvider({
   children
 }: {
   children: ReactNode
 }) {
-  const [plans, setPlans] = useState<ExportPlan[] | []>([])
+  const [plans, setPlans] = useState<Plan[] | []>([])
   const [loadingPlan, setLoadingPlan] = useState<boolean>(true)
   const [count, setCount] = useState(0)
   const { toast } = useToast()
   const { token } = useUser()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
-  async function getAllPlans(business_id: number): Promise<ExportPlan[] | []> {
+  async function getAllPlans(business_id: number): Promise<Plan[] | []> {
     setLoadingPlan(true)
     const url = `${BASE_URL}api/v1/all_plans?company_id=${business_id}`
 
@@ -180,6 +146,7 @@ export default function PlansContextProvider({
       })
     } finally {
       setLoadingPlan(false)
+      setPlans(initialPlans)
     }
   }
 
@@ -190,6 +157,7 @@ export default function PlansContextProvider({
     id: string
     business_id: number
   }): Promise<Plan | null> {
+    return initialPlans[0]
     setLoadingPlan(true)
     const params = new URLSearchParams()
     params.append('id', id)
@@ -305,7 +273,7 @@ export default function PlansContextProvider({
             {
               plan_activity: {
                 plan_id: id,
-                activity_ids: dataPlan.activities
+                diaries_ids: dataPlan.diaries
               }
             },
             {
@@ -380,7 +348,7 @@ export default function PlansContextProvider({
       payment_type: dataPlan.payment_type,
       plan_type: dataPlan.plan_type,
       current: currentValue,
-      activities: dataPlan.activities
+      diaries: dataPlan.diaries
     }
 
     let url = `${BASE_URL}api/v1/plan`
@@ -397,16 +365,16 @@ export default function PlansContextProvider({
           }
         }
       )
-      if (dataPlan.activities.length > 0) {
+      if (dataPlan.diaries.length > 0) {
         if (response.status === 200) {
-          url = `${BASE_URL}api/v1/plan_activities`
+          url = `${BASE_URL}api/v1/plan_diaries`
           try {
             const response = await axios.post(
               url,
               {
-                plan_activity: {
+                plan_diaries: {
                   plan_id: dataPlan.id,
-                  activity_ids: dataPlan.activities
+                  diaries_ids: dataPlan.diaries
                 }
               },
               {
