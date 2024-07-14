@@ -68,7 +68,7 @@ const ExportData: React.FC<Props> = ({ business }) => {
           Tipo_de_plan: plan.plan_type,
           Ofrece_clase_de_prueba: plan.free_test ? 'Si' : 'No',
           Vigente: plan.current ? 'Si' : 'No',
-          Numero_de_Actividades: plan.activities
+          Numero_de_Actividades: plan.diaries.length
         }
       })
 

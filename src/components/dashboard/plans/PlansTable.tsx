@@ -194,6 +194,10 @@ export default function PlansTable() {
                 />
               </td>
               {selectedColumns.name && <td className="px-2 py-5">Nombre</td>}
+              
+              {selectedColumns.diaries && (
+                <td className="px-2 py-5">Agendas</td>
+              )}
               {selectedColumns.description && (
                 <td className="px-2 py-5">Descripción</td>
               )}
@@ -221,9 +225,6 @@ export default function PlansTable() {
               )}
               {selectedColumns.current && (
                 <td className="px-2 py-5">Vigente </td>
-              )}
-              {selectedColumns.activities && (
-                <td className="px-2 py-5">Actividades</td>
               )}
               <td className="px-2 py-5">Acción</td>
             </tr>
@@ -254,6 +255,16 @@ export default function PlansTable() {
                       }
                     >
                       {plan.name}
+                    </td>
+                  )}
+                  {selectedColumns.diaries && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(`/panel-de-control/planes/${plan.id}`)
+                      }
+                    >
+                      {plan?.diaries.length}
                     </td>
                   )}
                   {selectedColumns.description && (
@@ -372,17 +383,6 @@ export default function PlansTable() {
                       }
                     >
                       {plan.current ? plan.current : '-'}
-                    </td>
-                  )}
-
-                  {selectedColumns.activities && (
-                    <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(`/panel-de-control/planes/${plan.id}`)
-                      }
-                    >
-                      {plan?.activities}
                     </td>
                   )}
                   <td className="border-b border-foreground px-2 py-5">
