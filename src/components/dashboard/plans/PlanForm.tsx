@@ -10,7 +10,7 @@ import usePlans from 'components/hooks/usePlans'
 import useUser from 'components/hooks/useUser'
 import { Business } from 'components/types/Business'
 import {
-  FormErrorActivities,
+  FormErrorDiaries,
   FormErrors,
   initialErrors,
   paymentsType,
@@ -22,7 +22,7 @@ import noImage from '../../../../public/assets/no-image.png'
 import { Button } from 'components/ui/button'
 import Loader from 'components/Loader'
 import { CustomCheckbox } from '../CustomCheckbox'
-import AddActivitiesButton from './AddActivitiesButton'
+import AddDiariesButton from './AddDiariesButton'
 import ErrorText from '../global/ErrorText'
 import WorkingArea from '../WorkingArea'
 
@@ -39,8 +39,8 @@ export default function PlanForm({
   const [dataPlan, setDataPlan] = useState<PropsAddPlan>(plan)
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
-  const [formErrorsActivities, setFormErrorsActivities] = useState<
-    FormErrorActivities[]
+  const [formErrorsDiaries, setFormErrorsDiaries] = useState<
+    FormErrorDiaries[]
   >([])
 
   const { toast } = useToast()
@@ -80,7 +80,7 @@ export default function PlanForm({
 
   const validations = ({ dataPlan }: { dataPlan: PropsAddPlan }) => {
     const errorsForm: FormErrors = {}
-    const errorsFormActivities: FormErrorActivities[] = []
+    const errorsFormDiaries: FormErrorDiaries[] = []
 
     if (!workingBusiness) {
       errorsForm.company_id = `Debes tener un area de trabajo (negocio) activo.`
@@ -116,22 +116,34 @@ export default function PlanForm({
       errorsForm.plan_type = `Elija una de las opciones.`
     }
 
-    if (dataPlan.activities.length > 0) {
-      /* dataPlan.activities.forEach((activity) => {
-        const activeDaysCount = activity.days_of_week.filter(
-          (day) => day
-        ).length
-        if (activeDaysCount < parseInt(activity.sessions_per_week)) {
-          errorsFormActivities.push({
-            id: activity.id,
+    if (dataPlan.diaries.length > 0) {
+      dataPlan.diaries.forEach((diary) => {
+        const activeDaysCount = diary.days_of_week.filter((day) => day).length
+        if (activeDaysCount < diary.sessions_per_week) {
+          errorsFormDiaries.push({
+            id: diary.id,
             error:
               'El número de sesiones por semana no puede ser mayor al número de días seleccionados.'
           })
         }
-      }) */
+        if (activeDaysCount === 0) {
+          errorsFormDiaries.push({
+            id: diary.id,
+            error: 'Debe seleccionar al menos un día de la semana.'
+          })
+        }
+        if (diary.sessions_per_week < 1) {
+          errorsFormDiaries.push({
+            id: diary.id,
+            error: 'El número de sesiones no puede ser 0.'
+          })
+        }
+      })
+    } else {
+      errorsForm.diaries = `Debe agregar al menos una agenda.`
     }
 
-    return { errorsForm, errorsFormActivities }
+    return { errorsForm, errorsFormDiaries }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -178,13 +190,13 @@ export default function PlanForm({
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    const { errorsForm, errorsFormActivities } = validations({ dataPlan })
+    const { errorsForm, errorsFormDiaries } = validations({ dataPlan })
     setFormErrors(errorsForm)
-    setFormErrorsActivities(errorsFormActivities)
+    setFormErrorsDiaries(errorsFormDiaries)
 
     if (
       Object.keys(errorsForm).length === 0 &&
-      Object.keys(errorsFormActivities).length === 0 &&
+      Object.keys(errorsFormDiaries).length === 0 &&
       workingBusiness
     ) {
       if (type === 'add') {
@@ -229,12 +241,12 @@ export default function PlanForm({
     <div>
       <WorkingArea formErrors={formErrors} workingBusiness={workingBusiness} />
       <form onSubmit={handleSubmit}>
-        <AddActivitiesButton
+        <AddDiariesButton
           workingBusiness={workingBusiness}
           token={token}
           dataPlan={dataPlan}
           setDataPlan={setDataPlan}
-          formErrorsActivities={formErrorsActivities}
+          formErrorsDiaries={formErrorsDiaries}
         />
         <div className="grid grid-cols-2 xl:grid-cols-3 gap-10 mb-4">
           <div className="flex flex-col gap-2">
