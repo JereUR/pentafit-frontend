@@ -6,7 +6,6 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
 export async function DELETE(request: Request) {
   const token = await request.json()
-  console.log(token)
   try {
     const response = await axios.delete(`${BASE_URL}logout`, {
       headers: {

@@ -5,27 +5,27 @@ import axios from 'axios'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
 export async function POST(request: Request) {
-  const dataLogin = await request.json()
-  console.log(dataLogin)
   try {
-    const response = await axios.post(
-      `${BASE_URL}login`,
-      {
-        user: {
-          email: dataLogin.email,
-          password: dataLogin.password
-        }
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+    const { dataLogin } = await request.json()
+    const { email, password } = dataLogin
+
+    const requestBody = {
+      user: {
+        email,
+        password
       }
-    )
+    }
+
+    const response = await axios.post(`${BASE_URL}/login`, requestBody, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
 
     if (response.status === 200 || response.status === 204) {
       const authToken = response.headers.authorization
-      cookies().set('session', 'authToken', {
+      cookies().set('session', authToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         maxAge: 60 * 60 * 24 * 7,
