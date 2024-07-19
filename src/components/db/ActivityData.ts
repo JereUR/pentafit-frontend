@@ -1,0 +1,82 @@
+import { Activity } from '../types/Activity'
+
+export const initialActivities: Activity[] = [
+  {
+    id: 1,
+    company_id: 1,
+    name: 'Actividad 1',
+    description: 'Test',
+    price: 200,
+    is_public: false,
+    generate_invoice: true,
+    max_sessions: 5,
+    mp_available: false,
+    start_date: '2024, 4, 20',
+    end_date: '2024, 5, 20',
+    payment_type: 'Mensual',
+    activity_type: 'Individual'
+  },
+  {
+    id: 2,
+    company_id: 1,
+    name: 'Actividad 2 con nombre mas largo',
+    description: 'Test',
+    price: 300,
+    is_public: true,
+    public_name: 'Act 1',
+    generate_invoice: true,
+    max_sessions: 15,
+    mp_available: true,
+    start_date: '2024, 4, 20',
+    end_date: '2024, 5, 20',
+    payment_type: 'Mensual',
+    activity_type: 'Individual'
+  },
+  {
+    id: 3,
+    company_id: 1,
+    name: 'Actividad 3 con nombre mas largo que el anterior',
+    description: 'Test',
+    price: 400,
+    is_public: true,
+    public_name: 'Act 1',
+    generate_invoice: true,
+    max_sessions: 10,
+    mp_available: true,
+    start_date: '2024, 4, 20',
+    end_date: '2024, 5, 20',
+    payment_type: 'Por período',
+    activity_type: 'Grupal'
+  },
+  {
+    id: 4,
+    company_id: 1,
+    name: 'Actividad 4',
+    description: 'Test',
+    price: 200,
+    is_public: false,
+    generate_invoice: true,
+    max_sessions: 30,
+    mp_available: false,
+    start_date: '2024, 4, 20',
+    end_date: '2024, 5, 20',
+    payment_type: 'Por sesion',
+    activity_type: 'Grupal'
+  },
+  {
+    id: 5,
+    company_id: 1,
+    name: 'Actividad 5',
+    description: 'Test',
+    price: 500,
+    is_public: true,
+    public_name: 'Act 5',
+    generate_invoice: true,
+    max_sessions: 7,
+    mp_available: true,
+    start_date: '2024, 4, 20',
+    end_date: '2024, 5, 20',
+    payment_type: 'Mensual con sesiones',
+    activity_type: 'Individual'
+  }
+]
