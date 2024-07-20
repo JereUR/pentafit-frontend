@@ -11,6 +11,7 @@ import { initialPlans } from '../db/PlanData'
 type PlansContextType = {
   plans: Plan[] | []
   loadingPlan: boolean
+  loadingPlanForm: boolean
   count: number
   getAllPlans: (business_id: number) => Promise<Plan[] | []>
   getPlans: ({
@@ -64,6 +65,7 @@ export default function PlansContextProvider({
 }) {
   const [plans, setPlans] = useState<Plan[] | []>([])
   const [loadingPlan, setLoadingPlan] = useState<boolean>(true)
+  const [loadingPlanForm, setLoadingPlanForm] = useState<boolean>(true)
   const [count, setCount] = useState(0)
   const { toast } = useToast()
   const { token } = useUser()
@@ -226,7 +228,7 @@ export default function PlansContextProvider({
     dataPlan: PropsAddPlan
     company_id: number
   }): Promise<boolean> {
-    setLoadingPlan(true)
+    setLoadingPlanForm(true)
     const freeTestValue = dataPlan.free_test === 'true' ? true : false
 
     const generateInvoiceValue =
@@ -316,7 +318,7 @@ export default function PlansContextProvider({
       })
       return false
     } finally {
-      setLoadingPlan(false)
+      setLoadingPlanForm(false)
     }
   }
 
@@ -327,7 +329,7 @@ export default function PlansContextProvider({
     dataPlan: PropsAddPlan
     company_id: number
   }): Promise<boolean> {
-    setLoadingPlan(true)
+    setLoadingPlanForm(true)
     const freeTestValue = dataPlan.free_test === 'true' ? true : false
 
     const generateInvoiceValue =
@@ -420,7 +422,7 @@ export default function PlansContextProvider({
       })
       return false
     } finally {
-      setLoadingPlan(false)
+      setLoadingPlanForm(false)
     }
   }
 
@@ -516,6 +518,7 @@ export default function PlansContextProvider({
       value={{
         plans,
         loadingPlan,
+        loadingPlanForm,
         count,
         getAllPlans,
         getPlans,

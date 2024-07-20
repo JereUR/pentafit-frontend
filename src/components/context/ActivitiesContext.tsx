@@ -6,10 +6,12 @@ import axios from 'axios'
 import { Activity, PropsAddActivity } from '../types/Activity'
 import { useToast } from '../ui/use-toast'
 import useUser from '../hooks/useUser'
+import { initialActivities } from '../db/ActivityData'
 
 type ActivitiesContextType = {
   activities: Activity[] | []
   loadingActivity: boolean
+  loadingActivityForm: boolean
   count: number
   getAllActivities: (business_id: number) => Promise<Activity[] | []>
   getActivities: ({
@@ -58,87 +60,6 @@ export const ActivitiesContext = createContext<ActivitiesContextType | null>(
   null
 )
 
-export const initialActivities = [
-  {
-    id: 1,
-    company_id: 1,
-    name: 'Actividad 1',
-    description: 'Test',
-    price: 200,
-    is_public: false,
-    generate_invoice: true,
-    max_sessions: 5,
-    mp_available: false,
-    start_date: '2024, 4, 20',
-    end_date: '2024, 5, 20',
-    payment_type: 'Mensual',
-    activity_type: 'Individual'
-  },
-  {
-    id: 2,
-    company_id: 1,
-    name: 'Actividad 2 con nombre mas largo',
-    description: 'Test',
-    price: 300,
-    is_public: true,
-    public_name: 'Act 1',
-    generate_invoice: true,
-    max_sessions: 15,
-    mp_available: true,
-    start_date: '2024, 4, 20',
-    end_date: '2024, 5, 20',
-    payment_type: 'Mensual',
-    activity_type: 'Individual'
-  },
-  {
-    id: 3,
-    company_id: 1,
-    name: 'Actividad 3 con nombre mas largo que el anterior',
-    description: 'Test',
-    price: 400,
-    is_public: true,
-    public_name: 'Act 1',
-    generate_invoice: true,
-    max_sessions: 10,
-    mp_available: true,
-    start_date: '2024, 4, 20',
-    end_date: '2024, 5, 20',
-    payment_type: 'Por período',
-    activity_type: 'Grupal'
-  },
-  {
-    id: 4,
-    company_id: 1,
-    name: 'Actividad 4',
-    description: 'Test',
-    price: 200,
-    is_public: false,
-    generate_invoice: true,
-    max_sessions: 30,
-    mp_available: false,
-    start_date: '2024, 4, 20',
-    end_date: '2024, 5, 20',
-    payment_type: 'Por sesion',
-    activity_type: 'Grupal'
-  },
-  {
-    id: 5,
-    company_id: 1,
-    name: 'Actividad 5',
-    description: 'Test',
-    price: 500,
-    is_public: true,
-    public_name: 'Act 5',
-    generate_invoice: true,
-    max_sessions: 7,
-    mp_available: true,
-    start_date: '2024, 4, 20',
-    end_date: '2024, 5, 20',
-    payment_type: 'Mensual con sesiones',
-    activity_type: 'Individual'
-  }
-]
-
 export default function ActivitiesContextProvider({
   children
 }: {
@@ -146,6 +67,7 @@ export default function ActivitiesContextProvider({
 }) {
   const [activities, setActivities] = useState<Activity[] | []>([])
   const [loadingActivity, setLoadingActivity] = useState<boolean>(true)
+  const [loadingActivityForm, setLoadingActivityForm] = useState<boolean>(true)
   const [count, setCount] = useState(0)
   const { toast } = useToast()
   const { token } = useUser()
@@ -154,7 +76,6 @@ export default function ActivitiesContextProvider({
   async function getAllActivities(
     business_id: number
   ): Promise<Activity[] | []> {
-    return initialActivities
     setLoadingActivity(true)
     const url = `${BASE_URL}api/v1/all_activities?company_id=${business_id}`
 
@@ -184,7 +105,6 @@ export default function ActivitiesContextProvider({
       return []
     } finally {
       setLoadingActivity(false)
-      
     }
   }
 
@@ -232,6 +152,7 @@ export default function ActivitiesContextProvider({
       })
     } finally {
       setLoadingActivity(false)
+      setActivities(initialActivities)
     }
   }
 
@@ -242,6 +163,7 @@ export default function ActivitiesContextProvider({
     id: string
     business_id: number
   }): Promise<Activity | null> {
+    return initialActivities[0]
     setLoadingActivity(true)
     const params = new URLSearchParams()
     params.append('id', id)
@@ -283,7 +205,7 @@ export default function ActivitiesContextProvider({
     dataActivity: PropsAddActivity
     company_id: number
   }): Promise<boolean> {
-    setLoadingActivity(true)
+    setLoadingActivityForm(true)
     const isPublicValue = dataActivity.is_public === 'true' ? true : false
 
     const generateInvoiceValue =
@@ -339,7 +261,7 @@ export default function ActivitiesContextProvider({
       })
       return false
     } finally {
-      setLoadingActivity(false)
+      setLoadingActivityForm(false)
     }
   }
 
@@ -350,7 +272,7 @@ export default function ActivitiesContextProvider({
     dataActivity: PropsAddActivity
     company_id: number
   }): Promise<boolean> {
-    setLoadingActivity(true)
+    setLoadingActivityForm(true)
     const isPublicValue = dataActivity.is_public === 'true' ? true : false
 
     const generateInvoiceValue =
@@ -407,7 +329,7 @@ export default function ActivitiesContextProvider({
       })
       return false
     } finally {
-      setLoadingActivity(false)
+      setLoadingActivityForm(false)
     }
   }
 
@@ -504,6 +426,7 @@ export default function ActivitiesContextProvider({
       value={{
         activities,
         loadingActivity,
+        loadingActivityForm,
         count,
         getAllActivities,
         getActivities,

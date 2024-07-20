@@ -11,6 +11,7 @@ import { initialDiaries } from '../db/DiaryData'
 type DiariesContextType = {
   diaries: Diary[] | []
   loadingDiary: boolean
+  loadingDiaryForm: boolean
   count: number
   getAllDiaries: (business_id: number) => Promise<Diary[] | []>
   getDiaries: ({
@@ -60,6 +61,7 @@ export default function DiariesContextProvider({
 }) {
   const [diaries, setDiaries] = useState<Diary[] | []>([])
   const [loadingDiary, setLoadingDiary] = useState<boolean>(true)
+  const [loadingDiaryForm, setLoadingDiaryForm] = useState(false)
   const [count, setCount] = useState(0)
   const { toast } = useToast()
   const { token } = useUser()
@@ -95,7 +97,6 @@ export default function DiariesContextProvider({
       return []
     } finally {
       setLoadingDiary(false)
-      return initialDiaries
     }
   }
 
@@ -121,8 +122,7 @@ export default function DiariesContextProvider({
       })
 
       if (response.status === 200 || response.status === 204) {
-        setDiaries(response.data.Diaries)
-        setCount(response.data.count)
+        setDiaries(response.data)
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
@@ -190,7 +190,7 @@ export default function DiariesContextProvider({
     dataDiary: PropsAddDiary
     company_id: number
   }): Promise<boolean> {
-    setLoadingDiary(true)
+    setLoadingDiaryForm(true)
     const isActiveValue = dataDiary.is_active === 'true' ? true : false
 
     const worksHolidaysValue =
@@ -199,10 +199,11 @@ export default function DiariesContextProvider({
     const newDiary = {
       company_id,
       activity: { id: dataDiary.activity.id, name: dataDiary.activity.name },
+      name: dataDiary.name,
       type_schedule: dataDiary.type_schedule,
       date_from: dataDiary.date_from,
       date_until: dataDiary.date_until,
-      days_available: dataDiary.days_available,
+      days_availables_attributes: dataDiary.days_available,
       repeat_for: dataDiary.repeat_for,
       offer_days: dataDiary.offer_days,
       term_duration: dataDiary.term_duration,
@@ -245,7 +246,7 @@ export default function DiariesContextProvider({
       })
       return false
     } finally {
-      setLoadingDiary(false)
+      setLoadingDiaryForm(false)
     }
   }
 
@@ -256,7 +257,7 @@ export default function DiariesContextProvider({
     dataDiary: PropsAddDiary
     company_id: number
   }): Promise<boolean> {
-    setLoadingDiary(true)
+    setLoadingDiaryForm(true)
     const isActiveValue = dataDiary.is_active === 'true' ? true : false
 
     const worksHolidaysValue =
@@ -266,10 +267,11 @@ export default function DiariesContextProvider({
       company_id,
       id: dataDiary.id,
       activity: { id: dataDiary.activity.id, name: dataDiary.activity.name },
+      name: dataDiary.name,
       type_schedule: dataDiary.type_schedule,
       date_from: dataDiary.date_from,
       date_until: dataDiary.date_until,
-      days_available: dataDiary.days_available,
+      days_availables_attributes: dataDiary.days_available,
       repeat_for: dataDiary.repeat_for,
       offer_days: dataDiary.offer_days,
       term_duration: dataDiary.term_duration,
@@ -312,12 +314,11 @@ export default function DiariesContextProvider({
       })
       return false
     } finally {
-      setLoadingDiary(false)
+      setLoadingDiaryForm(false)
     }
   }
 
   async function deleteDiariesById(diaries: number[]): Promise<boolean> {
-    console.log(diaries)
     setLoadingDiary(true)
     const url = `${BASE_URL}api/v1/diary`
     try {
@@ -411,6 +412,7 @@ export default function DiariesContextProvider({
       value={{
         diaries,
         loadingDiary,
+        loadingDiaryForm,
         count,
         getAllDiaries,
         getDiaries,
