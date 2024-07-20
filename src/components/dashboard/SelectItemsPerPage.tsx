@@ -62,16 +62,16 @@ const SelectItemsPerPage: React.FC<Props> = ({
             </p>
             <hr className="my-2 border-gray-200 dark:border-gray-500" />
             {numbersOptions.map((n) => (
-              <label key={n} className="flex items-center cursor-pointer">
+              <label key={n} className="ml-2 flex items-center cursor-pointer">
                 <input
                   type="radio"
-                  className="mr-2 cursor-pointer"
+                  className="cursor-pointer"
                   name="itemsPerPage"
                   value={n}
                   checked={partialOption === n}
                   onChange={(e) => setPartialOption(Number(e.target.value))}
                 />
-                {n}
+                <span className='link-progress z-50 mx-4 ml-2 pl-1 rounded-r-full w-full'>{n}</span>
               </label>
             ))}
             <hr className="my-2 border-gray-200 dark:border-gray-500" />

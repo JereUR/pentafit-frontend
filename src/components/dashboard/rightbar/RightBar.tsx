@@ -116,7 +116,7 @@ const RightBar = () => {
                         {otherBusinesses.map((item: Business, key: number) => (
                           <DropdownMenuItem
                             key={key}
-                            className="p-1 px-4 cursor-pointer rounded-r-full transition flex items-start hover:bg-primary-orange-500"
+                            className="p-1 px-4 cursor-pointer rounded-r-full transition flex items-start link-progress z-50 border-none"
                             onClick={() => handleChangeWorkingBusiness(item.id)}
                           >
                             <div className="flex justify-start items-center gap-2">

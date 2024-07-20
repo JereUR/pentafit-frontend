@@ -115,7 +115,7 @@ export default function ProfileDropdownMenu() {
           {dropdownMenuItems.map((item: DropdownProp, key: number) => (
             <DropdownMenuItem
               key={key}
-              className="p-1 px-4 cursor-pointer rounded-r-full ml-[-10px]  transition flex items-start hover:bg-primary-orange-500"
+              className="p-1 my-1 px-2 cursor-pointer rounded-r-full transition flex items-start link-progress z-50"
             >
               <Link href={item.path}>
                 <span className="flex items-center gap-2 my-1">
@@ -125,7 +125,7 @@ export default function ProfileDropdownMenu() {
               </Link>
             </DropdownMenuItem>
           ))}
-          <DropdownMenuItem className="p-1 px-4 my-1 cursor-pointer rounded-r-full ml-[-10px] transition flex items-start gap-2 hover:bg-primary-orange-500">
+          <DropdownMenuItem className="py-2 px-2 my-1 cursor-pointer rounded-r-full transition flex items-start gap-2 link-progress z-50">
             <span className="flex items-center gap-2 " onClick={handleSignOut}>
               <MdLogout />
               {!loadingUser ? (
