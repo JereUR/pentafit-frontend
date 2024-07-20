@@ -25,7 +25,7 @@ const DiaryItem: React.FC<Props> = ({
   return (
     <div>
       {showInfo && diaryToShow && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-75">
+        <div className="fixed inset-0  z-[100] flex items-center justify-center bg-black bg-opacity-75">
           <div className="bg-card text-foreground p-6 rounded-lg shadow-lg w-3/4 max-h-[80vh] overflow-y-auto  scrollbar-thin scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-700">
             <div className="flex justify-between items-center mb-4">
               <h4 className="text-xl font-semibold mb-4 text-primary-orange-500 dark:text-primary-orange-600">

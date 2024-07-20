@@ -20,6 +20,7 @@ import TableSkeleton from '../skeletons/TableSkeleton'
 import DiariesCalendar from './DiariesCalendar'
 import SelectDaysToShow from './SelectDaysToShow'
 import SelectedDiariesActions from './SelectedDiariesActions'
+import DiaryItem from './DiaryItem'
 
 export default function DiariesTable() {
   const [groupDiaries, setGroupDiaries] = useState<DiaryGroup[]>([])
@@ -27,6 +28,12 @@ export default function DiariesTable() {
   const [selectedDays, setSelectedDays] = useState<Days>(initialDays)
   const [selectedDiaries, setSelectedDiaries] = useState<number[]>([])
   const [selectAll, setSelectAll] = useState<boolean>(false)
+  const [showInfo, setShowInfo] = useState<boolean>(false)
+  const [diaryToShow, setDiaryToShow] = useState<Diary | null>(null)
+  const [diaryToDelete, setDiaryToDelete] = useState<
+    GroupedData | Diary | null
+  >(null)
+  const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
 
   const searchParams = useSearchParams()
   const { token, getWorkingBusiness } = useUser()
@@ -81,10 +88,10 @@ export default function DiariesTable() {
 
   useEffect(() => {
     if (window != undefined) {
-      const Days = localStorage.getItem('Days-diaries')
+      const days = localStorage.getItem('days-diaries')
 
-      if (Days) {
-        setSelectedDays(JSON.parse(Days))
+      if (days) {
+        setSelectedDays(JSON.parse(days))
       }
     }
   }, [])
@@ -106,6 +113,16 @@ export default function DiariesTable() {
     } else {
       setSelectedDiaries([])
     }
+  }
+
+  const handleClickDelete = ({ diary }: { diary: GroupedData | Diary }) => {
+    setDiaryToDelete(diary)
+    setShowConfirmDelete(true)
+  }
+
+  const handleCloseInfo = () => {
+    setShowInfo(false)
+    setDiaryToShow(null)
   }
 
   const handleCheckboxChange = (
@@ -157,6 +174,19 @@ export default function DiariesTable() {
             handleSelectAllChange={handleSelectAllChange}
             selectedDiaries={selectedDiaries}
             handleCheckboxChange={handleCheckboxChange}
+            diaryToDelete={diaryToDelete}
+            setDiaryToDelete={setDiaryToDelete}
+            setDiaryToShow={setDiaryToShow}
+            setShowInfo={setShowInfo}
+            showConfirmDelete={showConfirmDelete}
+            setShowConfirmDelete={setShowConfirmDelete}
+            handleClickDelete={handleClickDelete}
+          />
+          <DiaryItem
+            diaryToShow={diaryToShow}
+            showInfo={showInfo}
+            handleCloseInfo={handleCloseInfo}
+            handleClickDelete={handleClickDelete}
           />
         </div>
       )}

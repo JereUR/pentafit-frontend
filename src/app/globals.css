@@ -423,5 +423,5 @@ input[type='number'] {
   animation-fill-mode: both;
 
   animation-timeline: --reveal;
-  animation-range: entry 15% cover 35%;
+  animation-range: entry 15% cover 25%;
 }

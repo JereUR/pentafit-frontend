@@ -48,7 +48,7 @@ export default function DiaryForm({
   const { toast } = useToast()
   const router = useRouter()
   const { getWorkingBusiness, token, businesses } = useUser()
-  const { addDiary, updateDiary, loadingDiary } = useDiaries()
+  const { addDiary, updateDiary, loadingDiaryForm } = useDiaries()
   const { getAllActivities } = useActivities()
 
   useEffect(() => {
@@ -158,7 +158,7 @@ export default function DiaryForm({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    if (name === 'start_date' || name === 'end_date') {
+    if (name === 'date_from' || name === 'date_until') {
       setDataDiary({ ...dataDiary, [name]: new Date(value) })
     } else {
       setDataDiary({ ...dataDiary, [name]: value })
@@ -515,7 +515,7 @@ export default function DiaryForm({
                 <option
                   key={item}
                   value={item}
-                  selected={dataDiary.type_schedule === item}
+                  selected={dataDiary.genre_exclusive === item}
                 >
                   {item}
                 </option>
@@ -661,7 +661,7 @@ export default function DiaryForm({
               type="submit"
               className="gap-2 font-bold text-background bg-green-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-green-600 border-none"
             >
-              {!loadingDiary ? (
+              {!loadingDiaryForm ? (
                 <div className="flex gap-2 items-center">
                   <FaCheck /> {type === 'add' ? 'Agregar' : 'Actualizar'}
                 </div>

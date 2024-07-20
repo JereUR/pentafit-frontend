@@ -23,6 +23,13 @@ interface Props {
     diaryId: number,
     event: React.ChangeEvent<HTMLInputElement>
   ) => void
+  diaryToDelete: GroupedData | Diary | null
+  setDiaryToDelete: (diary: Diary | null) => void
+  setDiaryToShow: (diary: Diary | null) => void
+  setShowInfo: (show: boolean) => void
+  showConfirmDelete: boolean
+  setShowConfirmDelete: (show: boolean) => void
+  handleClickDelete: ({ diary }: { diary: GroupedData | Diary }) => void
 }
 
 const Calendar: React.FC<Props> = ({
@@ -32,19 +39,20 @@ const Calendar: React.FC<Props> = ({
   selectAll,
   handleSelectAllChange,
   selectedDiaries,
-  handleCheckboxChange
+  handleCheckboxChange,
+  diaryToDelete,
+  setDiaryToDelete,
+  setDiaryToShow,
+  setShowInfo,
+  showConfirmDelete,
+  setShowConfirmDelete,
+  handleClickDelete
 }) => {
-  const [diaryToDelete, setDiaryToDelete] = useState<
-    GroupedData | Diary | null
-  >(null)
-  const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
   const [cellClasses, setCellClasses] = useState<string[][]>(
     Array(diaryGroup.length).fill(
       Array(hoursOfDays.length).fill('bg-background')
     )
   )
-  const [showInfo, setShowInfo] = useState<boolean>(false)
-  const [diaryToShow, setDiaryToShow] = useState<Diary | null>(null)
 
   const router = useRouter()
   const { deleteDiariesById } = useDiaries()
@@ -91,9 +99,10 @@ const Calendar: React.FC<Props> = ({
     setShowConfirmDelete(false)
   }
 
-  const handleClickDelete = ({ diary }: { diary: GroupedData | Diary }) => {
-    setDiaryToDelete(diary)
-    setShowConfirmDelete(true)
+  const handleShowInfo = (diaryId: number) => {
+    const diary = diaries.find((d) => d.id === diaryId) || null
+    setDiaryToShow(diary)
+    setShowInfo(true)
   }
 
   const handleDelete = async () => {
@@ -108,17 +117,6 @@ const Calendar: React.FC<Props> = ({
       }
       closeModal()
     }
-  }
-
-  const handleShowInfo = (diaryId: number) => {
-    const diary = diaries.find((d) => d.id === diaryId) || null
-    setDiaryToShow(diary)
-    setShowInfo(true)
-  }
-
-  const handleCloseInfo = () => {
-    setShowInfo(false)
-    setDiaryToShow(null)
   }
 
   return (
@@ -222,7 +220,7 @@ const Calendar: React.FC<Props> = ({
         </table>
       </div>
       {showConfirmDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-75">
           <div className="bg-card text-foreground p-6 rounded-lg shadow-lg w-3/4 md:w-1/3">
             <h4 className="text-lg font-semibold mb-4">
               Confirmar eliminación
@@ -248,12 +246,6 @@ const Calendar: React.FC<Props> = ({
           </div>
         </div>
       )}
-      <DiaryItem
-        diaryToShow={diaryToShow}
-        showInfo={showInfo}
-        handleCloseInfo={handleCloseInfo}
-        handleClickDelete={handleClickDelete}
-      />
     </div>
   )
 }

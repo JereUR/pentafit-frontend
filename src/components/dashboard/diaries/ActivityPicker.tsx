@@ -59,7 +59,7 @@ const ActivityPicker: React.FC<Props> = ({
                 <CommandItem
                   key={activity.id}
                   value={activity.name}
-                  className='cursor-pointer'
+                  className='cursor-pointer bg-transparent'
                   onSelect={() => {
                     setDataDiary((prev) => ({
                       ...prev,

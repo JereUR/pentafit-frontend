@@ -36,6 +36,7 @@ export default function EditDiary() {
           id,
           business_id: workingBusiness.id
         })
+        console.log(d)
         if (d) {
           setDiary({
             ...diary,
@@ -57,7 +58,7 @@ export default function EditDiary() {
             term_duration: d.term_duration ? d.term_duration : 0,
             amount_of_people: d.amount_of_people ? d.amount_of_people : 0,
             is_active: d.is_active ? 'true' : 'false',
-            genre_exclusive: d.genre_exclusive ? d.genre_exclusive : 'No',
+            genre_exclusive: d.genre_exclusive? d.genre_exclusive: 'No',
             works_holidays: d.works_holidays ? 'true' : 'false',
             observations: d.observations ? d.observations : ''
           })
