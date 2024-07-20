@@ -15,6 +15,7 @@ import axios from 'axios'
 import { PropsRegister, User } from '../types/User'
 import { useToast } from '../ui/use-toast'
 import { Business, PropsAddBusiness } from '../types/Business'
+import { initialBusiness } from '../db/AuthData'
 
 type AuthContextType = {
   user: User | null

@@ -1,4 +1,4 @@
-const initialBusiness = [
+export const initialBusiness = [
   {
     id: 1,
     name: 'Lo de Toscano',
