@@ -40,7 +40,7 @@ export default function ActivityForm({
   const { toast } = useToast()
   const router = useRouter()
   const { getWorkingBusiness, token, businesses } = useUser()
-  const { addActivity, updateActivity, loadingActivity } = useActivities()
+  const { addActivity, updateActivity, loadingActivityForm } = useActivities()
 
   useEffect(() => {
     setDataActivity(activity)
@@ -414,7 +414,7 @@ export default function ActivityForm({
             type="submit"
             className="gap-2 font-bold text-background bg-green-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-green-600 border-none"
           >
-            {!loadingActivity ? (
+            {!loadingActivityForm ? (
               <div className="flex gap-2 items-center">
                 <FaCheck /> {type === 'add' ? 'Agregar' : 'Actualizar'}
               </div>
