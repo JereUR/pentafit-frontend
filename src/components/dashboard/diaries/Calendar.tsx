@@ -1,4 +1,7 @@
 import { BiEdit, BiTrash } from 'react-icons/bi'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+
 import {
   daysOfWeek,
   Diary,
@@ -6,11 +9,6 @@ import {
   GroupedData,
   hoursOfDays
 } from '@/components/types/Diary'
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import DiaryItem from './DiaryItem'
-import Link from 'next/link'
-import useDiaries from '@/components/hooks/useDiaries'
 
 interface Props {
   diaries: Diary[]
@@ -23,12 +21,8 @@ interface Props {
     diaryId: number,
     event: React.ChangeEvent<HTMLInputElement>
   ) => void
-  diaryToDelete: GroupedData | Diary | null
-  setDiaryToDelete: (diary: Diary | null) => void
   setDiaryToShow: (diary: Diary | null) => void
   setShowInfo: (show: boolean) => void
-  showConfirmDelete: boolean
-  setShowConfirmDelete: (show: boolean) => void
   handleClickDelete: ({ diary }: { diary: GroupedData | Diary }) => void
 }
 
@@ -40,12 +34,8 @@ const Calendar: React.FC<Props> = ({
   handleSelectAllChange,
   selectedDiaries,
   handleCheckboxChange,
-  diaryToDelete,
-  setDiaryToDelete,
   setDiaryToShow,
   setShowInfo,
-  showConfirmDelete,
-  setShowConfirmDelete,
   handleClickDelete
 }) => {
   const [cellClasses, setCellClasses] = useState<string[][]>(
@@ -55,7 +45,6 @@ const Calendar: React.FC<Props> = ({
   )
 
   const router = useRouter()
-  const { deleteDiariesById } = useDiaries()
 
   useEffect(() => {
     const newCellClasses = Array(diaryGroup.length)
@@ -95,28 +84,10 @@ const Calendar: React.FC<Props> = ({
     setCellClasses(newCellClasses)
   }, [diaryGroup])
 
-  const closeModal = () => {
-    setShowConfirmDelete(false)
-  }
-
   const handleShowInfo = (diaryId: number) => {
     const diary = diaries.find((d) => d.id === diaryId) || null
     setDiaryToShow(diary)
     setShowInfo(true)
-  }
-
-  const handleDelete = async () => {
-    if (diaryToDelete) {
-      const diaries = [diaryToDelete.id]
-      const res = await deleteDiariesById(diaries)
-
-      if (res) {
-        setShowConfirmDelete(false)
-        setDiaryToDelete(null)
-        window.location.reload()
-      }
-      closeModal()
-    }
   }
 
   return (
@@ -219,33 +190,6 @@ const Calendar: React.FC<Props> = ({
           </tbody>
         </table>
       </div>
-      {showConfirmDelete && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-75">
-          <div className="bg-card text-foreground p-6 rounded-lg shadow-lg w-3/4 md:w-1/3">
-            <h4 className="text-lg font-semibold mb-4">
-              Confirmar eliminación
-            </h4>
-            <p className="text-center">
-              ¿Estás seguro de que deseas eliminar la agenda de{' '}
-              {`' ${diaryToDelete?.activity.name} (${diaryToDelete?.name})'`}?
-            </p>
-            <div className="flex justify-end space-x-4 mt-4">
-              <button
-                className="bg-gray-500 text-white px-4 py-2 rounded"
-                onClick={() => setShowConfirmDelete(false)}
-              >
-                Cancelar
-              </button>
-              <button
-                className="bg-red-500 text-white px-4 py-2 rounded"
-                onClick={handleDelete}
-              >
-                Confirmar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

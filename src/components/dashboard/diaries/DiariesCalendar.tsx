@@ -12,13 +12,9 @@ interface Props {
     diaryId: number,
     event: React.ChangeEvent<HTMLInputElement>
   ) => void
-  diaryToDelete: GroupedData | Diary | null
-  setDiaryToDelete: (diary: Diary | null) => void
   setDiaryToShow: (diary: Diary | null) => void
   setShowInfo: (show: boolean) => void
-  showConfirmDelete:boolean
-  setShowConfirmDelete: (show: boolean) => void
-  handleClickDelete:({ diary }: { diary: GroupedData | Diary })=>void
+  handleClickDelete: ({ diary }: { diary: GroupedData | Diary }) => void
 }
 
 const DiariesCalendar: React.FC<Props> = ({
@@ -29,12 +25,8 @@ const DiariesCalendar: React.FC<Props> = ({
   handleSelectAllChange,
   selectedDiaries,
   handleCheckboxChange,
-  diaryToDelete,
-  setDiaryToDelete,
   setDiaryToShow,
   setShowInfo,
-  showConfirmDelete,
-  setShowConfirmDelete,
   handleClickDelete
 }) => {
   return (
@@ -55,12 +47,8 @@ const DiariesCalendar: React.FC<Props> = ({
                 handleSelectAllChange={handleSelectAllChange}
                 selectedDiaries={selectedDiaries}
                 handleCheckboxChange={handleCheckboxChange}
-                diaryToDelete={diaryToDelete}
-                setDiaryToDelete={setDiaryToDelete}
                 setDiaryToShow={setDiaryToShow}
                 setShowInfo={setShowInfo}
-                showConfirmDelete={showConfirmDelete}
-                setShowConfirmDelete={setShowConfirmDelete}
                 handleClickDelete={handleClickDelete}
               />
             )}

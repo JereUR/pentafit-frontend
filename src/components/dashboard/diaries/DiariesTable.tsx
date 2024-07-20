@@ -37,7 +37,7 @@ export default function DiariesTable() {
 
   const searchParams = useSearchParams()
   const { token, getWorkingBusiness } = useUser()
-  const { diaries, getDiaries, loadingDiary } = useDiaries()
+  const { diaries, getDiaries, loadingDiary, deleteDiariesById } = useDiaries()
 
   const groupDiaryByDays = (diaries: Diary[]): DiaryGroup[] => {
     const groupedData: DiaryGroup[] = Array.from(
@@ -137,6 +137,24 @@ export default function DiariesTable() {
     setSelectedDiaries(newSelectedDiaries)
   }
 
+  const closeModal = () => {
+    setShowConfirmDelete(false)
+  }
+
+  const handleDelete = async () => {
+    if (diaryToDelete) {
+      const diaries = [diaryToDelete.id]
+      const res = await deleteDiariesById(diaries)
+
+      if (res) {
+        setShowConfirmDelete(false)
+        setDiaryToDelete(null)
+        window.location.reload()
+      }
+      closeModal()
+    }
+  }
+
   return (
     <div className="m-10 bg-background p-1 rounded-lg w-[88vw]">
       <div className="flex gap-10">
@@ -174,12 +192,8 @@ export default function DiariesTable() {
             handleSelectAllChange={handleSelectAllChange}
             selectedDiaries={selectedDiaries}
             handleCheckboxChange={handleCheckboxChange}
-            diaryToDelete={diaryToDelete}
-            setDiaryToDelete={setDiaryToDelete}
             setDiaryToShow={setDiaryToShow}
             setShowInfo={setShowInfo}
-            showConfirmDelete={showConfirmDelete}
-            setShowConfirmDelete={setShowConfirmDelete}
             handleClickDelete={handleClickDelete}
           />
           <DiaryItem
@@ -188,6 +202,34 @@ export default function DiariesTable() {
             handleCloseInfo={handleCloseInfo}
             handleClickDelete={handleClickDelete}
           />
+          {showConfirmDelete && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-75">
+              <div className="bg-card text-foreground p-6 rounded-lg shadow-lg w-3/4 md:w-1/3">
+                <h4 className="text-lg font-semibold mb-4">
+                  Confirmar eliminación
+                </h4>
+                <p className="text-center">
+                  ¿Estás seguro de que deseas eliminar la agenda de{' '}
+                  {`' ${diaryToDelete?.activity.name} (${diaryToDelete?.name})'`}
+                  ?
+                </p>
+                <div className="flex justify-end space-x-4 mt-4">
+                  <button
+                    className="bg-gray-500 text-white px-4 py-2 rounded"
+                    onClick={() => setShowConfirmDelete(false)}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-4 py-2 rounded"
+                    onClick={handleDelete}
+                  >
+                    Confirmar
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
