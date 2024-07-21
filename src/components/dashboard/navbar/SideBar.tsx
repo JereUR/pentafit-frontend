@@ -27,8 +27,8 @@ const menuItems = [
     list: null
   },
   {
-    title: 'Socios',
-    path: '/panel-de-control/socios',
+    title: 'Equipo',
+    path: '/panel-de-control/equipo',
     icon: <FaUser className="h-4 w-4" />,
     list: null
   },
