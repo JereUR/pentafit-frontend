@@ -16,6 +16,7 @@ import Logo from 'components/Logo'
 import { Toaster } from 'components/ui/toaster'
 import PlansContextProvider from 'components/context/PlansContext'
 import DiariesContextProvider from 'components/context/DiariesContext'
+import TeamContextProvider from '@/components/context/TeamContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -67,24 +68,26 @@ export default function RootLayout({
             <PlansContextProvider>
               <DiariesContextProvider>
                 <ActivitiesContextProvider>
-                  {shouldRenderLayout ? (
-                    <>
-                      <NavBar />
-                      {children}
-                      <Toaster />
-                    </>
-                  ) : (
-                    <div className="flex min-h-screen max-w-screen">
-                      <div className="w-[6vw] bg-black py-5">
-                        <SideBar />
-                      </div>
-                      <div className="w-[94vw]">
-                        <TopBar />
+                  <TeamContextProvider>
+                    {shouldRenderLayout ? (
+                      <>
+                        <NavBar />
                         {children}
+                        <Toaster />
+                      </>
+                    ) : (
+                      <div className="flex min-h-screen max-w-screen">
+                        <div className="w-[6vw] bg-black py-5">
+                          <SideBar />
+                        </div>
+                        <div className="w-[94vw]">
+                          <TopBar />
+                          {children}
+                        </div>
+                        <Toaster />
                       </div>
-                      <Toaster />
-                    </div>
-                  )}
+                    )}
+                  </TeamContextProvider>
                 </ActivitiesContextProvider>
               </DiariesContextProvider>
             </PlansContextProvider>
