@@ -7,6 +7,7 @@ import { useToast } from '../ui/use-toast'
 import useUser from '../hooks/useUser'
 import { User } from '../types/User'
 import { PropsAddMember } from '../types/Team'
+import { initialMembers } from '../db/TeamData'
 
 type TeamContextType = {
   members: User[] | []
@@ -16,10 +17,14 @@ type TeamContextType = {
   getAllMembers: (business_id: number) => Promise<User[] | []>
   getMembers: ({
     q,
-    business_id
+    page,
+    business_id,
+    ITEMS_PER_PAGE
   }: {
     q: string
+    page: string
     business_id: number
+    ITEMS_PER_PAGE: number
   }) => Promise<void>
   getMemberById: ({
     id,
@@ -42,7 +47,7 @@ type TeamContextType = {
     dataMember: PropsAddMember
     company_id: number
   }) => Promise<boolean>
-  deleteMemberById: (members: number[]) => Promise<boolean>
+  deleteMembersById: (members: number[]) => Promise<boolean>
   addMembersToBusinesses: ({
     members,
     businesses
@@ -68,6 +73,7 @@ export default function TeamContextProvider({
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
   async function getAllMembers(business_id: number): Promise<User[] | []> {
+    return initialMembers
     setLoadingTeam(true)
     const url = `${BASE_URL}api/v1/all_members?company_id=${business_id}`
 
@@ -102,14 +108,20 @@ export default function TeamContextProvider({
 
   async function getMembers({
     q,
-    business_id
+    page,
+    business_id,
+    ITEMS_PER_PAGE
   }: {
     q: string
+    page: string
     business_id: number
+    ITEMS_PER_PAGE: number
   }): Promise<void> {
     setLoadingTeam(true)
     const params = new URLSearchParams()
     params.append('regex', q)
+    params.append('page', page)
+    params.append('items_per_page', ITEMS_PER_PAGE.toString())
     params.append('company_id', business_id.toString())
     const url = `${BASE_URL}api/v1/members?${params.toString()}`
 
@@ -137,6 +149,7 @@ export default function TeamContextProvider({
       })
     } finally {
       setLoadingTeam(false)
+      setMembers(initialMembers)
     }
   }
 
@@ -147,6 +160,7 @@ export default function TeamContextProvider({
     id: string
     business_id: number
   }): Promise<User | null> {
+    return initialMembers[0]
     setLoadingTeam(true)
     const params = new URLSearchParams()
     params.append('id', id)
@@ -274,7 +288,7 @@ export default function TeamContextProvider({
     }
   }
 
-  async function deleteMemberById(members: number[]): Promise<boolean> {
+  async function deleteMembersById(members: number[]): Promise<boolean> {
     setLoadingTeam(true)
     const url = `${BASE_URL}api/v1/member`
     try {
@@ -375,7 +389,7 @@ export default function TeamContextProvider({
         getMemberById,
         addMember,
         updateMember,
-        deleteMemberById,
+        deleteMembersById,
         addMembersToBusinesses
       }}
     >
