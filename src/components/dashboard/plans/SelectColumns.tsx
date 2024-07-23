@@ -25,6 +25,7 @@ const SelectColumns: React.FC<Props> = ({
   }
 
   const handleCloseMenu = () => {
+    localStorage.setItem('columns-plans', JSON.stringify(selectedColumns))
     setIsOpen(false)
   }
 
