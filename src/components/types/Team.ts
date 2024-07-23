@@ -1,25 +1,29 @@
+import { Company } from './User'
+
 export interface PropsAddMember {
   id?: number | null
   first_name: string
   last_name: string
+  businesses: Company[]
   email: string
   phone?: number
   gender?: string
-  date?: Date
-  role: string
+  birthdate?: Date
+  role: string | null
   password?: string
   password_confirmation?: string
-  [key: string]: string | undefined | number | null | Date
+  [key: string]: string | undefined | number | null | Date | Company[]
 }
 
 export const initialDataAddMember: PropsAddMember = {
   id: null,
   first_name: '',
   last_name: '',
+  businesses: [],
   email: '',
   phone: undefined,
   gender: '',
-  date: new Date(),
+  birthdate: new Date(),
   role: '',
   password: '',
   password_confirmation: ''
@@ -28,10 +32,11 @@ export const initialDataAddMember: PropsAddMember = {
 export interface FormErrorsAddMember {
   first_name?: string
   last_name?: string
+  businesses?: string
   email?: string
   phone?: string
   gender?: string
-  date?: string
+  birthdate?: string
   role?: string
   password?: string
   password_confirmation?: string
@@ -41,11 +46,40 @@ export interface FormErrorsAddMember {
 export const initialErrorsAddMember: FormErrorsAddMember = {
   first_name: '',
   last_name: '',
+  businesses: '',
   email: '',
   phone: '',
   gender: '',
-  date: '',
+  birthdate: '',
   role: '',
   password: '',
   password_confirmation: ''
 }
+
+export interface Columns {
+  first_name: boolean
+  last_name: boolean
+  email: boolean
+  role: boolean
+  businesses: boolean
+  phone: boolean
+  birthdate: boolean
+  gender: boolean
+  created_at: boolean
+}
+
+export const initialColumns: Columns = {
+  first_name: true,
+  last_name: true,
+  email: true,
+  role: true,
+  businesses: true,
+  phone: true,
+  birthdate: true,
+  gender: true,
+  created_at: true
+}
+
+export const posibleRoles = ['Admin', 'Staff']
+
+export const posibleGenders = ['Masculino', 'Femenino', 'Otros']
