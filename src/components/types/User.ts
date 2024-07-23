@@ -1,4 +1,7 @@
-import { Business } from './Business'
+export interface Company {
+  id: number
+  name: string
+}
 
 export type User = {
   birthdate: string
@@ -7,8 +10,9 @@ export type User = {
   first_name: string
   gender: string
   id: number
-  business?: Business[] | []
+  businesses: Company[]
   last_name: string
+  phone: number
   photo?: string | null
   role: string | null
 }
