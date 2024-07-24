@@ -17,7 +17,7 @@ import noImage from '../../../../public/assets/no-image.png'
 import Loader from 'components/Loader'
 import { Card, CardContent, CardHeader } from 'components/ui/card'
 import SelectColumns from './SelectColumns'
-import { Columns, initialColumns } from 'components/types/Plan'
+import { Columns, initialColumns, Plan } from 'components/types/Plan'
 import SelectedPlansActions from './SelectedPlansActions'
 import ExportData from './ExportData'
 import SelectItemsPerPage from '../SelectItemsPerPage'
@@ -25,6 +25,7 @@ import WorkingBusinessSkeleton from '../skeletons/WorkingBusinessSkeleton'
 import TableSkeleton from '../skeletons/TableSkeleton'
 import CountItemsSkeleton from '../skeletons/CountItemsSkeleton'
 import WorkingBusiness from '../WorkingBusiness'
+import PlanItem from './PlanItem'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
@@ -38,6 +39,8 @@ export default function PlansTable() {
   const [showConfirmDeleteMap, setShowConfirmDeleteMap] = useState<{
     [key: number]: boolean
   }>({})
+  const [showInfo, setShowInfo] = useState<boolean>(false)
+  const [planToShow, setPlanToShow] = useState<Plan | null>(null)
 
   const router = useRouter()
 
@@ -133,6 +136,16 @@ export default function PlansTable() {
     setSelectedPlans(newSelectedPlans)
   }
 
+  const handleShowInfo = (plan: Plan) => {
+    setPlanToShow(plan)
+    setShowInfo(true)
+  }
+
+  const handleCloseInfo = () => {
+    setShowInfo(false)
+    setPlanToShow(null)
+  }
+
   return (
     <div className="m-10 bg-background p-1 rounded-lg w-[88vw]">
       <div className="flex justify-between">
@@ -194,7 +207,7 @@ export default function PlansTable() {
                 />
               </td>
               {selectedColumns.name && <td className="px-2 py-5">Nombre</td>}
-              
+
               {selectedColumns.diaries && (
                 <td className="px-2 py-5">Agendas</td>
               )}
@@ -249,80 +262,64 @@ export default function PlansTable() {
                   </td>
                   {selectedColumns.name && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(`/panel-de-control/planes/${plan.id}`)
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(plan)}
                     >
                       {plan.name}
                     </td>
                   )}
                   {selectedColumns.diaries && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(`/panel-de-control/planes/${plan.id}`)
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(plan)}
                     >
                       {plan?.diaries.length}
                     </td>
                   )}
                   {selectedColumns.description && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(`/panel-de-control/planes/${plan.id}`)
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(plan)}
                     >
                       {plan.description ? plan.description : '-'}
                     </td>
                   )}
                   {selectedColumns.price && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(`/panel-de-control/planes/${plan.id}`)
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(plan)}
                     >
                       ${plan.price}
                     </td>
                   )}
                   {selectedColumns.start_date && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(`/panel-de-control/planes/${plan.id}`)
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(plan)}
                     >
                       {plan.start_date}
                     </td>
                   )}
                   {selectedColumns.end_date && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(`/panel-de-control/planes/${plan.id}`)
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(plan)}
                     >
                       {plan.end_date}
                     </td>
                   )}
                   {selectedColumns.expiration_period && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(`/panel-de-control/planes/${plan.id}`)
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(plan)}
                     >
                       {plan.expiration_period}
                     </td>
                   )}
                   {selectedColumns.generate_invoice && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(`/panel-de-control/planes/${plan.id}`)
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(plan)}
                     >
                       <div
                         className={`rounded-xl w-[3vw] ${
@@ -335,10 +332,8 @@ export default function PlansTable() {
                   )}
                   {selectedColumns.payment_type && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(`/panel-de-control/planes/${plan.id}`)
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(plan)}
                     >
                       {plan?.payment_type?.map((payment, index) => {
                         if (index < plan.payment_type.length - 1) {
@@ -351,20 +346,16 @@ export default function PlansTable() {
                   )}
                   {selectedColumns.plan_type && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(`/panel-de-control/planes/${plan.id}`)
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(plan)}
                     >
                       {plan.plan_type}
                     </td>
                   )}
                   {selectedColumns.free_test && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(`/panel-de-control/planes/${plan.id}`)
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(plan)}
                     >
                       <div
                         className={`rounded-xl w-[3vw] ${
@@ -377,10 +368,8 @@ export default function PlansTable() {
                   )}
                   {selectedColumns.current && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(`/panel-de-control/planes/${plan.id}`)
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(plan)}
                     >
                       {plan.current ? plan.current : '-'}
                     </td>
@@ -453,6 +442,12 @@ export default function PlansTable() {
         </table>
       )}
       <Pagination count={count} ITEMS_PER_PAGE={selectedItemsPerPage} />
+      <PlanItem
+        planToShow={planToShow}
+        showInfo={showInfo}
+        handleCloseInfo={handleCloseInfo}
+        handleClickDelete={handleConfirmDelete}
+      />
     </div>
   )
 }
