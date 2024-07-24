@@ -42,7 +42,7 @@ type AuthContextType = {
   recover: ({ email }: { email: string }) => Promise<void>
   getBusinesses: () => Promise<void>
   getBusinessById: (id: string) => Promise<Business | null>
-  deleteBusinessById: (id: string) => Promise<boolean>
+  deleteBusinessById: (id: number) => Promise<boolean>
   addBusiness: ({
     dataBusiness
   }: {
@@ -561,7 +561,7 @@ export default function AuthContextProvider({
     }
   }
 
-  async function deleteBusinessById(id: string) {
+  async function deleteBusinessById(id: number) {
     setLoadingBusiness(true)
     try {
       const response = await axios.delete(
