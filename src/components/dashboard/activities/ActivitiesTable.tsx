@@ -12,7 +12,7 @@ import useActivities from 'components/hooks/useActivities'
 import { Button } from 'components/ui/button'
 import CustomButton from 'components/CustomButton'
 import useUser from 'components/hooks/useUser'
-import { Columns, initialColumns } from 'components/types/Activity'
+import { Activity, Columns, initialColumns } from 'components/types/Activity'
 import SelectColumns from './SelectColumns'
 import { Business } from 'components/types/Business'
 import SelectedActivitiesActions from './SelectedActivitiesActions'
@@ -25,6 +25,7 @@ import TableSkeleton from '../skeletons/TableSkeleton'
 import WorkingBusinessSkeleton from '../skeletons/WorkingBusinessSkeleton'
 import CountItemsSkeleton from '../skeletons/CountItemsSkeleton'
 import WorkingBusiness from '../WorkingBusiness'
+import ActivityItem from './ActivityItem'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
@@ -38,6 +39,8 @@ export default function ActivitiesTable() {
   const [showConfirmDeleteMap, setShowConfirmDeleteMap] = useState<{
     [key: number]: boolean
   }>({})
+  const [showInfo, setShowInfo] = useState<boolean>(false)
+  const [activityToShow, setActivityToShow] = useState<Activity | null>(null)
 
   const router = useRouter()
 
@@ -137,6 +140,16 @@ export default function ActivitiesTable() {
       : selectedActivities.filter((id) => id !== activityId)
 
     setSelectedActivities(newSelectedActivities)
+  }
+
+  const handleShowInfo = (activity: Activity) => {
+    setActivityToShow(activity)
+    setShowInfo(true)
+  }
+
+  const handleCloseInfo = () => {
+    setShowInfo(false)
+    setActivityToShow(null)
   }
 
   return (
@@ -257,48 +270,32 @@ export default function ActivitiesTable() {
                   </td>
                   {selectedColumns.name && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${activity.id}`
-                        )
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(activity)}
                     >
                       {activity.name}
                     </td>
                   )}
                   {selectedColumns.description && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${activity.id}`
-                        )
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(activity)}
                     >
                       {activity.description}
                     </td>
                   )}
                   {selectedColumns.price && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${activity.id}`
-                        )
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(activity)}
                     >
                       ${activity.price}
                     </td>
                   )}
                   {selectedColumns.is_public && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${activity.id}`
-                        )
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(activity)}
                     >
                       <div
                         className={`rounded-xl w-[3vw] ${
@@ -311,7 +308,7 @@ export default function ActivitiesTable() {
                   )}
                   {selectedColumns.is_public && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
+                      className="border-b border-foreground px-2 py-5 hover:underline"
                       onClick={() =>
                         router.push(
                           `/panel-de-control/actividades/${activity.id}`
@@ -323,12 +320,8 @@ export default function ActivitiesTable() {
                   )}
                   {selectedColumns.generate_invoice && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${activity.id}`
-                        )
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(activity)}
                     >
                       <div
                         className={`rounded-xl w-[3vw] ${
@@ -343,24 +336,16 @@ export default function ActivitiesTable() {
                   )}
                   {selectedColumns.max_sessions && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${activity.id}`
-                        )
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(activity)}
                     >
                       {activity.max_sessions}
                     </td>
                   )}
                   {selectedColumns.mp_available && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${activity.id}`
-                        )
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(activity)}
                     >
                       <div
                         className={`rounded-xl w-[3vw] ${
@@ -373,48 +358,32 @@ export default function ActivitiesTable() {
                   )}
                   {selectedColumns.start_date && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${activity.id}`
-                        )
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(activity)}
                     >
                       {activity.start_date}
                     </td>
                   )}
                   {selectedColumns.end_date && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${activity.id}`
-                        )
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(activity)}
                     >
                       {activity.end_date}
                     </td>
                   )}
                   {selectedColumns.payment_type && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${activity.id}`
-                        )
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(activity)}
                     >
                       {activity.payment_type}
                     </td>
                   )}
                   {selectedColumns.activity_type && (
                     <td
-                      className="border-b border-foreground px-2 py-5"
-                      onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${activity.id}`
-                        )
-                      }
+                      className="border-b border-foreground px-2 py-5 hover:underline"
+                      onClick={() => handleShowInfo(activity)}
                     >
                       {activity.activity_type}
                     </td>
@@ -438,7 +407,7 @@ export default function ActivitiesTable() {
                           <FaTrash />
                         </button>
                         {showConfirmDeleteMap[activity.id] && (
-                          <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-50 flex justify-center items-center">
+                          <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-[101] flex justify-center items-center">
                             <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
                               <p>
                                 {`¿Está seguro de que desea eliminar la actividad '
@@ -491,6 +460,12 @@ export default function ActivitiesTable() {
         </table>
       )}
       <Pagination count={count} ITEMS_PER_PAGE={selectedItemsPerPage} />
+      <ActivityItem
+        activityToShow={activityToShow}
+        showInfo={showInfo}
+        handleCloseInfo={handleCloseInfo}
+        handleClickDelete={handleConfirmDelete}
+      />
     </div>
   )
 }
