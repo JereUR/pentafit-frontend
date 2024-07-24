@@ -58,54 +58,54 @@ const DiaryItem: React.FC<Props> = ({
               </div>
             </div>
             <div className="grid grid-cols-3 gap-8">
-              <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
-                <strong className="text-card">Nombre:</strong>{' '}
+              <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
+                <strong className="text-foreground">Nombre:</strong>{' '}
                 {diaryToShow.name}
               </p>
-              <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
-                <strong className="text-card">Actividad:</strong>{' '}
+              <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
+                <strong className="text-foreground">Actividad:</strong>{' '}
                 {diaryToShow.activity.name}
               </p>
-              <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
-                <strong className="text-card">Tipo de agenda:</strong>{' '}
+              <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
+                <strong className="text-foreground">Tipo de agenda:</strong>{' '}
                 {diaryToShow.type_schedule}
               </p>
-              <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
-                <strong className="text-card">Fecha desde:</strong>{' '}
+              <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
+                <strong className="text-foreground">Fecha desde:</strong>{' '}
                 {diaryToShow.date_from}
               </p>
-              <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
-                <strong className="text-card">Fecha hasta:</strong>{' '}
+              <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
+                <strong className="text-foreground">Fecha hasta:</strong>{' '}
                 {diaryToShow.date_until}
               </p>
-              <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
-                <strong className="text-card">Reinicio cada:</strong>{' '}
+              <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
+                <strong className="text-foreground">Reinicio cada:</strong>{' '}
                 {diaryToShow.repeat_for !== 0
                   ? `${diaryToShow.repeat_for} días`
                   : 'Sin determinar'}
               </p>
-              <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
-                <strong className="text-card">Duración:</strong>{' '}
+              <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
+                <strong className="text-foreground">Duración:</strong>{' '}
                 {diaryToShow.term_duration} días
               </p>
-              <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
-                <strong className="text-card">Cantidad de personas:</strong>{' '}
+              <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
+                <strong className="text-foreground">Cantidad de personas:</strong>{' '}
                 {diaryToShow.amount_of_people}
               </p>
-              <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
-                <strong className="text-card">Activa:</strong>{' '}
+              <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
+                <strong className="text-foreground">Activa:</strong>{' '}
                 {diaryToShow.is_active ? 'Sí' : 'No'}
               </p>
-              <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
-                <strong className="text-card">Exclusividad de género:</strong>{' '}
+              <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
+                <strong className="text-foreground">Exclusividad de género:</strong>{' '}
                 {diaryToShow.genre_exclusive}
               </p>
-              <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
-                <strong className="text-card">¿Trabaja feriados?:</strong>{' '}
+              <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
+                <strong className="text-foreground">¿Trabaja feriados?:</strong>{' '}
                 {diaryToShow.works_holidays ? 'Sí' : 'No'}
               </p>
-              <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
-                <strong className="text-card">Días de oferta:</strong>{' '}
+              <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
+                <strong className="text-foreground">Días de oferta:</strong>{' '}
                 {diaryToShow.offer_days
                   ? diaryToShow.offer_days
                       .map((day, index) => (day ? daysOfWeek[index] : null))
@@ -114,8 +114,8 @@ const DiaryItem: React.FC<Props> = ({
                   : null}
               </p>
               {diaryToShow.observations && (
-                <p className="text-lg col-span-2 bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2">
-                  <strong className="text-card">Observaciones:</strong>{' '}
+                <p className="text-lg col-span-2 bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
+                  <strong className="text-foreground">Observaciones:</strong>{' '}
                   {diaryToShow.observations}
                 </p>
               )}
@@ -127,12 +127,12 @@ const DiaryItem: React.FC<Props> = ({
                   <Card key={index} className="p-4 pb-0">
                     <CardTitle className="mb-4">{daysOfWeek[index]}</CardTitle>
                     <CardContent className="flex flex-col gap-2 justify-center">
-                      <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2 mx-6">
-                        <strong className="text-card">Horario inicio:</strong>{' '}
+                      <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2 mx-6">
+                        <strong className="text-foreground">Horario inicio:</strong>{' '}
                         {diary.time_start}
                       </p>
-                      <p className="text-lg bg-primary-orange-400 dark:bg-primary-orange-800 text-gray-800 dark:text-gray-200 rounded-lg p-2 mx-6">
-                        <strong className="text-card">Horario fin:</strong>{' '}
+                      <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2 mx-6">
+                        <strong className="text-foreground">Horario fin:</strong>{' '}
                         {diary.time_end}
                       </p>
                     </CardContent>
