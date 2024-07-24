@@ -1,23 +1,75 @@
 'use client'
 
-import BusinessItem from './BusinessItem'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { MdKeyboardDoubleArrowDown } from 'react-icons/md'
 
 import useUser from 'components/hooks/useUser'
 import { Card, CardContent, CardHeader } from 'components/ui/card'
 import BusinessSkeleton from './BusinessSkeleton'
+import { Business } from '@/components/types/Business'
+import BusinessMoreInfo from './BusinessMoreInfo'
+import BusinessItem from './BusinessItem'
+import { Button } from '@/components/ui/button'
+import Loader from '@/components/Loader'
 
 export default function BusinessList() {
+  const [showInfo, setShowInfo] = useState<boolean>(false)
+  const [businessToShow, setBusinessToShow] = useState<Business | null>(null)
+  const [showConfirmDeleteMap, setShowConfirmDeleteMap] = useState<{
+    [key: number]: boolean
+  }>({})
+
   const router = useRouter()
-  const { token, businesses, getBusinesses, loadingBusiness } = useUser()
+  const {
+    deleteBusinessById,
+    token,
+    businesses,
+    getBusinesses,
+    loadingBusiness
+  } = useUser()
 
   useEffect(() => {
     if (token) {
       getBusinesses()
     }
   }, [token])
+
+  const handleCancelDelete = (businessId: number) => {
+    setShowConfirmDeleteMap((prevState) => ({
+      ...prevState,
+      [businessId]: false
+    }))
+  }
+
+  const handleConfirmDelete = (businessId: number) => {
+    setShowConfirmDeleteMap((prevState) => ({
+      ...prevState,
+      [businessId]: true
+    }))
+  }
+
+  const handleDelete = async (id: number) => {
+    const res = await deleteBusinessById(id)
+
+    if (res) {
+      setShowConfirmDeleteMap((prevState) => ({
+        ...prevState,
+        [id]: false
+      }))
+      window.location.reload()
+    }
+  }
+
+  const handleShowInfo = (business: Business) => {
+    setBusinessToShow(business)
+    setShowInfo(true)
+  }
+
+  const handleCloseInfo = () => {
+    setShowInfo(false)
+    setBusinessToShow(null)
+  }
 
   return (
     <div className="mt-8">
@@ -57,7 +109,44 @@ export default function BusinessList() {
                 </Card>
               </div>
               {businesses.map((b) => (
-                <BusinessItem key={b.id} item={b} />
+                <div key={b.id}>
+                  <BusinessItem
+                    item={b}
+                    handleShowInfo={handleShowInfo}
+                    handleConfirmDelete={handleConfirmDelete}
+                  />
+                  <BusinessMoreInfo
+                    businessToShow={businessToShow}
+                    showInfo={showInfo}
+                    handleCloseInfo={handleCloseInfo}
+                    handleClickDelete={handleConfirmDelete}
+                  />
+                  {showConfirmDeleteMap[b.id] && (
+                    <div className="fixed top-0 left-0 w-full h-full bg-black/30 z-[101] flex justify-center items-center">
+                      <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
+                        <p>
+                          {`¿Está seguro de que desea eliminar el negocio'
+                                ${b.name}'?`}
+                        </p>
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            variant="secondary"
+                            onClick={() => handleCancelDelete(b.id)}
+                          >
+                            Cancelar
+                          </Button>
+                          <Button onClick={() => handleDelete(b.id)}>
+                            {loadingBusiness ? (
+                              <Loader className="mt-[1.8vh] ml-[1vw]" />
+                            ) : (
+                              'Confirmar'
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           ) : (

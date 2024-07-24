@@ -7,7 +7,6 @@ import {
   MdOutlineWork,
   MdOutlineWorkOff
 } from 'react-icons/md'
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { Business } from 'components/types/Business'
@@ -15,28 +14,20 @@ import noImage from '../../../../public/assets/no-image.png'
 import { Button } from 'components/ui/button'
 import useUser from 'components/hooks/useUser'
 
-export default function BusinessItem({ item }: { item: Business }) {
-  const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
+interface Props {
+  item: Business
+  handleShowInfo: (business: Business) => void
+  handleConfirmDelete: (businessId: number) => void
+}
+
+const BusinessItem: React.FC<Props> = ({
+  item,
+  handleShowInfo,
+  handleConfirmDelete
+}) => {
   const router = useRouter()
-  const { deleteBusinessById, updateStatusBusiness, updateWorkingBusiness } =
-    useUser()
+  const { updateStatusBusiness, updateWorkingBusiness } = useUser()
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
-
-  const handleDelete = async (id: string) => {
-    if (showConfirmDelete) {
-      const res = await deleteBusinessById(id)
-      if (res) router.refresh()
-    }
-    setShowConfirmDelete(false)
-  }
-
-  const handleConfirmDelete = () => {
-    setShowConfirmDelete(true)
-  }
-
-  const handleCancelDelete = () => {
-    setShowConfirmDelete(false)
-  }
 
   async function handleStatus(id: number) {
     const res = await updateStatusBusiness(id)
@@ -57,7 +48,12 @@ export default function BusinessItem({ item }: { item: Business }) {
   return (
     <div className="p-4 m-10 bg-card rounded-lg shadow-md">
       <div className="flex justify-between py-6">
-        <div className={`flex ${!item.is_active && 'opacity-40'}`}>
+        <div
+          className={`flex ${
+            !item.is_active && 'opacity-40'
+          } cursor-pointer hover:underline`}
+          onClick={() => handleShowInfo(item)}
+        >
           <div className="flex px-16">
             <Image
               src={item.logo ? `${BASE_URL}${item.logo}` : noImage}
@@ -133,30 +129,15 @@ export default function BusinessItem({ item }: { item: Business }) {
           </Button>
           <Button
             className="flex justify-start items-center shadow-md dark:text-foreground gap-2 bg-red-500 dark:bg-red-600 transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-red-600 dark:hover:bg-red-700"
-            onClick={handleConfirmDelete}
+            onClick={() => handleConfirmDelete(item.id)}
           >
             <MdDelete className="h-5 w-5" />
             <span className="flex m-auto ">Borrar</span>
           </Button>
-          {showConfirmDelete && (
-            <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-50 flex justify-center items-center">
-              <div className="flex flex-col gap-4 justify-center items-center bg-background border border-primary-orange-600 p-8 rounded-lg shadow-md">
-                <p>
-                  {`¿Está seguro de que desea eliminar el negocio '${item.name}'?`}
-                </p>
-                <div className="flex justify-end gap-2">
-                  <Button variant="secondary" onClick={handleCancelDelete}>
-                    No
-                  </Button>
-                  <Button onClick={() => handleDelete(item.id.toString())}>
-                    Sí
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
   )
 }
+
+export default BusinessItem
