@@ -65,7 +65,7 @@ export default function PlansContextProvider({
 }) {
   const [plans, setPlans] = useState<Plan[] | []>([])
   const [loadingPlan, setLoadingPlan] = useState<boolean>(true)
-  const [loadingPlanForm, setLoadingPlanForm] = useState<boolean>(true)
+  const [loadingPlanForm, setLoadingPlanForm] = useState<boolean>(false)
   const [count, setCount] = useState(0)
   const { toast } = useToast()
   const { token } = useUser()

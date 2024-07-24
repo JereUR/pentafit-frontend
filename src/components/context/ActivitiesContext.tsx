@@ -67,7 +67,7 @@ export default function ActivitiesContextProvider({
 }) {
   const [activities, setActivities] = useState<Activity[] | []>([])
   const [loadingActivity, setLoadingActivity] = useState<boolean>(true)
-  const [loadingActivityForm, setLoadingActivityForm] = useState<boolean>(true)
+  const [loadingActivityForm, setLoadingActivityForm] = useState<boolean>(false)
   const [count, setCount] = useState(0)
   const { toast } = useToast()
   const { token } = useUser()
