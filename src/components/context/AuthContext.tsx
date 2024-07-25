@@ -12,10 +12,10 @@ import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 
-import { PropsRegister, User } from '../types/User'
+import { PropsRegister, PropsUpdateProfile, User } from '../types/User'
 import { useToast } from '../ui/use-toast'
 import { Business, PropsAddBusiness } from '../types/Business'
-import { initialBusiness } from '../db/AuthData'
+import { customUser, initialBusiness } from '../db/AuthData'
 
 type AuthContextType = {
   user: User | null
@@ -40,6 +40,13 @@ type AuthContextType = {
   userSignOut: () => void
   signUp: ({ dataRegister }: { dataRegister: PropsRegister }) => Promise<void>
   recover: ({ email }: { email: string }) => Promise<void>
+  getProfile: () => Promise<void>
+  updateProfilePhoto: ({ imgSrc }: { imgSrc: string }) => Promise<void>
+  updateProfile: ({
+    dataUpdate
+  }: {
+    dataUpdate: PropsUpdateProfile
+  }) => Promise<void>
   getBusinesses: () => Promise<void>
   getBusinessById: (id: string) => Promise<Business | null>
   deleteBusinessById: (id: number) => Promise<boolean>
@@ -211,6 +218,116 @@ export default function AuthContextProvider({
         setRecoverState(true)
       } else {
         setRecoverState(false)
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+    } finally {
+      setLoadingUser(false)
+    }
+  }
+
+  async function getProfile(): Promise<void> {
+    setLoadingUser(true)
+    try {
+      const response = await axios.get(`${BASE_URL}api/v1/user`, {
+        headers: {
+          Authorization: token,
+          'Content-Type': 'application/json'
+        }
+      })
+      if (response.status === 200) {
+        setUser(response.data)
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+    } finally {
+      setLoadingUser(false)
+      setUser(customUser)
+    }
+  }
+
+  async function updateProfilePhoto({
+    imgSrc
+  }: {
+    imgSrc: string
+  }): Promise<void> {
+    setLoadingUser(true)
+    try {
+      const response = await axios.put(
+        `${BASE_URL}api/v1/user/photo`,
+        { imgSrc },
+        {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      if (response.status === 200 || response.status === 204) {
+        toast({
+          title: 'Foto actualizada con éxito.',
+          description: 'Tu foto de perfil ha sido actualizada.'
+        })
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+    } finally {
+      setLoadingUser(false)
+    }
+  }
+
+  async function updateProfile({
+    dataUpdate
+  }: {
+    dataUpdate: PropsUpdateProfile
+  }): Promise<void> {
+    setLoadingUser(true)
+    try {
+      const response = await axios.put(
+        `${BASE_URL}api/v1/user`,
+        {
+          user: dataUpdate
+        },
+        {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+
+      if (response.status === 200 || response.status === 204) {
+        toast({
+          title: 'Perfil actualizado con éxito.',
+          description: 'Tus cambios han sido guardados.'
+        })
+      } else {
         toast({
           title: 'Oh no! Algo salió mal.',
           description: response.statusText
@@ -644,6 +761,9 @@ export default function AuthContextProvider({
         userSignOut,
         signUp,
         recover,
+        getProfile,
+        updateProfilePhoto,
+        updateProfile,
         getBusinesses,
         getBusinessById,
         deleteBusinessById,
