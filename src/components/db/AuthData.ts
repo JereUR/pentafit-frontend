@@ -1,3 +1,5 @@
+import { User } from '../types/User'
+
 export const initialBusiness = [
   {
     id: 1,
@@ -21,3 +23,19 @@ export const initialBusiness = [
     is_working: false
   }
 ]
+
+export const customUser: User = {
+  birthdate: '1990-01-01',
+  created_at: '2021-01-01',
+  email: 'toski@example.com',
+  first_name: 'Marcelo Ricardo',
+  gender: 'Masculino',
+  id: 1,
+  businesses: initialBusiness,
+  last_name: 'Toscano',
+  phone: 1234567890,
+  photo:
+    'https://pbs.twimg.com/profile_images/767436825665343488/DKJM3xY1_400x400.jpg',
+  address: '123 Main St',
+  role: 'admin'
+}
