@@ -1,5 +1,6 @@
-import TeamTable from '@/components/dashboard/team/TeamTable'
 import { Metadata } from 'next'
+
+import TeamTable from '@/components/dashboard/team/TeamTable'
 
 export const metadata: Metadata = {
   title: 'PentaFit - Equipo'
