@@ -1,10 +1,8 @@
-'use client'
-
 import Image from 'next/image'
 import { CgProfile } from 'react-icons/cg'
 import { IoSettings } from 'react-icons/io5'
 import { MdLogout } from 'react-icons/md'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import Link from 'next/link'
 
 import {
@@ -43,6 +41,7 @@ const dropdownMenuItems = [
 export default function ProfileDropdownMenu() {
   const { userSignOut, user, token, setLoadingUser, loadingUser } = useUser()
   const { toast } = useToast()
+  const [menuOpen, setMenuOpen] = useState(false)
 
   async function handleSignOut() {
     if (token) {
@@ -81,9 +80,13 @@ export default function ProfileDropdownMenu() {
     }
   }
 
+  const handleLinkClick = () => {
+    setMenuOpen(false)
+  }
+
   return (
     <div className="flex items-center justify-end">
-      <DropdownMenu>
+      <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
         <DropdownMenuTrigger className="relative">
           <div className="cursor-pointer">
             <Image
@@ -116,6 +119,7 @@ export default function ProfileDropdownMenu() {
             <DropdownMenuItem
               key={key}
               className="p-1 my-1 px-2 cursor-pointer rounded-r-full transition flex items-start link-progress z-50"
+              onClick={handleLinkClick}
             >
               <Link href={item.path}>
                 <span className="flex items-center gap-2 my-1">
