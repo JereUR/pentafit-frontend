@@ -395,7 +395,7 @@ export default function PlanForm({
             {paymentsType.map((paymentType) => (
               <label
                 key={paymentType}
-                className="container flex justify-center items-center gap-4 whitespace-nowrap"
+                className="container flex justify-center items-center gap-4 whitespace-nowrap cursor-pointer"
               >
                 <input
                   value={paymentType}
