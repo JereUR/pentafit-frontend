@@ -37,7 +37,8 @@ export const initialPlans: Plan[] = [
         days_of_week: [true, false, false, false, false, false, false],
         sessions_per_week: 5
       }
-    ]
+    ],
+    diaries_count: 3
   },
   {
     id: 2,
@@ -53,6 +54,7 @@ export const initialPlans: Plan[] = [
     plan_type: 'Mensual',
     free_test: false,
     current: false,
-    diaries: []
+    diaries: [],
+    diaries_count: 3
   }
 ]
