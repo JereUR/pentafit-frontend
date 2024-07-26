@@ -1,4 +1,4 @@
-interface DiaryPlan {
+export interface DiaryPlan {
   id: number
   name: string
   activity: string
@@ -10,6 +10,7 @@ export type Plan = {
   id: number
   company_id: number[]
   diaries: DiaryPlan[]
+  diaries_count:number
   name: string
   description: string
   price: number
@@ -21,6 +22,7 @@ export type Plan = {
   plan_type: string
   free_test: boolean
   current: boolean
+  
 }
 
 export interface PropsAddPlan {
