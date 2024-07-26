@@ -1,9 +1,14 @@
+'use client'
+
 import { Cross1Icon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
 import { BiEdit, BiTrash } from 'react-icons/bi'
 
-import { Plan } from '@/components/types/Plan'
+import { Plan, DiaryPlan } from '@/components/types/Plan'
 import { daysOfWeek } from '@/components/types/Diary'
+import { useEffect, useState } from 'react'
+import usePlans from '@/components/hooks/usePlans'
+import Loader from '@/components/Loader'
 
 interface Props {
   showInfo: boolean
@@ -18,7 +23,24 @@ const PlanItem: React.FC<Props> = ({
   handleCloseInfo,
   handleClickDelete
 }) => {
+  const [diaries, setDiaries] = useState<DiaryPlan[]>([])
+  const { getDiariesForPlan, loadingPlan } = usePlans()
+  console.log(diaries)
+
   const router = useRouter()
+
+  useEffect(() => {
+    async function getDiaries() {
+      if (planToShow) {
+        const res = await getDiariesForPlan({ id: planToShow.id })
+        if (res) {
+          setDiaries(res)
+        }
+      }
+    }
+
+    getDiaries()
+  }, [planToShow])
 
   return (
     <div>
@@ -115,44 +137,54 @@ const PlanItem: React.FC<Props> = ({
               <h5 className="text-lg font-semibold mb-4 text-primary-orange-500 dark:text-primary-orange-600">
                 Agendas
               </h5>
-              {planToShow.diaries.map((diary) => (
-                <div
-                  key={diary.id}
-                  className="mb-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg"
-                >
+              {loadingPlan ? (
+                <Loader className="text-center" />
+              ) : diaries ? (
+                diaries.map((diary) => (
+                  <div
+                    key={diary.id}
+                    className="mb-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg"
+                  >
+                    <p className="text-lg text-primary-orange-500 dark:text-primary-orange-600">
+                      <strong className="text-foreground">Nombre:</strong>{' '}
+                      {diary.name}
+                    </p>
+                    <p className="text-lg text-primary-orange-500 dark:text-primary-orange-600">
+                      <strong className="text-foreground">Actividad:</strong>{' '}
+                      {diary.activity}
+                    </p>
+                    <p className="text-lg">
+                      <strong className="text-foreground">
+                        Días disponibles:
+                      </strong>
+                      {diary.days_of_week.map((available, index) => (
+                        <span
+                          key={index}
+                          className={`inline-block px-2 py-1 mx-1 rounded-full ${
+                            available
+                              ? 'bg-green-600 text-white'
+                              : 'bg-gray-300 text-gray-600'
+                          }`}
+                        >
+                          {daysOfWeek[index]}
+                        </span>
+                      ))}
+                    </p>
+                    <p className="text-lg text-primary-orange-500 dark:text-primary-orange-600">
+                      <strong className="text-foreground">
+                        Sesiones por semana:
+                      </strong>{' '}
+                      {diary.sessions_per_week}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <div>
                   <p className="text-lg text-primary-orange-500 dark:text-primary-orange-600">
-                    <strong className="text-foreground">Nombre:</strong>{' '}
-                    {diary.name}
-                  </p>
-                  <p className="text-lg text-primary-orange-500 dark:text-primary-orange-600">
-                    <strong className="text-foreground">Actividad:</strong>{' '}
-                    {diary.activity}
-                  </p>
-                  <p className="text-lg">
-                    <strong className="text-foreground">
-                      Días disponibles:
-                    </strong>
-                    {diary.days_of_week.map((available, index) => (
-                      <span
-                        key={index}
-                        className={`inline-block px-2 py-1 mx-1 rounded-full ${
-                          available
-                            ? 'bg-green-600 text-white'
-                            : 'bg-gray-300 text-gray-600'
-                        }`}
-                      >
-                        {daysOfWeek[index]}
-                      </span>
-                    ))}
-                  </p>
-                  <p className="text-lg text-primary-orange-500 dark:text-primary-orange-600">
-                    <strong className="text-foreground">
-                      Sesiones por semana:
-                    </strong>{' '}
-                    {diary.sessions_per_week}
+                    No hay agendas registradas para este plan.
                   </p>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>

@@ -1,8 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import Image from 'next/image'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 
@@ -13,7 +12,6 @@ import { Button } from 'components/ui/button'
 import CustomButton from 'components/CustomButton'
 import useUser from 'components/hooks/useUser'
 import { Business } from 'components/types/Business'
-import noImage from '../../../../public/assets/no-image.png'
 import Loader from 'components/Loader'
 import { Card, CardContent, CardHeader } from 'components/ui/card'
 import SelectColumns from './SelectColumns'
@@ -27,7 +25,6 @@ import CountItemsSkeleton from '../skeletons/CountItemsSkeleton'
 import WorkingBusiness from '../WorkingBusiness'
 import PlanItem from './PlanItem'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
 export default function PlansTable() {
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
@@ -42,11 +39,11 @@ export default function PlansTable() {
   const [showInfo, setShowInfo] = useState<boolean>(false)
   const [planToShow, setPlanToShow] = useState<Plan | null>(null)
 
-  const router = useRouter()
-
   const searchParams = useSearchParams()
-  const { token, getWorkingBusiness, loadingBusiness } = useUser()
+  const { token, getWorkingBusiness } = useUser()
   const { plans, getPlans, loadingPlan, deletePlansById, count } = usePlans()
+
+  console.log(plans)
 
   useEffect(() => {
     async function getData() {
@@ -273,7 +270,7 @@ export default function PlansTable() {
                       className="border-b border-foreground px-2 py-5 hover:underline"
                       onClick={() => handleShowInfo(plan)}
                     >
-                      {plan?.diaries.length}
+                      {plan.diaries_count ? plan.diaries_count : '-'}
                     </td>
                   )}
                   {selectedColumns.description && (
