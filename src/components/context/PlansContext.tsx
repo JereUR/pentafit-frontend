@@ -3,7 +3,7 @@
 import { createContext, ReactNode, useState } from 'react'
 import axios from 'axios'
 
-import { Plan, PropsAddPlan } from '../types/Plan'
+import { DiaryPlan, Plan, PropsAddPlan } from '../types/Plan'
 import { useToast } from '../ui/use-toast'
 import useUser from '../hooks/useUser'
 import { initialPlans } from '../db/PlanData'
@@ -32,6 +32,7 @@ type PlansContextType = {
     id: string
     business_id: number
   }) => Promise<Plan | null>
+  getDiariesForPlan: ({ id }: { id: number }) => Promise<DiaryPlan[] | null>
   addPlan: ({
     dataPlan,
     company_id
@@ -148,7 +149,7 @@ export default function PlansContextProvider({
       })
     } finally {
       setLoadingPlan(false)
-      setPlans(initialPlans)
+      /* setPlans(initialPlans) */
     }
   }
 
@@ -159,7 +160,7 @@ export default function PlansContextProvider({
     id: string
     business_id: number
   }): Promise<Plan | null> {
-    return initialPlans[0]
+    /* return initialPlans[0] */
     setLoadingPlan(true)
     const params = new URLSearchParams()
     params.append('id', id)
@@ -202,6 +203,42 @@ export default function PlansContextProvider({
           })
           return null
         }
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return null
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return null
+    } finally {
+      setLoadingPlan(false)
+    }
+  }
+
+  async function getDiariesForPlan({
+    id
+  }: {
+    id: number
+  }): Promise<DiaryPlan[] | null> {
+    setLoadingPlan(true)
+    const url = `${BASE_URL}api/v1/diaries_plan?id=${id}`
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      })
+
+      if (response.status === 200 || response.status === 204) {
+        return response.data
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
@@ -268,14 +305,14 @@ export default function PlansContextProvider({
 
       if (response.status === 201) {
         const id = response.data.id
-        url = `${BASE_URL}api/v1/plan_activities`
+        url = `${BASE_URL}api/v1/diary_plan`
         try {
           const response = await axios.post(
             url,
             {
-              plan_activity: {
+              plan_diary: {
                 plan_id: id,
-                diaries_ids: dataPlan.diaries
+                diaries: dataPlan.diaries
               }
             },
             {
@@ -523,6 +560,7 @@ export default function PlansContextProvider({
         getAllPlans,
         getPlans,
         getPlanById,
+        getDiariesForPlan,
         addPlan,
         updatePlan,
         deletePlansById,
