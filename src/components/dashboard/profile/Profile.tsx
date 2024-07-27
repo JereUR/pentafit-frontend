@@ -74,13 +74,13 @@ const Profile = () => {
           {user.first_name} {user.last_name}
         </h2>
         <button
-          className="bg-blue-500 text-white py-2 px-4 rounded-full mt-4"
+          className="bg-blue-500 text-white py-2 px-4 rounded-full my-8"
           onClick={handleEditProfile}
         >
           Editar Información
         </button>
       </div>
-      <div className="flex flex-col gap-4 mt-12">
+      <div className="flex flex-col gap-4">
         <div className="flex items-center bg-accent p-2 rounded-lg mb-2">
           <span className="w-1/3 text-primary-orange-500 dark:text-primary-orange-600">
             Email:
