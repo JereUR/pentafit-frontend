@@ -244,6 +244,9 @@ const TeamTable = () => {
                 <td className="px-2 py-5">Fecha de Nacimiento</td>
               )}
               {selectedColumns.gender && <td className="px-2 py-5">Género</td>}
+              {selectedColumns.address && (
+                <td className="px-2 py-5">Dirección</td>
+              )}
               {selectedColumns.created_at && (
                 <td className="px-2 py-5">Fecha de Creación de Usuario</td>
               )}
@@ -274,9 +277,7 @@ const TeamTable = () => {
                     <td
                       className="border-b border-foreground px-2 py-5"
                       onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${member.id}`
-                        )
+                        router.push(`/panel-de-control/equipo/${member.id}`)
                       }
                     >
                       {member.first_name}
@@ -286,9 +287,7 @@ const TeamTable = () => {
                     <td
                       className="border-b border-foreground px-2 py-5"
                       onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${member.id}`
-                        )
+                        router.push(`/panel-de-control/equipo/${member.id}`)
                       }
                     >
                       {member.last_name}
@@ -298,9 +297,7 @@ const TeamTable = () => {
                     <td
                       className="border-b border-foreground px-2 py-5"
                       onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${member.id}`
-                        )
+                        router.push(`/panel-de-control/equipo/${member.id}`)
                       }
                     >
                       {member.email}
@@ -310,9 +307,7 @@ const TeamTable = () => {
                     <td
                       className="border-b border-foreground px-2 py-5"
                       onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${member.id}`
-                        )
+                        router.push(`/panel-de-control/equipo/${member.id}`)
                       }
                     >
                       {member.role}
@@ -322,9 +317,7 @@ const TeamTable = () => {
                     <td
                       className="border-b border-foreground px-2 py-5"
                       onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${member.id}`
-                        )
+                        router.push(`/panel-de-control/equipo/${member.id}`)
                       }
                     >
                       {member.businesses
@@ -339,9 +332,7 @@ const TeamTable = () => {
                     <td
                       className="border-b border-foreground px-2 py-5"
                       onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${member.id}`
-                        )
+                        router.push(`/panel-de-control/equipo/${member.id}`)
                       }
                     >
                       {member.phone ? member.phone : '-'}
@@ -351,9 +342,7 @@ const TeamTable = () => {
                     <td
                       className="border-b border-foreground px-2 py-5"
                       onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${member.id}`
-                        )
+                        router.push(`/panel-de-control/equipo/${member.id}`)
                       }
                     >
                       {member.birthdate ? member.birthdate : '-'}
@@ -363,22 +352,27 @@ const TeamTable = () => {
                     <td
                       className="border-b border-foreground px-2 py-5"
                       onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${member.id}`
-                        )
+                        router.push(`/panel-de-control/equipo/${member.id}`)
                       }
                     >
                       {member.gender ? member.gender : '-'}
                     </td>
                   )}
-
+                  {selectedColumns.address && (
+                    <td
+                      className="border-b border-foreground px-2 py-5"
+                      onClick={() =>
+                        router.push(`/panel-de-control/equipo/${member.id}`)
+                      }
+                    >
+                      {member.address ? member.address : '-'}
+                    </td>
+                  )}
                   {selectedColumns.created_at && (
                     <td
                       className="border-b border-foreground px-2 py-5"
                       onClick={() =>
-                        router.push(
-                          `/panel-de-control/actividades/${member.id}`
-                        )
+                        router.push(`/panel-de-control/equipo/${member.id}`)
                       }
                     >
                       {member.created_at}
@@ -443,7 +437,7 @@ const TeamTable = () => {
                   }
                   className="py-4 text-lg font-light italic border-b"
                 >
-                  Sin Actividades.
+                  Sin equipo.
                 </td>
               </tr>
             </tbody>
