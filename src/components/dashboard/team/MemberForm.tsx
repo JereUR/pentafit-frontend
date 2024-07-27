@@ -89,6 +89,20 @@ const MemberForm: React.FC<Props> = ({
       errors.role = 'Este campo es obligatorio.'
     }
 
+    if (dataMember.birthdate) {
+      const birthdate = new Date(dataMember.birthdate)
+      const today = new Date()
+      const eighteenYearsAgo = new Date(
+        today.getFullYear() - 18,
+        today.getMonth(),
+        today.getDate()
+      )
+
+      if (birthdate > eighteenYearsAgo) {
+        errors.birthdate = 'El usuario debe tener al menos 18 años.'
+      }
+    }
+
     if (typeForm === 'add') {
       if (dataMember.password != undefined) {
         if (!dataMember.password.trim()) {
@@ -118,7 +132,7 @@ const MemberForm: React.FC<Props> = ({
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
-    if (name === 'date') {
+    if (name === 'birthdate') {
       setDataMember({ ...dataMember, [name]: new Date(value) })
     } else {
       setDataMember({ ...dataMember, [name]: value })
@@ -321,15 +335,16 @@ const MemberForm: React.FC<Props> = ({
           </div>
           <div>
             <div className="flex gap-2 items-center">
-              <label htmlFor="date" className="font-light text-foreground">
+              <label htmlFor="birthdate" className="font-light text-foreground">
                 Fecha de nacimiento
               </label>
-              {formErrors.date && <ErrorText text={formErrors.date} />}
+              {formErrors.birthdate && (
+                <ErrorText text={formErrors.birthdate} />
+              )}
             </div>
-            {formErrors.date && <ErrorText text={formErrors.date} />}
             <input
               type="date"
-              name="date"
+              name="birthdate"
               className="mt-1 block w-full p-2 border border-gray-400 dark:border-gray-700 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm cursor-pointer"
               value={
                 dataMember.birthdate
@@ -421,7 +436,6 @@ const MemberForm: React.FC<Props> = ({
             className=" text-foreground bg-green-500 hover:bg-green-600"
           >
             {loadingTeamForm ? (
-              
               <Loader className="mt-[1.8vh] ml-[1vw]" />
             ) : (
               <p className="flex gap-2 items-center">
