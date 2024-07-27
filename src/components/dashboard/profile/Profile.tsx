@@ -13,7 +13,7 @@ import {
 import UpdateInfoForm from './UpdateInfoForm'
 
 const Profile = () => {
-  const { user, getProfile, token, updateProfilePhoto } = useUser()
+  const { user, getProfile, token, updateProfilePhoto, loadingUser } = useUser()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [imgSrc, setImgSrc] = useState('')
   const [showForm, setShowForm] = useState<boolean>(false)
@@ -134,6 +134,7 @@ const Profile = () => {
           <PhotoCropper
             closeModal={closeModal}
             updateProfilePhoto={updateProfilePhoto}
+            loadingUser={loadingUser}
           />
         </Modal>
       )}

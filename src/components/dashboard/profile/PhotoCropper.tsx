@@ -13,16 +13,22 @@ import 'react-image-crop/dist/ReactCrop.css' // Asegúrate de importar los estil
 import { useToast } from 'components/ui/use-toast'
 import ErrorText from '../global/ErrorText'
 import setCanvasPreview from '../business/setCanvasPreview'
+import Loader from '@/components/Loader'
 
 interface Props {
   closeModal: () => void
-  updateProfilePhoto: ({ imgSrc }: { imgSrc: string }) => void
+  updateProfilePhoto: ({ imgSrc }: { imgSrc: string }) => Promise<boolean>
+  loadingUser: boolean
 }
 
 const ASPECT_RATIO = 1
 const MIN_DIMENSION = 150
 
-const PhotoCropper: React.FC<Props> = ({ closeModal, updateProfilePhoto }) => {
+const PhotoCropper: React.FC<Props> = ({
+  closeModal,
+  updateProfilePhoto,
+  loadingUser
+}) => {
   const imgRef = useRef<HTMLImageElement | null>(null)
   const previewCanvasRef = useRef<HTMLCanvasElement | null>(null)
   const [imgSrc, setImgSrc] = useState('')
@@ -84,8 +90,7 @@ const PhotoCropper: React.FC<Props> = ({ closeModal, updateProfilePhoto }) => {
           })
           const imgSrc = URL.createObjectURL(file)
 
-          updateProfilePhoto({ imgSrc })
-          closeModal()
+          updatePhoto(imgSrc)
         } else {
           toast({
             variant: 'destructive',
@@ -95,6 +100,11 @@ const PhotoCropper: React.FC<Props> = ({ closeModal, updateProfilePhoto }) => {
         }
       })
     }
+  }
+
+  const updatePhoto = async (imgSrc: string) => {
+    const res = await updateProfilePhoto({ imgSrc })
+    if (res) closeModal()
   }
 
   return (
@@ -134,7 +144,11 @@ const PhotoCropper: React.FC<Props> = ({ closeModal, updateProfilePhoto }) => {
             className="text-white font-mono text-lg py-2 px-4 rounded-2xl mt-4 bg-primary-orange-600 hover:bg-primary-orange-700"
             onClick={handleCrop}
           >
-            Actualizar foto de perfil
+            {loadingUser ? (
+              <Loader className="-mb-4 ml-5" />
+            ) : (
+              'Actualizar foto de perfil'
+            )}
           </button>
         </div>
       )}
