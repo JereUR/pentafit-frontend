@@ -46,7 +46,8 @@ const UpdateInfoForm: React.FC<Props> = ({
   const [formErrorsPassword, setFormErrorsPassword] =
     useState<FormErrorsUpdatePassword>(initialErrorsUpdatePassword)
 
-  const { updateProfile, updatePassword, loadingUser } = useUser()
+  const { updateProfile, updatePassword, loadingUser, loadingPassword } =
+    useUser()
   const { toast } = useToast()
 
   const validationsProfile = () => {
@@ -483,7 +484,7 @@ const UpdateInfoForm: React.FC<Props> = ({
             type="submit"
             className=" text-foreground bg-green-500 hover:bg-green-600"
           >
-            {loadingUser ? (
+            {loadingPassword ? (
               <Loader className="mt-[1.8vh] ml-[1vw]" />
             ) : (
               <p className="flex gap-2 items-center">
