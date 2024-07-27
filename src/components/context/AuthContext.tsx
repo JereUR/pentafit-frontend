@@ -12,7 +12,12 @@ import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 
-import { PropsRegister, PropsUpdateProfile, User } from '../types/User'
+import {
+  PropsRegister,
+  PropsUpdatePassword,
+  PropsUpdateProfile,
+  User
+} from '../types/User'
 import { useToast } from '../ui/use-toast'
 import { Business, PropsAddBusiness } from '../types/Business'
 import { customUser, initialBusiness } from '../db/AuthData'
@@ -41,12 +46,17 @@ type AuthContextType = {
   signUp: ({ dataRegister }: { dataRegister: PropsRegister }) => Promise<void>
   recover: ({ email }: { email: string }) => Promise<void>
   getProfile: () => Promise<void>
-  updateProfilePhoto: ({ imgSrc }: { imgSrc: string }) => Promise<void>
+  updateProfilePhoto: ({ imgSrc }: { imgSrc: string }) => Promise<boolean>
   updateProfile: ({
     dataUpdate
   }: {
     dataUpdate: PropsUpdateProfile
-  }) => Promise<void>
+  }) => Promise<boolean>
+  updatePassword: ({
+    dataUpdatePassword
+  }: {
+    dataUpdatePassword: PropsUpdatePassword
+  }) => Promise<boolean>
   getBusinesses: () => Promise<void>
   getBusinessById: (id: string) => Promise<Business | null>
   deleteBusinessById: (id: number) => Promise<boolean>
@@ -235,6 +245,8 @@ export default function AuthContextProvider({
   }
 
   async function getProfile(): Promise<void> {
+    setUser(customUser)
+    return
     setLoadingUser(true)
     try {
       const response = await axios.get(`${BASE_URL}api/v1/user`, {
@@ -259,7 +271,6 @@ export default function AuthContextProvider({
       })
     } finally {
       setLoadingUser(false)
-      setUser(customUser)
     }
   }
 
@@ -267,7 +278,7 @@ export default function AuthContextProvider({
     imgSrc
   }: {
     imgSrc: string
-  }): Promise<void> {
+  }): Promise<boolean> {
     setLoadingUser(true)
     try {
       const response = await axios.put(
@@ -285,11 +296,13 @@ export default function AuthContextProvider({
           title: 'Foto actualizada con éxito.',
           description: 'Tu foto de perfil ha sido actualizada.'
         })
+        return true
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
           description: response.statusText
         })
+        return false
       }
     } catch (error: any) {
       toast({
@@ -297,6 +310,7 @@ export default function AuthContextProvider({
         title: 'Oh no! Algo salió mal.',
         description: error.message
       })
+      return false
     } finally {
       setLoadingUser(false)
     }
@@ -306,7 +320,7 @@ export default function AuthContextProvider({
     dataUpdate
   }: {
     dataUpdate: PropsUpdateProfile
-  }): Promise<void> {
+  }): Promise<boolean> {
     setLoadingUser(true)
     try {
       const response = await axios.put(
@@ -327,11 +341,13 @@ export default function AuthContextProvider({
           title: 'Perfil actualizado con éxito.',
           description: 'Tus cambios han sido guardados.'
         })
+        return true
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
           description: response.statusText
         })
+        return false
       }
     } catch (error: any) {
       toast({
@@ -339,6 +355,51 @@ export default function AuthContextProvider({
         title: 'Oh no! Algo salió mal.',
         description: error.message
       })
+      return false
+    } finally {
+      setLoadingUser(false)
+    }
+  }
+
+  async function updatePassword({
+    dataUpdatePassword
+  }: {
+    dataUpdatePassword: PropsUpdatePassword
+  }): Promise<boolean> {
+    setLoadingUser(true)
+    try {
+      const response = await axios.put(
+        `${BASE_URL}api/v1/user/password`,
+        {
+          user: dataUpdatePassword
+        },
+        {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      if (response.status === 200 || response.status === 204) {
+        toast({
+          title: 'Contraseña actualizada con éxito.',
+          description: 'Tu contraseña ha sido actualizada.'
+        })
+        return true
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return false
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return false
     } finally {
       setLoadingUser(false)
     }
@@ -372,7 +433,7 @@ export default function AuthContextProvider({
       })
     } finally {
       setLoadingBusiness(false)
-      setBusinesses(initialBusiness)
+      /* setBusinesses(initialBusiness) */
     }
   }
 
@@ -764,6 +825,7 @@ export default function AuthContextProvider({
         getProfile,
         updateProfilePhoto,
         updateProfile,
+        updatePassword,
         getBusinesses,
         getBusinessById,
         deleteBusinessById,
