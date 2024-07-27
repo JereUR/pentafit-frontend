@@ -150,7 +150,7 @@ const TeamTable = () => {
     setTypeForm('add')
   }
 
-  const handleEdit = async (m: User) => {
+  const handleEdit = (m: User) => {
     setDataMember({
       id: m.id,
       first_name: m.first_name,
