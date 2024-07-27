@@ -6,11 +6,20 @@ import useUser from '@/components/hooks/useUser'
 import { MdOutlineEdit } from 'react-icons/md'
 import Modal from '@/components/Modal'
 import PhotoCropper from './PhotoCropper'
+import {
+  initialDataUpdateProfile,
+  PropsUpdateProfile
+} from '@/components/types/User'
+import UpdateInfoForm from './UpdateInfoForm'
 
 const Profile = () => {
   const { user, getProfile, token, updateProfilePhoto } = useUser()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [imgSrc, setImgSrc] = useState('')
+  const [showForm, setShowForm] = useState<boolean>(false)
+  const [dataUpdate, setDataUpdate] = useState<PropsUpdateProfile>(
+    initialDataUpdateProfile
+  )
 
   useEffect(() => {
     if (token) {
@@ -26,6 +35,19 @@ const Profile = () => {
 
   const closeModal = () => {
     setIsModalOpen(false)
+  }
+
+  const handleEditProfile = () => {
+    setDataUpdate({
+      id: user.id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      gender: user.gender,
+      birthdate: user.birthdate ? new Date(user.birthdate) : new Date(),
+      phone: user.phone,
+      address: user.address
+    })
+    setShowForm(true)
   }
 
   return (
@@ -51,7 +73,10 @@ const Profile = () => {
         <h2 className="text-xl font-semibold mt-4">
           {user.first_name} {user.last_name}
         </h2>
-        <button className="bg-blue-500 text-white py-2 px-4 rounded-full mt-4">
+        <button
+          className="bg-blue-500 text-white py-2 px-4 rounded-full mt-4"
+          onClick={handleEditProfile}
+        >
           Editar Información
         </button>
       </div>
@@ -91,7 +116,7 @@ const Profile = () => {
             Negocios:
           </span>
           <span className="w-2/3">
-            {user.businesses.length
+            {user.businesses && user.businesses.length
               ? user.businesses.map((business, index) => (
                   <span key={business.id}>
                     {business.name}
@@ -111,6 +136,21 @@ const Profile = () => {
             updateProfilePhoto={updateProfilePhoto}
           />
         </Modal>
+      )}
+      {showForm && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+          <div
+            className={`absolute h-screen bottom-0 right-0 bg-background p-4 shadow-lg transform translate-x-0 transition duration-300 ease-in-out overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-700 w-full max-w-lg ${
+              showForm ? 'slide-in-left' : ''
+            }`}
+          >
+            <UpdateInfoForm
+              dataUpdate={dataUpdate}
+              setDataUpdate={setDataUpdate}
+              setShowForm={setShowForm}
+            />
+          </div>
+        </div>
       )}
     </div>
   )
