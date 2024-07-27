@@ -28,6 +28,7 @@ type AuthContextType = {
   token: string | null
   recoverState: boolean
   loadingUser: boolean
+  loadingPassword: boolean
   setLoadingUser: Dispatch<SetStateAction<boolean>>
   loadingBusiness: boolean
   setRecoverState: Dispatch<SetStateAction<boolean>>
@@ -87,6 +88,7 @@ export default function AuthContextProvider({
   const [token, setToken] = useState<string | null>('1234')
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const [loadingUser, setLoadingUser] = useState(false)
+  const [loadingPassword, setLoadingPassword] = useState(false)
   const [loadingBusiness, setLoadingBusiness] = useState(true)
   const router = useRouter()
   const pathname = usePathname()
@@ -366,7 +368,7 @@ export default function AuthContextProvider({
   }: {
     dataUpdatePassword: PropsUpdatePassword
   }): Promise<boolean> {
-    setLoadingUser(true)
+    setLoadingPassword(true)
     try {
       const response = await axios.put(
         `${BASE_URL}api/v1/user/password`,
@@ -401,7 +403,7 @@ export default function AuthContextProvider({
       })
       return false
     } finally {
-      setLoadingUser(false)
+      setLoadingPassword(false)
     }
   }
 
@@ -815,6 +817,7 @@ export default function AuthContextProvider({
         token,
         recoverState,
         loadingUser,
+        loadingPassword,
         setLoadingUser,
         loadingBusiness,
         setRecoverState,
