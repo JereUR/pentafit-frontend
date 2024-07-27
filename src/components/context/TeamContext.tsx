@@ -6,7 +6,7 @@ import axios from 'axios'
 import { useToast } from '../ui/use-toast'
 import useUser from '../hooks/useUser'
 import { User } from '../types/User'
-import { PropsAddMember } from '../types/Team'
+import { MemberRecord, PropsAddMember } from '../types/Team'
 import { initialMembers } from '../db/TeamData'
 
 type TeamContextType = {
@@ -33,6 +33,11 @@ type TeamContextType = {
     id: string
     business_id: number
   }) => Promise<User | null>
+  getRecordFromMember: ({
+    member_id
+  }: {
+    member_id: number
+  }) => Promise<MemberRecord | null>
   addMember: ({
     dataMember,
     company_id
@@ -160,12 +165,51 @@ export default function TeamContextProvider({
     id: string
     business_id: number
   }): Promise<User | null> {
-    return initialMembers[0]
+    /* return initialMembers[0] */
     setLoadingTeam(true)
     const params = new URLSearchParams()
     params.append('id', id)
     params.append('company_id', business_id.toString())
     const url = `${BASE_URL}api/v1/member?${params.toString()}`
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      })
+
+      if (response.status === 200 || response.status === 204) {
+        return response.data
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return null
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return null
+    } finally {
+      setLoadingTeam(false)
+    }
+  }
+
+  async function getRecordFromMember({
+    member_id
+  }: {
+    member_id: number
+  }): Promise<MemberRecord | null> {
+    /* return initialMembers[0].record */
+    setLoadingTeam(true)
+    const params = new URLSearchParams()
+    params.append('member_id', member_id.toString())
+    const url = `${BASE_URL}api/v1/record_from_member?${params.toString()}`
     try {
       const response = await axios.get(url, {
         headers: {
@@ -387,6 +431,7 @@ export default function TeamContextProvider({
         getAllMembers,
         getMembers,
         getMemberById,
+        getRecordFromMember,
         addMember,
         updateMember,
         deleteMembersById,
