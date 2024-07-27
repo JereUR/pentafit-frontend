@@ -1,5 +1,22 @@
 import { Company } from './User'
 
+interface Item {
+  id: number
+  assigment_to?: number[]
+  field: string
+  field_name: string
+  date: string
+}
+
+export type MemberRecord = {
+  id: number
+  member_id: number
+  creations: Item[]
+  assignments: Item[]
+  erased: Item[]
+  updates: Item[]
+}
+
 export interface PropsAddMember {
   id?: number | null
   first_name: string
