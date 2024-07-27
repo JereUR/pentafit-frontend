@@ -158,6 +158,19 @@ const SelectColumns: React.FC<Props> = ({
               <input
                 type="checkbox"
                 className="mr-2 cursor-pointer"
+                checked={selectedColumns.address}
+                onChange={() =>
+                  handleChange('address', !selectedColumns.address)
+                }
+              />
+              <span className="text-sm ml-2 mr-4 my-1 p-1 w-full rounded-r-full transition duration-500 ease-in-out link-progress z-50">
+                Dirección
+              </span>
+            </label>
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                className="mr-2 cursor-pointer"
                 checked={selectedColumns.created_at}
                 onChange={() =>
                   handleChange('created_at', !selectedColumns.created_at)
@@ -167,6 +180,7 @@ const SelectColumns: React.FC<Props> = ({
                 Fecha de creación de usuario
               </span>
             </label>
+
             <hr className="my-2 border-gray-200 dark:border-gray-500" />
             <div className="flex justify-center">
               <Button

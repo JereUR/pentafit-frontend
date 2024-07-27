@@ -82,6 +82,7 @@ export interface Columns {
   phone: boolean
   birthdate: boolean
   gender: boolean
+  address: boolean
   created_at: boolean
 }
 
@@ -94,6 +95,7 @@ export const initialColumns: Columns = {
   phone: true,
   birthdate: true,
   gender: true,
+  address: true,
   created_at: true
 }
 
