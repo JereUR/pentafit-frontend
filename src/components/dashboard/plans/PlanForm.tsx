@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { ImCross } from 'react-icons/im'
@@ -18,15 +17,12 @@ import {
   PropsAddPlan
 } from 'components/types/Plan'
 import { useToast } from 'components/ui/use-toast'
-import noImage from '../../../../public/assets/no-image.png'
 import { Button } from 'components/ui/button'
 import Loader from 'components/Loader'
 import { CustomCheckbox } from '../CustomCheckbox'
 import AddDiariesButton from './AddDiariesButton'
 import ErrorText from '../global/ErrorText'
 import WorkingArea from '../WorkingArea'
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
 export default function PlanForm({
   type,

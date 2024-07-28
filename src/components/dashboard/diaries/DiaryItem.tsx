@@ -1,11 +1,12 @@
 'use client'
 
-import { daysOfWeek, Diary, GroupedData } from '@/components/types/Diary'
-import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { Cross1Icon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { BiEdit, BiTrash } from 'react-icons/bi'
+
+import { daysOfWeek, Diary, GroupedData } from '@/components/types/Diary'
+import { Card, CardContent, CardTitle } from '@/components/ui/card'
 
 interface Props {
   showInfo: boolean
@@ -89,7 +90,9 @@ const DiaryItem: React.FC<Props> = ({
                 {diaryToShow.term_duration} días
               </p>
               <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
-                <strong className="text-foreground">Cantidad de personas:</strong>{' '}
+                <strong className="text-foreground">
+                  Cantidad de personas:
+                </strong>{' '}
                 {diaryToShow.amount_of_people}
               </p>
               <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
@@ -97,7 +100,9 @@ const DiaryItem: React.FC<Props> = ({
                 {diaryToShow.is_active ? 'Sí' : 'No'}
               </p>
               <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
-                <strong className="text-foreground">Exclusividad de género:</strong>{' '}
+                <strong className="text-foreground">
+                  Exclusividad de género:
+                </strong>{' '}
                 {diaryToShow.genre_exclusive}
               </p>
               <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2">
@@ -128,11 +133,15 @@ const DiaryItem: React.FC<Props> = ({
                     <CardTitle className="mb-4">{daysOfWeek[index]}</CardTitle>
                     <CardContent className="flex flex-col gap-2 justify-center">
                       <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2 mx-6">
-                        <strong className="text-foreground">Horario inicio:</strong>{' '}
+                        <strong className="text-foreground">
+                          Horario inicio:
+                        </strong>{' '}
                         {diary.time_start}
                       </p>
                       <p className="text-lg bg-gray-100 dark:bg-gray-800 text-primary-orange-500 dark:text-primary-orange-600 rounded-lg p-2 mx-6">
-                        <strong className="text-foreground">Horario fin:</strong>{' '}
+                        <strong className="text-foreground">
+                          Horario fin:
+                        </strong>{' '}
                         {diary.time_end}
                       </p>
                     </CardContent>

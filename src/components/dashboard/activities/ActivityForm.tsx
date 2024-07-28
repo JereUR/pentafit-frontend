@@ -1,7 +1,6 @@
 'use client'
 
 import { ImCross } from 'react-icons/im'
-import Image from 'next/image'
 import { FaCheck } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -17,14 +16,11 @@ import {
 } from 'components/types/Activity'
 import Loader from 'components/Loader'
 import useUser from 'components/hooks/useUser'
-import noImage from '../../../../public/assets/no-image.png'
 import { useToast } from 'components/ui/use-toast'
 import { Business } from 'components/types/Business'
 import { CustomCheckbox } from '../CustomCheckbox'
 import ErrorText from '../global/ErrorText'
 import WorkingArea from '../WorkingArea'
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
 export default function ActivityForm({
   type,

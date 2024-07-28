@@ -1,7 +1,6 @@
-import { MutableRefObject, useEffect } from 'react'
+import { MutableRefObject } from 'react'
 
 import { Button } from '../ui/button'
-import axios from 'axios'
 
 export default function BannerSection({
   servicesRef

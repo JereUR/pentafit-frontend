@@ -1,8 +1,9 @@
-import { Days, daysOfWeek } from '@/components/types/Diary'
-import { Button } from '@/components/ui/button'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { FaTableCells } from 'react-icons/fa6'
 import { MdExpandLess, MdExpandMore } from 'react-icons/md'
+
+import { Days, daysOfWeek } from '@/components/types/Diary'
+import { Button } from '@/components/ui/button'
 
 interface Props {
   selectedDays: Days

@@ -1,8 +1,7 @@
 'use client'
 
-import { Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import Image from 'next/image'
 import Link from 'next/link'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 
@@ -16,18 +15,14 @@ import { Activity, Columns, initialColumns } from 'components/types/Activity'
 import SelectColumns from './SelectColumns'
 import { Business } from 'components/types/Business'
 import SelectedActivitiesActions from './SelectedActivitiesActions'
-import noImage from '../../../../public/assets/no-image.png'
 import Loader from 'components/Loader'
 import { Card, CardContent, CardHeader } from 'components/ui/card'
 import ExportData from './ExportData'
 import SelectItemsPerPage from '../SelectItemsPerPage'
 import TableSkeleton from '../skeletons/TableSkeleton'
-import WorkingBusinessSkeleton from '../skeletons/WorkingBusinessSkeleton'
 import CountItemsSkeleton from '../skeletons/CountItemsSkeleton'
 import WorkingBusiness from '../WorkingBusiness'
 import ActivityItem from './ActivityItem'
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_BACKEND_URL
 
 export default function ActivitiesTable() {
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)

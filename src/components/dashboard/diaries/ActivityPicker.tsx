@@ -1,5 +1,6 @@
 import { RiExpandUpDownLine } from 'react-icons/ri'
 import React, { Dispatch, SetStateAction, useState } from 'react'
+import { FaCheck } from 'react-icons/fa'
 
 import { Activity } from '@/components/types/Activity'
 import { PropsAddDiary } from '@/components/types/Diary'
@@ -17,7 +18,6 @@ import {
   CommandItem,
   CommandList
 } from '@/components/ui/command'
-import { FaCheck } from 'react-icons/fa'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -59,7 +59,7 @@ const ActivityPicker: React.FC<Props> = ({
                 <CommandItem
                   key={activity.id}
                   value={activity.name}
-                  className='cursor-pointer bg-transparent'
+                  className="cursor-pointer bg-transparent"
                   onSelect={() => {
                     setDataDiary((prev) => ({
                       ...prev,

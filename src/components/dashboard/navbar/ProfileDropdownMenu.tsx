@@ -13,7 +13,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from 'components/ui/dropdown-menu'
-/* import profilePhoto from '../../../../public/assets/profile-photo.png' */
 import profilePhoto from '../../../../public/assets/noavatar.png'
 import useUser from 'components/hooks/useUser'
 import Loader from 'components/Loader'

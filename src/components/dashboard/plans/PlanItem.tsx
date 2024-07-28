@@ -3,10 +3,10 @@
 import { Cross1Icon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
 import { BiEdit, BiTrash } from 'react-icons/bi'
+import { useEffect, useState } from 'react'
 
 import { Plan, DiaryPlan } from '@/components/types/Plan'
 import { daysOfWeek } from '@/components/types/Diary'
-import { useEffect, useState } from 'react'
 import usePlans from '@/components/hooks/usePlans'
 import Loader from '@/components/Loader'
 

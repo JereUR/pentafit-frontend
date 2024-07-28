@@ -19,12 +19,10 @@ import { Columns, initialColumns, Plan } from 'components/types/Plan'
 import SelectedPlansActions from './SelectedPlansActions'
 import ExportData from './ExportData'
 import SelectItemsPerPage from '../SelectItemsPerPage'
-import WorkingBusinessSkeleton from '../skeletons/WorkingBusinessSkeleton'
 import TableSkeleton from '../skeletons/TableSkeleton'
 import CountItemsSkeleton from '../skeletons/CountItemsSkeleton'
 import WorkingBusiness from '../WorkingBusiness'
 import PlanItem from './PlanItem'
-
 
 export default function PlansTable() {
   const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)

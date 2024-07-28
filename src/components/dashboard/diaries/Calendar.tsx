@@ -69,7 +69,6 @@ const Calendar: React.FC<Props> = ({
       })
     })
 
-    // Check for empty columns and update the classes
     hoursOfDays.forEach((time, timeIndex) => {
       const isColumnEmpty = newCellClasses.every(
         (row) => row[timeIndex] === 'bg-background'
