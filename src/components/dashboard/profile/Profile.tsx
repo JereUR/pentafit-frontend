@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import useUser from '@/components/hooks/useUser'
 import { MdOutlineEdit } from 'react-icons/md'
+
 import Modal from '@/components/Modal'
+import useUser from '@/components/hooks/useUser'
 import PhotoCropper from './PhotoCropper'
 import {
   initialDataUpdateProfile,
