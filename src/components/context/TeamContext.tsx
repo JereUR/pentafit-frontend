@@ -7,7 +7,7 @@ import { useToast } from '../ui/use-toast'
 import useUser from '../hooks/useUser'
 import { User } from '../types/User'
 import { MemberRecord, PropsAddMember } from '../types/Team'
-import { initialMembers } from '../db/TeamData'
+import { initialMembers, exampleMemberRecord } from '../db/TeamData'
 
 type TeamContextType = {
   members: User[] | []
@@ -26,13 +26,7 @@ type TeamContextType = {
     business_id: number
     ITEMS_PER_PAGE: number
   }) => Promise<void>
-  getMemberById: ({
-    id,
-    business_id
-  }: {
-    id: string
-    business_id: number
-  }) => Promise<User | null>
+  getMemberById: ({ id }: { id: string }) => Promise<User | null>
   getRecordFromMember: ({
     member_id
   }: {
@@ -158,18 +152,11 @@ export default function TeamContextProvider({
     }
   }
 
-  async function getMemberById({
-    id,
-    business_id
-  }: {
-    id: string
-    business_id: number
-  }): Promise<User | null> {
-    /* return initialMembers[0] */
+  async function getMemberById({ id }: { id: string }): Promise<User | null> {
+    return initialMembers[0]
     setLoadingTeam(true)
     const params = new URLSearchParams()
     params.append('id', id)
-    params.append('company_id', business_id.toString())
     const url = `${BASE_URL}api/v1/member?${params.toString()}`
     try {
       const response = await axios.get(url, {
@@ -205,7 +192,7 @@ export default function TeamContextProvider({
   }: {
     member_id: number
   }): Promise<MemberRecord | null> {
-    /* return initialMembers[0].record */
+    return exampleMemberRecord
     setLoadingTeam(true)
     const params = new URLSearchParams()
     params.append('member_id', member_id.toString())
