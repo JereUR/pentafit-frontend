@@ -1,6 +1,6 @@
 import { Company } from './User'
 
-interface Item {
+export interface Item {
   id: number
   assigment_to?: number[]
   field: string
