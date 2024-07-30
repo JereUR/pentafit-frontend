@@ -73,7 +73,7 @@ type AuthContextType = {
     dataBusiness: PropsAddBusiness
   }) => Promise<boolean>
   updateStatusBusiness: (id: number) => Promise<boolean>
-  updateWorkingBusiness: (id: number) => Promise<void>
+  updateWorkingBusiness: (id: number) => Promise<boolean>
   getWorkingBusiness: () => Promise<void>
 }
 
@@ -711,7 +711,7 @@ export default function AuthContextProvider({
     }
   }
 
-  async function updateWorkingBusiness(id: number): Promise<void> {
+  async function updateWorkingBusiness(id: number): Promise<boolean> {
     setLoadingBusiness(true)
     let url = `${BASE_URL}api/v1/activate_business_working_status?id=${id}`
     try {
@@ -724,11 +724,13 @@ export default function AuthContextProvider({
 
       if (response.status === 200) {
         setWorkingBusiness(response.data)
+        return true
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
           description: response.statusText
         })
+        return false
       }
     } catch (error: any) {
       toast({
@@ -736,6 +738,7 @@ export default function AuthContextProvider({
         title: 'Oh no! Algo salió mal.',
         description: error.message
       })
+      return false
     } finally {
       setLoadingBusiness(false)
     }
