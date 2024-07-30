@@ -7,7 +7,6 @@ import Link from 'next/link'
 import useDiaries from 'components/hooks/useDiaries'
 import CustomButton from 'components/CustomButton'
 import useUser from 'components/hooks/useUser'
-import { Business } from 'components/types/Business'
 import {
   Days,
   Diary,
@@ -24,7 +23,6 @@ import DiaryItem from './DiaryItem'
 
 export default function DiariesTable() {
   const [groupDiaries, setGroupDiaries] = useState<DiaryGroup[]>([])
-  const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [selectedDays, setSelectedDays] = useState<Days>(initialDays)
   const [selectedDiaries, setSelectedDiaries] = useState<number[]>([])
   const [selectAll, setSelectAll] = useState<boolean>(false)
@@ -36,7 +34,7 @@ export default function DiariesTable() {
   const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
 
   const searchParams = useSearchParams()
-  const { token, getWorkingBusiness } = useUser()
+  const { token, getWorkingBusiness, workingBusiness } = useUser()
   const { diaries, getDiaries, loadingDiary, deleteDiariesById } = useDiaries()
 
   const groupDiaryByDays = (diaries: Diary[]): DiaryGroup[] => {
@@ -65,16 +63,10 @@ export default function DiariesTable() {
   }
 
   useEffect(() => {
-    async function getData() {
-      const res = await getWorkingBusiness()
-      if (res) {
-        setWorkingBusiness(res)
-      }
+    if (token && !workingBusiness) {
+      getWorkingBusiness()
     }
-    if (token) {
-      getData()
-    }
-  }, [token])
+  }, [token, workingBusiness])
 
   useEffect(() => {
     if (token && workingBusiness) {

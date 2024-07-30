@@ -7,27 +7,19 @@ import useDiaries from 'components/hooks/useDiaries'
 import { initialData, PropsAddDiary } from 'components/types/Diary'
 import DiaryForm from './DiaryForm'
 import useUser from 'components/hooks/useUser'
-import { Business } from 'components/types/Business'
 
 export default function EditDiary() {
   const pathname = usePathname()
   const [diary, setDiary] = useState<PropsAddDiary>(initialData)
-  const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const id = pathname.split('/')[4]
   const { getDiaryById } = useDiaries()
-  const { token, getWorkingBusiness } = useUser()
+  const { token, getWorkingBusiness, workingBusiness } = useUser()
 
   useEffect(() => {
-    async function getData() {
-      const res = await getWorkingBusiness()
-      if (res) {
-        setWorkingBusiness(res)
-      }
+    if (token && !workingBusiness) {
+      getWorkingBusiness()
     }
-    if (token) {
-      getData()
-    }
-  }, [token])
+  }, [token, workingBusiness])
 
   useEffect(() => {
     async function fetchDiary() {
@@ -58,7 +50,7 @@ export default function EditDiary() {
             term_duration: d.term_duration ? d.term_duration : 0,
             amount_of_people: d.amount_of_people ? d.amount_of_people : 0,
             is_active: d.is_active ? 'true' : 'false',
-            genre_exclusive: d.genre_exclusive? d.genre_exclusive: 'No',
+            genre_exclusive: d.genre_exclusive ? d.genre_exclusive : 'No',
             works_holidays: d.works_holidays ? 'true' : 'false',
             observations: d.observations ? d.observations : ''
           })

@@ -31,11 +31,10 @@ export default function ActivityForm({
 }) {
   const [showConfirmBack, setShowConfirmBack] = useState<boolean>(false)
   const [dataActivity, setDataActivity] = useState<PropsAddActivity>(activity)
-  const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
   const { toast } = useToast()
   const router = useRouter()
-  const { getWorkingBusiness, token, businesses } = useUser()
+  const { getWorkingBusiness, token, workingBusiness } = useUser()
   const { addActivity, updateActivity, loadingActivityForm } = useActivities()
 
   useEffect(() => {
@@ -43,15 +42,10 @@ export default function ActivityForm({
   }, [activity])
 
   useEffect(() => {
-    async function updateWorkingBusiness() {
-      const res = await getWorkingBusiness()
-      setWorkingBusiness(res)
+    if (token && !workingBusiness) {
+      getWorkingBusiness()
     }
-
-    if (token) {
-      updateWorkingBusiness()
-    }
-  }, [token, businesses])
+  }, [token, workingBusiness])
 
   const handleBack = () => {
     if (showConfirmBack) {

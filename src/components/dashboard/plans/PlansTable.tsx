@@ -11,7 +11,6 @@ import usePlans from 'components/hooks/usePlans'
 import { Button } from 'components/ui/button'
 import CustomButton from 'components/CustomButton'
 import useUser from 'components/hooks/useUser'
-import { Business } from 'components/types/Business'
 import Loader from 'components/Loader'
 import { Card, CardContent, CardHeader } from 'components/ui/card'
 import SelectColumns from './SelectColumns'
@@ -25,7 +24,6 @@ import WorkingBusiness from '../WorkingBusiness'
 import PlanItem from './PlanItem'
 
 export default function PlansTable() {
-  const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [selectedPlans, setSelectedPlans] = useState<number[]>([])
   const [selectAll, setSelectAll] = useState<boolean>(false)
   const [selectedItemsPerPage, setSelectedItemsPerPage] = useState<number>(5)
@@ -38,22 +36,16 @@ export default function PlansTable() {
   const [planToShow, setPlanToShow] = useState<Plan | null>(null)
 
   const searchParams = useSearchParams()
-  const { token, getWorkingBusiness } = useUser()
+  const { token, getWorkingBusiness, workingBusiness } = useUser()
   const { plans, getPlans, loadingPlan, deletePlansById, count } = usePlans()
 
   console.log(plans)
 
   useEffect(() => {
-    async function getData() {
-      const res = await getWorkingBusiness()
-      if (res) {
-        setWorkingBusiness(res)
-      }
+    if (token && !workingBusiness) {
+      getWorkingBusiness()
     }
-    if (token) {
-      getData()
-    }
-  }, [token])
+  }, [token, workingBusiness])
 
   useEffect(() => {
     if (token && workingBusiness) {

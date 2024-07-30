@@ -20,7 +20,6 @@ import {
 import Loader from 'components/Loader'
 import useUser from 'components/hooks/useUser'
 import { useToast } from 'components/ui/use-toast'
-import { Business } from 'components/types/Business'
 import { CustomCheckbox } from '../CustomCheckbox'
 import ErrorText from '../global/ErrorText'
 import { Activity } from '@/components/types/Activity'
@@ -39,12 +38,11 @@ export default function DiaryForm({
   const [showConfirmBack, setShowConfirmBack] = useState<boolean>(false)
   const [dataDiary, setDataDiary] = useState<PropsAddDiary>(diary)
   const [showTimes, setShowTimes] = useState<boolean>(false)
-  const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [activities, setActivities] = useState<Activity[]>([])
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
   const { toast } = useToast()
   const router = useRouter()
-  const { getWorkingBusiness, token, businesses } = useUser()
+  const { getWorkingBusiness, token, workingBusiness } = useUser()
   const { addDiary, updateDiary, loadingDiaryForm } = useDiaries()
   const { getAllActivities } = useActivities()
 
@@ -53,15 +51,10 @@ export default function DiaryForm({
   }, [diary])
 
   useEffect(() => {
-    async function updateWorkingBusiness() {
-      const res = await getWorkingBusiness()
-      setWorkingBusiness(res)
+    if (token && !workingBusiness) {
+      getWorkingBusiness()
     }
-
-    if (token) {
-      updateWorkingBusiness()
-    }
-  }, [token, businesses])
+  }, [token, workingBusiness])
 
   useEffect(() => {
     async function updateActivities() {

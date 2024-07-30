@@ -25,12 +25,10 @@ import {
 import Pagination from '../pagination/Pagination'
 import useTeam from '@/components/hooks/useTeam'
 import useUser from '@/components/hooks/useUser'
-import { Business } from '@/components/types/Business'
 import MemberForm from './MemberForm'
 import { User } from '@/components/types/User'
 
 const TeamTable = () => {
-  const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [selectedMembers, setSelectedMembers] = useState<number[]>([])
   const [selectAll, setSelectAll] = useState<boolean>(false)
   const [selectedItemsPerPage, setSelectedItemsPerPage] = useState<number>(5)
@@ -47,7 +45,7 @@ const TeamTable = () => {
   const router = useRouter()
 
   const searchParams = useSearchParams()
-  const { token, getWorkingBusiness } = useUser()
+  const { token, getWorkingBusiness, workingBusiness } = useUser()
   const {
     members,
     getMembers,
@@ -58,16 +56,10 @@ const TeamTable = () => {
   } = useTeam()
 
   useEffect(() => {
-    async function getData() {
-      const res = await getWorkingBusiness()
-      if (res) {
-        setWorkingBusiness(res)
-      }
+    if (token && !workingBusiness) {
+      getWorkingBusiness()
     }
-    if (token) {
-      getData()
-    }
-  }, [token])
+  }, [token, workingBusiness])
 
   useEffect(() => {
     if (token && workingBusiness) {

@@ -25,6 +25,7 @@ import { customUser, initialBusiness } from '../db/AuthData'
 type AuthContextType = {
   user: User | null
   businesses: Business[] | []
+  workingBusiness: Business | null
   token: string | null
   recoverState: boolean
   loadingUser: boolean
@@ -72,8 +73,8 @@ type AuthContextType = {
     dataBusiness: PropsAddBusiness
   }) => Promise<boolean>
   updateStatusBusiness: (id: number) => Promise<boolean>
-  updateWorkingBusiness: (id: number) => Promise<boolean>
-  getWorkingBusiness: () => Promise<Business | null>
+  updateWorkingBusiness: (id: number) => Promise<void>
+  getWorkingBusiness: () => Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -85,6 +86,7 @@ export default function AuthContextProvider({
 }) {
   const [user, setUser] = useState<User | null>(null)
   const [businesses, setBusinesses] = useState<Business[] | []>([])
+  const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [token, setToken] = useState<string | null>('1234')
   const [recoverState, setRecoverState] = useState<boolean>(false)
   const [loadingUser, setLoadingUser] = useState(false)
@@ -709,7 +711,7 @@ export default function AuthContextProvider({
     }
   }
 
-  async function updateWorkingBusiness(id: number): Promise<boolean> {
+  async function updateWorkingBusiness(id: number): Promise<void> {
     setLoadingBusiness(true)
     let url = `${BASE_URL}api/v1/activate_business_working_status?id=${id}`
     try {
@@ -721,13 +723,12 @@ export default function AuthContextProvider({
       })
 
       if (response.status === 200) {
-        return true
+        setWorkingBusiness(response.data)
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
           description: response.statusText
         })
-        return false
       }
     } catch (error: any) {
       toast({
@@ -735,7 +736,6 @@ export default function AuthContextProvider({
         title: 'Oh no! Algo salió mal.',
         description: error.message
       })
-      return false
     } finally {
       setLoadingBusiness(false)
     }
@@ -779,7 +779,6 @@ export default function AuthContextProvider({
   }
 
   async function getWorkingBusiness() {
-    return initialBusiness[0]
     setLoadingBusiness(true)
     try {
       const response = await axios.get(`${BASE_URL}api/v1/business_working`, {
@@ -789,13 +788,12 @@ export default function AuthContextProvider({
       })
 
       if (response.status === 200 || response.status === 204) {
-        return response.data
+        setWorkingBusiness(response.data)
       } else {
         toast({
           title: 'Oh no! Algo salió mal.',
           description: response.statusText
         })
-        return null
       }
     } catch (error: any) {
       toast({
@@ -803,9 +801,9 @@ export default function AuthContextProvider({
         title: 'Oh no! Algo salió mal.',
         description: error.message
       })
-      return null
     } finally {
       setLoadingBusiness(false)
+      setWorkingBusiness(initialBusiness[0])
     }
   }
 
@@ -814,6 +812,7 @@ export default function AuthContextProvider({
       value={{
         user,
         businesses,
+        workingBusiness,
         token,
         recoverState,
         loadingUser,

@@ -25,7 +25,6 @@ import WorkingBusiness from '../WorkingBusiness'
 import ActivityItem from './ActivityItem'
 
 export default function ActivitiesTable() {
-  const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [selectedActivities, setSelectedActivities] = useState<number[]>([])
   const [selectAll, setSelectAll] = useState<boolean>(false)
   const [selectedItemsPerPage, setSelectedItemsPerPage] = useState<number>(5)
@@ -40,7 +39,7 @@ export default function ActivitiesTable() {
   const router = useRouter()
 
   const searchParams = useSearchParams()
-  const { token, getWorkingBusiness, loadingBusiness } = useUser()
+  const { token, getWorkingBusiness, workingBusiness } = useUser()
   const {
     activities,
     getActivities,
@@ -50,16 +49,10 @@ export default function ActivitiesTable() {
   } = useActivities()
 
   useEffect(() => {
-    async function getData() {
-      const res = await getWorkingBusiness()
-      if (res) {
-        setWorkingBusiness(res)
-      }
+    if (token && !workingBusiness) {
+      getWorkingBusiness()
     }
-    if (token) {
-      getData()
-    }
-  }, [token])
+  }, [token, workingBusiness])
 
   useEffect(() => {
     if (token && workingBusiness) {

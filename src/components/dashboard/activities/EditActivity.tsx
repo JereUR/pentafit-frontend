@@ -7,27 +7,19 @@ import useActivities from 'components/hooks/useActivities'
 import { initialData, PropsAddActivity } from 'components/types/Activity'
 import ActivityForm from './ActivityForm'
 import useUser from 'components/hooks/useUser'
-import { Business } from 'components/types/Business'
 
 export default function EditActivity() {
   const pathname = usePathname()
   const [activity, setActivity] = useState<PropsAddActivity>(initialData)
-  const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const id = pathname.split('/')[4]
   const { getActivityById } = useActivities()
-  const { token, getWorkingBusiness } = useUser()
+  const { token, getWorkingBusiness, workingBusiness } = useUser()
 
   useEffect(() => {
-    async function getData() {
-      const res = await getWorkingBusiness()
-      if (res) {
-        setWorkingBusiness(res)
-      }
+    if (token && !workingBusiness) {
+      getWorkingBusiness()
     }
-    if (token) {
-      getData()
-    }
-  }, [token])
+  }, [token, workingBusiness])
 
   useEffect(() => {
     async function fetchActivity() {

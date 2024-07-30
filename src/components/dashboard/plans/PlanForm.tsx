@@ -7,7 +7,6 @@ import { FaCheck } from 'react-icons/fa'
 
 import usePlans from 'components/hooks/usePlans'
 import useUser from 'components/hooks/useUser'
-import { Business } from 'components/types/Business'
 import {
   FormErrorDiaries,
   FormErrors,
@@ -33,7 +32,6 @@ export default function PlanForm({
 }) {
   const [showConfirmBack, setShowConfirmBack] = useState<boolean>(false)
   const [dataPlan, setDataPlan] = useState<PropsAddPlan>(plan)
-  const [workingBusiness, setWorkingBusiness] = useState<Business | null>(null)
   const [formErrors, setFormErrors] = useState<FormErrors>(initialErrors)
   const [formErrorsDiaries, setFormErrorsDiaries] = useState<
     FormErrorDiaries[]
@@ -41,7 +39,7 @@ export default function PlanForm({
 
   const { toast } = useToast()
   const router = useRouter()
-  const { getWorkingBusiness, token } = useUser()
+  const { getWorkingBusiness, token, workingBusiness } = useUser()
   const { addPlan, updatePlan, loadingPlanForm } = usePlans()
 
   useEffect(() => {
@@ -49,15 +47,10 @@ export default function PlanForm({
   }, [plan])
 
   useEffect(() => {
-    async function updateWorkingBusiness() {
-      const res = await getWorkingBusiness()
-      setWorkingBusiness(res)
+    if (token && !workingBusiness) {
+      getWorkingBusiness()
     }
-
-    if (token) {
-      updateWorkingBusiness()
-    }
-  }, [token])
+  }, [token, workingBusiness])
 
   const handleBack = () => {
     if (showConfirmBack) {
