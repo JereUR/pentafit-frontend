@@ -1,20 +1,50 @@
 import { Company } from './User'
 
-export interface Item {
+export interface ItemCreate {
   id: number
-  assigment_to?: number[]
   field: string
   field_name: string
   date: string
 }
 
+export interface ItemAssignment {
+  id: number
+  assigment_to?: number[]
+  field: string
+  field_name: string[]
+  date: string
+}
+
+export interface ItemErased {
+  id: number
+  field: string
+  field_name: string
+  date: string
+}
+
+export interface ItemUpdate {
+  id: number
+  field: string
+  field_name: string
+  date: string
+  updates?: string[]
+}
+
+export interface LastRecords {
+  id: number
+  field: string
+  date: string
+  type: string
+}
+
 export type MemberRecord = {
   id: number
   member_id: number
-  creations: Item[]
-  assignments: Item[]
-  erased: Item[]
-  updates: Item[]
+  creations: number
+  assignments: number
+  erased: number
+  updates: number
+  last_records: LastRecords[]
 }
 
 export interface PropsAddMember {
