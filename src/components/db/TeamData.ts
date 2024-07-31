@@ -1,4 +1,10 @@
-import { MemberRecord } from '../types/Team'
+import {
+  ItemAssignment,
+  ItemCreate,
+  ItemErased,
+  ItemUpdate,
+  MemberRecord
+} from '../types/Team'
 import { User } from '../types/User'
 
 export const initialMembers: User[] = [
@@ -50,75 +56,140 @@ export const initialMembers: User[] = [
 export const exampleMemberRecord: MemberRecord = {
   id: 1,
   member_id: 1,
-  creations: [
+  creations: 2,
+  assignments: 3,
+  erased: 1,
+  updates: 1,
+  last_records: [
     {
       id: 1,
-      assigment_to: [2],
-      field: 'Routine Creation',
-      field_name: 'Cardio Routine',
-      date: '2024-07-01'
+      field: 'Rutina',
+      date: '2024-07-01',
+      type: 'Creación'
     },
     {
       id: 2,
-      assigment_to: [3],
-      field: 'Routine Creation',
-      field_name: 'Strength Routine',
-      date: '2024-07-05'
-    }
-  ],
-  assignments: [
+      field: 'Rutina',
+      date: '2024-07-05',
+      type: 'Actualización'
+    },
     {
       id: 3,
-      assigment_to: [1, 2],
-      field: 'Plumbing',
-      field_name: 'Plumbing Service',
-      date: '2024-09-29'
+      field: 'Plan nutricional',
+      date: '2024-07-15',
+      type: 'Borrado'
     },
     {
       id: 4,
-      assigment_to: [1],
-      field: 'Carpentry',
-      field_name: 'Carpentry Service',
-      date: '2024-10-15'
+      field: 'Rutina',
+      date: '2024-07-25',
+      type: 'Asignación'
     },
     {
       id: 5,
-      assigment_to: [2],
-      field: 'Painting',
-      field_name: 'Painting Service',
-      date: '2024-11-11'
-    },
-    {
-      id: 6,
-      assigment_to: [1],
-      field: 'Hair Drying',
-      field_name: 'Hair Drying Service',
-      date: '2024-04-13'
-    },
-    {
-      id: 7,
-      assigment_to: [3],
-      field: 'Blueprint Structure',
-      field_name: 'Blueprint Structure Service',
-      date: '2024-02-24'
-    }
-  ],
-  erased: [
-    {
-      id: 8,
-      assigment_to: [2],
-      field: 'Routine Erased',
-      field_name: 'Yoga Routine',
-      date: '2024-07-10'
-    }
-  ],
-  updates: [
-    {
-      id: 9,
-      assigment_to: [1],
-      field: 'Routine Update',
-      field_name: 'Updated Cardio Routine',
-      date: '2024-07-15'
+      field: 'Plan nutricional',
+      date: '2024-07-30',
+      type: 'Asignación'
     }
   ]
 }
+
+export const exampleCreations: ItemCreate[] = [
+  {
+    id: 1,
+    field: 'Rutina',
+    field_name: 'Cardio Rutina',
+    date: '2024-07-01'
+  },
+  {
+    id: 2,
+    field: 'Rutina',
+    field_name: 'Strength Rutina',
+    date: '2024-07-05'
+  }
+]
+
+export const exampleAssignments: ItemAssignment[] = [
+  {
+    id: 3,
+    assigment_to: [1, 2],
+    field: 'Rutina',
+    field_name: ['Cardio', 'Explosión'],
+    date: '2024-09-29'
+  },
+  {
+    id: 4,
+    assigment_to: [1],
+    field: 'Plan nutricional',
+    field_name: ['Dieta cetogenica'],
+    date: '2024-10-15'
+  },
+  {
+    id: 5,
+    assigment_to: [3],
+    field: 'Rutina',
+    field_name: ['Crossfit '],
+    date: '2024-11-11'
+  },
+  {
+    id: 3,
+    assigment_to: [1, 2],
+    field: 'Rutina',
+    field_name: ['Cardio', 'Explosión'],
+    date: '2024-09-29'
+  },
+  {
+    id: 4,
+    assigment_to: [1],
+    field: 'Plan nutricional',
+    field_name: ['Dieta cetogenica'],
+    date: '2024-10-15'
+  },
+  {
+    id: 5,
+    assigment_to: [3],
+    field: 'Rutina',
+    field_name: ['Crossfit '],
+    date: '2024-11-11'
+  },
+  {
+    id: 3,
+    assigment_to: [1, 2],
+    field: 'Rutina',
+    field_name: ['Cardio', 'Explosión'],
+    date: '2024-09-29'
+  },
+  {
+    id: 4,
+    assigment_to: [1],
+    field: 'Plan nutricional',
+    field_name: ['Dieta cetogenica'],
+    date: '2024-10-15'
+  },
+  {
+    id: 5,
+    assigment_to: [3],
+    field: 'Rutina',
+    field_name: ['Crossfit '],
+    date: '2024-11-11'
+  }
+]
+
+export const exampleErased: ItemErased[] = [
+  {
+    id: 8,
+    field: 'Rutina',
+    field_name: 'Rutina Yoga',
+    date: '2024-07-10'
+  }
+]
+
+export const exampleUpdates: ItemUpdate[] = [
+  {
+    id: 9,
+    field: 'Rutina',
+    field_name: 'Rutina Cardio',
+    date: '2024-07-15',
+    updates: ['Nombre', 'Ejercicios']
+  }
+]
