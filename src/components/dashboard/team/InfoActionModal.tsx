@@ -1,12 +1,12 @@
 import { TbArrowsRight } from 'react-icons/tb'
+import Image from 'next/image'
+import { Cross1Icon } from '@radix-ui/react-icons'
+import React, { useEffect, useState } from 'react'
 
 import useTeam from '@/components/hooks/useTeam'
 import { ItemAssignment } from '@/components/types/Team'
 import { User } from '@/components/types/User'
-import { Cross1Icon } from '@radix-ui/react-icons'
-import React, { useEffect, useState } from 'react'
 import noAvatar from '../../../../public/assets/noavatar.png'
-import Image from 'next/image'
 
 interface InfoModalProps {
   isOpen: boolean
