@@ -6,8 +6,22 @@ import axios from 'axios'
 import { useToast } from '../ui/use-toast'
 import useUser from '../hooks/useUser'
 import { User } from '../types/User'
-import { MemberRecord, PropsAddMember } from '../types/Team'
-import { initialMembers, exampleMemberRecord } from '../db/TeamData'
+import {
+  ItemAssignment,
+  ItemCreate,
+  ItemErased,
+  ItemUpdate,
+  MemberRecord,
+  PropsAddMember
+} from '../types/Team'
+import {
+  initialMembers,
+  exampleMemberRecord,
+  exampleCreations,
+  exampleErased,
+  exampleUpdates,
+  exampleAssignments
+} from '../db/TeamData'
 
 type TeamContextType = {
   members: User[] | []
@@ -32,6 +46,27 @@ type TeamContextType = {
   }: {
     member_id: number
   }) => Promise<MemberRecord | null>
+  getCreationsFromMember: ({
+    member_id
+  }: {
+    member_id: number
+  }) => Promise<ItemCreate[]>
+  getErasedFromMember: ({
+    member_id
+  }: {
+    member_id: number
+  }) => Promise<ItemErased[]>
+  getUpdatesFromMember: ({
+    member_id
+  }: {
+    member_id: number
+  }) => Promise<ItemUpdate[]>
+  getAssignmentsFromMember: ({
+    member_id
+  }: {
+    member_id: number
+  }) => Promise<ItemAssignment[]>
+  getUsersByIds: (ids: number[]) => Promise<User[]>
   addMember: ({
     dataMember,
     company_id
@@ -223,6 +258,195 @@ export default function TeamContextProvider({
       return null
     } finally {
       setLoadingTeam(false)
+    }
+  }
+
+  async function getCreationsFromMember({
+    member_id
+  }: {
+    member_id: number
+  }): Promise<ItemCreate[]> {
+    return exampleCreations
+    setLoadingTeam(true)
+    const params = new URLSearchParams()
+    params.append('member_id', member_id.toString())
+    const url = `${BASE_URL}api/v1/creations_from_member?${params.toString()}`
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      })
+
+      if (response.status === 200 || response.status === 204) {
+        return response.data
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return []
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return []
+    } finally {
+      setLoadingTeam(false)
+    }
+  }
+
+  async function getErasedFromMember({
+    member_id
+  }: {
+    member_id: number
+  }): Promise<ItemErased[]> {
+    return exampleErased
+    setLoadingTeam(true)
+    const params = new URLSearchParams()
+    params.append('member_id', member_id.toString())
+    const url = `${BASE_URL}api/v1/erased_from_member?${params.toString()}`
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      })
+
+      if (response.status === 200 || response.status === 204) {
+        return response.data
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return []
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return []
+    } finally {
+      setLoadingTeam(false)
+    }
+  }
+
+  async function getUpdatesFromMember({
+    member_id
+  }: {
+    member_id: number
+  }): Promise<ItemUpdate[]> {
+    return exampleUpdates
+    setLoadingTeam(true)
+    const params = new URLSearchParams()
+    params.append('member_id', member_id.toString())
+    const url = `${BASE_URL}api/v1/updates_from_member?${params.toString()}`
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      })
+
+      if (response.status === 200 || response.status === 204) {
+        return response.data
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return []
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return []
+    } finally {
+      setLoadingTeam(false)
+    }
+  }
+
+  async function getAssignmentsFromMember({
+    member_id
+  }: {
+    member_id: number
+  }): Promise<ItemAssignment[]> {
+    return exampleAssignments
+    setLoadingTeam(true)
+    const params = new URLSearchParams()
+    params.append('member_id', member_id.toString())
+    const url = `${BASE_URL}api/v1/assignments_from_member?${params.toString()}`
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      })
+
+      if (response.status === 200 || response.status === 204) {
+        return response.data
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return []
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return []
+    } finally {
+      setLoadingTeam(false)
+    }
+  }
+
+  async function getUsersByIds(ids: number[]): Promise<User[]> {
+    return initialMembers
+    const params = new URLSearchParams()
+    ids.forEach((id) => params.append('id', id.toString()))
+    const url = `${BASE_URL}api/v1/users?${params.toString()}`
+
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        }
+      })
+
+      if (response.status === 200 || response.status === 204) {
+        return response.data
+      } else {
+        toast({
+          title: 'Oh no! Algo salió mal.',
+          description: response.statusText
+        })
+        return []
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Oh no! Algo salió mal.',
+        description: error.message
+      })
+      return []
     }
   }
 
@@ -419,6 +643,11 @@ export default function TeamContextProvider({
         getMembers,
         getMemberById,
         getRecordFromMember,
+        getCreationsFromMember,
+        getUpdatesFromMember,
+        getAssignmentsFromMember,
+        getUsersByIds,
+        getErasedFromMember,
         addMember,
         updateMember,
         deleteMembersById,
